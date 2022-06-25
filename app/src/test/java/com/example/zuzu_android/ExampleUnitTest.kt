@@ -1,4 +1,4 @@
-package com.example.zuzu_android
+package com.mashup.zuzu
 
 import org.junit.Test
 
