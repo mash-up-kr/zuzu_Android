@@ -1,4 +1,4 @@
-package com.example.zuzu_android.ui.theme
+package com.mashup.zuzu.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

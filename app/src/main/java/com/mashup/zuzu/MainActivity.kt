@@ -1,4 +1,4 @@
-package com.example.zuzu_android
+package com.mashup.zuzu
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.zuzu_android.ui.theme.ZuzuAndroidTheme
+import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
