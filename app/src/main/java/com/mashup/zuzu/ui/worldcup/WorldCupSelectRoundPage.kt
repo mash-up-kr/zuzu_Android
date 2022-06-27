@@ -13,8 +13,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.mashup.zuzu.ui.component.RoundCard
 import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
 
@@ -44,7 +42,7 @@ val roundItem = listOf(
 )
 @Composable
 fun WorldCupSelectRoundPage(
-    navController: NavHostController,
+    onRoundClick: (Round) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -78,7 +76,7 @@ fun WorldCupSelectRoundPage(
             items(roundItem) { round ->
                 RoundCard(
                     subDescription = round.subDescription, mainRound = round.mainRound, modifier = Modifier.fillMaxWidth().height(100.dp),
-                    onRoundClick = { navController.navigate("WorldCupSelectItemScreen/${round.mainRound}") }
+                    onRoundClick = { onRoundClick(round) }
                 )
             }
         }
@@ -89,7 +87,7 @@ fun WorldCupSelectRoundPage(
 @Composable
 fun PreviewWorldCupSelectRoundPage() {
     ZuzuAndroidTheme() {
-        WorldCupSelectRoundPage(rememberNavController())
+        WorldCupSelectRoundPage({})
 //
     }
 }

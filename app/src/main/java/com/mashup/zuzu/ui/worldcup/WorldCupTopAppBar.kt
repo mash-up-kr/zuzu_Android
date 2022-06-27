@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.mashup.zuzu.ui.component.BackButton
 import com.mashup.zuzu.ui.component.CloseButton
 import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
@@ -19,16 +17,16 @@ import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
 @Composable
 fun WorldCupTopAppBar(
     modifier: Modifier,
-    navController: NavHostController
+    onWorldCupTopBarItemClick: (String) -> Unit
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
-        BackButton(modifier = Modifier, navController = navController)
+        BackButton(modifier = Modifier, onBackButtonClick = onWorldCupTopBarItemClick)
 
-        CloseButton(modifier = Modifier, navController = navController)
+        CloseButton(modifier = Modifier, onCloseButtonClick = onWorldCupTopBarItemClick)
     }
 }
 
@@ -36,6 +34,6 @@ fun WorldCupTopAppBar(
 @Composable
 fun PreviewWorldCupTopAppBar() {
     ZuzuAndroidTheme() {
-        WorldCupTopAppBar(modifier = Modifier.fillMaxWidth(), navController = rememberNavController())
+        WorldCupTopAppBar(modifier = Modifier.fillMaxWidth(), {})
     }
 }

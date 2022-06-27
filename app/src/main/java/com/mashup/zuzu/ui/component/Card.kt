@@ -31,9 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.wines
-import com.mashup.zuzu.R
 import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
 import com.mashup.zuzu.ui.theme.gradientBlack
 import com.mashup.zuzu.ui.theme.gradientWhite

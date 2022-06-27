@@ -20,7 +20,7 @@ import androidx.navigation.NavHostController
  */
 
 @Composable
-fun BottomHome(navController: NavHostController) {
+fun BottomHome() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

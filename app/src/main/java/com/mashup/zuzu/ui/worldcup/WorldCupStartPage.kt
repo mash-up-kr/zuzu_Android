@@ -19,11 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.compose.*
 import com.mashup.zuzu.R
-import com.mashup.zuzu.ui.navigation.WorldCupScreen
 import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
 import com.mashup.zuzu.ui.theme.darkgray
 
@@ -34,7 +31,7 @@ import com.mashup.zuzu.ui.theme.darkgray
 
 @Composable
 fun WorldCupStartPage(
-    navController: NavHostController
+    onStartClick: () -> Unit
 ) {
 
     val composition by rememberLottieComposition(
@@ -76,7 +73,7 @@ fun WorldCupStartPage(
         )
         Button(
             onClick = {
-                navController.navigate(WorldCupScreen.WorldCupSelectPersonScreen.route)
+                onStartClick()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -100,7 +97,7 @@ fun WorldCupStartPage(
 @Composable
 fun PreviewWorldCupStartPage() {
     ZuzuAndroidTheme() {
-        WorldCupStartPage(rememberNavController())
+        WorldCupStartPage {}
 //
     }
 }

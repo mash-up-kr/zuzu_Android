@@ -13,8 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
 
 /**
@@ -25,10 +23,10 @@ import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
 @Composable
 fun BackButton(
     modifier: Modifier,
-    navController: NavHostController
+    onBackButtonClick: (String) -> Unit
 ) {
     Button(
-        onClick = { navController.popBackStack() },
+        onClick = { onBackButtonClick("Back") },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color.Transparent,
             contentColor = Color.Black
@@ -48,10 +46,10 @@ fun BackButton(
 @Composable
 fun CloseButton(
     modifier: Modifier,
-    navController: NavHostController
+    onCloseButtonClick: (String) -> Unit
 ) {
     Button(
-        onClick = { navController.popBackStack() },
+        onClick = { onCloseButtonClick("Close") },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color.Transparent,
             contentColor = Color.Black
@@ -72,7 +70,7 @@ fun CloseButton(
 @Composable
 fun PreviewCloseButton() {
     ZuzuAndroidTheme() {
-        CloseButton(modifier = Modifier, navController = rememberNavController())
+        CloseButton(modifier = Modifier, { })
     }
 }
 
@@ -80,6 +78,6 @@ fun PreviewCloseButton() {
 @Composable
 fun PreviewBackButton() {
     ZuzuAndroidTheme() {
-        BackButton(modifier = Modifier, navController = rememberNavController())
+        BackButton(modifier = Modifier, {})
     }
 }
