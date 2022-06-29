@@ -2,6 +2,7 @@ plugins {
     alias libs.plugins.android.application
     alias libs.plugins.kotlin.android
     alias libs.plugins.kotlin.kapt
+    alias libs.plugins.hilt.plugin
 }
 
 android {
@@ -42,6 +43,7 @@ android {
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += 'META-INF/gradle/incremental.annotation.processors'
         }
     }
 }
@@ -58,6 +60,11 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.testManifest)
     androidTestImplementation(libs.androidx.compose.ui.test)
+
+    // hilt
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test)
