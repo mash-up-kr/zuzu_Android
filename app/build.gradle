@@ -78,6 +78,9 @@ dependencies {
     implementation(libs.hilt.compiler)
     kapt(libs.hilt.compiler)
 
+    //coil
+    implementation(libs.io.coil.kt)
+
     // coroutine
     implementation(libs.coroutine)
 

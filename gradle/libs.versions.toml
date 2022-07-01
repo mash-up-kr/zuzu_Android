@@ -12,6 +12,7 @@ espresso = "3.4.0"
 hilt = "2.42"
 hiltExt = "1.0.0"
 navigation = "2.4.2"
+coil = "2.1.0"
 coroutine = "1.6.1"
 appcompat = "1.4.2"
 material = "1.6.1"
@@ -48,6 +49,7 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 
+io-coil-kt = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil"}
 coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
 
 [bundles]
