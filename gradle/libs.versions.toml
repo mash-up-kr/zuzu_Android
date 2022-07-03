@@ -12,6 +12,7 @@ espresso = "3.4.0"
 hilt = "2.42"
 hiltExt = "1.0.0"
 navigation = "2.4.2"
+coroutine = "1.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
@@ -39,6 +40,8 @@ gson = "com.google.code.gson:gson:2.9.0"
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
+
+coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
 
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]
