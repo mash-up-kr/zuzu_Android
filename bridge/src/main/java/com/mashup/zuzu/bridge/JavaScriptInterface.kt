@@ -16,7 +16,7 @@ class JavaScriptInterface(
 
     override fun onJavaScriptResponse(eventData: JsonObject) {
         val extra = eventData.toString()
-        val loadUrlStr = "javascript:zuzu.event(\'$extra\')"
+        val loadUrlStr = "javascript:proof.event(\'$extra\')"
         Log.d(TAG, "loadUrlMsg: $loadUrlStr")
         try {
             webView.loadUrl(loadUrlStr)

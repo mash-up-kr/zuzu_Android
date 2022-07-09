@@ -37,7 +37,7 @@ class ZuzuWebView : WebView {
 
     fun setJavaScriptInterface(preference: WebPreference) {
         val javaScriptInterface = JavaScriptInterface(this, preference)
-        addJavascriptInterface(javaScriptInterface, "zuzu_native_api")
+        addJavascriptInterface(javaScriptInterface, "proof_native_api")
         WebAPIController.jsInterface = javaScriptInterface
         clearCache(true)
         requestFocus()
