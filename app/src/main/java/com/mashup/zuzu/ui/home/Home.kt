@@ -6,12 +6,12 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.zuzu_android.R
-import com.mashup.zuzu.ui.theme.LightGray
-import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
+import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/06/30
@@ -74,7 +74,7 @@ fun ZuzuBottomNavigationBar(
 @Preview(showBackground = true)
 @Composable
 fun PreviewZuzuHomeScreen() {
-    ZuzuAndroidTheme {
+    ProofTheme {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -87,7 +87,7 @@ fun PreviewZuzuHomeScreen() {
 
 @Composable
 fun PreviewZuzuNavigationBar() {
-    ZuzuAndroidTheme() {
+    ProofTheme() {
         ZuzuBottomNavigationBar(
             currentRoute = null,
             onBottomTabsClick = {},

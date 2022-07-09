@@ -1,6 +1,5 @@
 package com.mashup.zuzu.ui.review
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -8,10 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.zuzu_android.R
 import com.mashup.zuzu.ui.theme.ProofTheme
 import kotlinx.coroutines.launch
@@ -34,14 +31,12 @@ fun ReviewWriteScreen() {
             ) {
                 Text(
                     text = stringResource(R.string.review_cancel_title),
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                    )
+                    style = ProofTheme.typography.headingL,
                 )
 
                 Text(
                     text = stringResource(R.string.review_cancel_content),
-                    style = ProofTheme.typography.bodyL,
+                    style = ProofTheme.typography.bodyM,
                     modifier = Modifier.padding(top = 12.dp)
                 )
 
@@ -53,28 +48,26 @@ fun ReviewWriteScreen() {
                 ) {
                     Button(
                         onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray400),
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 6.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.cancel),
-                            style = TextStyle(
-                                fontSize = 16.sp
-                            )
+                            style = ProofTheme.typography.buttonL
                         )
                     }
                     Button(
                         onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
                         modifier = Modifier
                             .weight(1f)
                             .padding(start = 6.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.confirm),
-                            style = TextStyle(
-                                fontSize = 16.sp
-                            )
+                            style = ProofTheme.typography.buttonL
                         )
                     }
                 }

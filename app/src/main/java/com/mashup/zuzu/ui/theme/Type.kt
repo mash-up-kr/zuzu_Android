@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.sp
 import com.example.zuzu_android.R
 
 val pretended = FontFamily(
-    Font(R.font.pretendard_bold, FontWeight.Bold, FontStyle.Normal),
-    Font(R.font.pretendard_medium, FontWeight.Normal, FontStyle.Normal),
-    Font(R.font.pretendard_thin, FontWeight.Light, FontStyle.Normal)
+    Font(R.font.pretendard_bold, FontWeight.Bold),
+    Font(R.font.pretendard_medium, FontWeight.Normal),
+    Font(R.font.pretendard_thin, FontWeight.Light)
 )
 
 val proofTypography = ProofTypography(
