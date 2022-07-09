@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import com.mashup.zuzu.ui.home.ZuzuApp
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 class MainActivity : ComponentActivity() {

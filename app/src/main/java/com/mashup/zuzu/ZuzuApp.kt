@@ -1,9 +1,7 @@
-package com.mashup.zuzu.ui.home
+package com.mashup.zuzu
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
@@ -17,8 +15,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.zuzu_android.R
-import com.mashup.zuzu.rememberAppState
-import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
+import com.mashup.zuzu.ui.home.BottomScreen
+import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
+import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/06/30
@@ -32,7 +31,9 @@ fun ZuzuApp() {
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
             FloatingActionButton(
-                modifier = Modifier.width(48.dp).height(48.dp),
+                modifier = Modifier
+                    .width(48.dp)
+                    .height(48.dp),
                 shape = CircleShape,
                 onClick = {
                     zuzuAppState.navigateToBottomBarRoute(BottomScreen.WorldCup.route)
@@ -65,7 +66,7 @@ fun ZuzuApp() {
             startDestination = BottomScreen.Navigation.route
         ) {
             composable(BottomScreen.Navigation.route) {
-                // ZuzuHomeScreen()
+//                 ZuzuHomeScreen()
             }
             composable(BottomScreen.User.route) {
             }
@@ -78,7 +79,7 @@ fun ZuzuApp() {
 @Preview
 @Composable
 fun PreviewZuzuApp() {
-    ZuzuAndroidTheme {
+    ProofTheme() {
         ZuzuApp()
     }
 }
