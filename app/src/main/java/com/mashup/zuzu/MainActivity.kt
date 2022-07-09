@@ -9,7 +9,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.mashup.zuzu.ui.home.ZuzuApp
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 class MainActivity : ComponentActivity() {

@@ -5,10 +5,9 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.zuzu_android.R
+import com.mashup.zuzu.R
 
 val pretended = FontFamily(
     Font(R.font.pretendard_bold, FontWeight.Bold),

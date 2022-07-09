@@ -1,7 +1,7 @@
 package com.mashup.zuzu.data.model
 
 import androidx.compose.runtime.Immutable
-import com.example.zuzu_android.R
+import com.mashup.zuzu.R
 
 /**
  * @Created by 김현국 2022/07/01
