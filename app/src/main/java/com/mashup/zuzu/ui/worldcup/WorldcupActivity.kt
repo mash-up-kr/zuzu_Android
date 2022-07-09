@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.zuzu_android.BuildConfig
-import com.example.zuzu_android.R
-import com.example.zuzu_android.databinding.ActivityWorldcupBinding
+import com.mashup.zuzu.BuildConfig
+import com.mashup.zuzu.R
 import com.mashup.zuzu.bridge.WebPreference
+import com.mashup.zuzu.databinding.ActivityWorldcupBinding
 
 class WorldcupActivity : AppCompatActivity() {
 

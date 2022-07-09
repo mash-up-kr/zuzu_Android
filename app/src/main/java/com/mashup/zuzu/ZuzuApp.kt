@@ -1,4 +1,4 @@
-package com.mashup.zuzu.ui.home
+package com.mashup.zuzu
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,10 +15,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import coil.compose.AsyncImagePainter.State.Empty.painter
-import com.example.zuzu_android.R
-import com.mashup.zuzu.rememberAppState
 import com.mashup.zuzu.ui.category.CategoryScreen
+import com.mashup.zuzu.ui.home.BottomScreen
+import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
+import com.mashup.zuzu.ui.home.ZuzuHomeScreen
 import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.theme.ProofTheme
 

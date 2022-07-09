@@ -9,7 +9,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.zuzu_android"
+        applicationId "com.mashup.zuzu"
         minSdk 30
         targetSdk 32
         versionCode 1
