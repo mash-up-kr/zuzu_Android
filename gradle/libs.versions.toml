@@ -20,6 +20,7 @@ constraintlayout = "2.1.4"
 accompanist = "0.24.13-rc"
 util = "1.1.1"
 icon = "1.1.1"
+timber = "5.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
@@ -58,6 +59,8 @@ hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-p
 
 io-coil-kt = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil"}
 coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
+
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber"}
 
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]

@@ -89,6 +89,9 @@ dependencies {
     //accompanist
     implementation(libs.bundles.accompanist)
 
+    //timber
+    implementation(libs.timber)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test)
     androidTestImplementation(libs.androidx.test.espresso)
