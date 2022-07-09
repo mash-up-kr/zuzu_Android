@@ -1,7 +1,9 @@
 package com.mashup.zuzu
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
@@ -15,8 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.zuzu_android.R
-import com.mashup.zuzu.ui.home.BottomScreen
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_WORLD_CUP
+import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_DETAIL
+import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_WRITE
+import com.mashup.zuzu.ui.DetailScreen
 import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
+import com.mashup.zuzu.ui.review.ReviewWriteScreen
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
@@ -26,6 +34,7 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 @Composable
 fun ZuzuApp() {
     val zuzuAppState = rememberAppState()
+
     Scaffold(
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
@@ -36,7 +45,7 @@ fun ZuzuApp() {
                     .height(48.dp),
                 shape = CircleShape,
                 onClick = {
-                    zuzuAppState.navigateToBottomBarRoute(BottomScreen.WorldCup.route)
+                    zuzuAppState.navigateToBottomBarRoute(BOTTOM_SCREEN_WORLD_CUP)
                 },
                 backgroundColor = Color.White
             ) {
@@ -56,21 +65,33 @@ fun ZuzuApp() {
                     onBottomTabsClick = { route ->
                         zuzuAppState.navigateToBottomBarRoute(route)
                     },
-                    bottomNavigationItems = zuzuAppState.bottomBarTabs
+                    bottomNavigationItems = zuzuAppState.bottomBarRoutes
                 )
         }
     ) { paddingValues ->
         NavHost(
             modifier = Modifier.padding(paddingValues),
             navController = zuzuAppState.navController,
-            startDestination = BottomScreen.Navigation.route
+            startDestination = REVIEW_DETAIL
         ) {
-            composable(BottomScreen.Navigation.route) {
+            composable(BOTTOM_SCREEN_NAVIGATION) {
 //                 ZuzuHomeScreen()
             }
-            composable(BottomScreen.User.route) {
+
+            composable(BOTTOM_SCREEN_USER) {
             }
-            composable(BottomScreen.WorldCup.route) {
+
+            composable(BOTTOM_SCREEN_WORLD_CUP) {
+            }
+
+            composable(REVIEW_DETAIL) {
+                DetailScreen(
+                    navigateToReviewWrite = { zuzuAppState.navigateReviewWriteScreen() }
+                )
+            }
+
+            composable(REVIEW_WRITE) {
+                ReviewWriteScreen()
             }
         }
     }

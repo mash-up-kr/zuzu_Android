@@ -11,6 +11,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.zuzu_android.R
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
@@ -18,22 +20,16 @@ import com.mashup.zuzu.ui.theme.ProofTheme
  * @Time 5:08 오후
  */
 
-sealed class BottomScreen(val route: String) {
-    object Navigation : BottomScreen("Navigation")
-    object User : BottomScreen("User")
-    object WorldCup : BottomScreen("WorldCup")
-}
-
 val bottomNavigationItems = listOf(
-    BottomScreen.Navigation,
-    BottomScreen.User
+    BOTTOM_SCREEN_NAVIGATION,
+    BOTTOM_SCREEN_USER
 )
 
 @Composable
 fun ZuzuBottomNavigationBar(
     currentRoute: String?,
     onBottomTabsClick: (String) -> Unit,
-    bottomNavigationItems: List<BottomScreen>
+    bottomNavigationItems: List<String>
 ) {
     BottomNavigation(
         modifier = Modifier
@@ -43,17 +39,17 @@ fun ZuzuBottomNavigationBar(
             .height(52.dp),
         backgroundColor = LightGray
     ) {
-        bottomNavigationItems.forEach { screen ->
+        bottomNavigationItems.forEach { route ->
             BottomNavigationItem(
                 icon = {
-                    when (screen.route) {
-                        "Navigation" -> {
+                    when (route) {
+                        "navigation" -> {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_compass),
                                 contentDescription = null
                             )
                         }
-                        "User" -> {
+                        "user" -> {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_user),
                                 contentDescription = null
@@ -61,10 +57,10 @@ fun ZuzuBottomNavigationBar(
                         }
                     }
                 },
-                selected = currentRoute == screen.route, // 선택에 따라서 색상이 변경됩니다.
+                selected = currentRoute == route, // 선택에 따라서 색상이 변경됩니다.
                 alwaysShowLabel = false,
                 onClick = {
-                    onBottomTabsClick(screen.route)
+                    onBottomTabsClick(route)
                 }
             )
         }

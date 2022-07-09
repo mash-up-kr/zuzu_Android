@@ -13,7 +13,7 @@ import com.example.zuzu_android.R
 val pretended = FontFamily(
     Font(R.font.pretendard_bold, FontWeight.Bold),
     Font(R.font.pretendard_medium, FontWeight.Normal),
-    Font(R.font.pretendard_thin, FontWeight.Light)
+    Font(R.font.pretendard_light, FontWeight.Light)
 )
 
 val proofTypography = ProofTypography(
