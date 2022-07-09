@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.review
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -12,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.zuzu_android.R
+import com.mashup.zuzu.ui.theme.ProofTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -33,15 +35,13 @@ fun ReviewWriteScreen() {
                 Text(
                     text = stringResource(R.string.review_cancel_title),
                     style = TextStyle(
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
                     )
                 )
 
                 Text(
                     text = stringResource(R.string.review_cancel_content),
-                    style = TextStyle(
-                        fontSize = 14.sp
-                    ),
+                    style = ProofTheme.typography.bodyL,
                     modifier = Modifier.padding(top = 12.dp)
                 )
 
