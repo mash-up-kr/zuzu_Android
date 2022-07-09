@@ -37,6 +37,9 @@ android {
     buildFeatures {
         compose true
     }
+    dataBinding {
+        enabled true
+    }
     composeOptions {
         kotlinCompilerExtensionVersion '1.2.0-rc02'
     }
@@ -49,6 +52,9 @@ android {
 }
 
 dependencies {
+
+    implementation project(':bridge')
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
 
@@ -58,6 +64,11 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.navigation)
+
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.android.material)
+
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.testManifest)
     androidTestImplementation(libs.androidx.compose.ui.test)
@@ -66,6 +77,9 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.compiler)
     kapt(libs.hilt.compiler)
+
+    // coroutine
+    implementation(libs.coroutine)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test)
