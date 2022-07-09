@@ -10,7 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mashup.zuzu.ui.theme.LightGray
+import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/03
@@ -30,7 +30,6 @@ val categoryList = listOf(
     Category(imageText = "\uD83C\uDF78", title = "칵테일"),
 )
 
-
 @Composable
 fun CategoryItems(
     modifier: Modifier,
@@ -43,7 +42,7 @@ fun CategoryItems(
         items(categoryList) { category ->
             CategoryCard(
                 modifier = Modifier.width(52.dp).height(52.dp)
-                    .background(color = LightGray, shape = RoundedCornerShape(8.dp)),
+                    .background(color = ProofTheme.color.gray100, shape = RoundedCornerShape(8.dp)),
                 category = category, onCategoryClick = onCategoryClick
             )
         }

@@ -16,10 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mashup.zuzu.ui.theme.Black
-import com.mashup.zuzu.ui.theme.LightGray
-import com.mashup.zuzu.ui.theme.Purple100
-import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
+import com.mashup.zuzu.ui.theme.*
 
 /**
  * @Created by 김현국 2022/07/05
@@ -40,7 +37,7 @@ fun RoundedButton(
         )
             .border(
                 width = 1.dp,
-                color = Purple100, // 테두리 색깔
+                color = ProofTheme.color.primary100, // 테두리 색깔
                 shape = RoundedCornerShape(8.dp)
             ),
         contentAlignment = Alignment.Center
@@ -49,7 +46,7 @@ fun RoundedButton(
             modifier = Modifier.padding(start = 6.dp, end = 6.dp, top = 4.dp, bottom = 4.dp),
             text = text,
             fontSize = fontSize,
-            color = LightGray,
+            color = ProofTheme.color.primary100,
             textAlign = TextAlign.Center
         )
     }
@@ -58,8 +55,7 @@ fun RoundedButton(
 @Preview
 @Composable
 fun PreviewRoundedButton() {
-    ZuzuAndroidTheme {
+    ProofTheme {
         RoundedButton(modifier = Modifier.padding(top = 18.dp).width(140.dp).height(32.dp), fontSize = 16.sp, {}, "+ 내 술 저장고 추가")
-//
     }
 }

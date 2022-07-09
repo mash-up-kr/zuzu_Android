@@ -20,7 +20,7 @@ import com.example.zuzu_android.R
 import com.mashup.zuzu.rememberAppState
 import com.mashup.zuzu.ui.category.CategoryScreen
 import com.mashup.zuzu.ui.theme.Black
-import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
+import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/06/30
@@ -97,7 +97,7 @@ fun ZuzuApp() {
 @Preview
 @Composable
 fun PreviewZuzuApp() {
-    ZuzuAndroidTheme {
+    ProofTheme() {
         ZuzuApp()
     }
 }

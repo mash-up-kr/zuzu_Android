@@ -60,7 +60,7 @@ fun HomeMainTitle(
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             ),
-            color = White,
+            color = ProofTheme.color.white,
             text = "요즘 사람들은 \n어떤 술을 마실까?"
         )
         Image(
@@ -98,13 +98,13 @@ fun HomeSubTitle(
             text = boldTitle,
             fontSize = 18.sp,
             fontWeight = FontWeight.W700,
-            color = White
+            color = ProofTheme.color.white
         )
         Text(
             text = hintTitle,
             fontWeight = FontWeight.W500,
             fontSize = 14.sp,
-            color = GrayFontColor
+            color = ProofTheme.color.gray300
         )
     }
 }
@@ -143,7 +143,7 @@ fun ZuzuHomeScreen(
             onWineBoardClick = onWineBoardClick
         )
         Spacer(modifier = Modifier.fillMaxWidth().height(32.dp))
-        ColorSpacer(modifier = Modifier.fillMaxWidth().height(6.dp), color = WfBlack)
+        ColorSpacer(modifier = Modifier.fillMaxWidth().height(6.dp), color = ProofTheme.color.black)
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 32.dp),
             boldTitle = "무엇을 마실지 고민이라면?",
@@ -154,7 +154,7 @@ fun ZuzuHomeScreen(
             onCategoryClick = onCategoryClick
         )
         Spacer(modifier = Modifier.fillMaxWidth().height(32.dp))
-        ColorSpacer(modifier = Modifier.fillMaxWidth().height(6.dp), color = WfBlack)
+        ColorSpacer(modifier = Modifier.fillMaxWidth().height(6.dp), color = ProofTheme.color.black)
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 32.dp),
             boldTitle = "지금 가장 인기있는 술드컵",
@@ -179,7 +179,7 @@ fun ZuzuBottomNavigationBar(
                 RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp)
             )
             .height(52.dp),
-        backgroundColor = LightGray
+        backgroundColor = ProofTheme.color.black
     ) {
         bottomNavigationItems.forEach { screen ->
             BottomNavigationItem(
@@ -212,13 +212,13 @@ fun ZuzuBottomNavigationBar(
 @Preview(showBackground = true)
 @Composable
 fun PreviewZuzuHomeScreen() {
-    ZuzuAndroidTheme {
+    ProofTheme {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
         ) {
-            ZuzuHomeScreen(modifier = Modifier.background(color = Black), {}, {}, {})
+            ZuzuHomeScreen(modifier = Modifier.background(color = ProofTheme.color.black), {}, {}, {})
         }
     }
 }
@@ -226,7 +226,7 @@ fun PreviewZuzuHomeScreen() {
 @Preview
 @Composable
 fun PreviewZuzuNavigationBar() {
-    ZuzuAndroidTheme() {
+    ProofTheme() {
         ZuzuBottomNavigationBar(
             currentRoute = null,
             onBottomTabsClick = {},
@@ -235,10 +235,10 @@ fun PreviewZuzuNavigationBar() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun PreviewZuzuWineCategoryNavigationTitle() {
-    ZuzuAndroidTheme {
+    ProofTheme {
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 32.dp),
             boldTitle = "무엇을 마실지 고민이라면?",
@@ -247,10 +247,10 @@ fun PreviewZuzuWineCategoryNavigationTitle() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun PreviewZuzuWineCategoryItems() {
-    ZuzuAndroidTheme() {
+    ProofTheme() {
         CategoryItems(modifier = Modifier.fillMaxWidth(), onCategoryClick = {})
 //
     }
