@@ -61,8 +61,10 @@ dependencies {
     // compose
     implementation(libs.activity.compose)
     implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.ui.util)
     implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material.icon.extended)
     implementation(libs.androidx.navigation)
 
     implementation(libs.androidx.appcompat)
@@ -83,6 +85,9 @@ dependencies {
 
     // coroutine
     implementation(libs.coroutine)
+
+    //accompanist
+    implementation(libs.bundles.accompanist)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test)
