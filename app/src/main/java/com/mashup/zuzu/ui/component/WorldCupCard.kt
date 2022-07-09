@@ -12,10 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.zuzu_android.R
 import com.mashup.zuzu.ui.theme.*
 import java.text.NumberFormat
@@ -49,36 +47,33 @@ fun WorldCupCard(
 ) {
     Row(
         modifier = Modifier.height(127.dp).width(256.dp).clickable { onWorldCupItemClick(worldCupItem) }
-            .background(color = Gray38, shape = RoundedCornerShape(9.dp))
+            .background(color = ProofTheme.color.gray200, shape = RoundedCornerShape(9.dp))
             .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column() {
             Box(
-                modifier = Modifier.height(20.dp).width(29.dp).background(color = Purple300, shape = RoundedCornerShape(3.dp))
+                modifier = Modifier.height(20.dp).width(29.dp).background(color = ProofTheme.color.primary300, shape = RoundedCornerShape(3.dp))
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
                     text = "D-${worldCupItem.day}",
-                    fontWeight = FontWeight.W600,
-                    fontSize = 10.sp,
-                    color = White
+                    style = ProofTheme.typography.bodyXS,
+                    color = ProofTheme.color.gray300
                 )
             }
 
             Text(
                 modifier = Modifier.padding(top = 4.dp),
                 text = worldCupItem.title,
-                fontWeight = FontWeight.W700,
-                fontSize = 14.sp,
-                color = White
+                style = ProofTheme.typography.buttonL,
+                color = ProofTheme.color.white
             )
             Text(
-                modifier = Modifier.padding(top = 17.dp),
+                modifier = Modifier.padding(top = 9.dp),
                 text = "${NumberFormat.getNumberInstance(Locale.US).format(worldCupItem.participants)}명 참여중",
-                fontWeight = FontWeight.W500,
-                color = White,
-                fontSize = 10.sp
+                style = ProofTheme.typography.bodyXS,
+                color = ProofTheme.color.gray300
             )
         }
         Image(
@@ -93,7 +88,7 @@ fun WorldCupCard(
 @Preview(showBackground = true)
 @Composable
 fun PreviewWorldCupCard() {
-    ZuzuAndroidTheme {
+    ProofTheme() {
         WorldCupCard(worldCupItem = bestWorldCupList[0], {})
     }
 }

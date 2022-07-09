@@ -10,9 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mashup.zuzu.ui.theme.LightGray
-import com.mashup.zuzu.ui.theme.White
-import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
+import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/01
@@ -39,7 +37,7 @@ fun CategoryCard(
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 5.dp),
             text = category.title,
-            color = White
+            color = ProofTheme.color.white
         )
     }
 }
@@ -47,7 +45,7 @@ fun CategoryCard(
 @Preview(showBackground = true)
 @Composable
 fun PreviewCategoryCard() {
-    ZuzuAndroidTheme() {
-        CategoryCard(modifier = Modifier.width(52.dp).height(52.dp).background(color = LightGray, shape = RoundedCornerShape(8.dp)), category = categoryList[0], {})
+    ProofTheme() {
+        CategoryCard(modifier = Modifier.width(52.dp).height(52.dp).background(color = ProofTheme.color.gray100, shape = RoundedCornerShape(8.dp)), category = categoryList[0], {})
     }
 }

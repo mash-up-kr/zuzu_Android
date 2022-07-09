@@ -30,7 +30,7 @@ import com.mashup.zuzu.ui.theme.*
  * @Time 3:23 오후
  */
 
-val backgroundGradient = listOf(GradientWhite, GradientBlack)
+val backgroundGradient = listOf(Color(0x00E4E8F5), Color(0xFF788098))
 
 @Composable
 fun WineImageCard(
@@ -59,7 +59,7 @@ fun WineImageCard(
                     .align(Alignment.BottomCenter)
                     .padding(start = 24.dp, end = 24.dp, top = 39.dp, bottom = 20.dp)
             ) {
-                CompositionLocalProvider(LocalContentColor provides White) {
+                CompositionLocalProvider(LocalContentColor provides ProofTheme.color.white) {
                     Column(
                         modifier = Modifier.fillMaxHeight().fillMaxWidth(),
                         verticalArrangement = Arrangement.SpaceBetween
@@ -150,11 +150,11 @@ fun WineBoardCard(
                         fontWeight = FontWeight.W700,
                         fontSize = 10.sp,
                         textAlign = TextAlign.Center,
-                        color = White
+                        color = ProofTheme.color.white
                     )
                     Divider(
                         modifier = Modifier
-                            .background(White)
+                            .background(ProofTheme.color.white)
                             .height(7.dp)
                             .width(1.dp)
                             .align(Alignment.CenterVertically)
@@ -164,7 +164,7 @@ fun WineBoardCard(
                         text = "${wine.alc}%",
                         fontWeight = FontWeight.W400,
                         fontSize = 10.sp,
-                        color = White
+                        color = ProofTheme.color.white
                     )
                 }
             }
@@ -176,7 +176,7 @@ fun WineBoardCard(
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             fontSize = 14.sp,
-            color = White
+            color = ProofTheme.color.white
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -243,11 +243,11 @@ fun WineCardInHome(
                 text = wine.category,
                 fontWeight = FontWeight.W600,
                 fontSize = 12.sp,
-                color = Purple200
+                color = ProofTheme.color.primary200
             )
             Divider(
                 modifier = Modifier
-                    .background(White)
+                    .background(ProofTheme.color.white)
                     .height(7.dp)
                     .width(1.dp)
                     .align(Alignment.CenterVertically)
@@ -258,14 +258,14 @@ fun WineCardInHome(
                 fontWeight = FontWeight.W700,
                 fontSize = 10.sp,
                 textAlign = TextAlign.Center,
-                color = White
+                color = ProofTheme.color.white
             )
             Text(
                 modifier = Modifier.width(19.dp).height(12.dp),
                 text = "${wine.alc}%",
                 fontWeight = FontWeight.W400,
                 fontSize = 10.sp,
-                color = White
+                color = ProofTheme.color.white
             )
         }
         Text(
@@ -275,7 +275,7 @@ fun WineCardInHome(
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             fontSize = 16.sp,
-            color = White
+            color = ProofTheme.color.white
         )
         Row(
             modifier = Modifier.padding(top = 10.dp),
@@ -335,7 +335,7 @@ fun PagerWineCard(
                         .height(148.dp)
                         .align(Alignment.BottomCenter)
                         .background(
-                            color = White
+                            color = ProofTheme.color.white
                         )
                 ) {
                     Column(
@@ -359,11 +359,11 @@ fun PagerWineCard(
                                 fontWeight = FontWeight.W700,
                                 fontSize = 14.sp,
                                 textAlign = TextAlign.Center,
-                                color = Gray500Alpha50
+                                color = ProofTheme.color.gray500
                             )
                             Divider(
                                 modifier = Modifier
-                                    .background(White)
+                                    .background(ProofTheme.color.white)
                                     .height(10.dp)
                                     .width(1.dp)
                                     .align(Alignment.CenterVertically)
@@ -373,7 +373,7 @@ fun PagerWineCard(
                                 text = "${wine.alc}%",
                                 fontWeight = FontWeight.W400,
                                 fontSize = 14.sp,
-                                color = Gray500Alpha50
+                                color = ProofTheme.color.gray500
                             )
                         }
                         Spacer(
@@ -403,16 +403,15 @@ fun OverflowText(count: Int) {
     Text(
         text = "+$count",
         fontSize = 10.sp,
-        color = LightGray
+        color = ProofTheme.color.gray100
     )
 }
-
 
 @Composable
 fun WineTagCard(tagDescription: String) {
     Box(
         modifier = Modifier.background(
-            color = Gray500Alpha50, // 태그 배경
+            color = ProofTheme.color.gray500, // 태그 배경
             shape = RoundedCornerShape(8.dp)
         ).wrapContentWidth().height(22.dp),
         contentAlignment = Alignment.Center
@@ -421,7 +420,7 @@ fun WineTagCard(tagDescription: String) {
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 2.dp, bottom = 2.dp),
             text = tagDescription,
             fontSize = 11.sp,
-            color = LightGray,
+            color = ProofTheme.color.gray100,
             maxLines = 1,
             textAlign = TextAlign.Center
         )
@@ -431,7 +430,7 @@ fun WineTagCard(tagDescription: String) {
 @Preview
 @Composable
 fun PreviewWindImageCard() {
-    ZuzuAndroidTheme() {
+    ProofTheme() {
         WineImageCard(modifier = Modifier.height(412.dp).width(309.dp), wine = wines[0])
     }
 }
@@ -439,33 +438,30 @@ fun PreviewWindImageCard() {
 @Preview
 @Composable
 fun PreviewWineTagCard() {
-    ZuzuAndroidTheme() {
+    ProofTheme() {
         WineTagCard(tagDescription = "비오는 날")
-//
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewWindBoardCard() {
-    ZuzuAndroidTheme() {
+    ProofTheme() {
         WineBoardCard(modifier = Modifier.height(260.dp).width(220.dp), wine = wines[0], onWineBoardClick = {})
     }
 }
 @Preview(showBackground = true)
 @Composable
 fun PreviewPagerCard() {
-    ZuzuAndroidTheme() {
+    ProofTheme() {
         PagerWineCard(modifier = Modifier.width(282.dp).height(448.dp), wine = wines[0], onWineBoardClick = {})
-//
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewWineCard2() {
-    ZuzuAndroidTheme() {
+    ProofTheme() {
         WineCardInHome(modifier = Modifier.width(220.dp).height(260.dp), wine = wines[0], onWineBoardClick = {})
-//
     }
 }

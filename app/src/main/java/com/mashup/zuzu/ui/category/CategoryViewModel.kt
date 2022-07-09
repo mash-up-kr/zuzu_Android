@@ -1,6 +1,5 @@
 package com.mashup.zuzu.ui.category
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mashup.zuzu.data.model.Wine
@@ -33,8 +32,6 @@ class CategoryViewModel(
     }
 
     fun getWineList(category: String) {
-        val TAG: String = "로그"
-        Log.d(TAG, "CategoryViewModel - getWineList(category = $category) called")
         viewModelScope.launch {
             if (category == "전체") {
                 _wineList.value = CategoryUiState.Success(WineRepo.getWineData())

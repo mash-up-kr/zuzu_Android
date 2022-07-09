@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color.Companion.White
-import com.mashup.zuzu.ui.theme.ProofTheme
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
@@ -39,6 +38,7 @@ import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.ui.component.*
+import com.mashup.zuzu.ui.theme.ProofTheme
 import kotlin.math.absoluteValue
 
 /**
@@ -71,7 +71,7 @@ fun CategoryScreen(
                         onBackButtonClick()
                     },
                 imageVector = Icons.Outlined.ArrowBack,
-                tint = White,
+                tint = ProofTheme.color.white,
                 contentDescription = null
             )
 
@@ -104,7 +104,7 @@ fun CategoryScreen(
                                 .height(21.dp),
                             text = sortMenuItemText,
                             maxLines = 1,
-                            color = White,
+                            color = ProofTheme.color.white,
                             fontSize = 13.sp,
 
                         )
@@ -112,7 +112,7 @@ fun CategoryScreen(
                             imageVector = Icons.Outlined.ExpandMore,
                             contentDescription = null,
                             modifier = Modifier.width(16.dp).height(21.dp),
-                            tint = White
+                            tint = ProofTheme.color.white
                         )
                     }
 
@@ -193,7 +193,7 @@ fun CategoryScreen(
                             wines = wineState.wineList
                         )
                         Box(
-                            modifier= Modifier.fillMaxHeight().fillMaxWidth()
+                            modifier = Modifier.fillMaxHeight().fillMaxWidth()
                         ) {
                             RoundedButton(
                                 modifier = Modifier.align(Center)
@@ -284,9 +284,9 @@ fun CustomScrollableTabRow(
         tabWidthStateList
     }
     ScrollableTabRow(
-        backgroundColor = Black,
+        backgroundColor = ProofTheme.color.black,
         selectedTabIndex = selectedTabIndex,
-        contentColor = White,
+        contentColor = ProofTheme.color.white,
         edgePadding = 0.dp,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
@@ -294,7 +294,7 @@ fun CustomScrollableTabRow(
                     currentTabPosition = tabPositions[selectedTabIndex],
                     tabWidth = tabWidths[selectedTabIndex]
                 ),
-                color = Purple200
+                color = ProofTheme.color.primary200
             )
         }
     ) {
@@ -306,7 +306,7 @@ fun CustomScrollableTabRow(
                     if (selectedTabIndex == tabIndex) {
                         Text(
                             text = tab.title,
-                            color = Purple200,
+                            color = ProofTheme.color.primary200,
                             onTextLayout = { textLayoutResult ->
                                 tabWidths[tabIndex] =
                                     with(density) { textLayoutResult.size.width.toDp() }
@@ -379,26 +379,25 @@ fun CategoryWineItems(
 @Preview(showBackground = true)
 @Composable
 fun PreviewCategoryScreen() {
-    ZuzuAndroidTheme() {
+    ProofTheme() {
         CategoryScreen(
-            modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
+            modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = ProofTheme.color.black),
             category = "전부",
             onBackButtonClick = {},
             onWineBoardClick = {},
             categoryViewModel = CategoryViewModel("전부")
-        ) //
+        )
     }
 }
 
 @Preview(showBackground = false)
 @Composable
 fun PreviewPagerCard() {
-    ZuzuAndroidTheme() {
+    ProofTheme() {
         HorizontalPagerWithOffsetTransition(
             onWineBoardClick = {},
             modifier = Modifier.fillMaxWidth().fillMaxHeight(),
             wines = wines
         )
-//
     }
 }
