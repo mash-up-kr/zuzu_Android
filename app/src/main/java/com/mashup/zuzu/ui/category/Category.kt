@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.Color.Companion.White
+import com.mashup.zuzu.ui.theme.ProofTheme
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
@@ -37,10 +39,6 @@ import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.ui.component.*
-import com.mashup.zuzu.ui.theme.Black
-import com.mashup.zuzu.ui.theme.Purple200
-import com.mashup.zuzu.ui.theme.White
-import com.mashup.zuzu.ui.theme.ZuzuAndroidTheme
 import kotlin.math.absoluteValue
 
 /**
