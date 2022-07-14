@@ -2,6 +2,7 @@ package com.mashup.zuzu.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,23 @@ import com.mashup.zuzu.ui.theme.ProofTheme
  * @Time 3:16 오후
  */
 
+@Composable
+fun Button(
+    modifier: Modifier,
+    text: String,
+    onButtonClick: () -> Unit
+) {
+    Box(
+        modifier = modifier.background(color = ProofTheme.color.primary300, shape = RoundedCornerShape(8.dp)).clickable { onButtonClick() }
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = text,
+            style = ProofTheme.typography.buttonM,
+            color = ProofTheme.color.white
+        )
+    }
+}
 @Composable
 fun RoundedButton(
     modifier: Modifier,
@@ -58,5 +76,15 @@ fun RoundedButton(
 fun PreviewRoundedButton() {
     ProofTheme {
         RoundedButton(modifier = Modifier.padding(top = 18.dp).width(140.dp).height(32.dp), fontSize = 16.sp, {}, "+ 내 술 저장고 추가")
+    }
+}
+
+@Preview
+@Composable
+fun PreviewButton() {
+    ProofTheme {
+        Button(modifier = Modifier.width(115.dp).height(44.dp), text = "술추천 보기") {
+//
+        }
     }
 }
