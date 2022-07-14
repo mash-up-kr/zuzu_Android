@@ -10,25 +10,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mashup.zuzu.ui.category.Category
+import com.mashup.zuzu.ui.category.categoryList
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
- * @Created by 김현국 2022/07/03
+ * @Creatd by 김현국 2022/07/03
  * @Time 6:05 오후
  */
 
-data class Category(
-    val imageText: String,
-    val title: String
-)
 
-val categoryList = listOf(
-    Category(imageText = "\uD83C\uDF7C", title = "전체"),
-    Category(imageText = "\uD83C\uDF7A", title = "맥주"),
-    Category(imageText = "\uD83E\uDD43", title = "위스키"),
-    Category(imageText = "\uD83E\uDD43", title = "와인"),
-    Category(imageText = "\uD83C\uDF78", title = "칵테일"),
-)
 
 @Composable
 fun CategoryItems(
@@ -42,7 +33,7 @@ fun CategoryItems(
         items(categoryList) { category ->
             CategoryCard(
                 modifier = Modifier.width(52.dp).height(52.dp)
-                    .background(color = ProofTheme.color.gray100, shape = RoundedCornerShape(8.dp)),
+                    .background(color = ProofTheme.color.gray500, shape = RoundedCornerShape(16.dp)),
                 category = category, onCategoryClick = onCategoryClick
             )
         }

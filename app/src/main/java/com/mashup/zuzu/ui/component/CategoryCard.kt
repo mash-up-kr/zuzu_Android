@@ -10,6 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mashup.zuzu.ui.category.Category
+import com.mashup.zuzu.ui.category.categoryList
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
