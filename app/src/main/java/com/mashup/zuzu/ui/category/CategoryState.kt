@@ -1,6 +1,5 @@
 package com.mashup.zuzu.ui.category
 
-import android.util.Log
 import androidx.compose.runtime.*
 
 /**
@@ -23,16 +22,9 @@ class CategoryState(
     var viewMode by mutableStateOf(initViewMode)
 
     fun updateSelectedTabIndex(index: Int) {
-        Log.d("", "CategoryState - updateSelectedTabIndex($index) called")
         selectedTabIndex = index
     }
 
-    fun updateExpanded() {
-        expanded = !expanded
-    }
-    fun updateSortMenuItemText(text: String) {
-        sortMenuItemText = text
-    }
     fun changeViewMode() {
         viewMode = !viewMode
     }
