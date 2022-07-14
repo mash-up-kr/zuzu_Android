@@ -106,4 +106,5 @@ object WineRepo {
     fun getWineData(): List<Wine> = wines
     fun getWineData(wineId: Long) = wines.find { it.id == wineId }
     fun getWineDataWithCategory(category: String) = wines.filter { it.category == category }
+    fun getRecommendWine() = wines[0]
 }
