@@ -20,6 +20,14 @@ val Gray500 = Color(0xFF383A4D)
 val Gray600 = Color(0xFF2A2C3C)
 val Black = Color(0xFF1C1C26)
 
+// FUNCTIONAL
+val Green100 = Color(0xFFE6F5C0)
+val Green200 = Color(0xFFBAE348)
+val Green300 = Color(0xFF96B602)
+val Orange100 = Color(0xFFFFD9CF)
+val Orange200 = Color(0xFFFF9B81)
+val Orange300 = Color(0xFFEF562D)
+
 @Stable
 class Colors(
     primary50: Color,
@@ -37,7 +45,14 @@ class Colors(
     gray500: Color,
     gray600: Color,
     black: Color,
-    isLight: Boolean
+    isLight: Boolean,
+    green100: Color,
+    green200: Color,
+    green300: Color,
+    orange100: Color,
+    orange200: Color,
+    orange300: Color,
+
 ) {
     var primary50 by mutableStateOf(primary50, structuralEqualityPolicy())
         internal set
@@ -71,6 +86,18 @@ class Colors(
         internal set
     var isLight by mutableStateOf(isLight, structuralEqualityPolicy())
         internal set
+    var green100 by mutableStateOf(green100, structuralEqualityPolicy())
+        internal set
+    var green200 by mutableStateOf(green200, structuralEqualityPolicy())
+        internal set
+    var green300 by mutableStateOf(green300, structuralEqualityPolicy())
+        internal set
+    var orange100 by mutableStateOf(orange100, structuralEqualityPolicy())
+        internal set
+    var orange200 by mutableStateOf(orange200, structuralEqualityPolicy())
+        internal set
+    var orange300 by mutableStateOf(orange300, structuralEqualityPolicy())
+        internal set
 
     /**
      * Returns a copy of this Colors, optionally overriding some of the values.
@@ -91,7 +118,13 @@ class Colors(
         gray500: Color = this.gray500,
         gray600: Color = this.gray600,
         black: Color = this.black,
-        isLight: Boolean = this.isLight
+        isLight: Boolean = this.isLight,
+        green100: Color = this.green100,
+        green200: Color = this.green200,
+        green300: Color = this.green300,
+        orange100: Color = this.orange100,
+        orange200: Color = this.orange200,
+        orange300: Color = this.orange300
     ): Colors = Colors(
         primary50,
         primary100,
@@ -108,14 +141,19 @@ class Colors(
         gray500,
         gray600,
         black,
-        isLight
+        isLight,
+        green100,
+        green200,
+        green300,
+        orange100,
+        orange200,
+        orange300
     )
 
     override fun toString(): String {
         return "Colors()"
     }
 }
-
 
 fun lightColors(
     primary50: Color = Primary50,
@@ -132,7 +170,13 @@ fun lightColors(
     gray400: Color = Gray400,
     gray500: Color = Gray500,
     gray600: Color = Gray600,
-    black: Color = Black
+    black: Color = Black,
+    green100: Color = Green100,
+    green200: Color = Green200,
+    green300: Color = Green300,
+    orange100: Color = Orange100,
+    orange200: Color = Orange200,
+    orange300: Color = Orange300
 ): Colors = Colors(
     primary50,
     primary100,
@@ -149,7 +193,13 @@ fun lightColors(
     gray500,
     gray600,
     black,
-    isLight = true
+    isLight = true,
+    green100,
+    green200,
+    green300,
+    orange100,
+    orange200,
+    orange300
 )
 
 fun darkColors(
@@ -167,7 +217,13 @@ fun darkColors(
     gray400: Color = Gray400,
     gray500: Color = Gray500,
     gray600: Color = Gray600,
-    black: Color = Black
+    black: Color = Black,
+    green100: Color = Green100,
+    green200: Color = Green200,
+    green300: Color = Green300,
+    orange100: Color = Orange100,
+    orange200: Color = Orange200,
+    orange300: Color = Orange300
 ): Colors = Colors(
     primary50,
     primary100,
@@ -184,7 +240,13 @@ fun darkColors(
     gray500,
     gray600,
     black,
-    isLight = false
+    isLight = false,
+    green100,
+    green200,
+    green300,
+    orange100,
+    orange200,
+    orange300
 )
 
 val LocalProofColor = staticCompositionLocalOf {
