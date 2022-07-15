@@ -24,14 +24,15 @@ import com.mashup.zuzu.ui.DetailScreen
 import com.mashup.zuzu.ui.category.CategoryScreen
 import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
 import com.mashup.zuzu.ui.home.ZuzuHomeScreen
-import com.mashup.zuzu.ui.review.ReviewWriteScreen
 import com.mashup.zuzu.ui.theme.Black
+import com.mashup.zuzu.ui.review.ReviewWriteRoute
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/06/30
  * @Time 4:41 오후
  */
+//TODO: Naming 변경 필요함
 @Composable
 fun ZuzuApp() {
     val zuzuAppState = rememberAppState()
@@ -98,8 +99,9 @@ fun ZuzuApp() {
             }
 
             composable(REVIEW_WRITE) {
-                ReviewWriteScreen()
+                ReviewWriteRoute()
             }
+
             composable(ZuzuAppState.BOTTOM_SCREEN_CATEGORY + "/{category}") {
                 CategoryScreen(
                     modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
@@ -111,6 +113,7 @@ fun ZuzuApp() {
         }
     }
 }
+
 
 @Preview
 @Composable
