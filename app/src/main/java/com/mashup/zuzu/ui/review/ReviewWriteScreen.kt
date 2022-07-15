@@ -1,6 +1,5 @@
 package com.mashup.zuzu.ui.review
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -21,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mashup.zuzu.data.model.OptionWithEmoji
-import com.mashup.zuzu.data.model.SelectOption
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 @Composable
@@ -46,6 +44,7 @@ fun ReviewWriteScreen(
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
         sheetShape = RoundedCornerShape(24.dp, 24.dp),
+        backgroundColor = ProofTheme.color.black,
         sheetContent = {
             Column(
                 modifier = Modifier
@@ -106,6 +105,7 @@ fun ReviewWriteScreen(
                 Text(
                     text = "리뷰 쓰기",
                     style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white,
                     modifier = Modifier.weight(1f)
                 )
                 IconButton(
@@ -194,7 +194,8 @@ fun Topic(
 
         Text(
             text = topic, style = ProofTheme.typography.headingL,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = ProofTheme.color.white,
         )
 
         IconButton(
