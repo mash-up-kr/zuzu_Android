@@ -43,6 +43,8 @@ hilt-compiler = "androidx.hilt:hilt-compiler:1.0.0"
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 hilt-navigation-compose = "androidx.hilt:hilt-navigation-compose:1.0.0"
 
+timber = "com.jakewharton.timber:timber:4.7.1"
+
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]
 
