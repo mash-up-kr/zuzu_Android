@@ -128,18 +128,6 @@ fun ReviewWriteScreen(
                 .fillMaxWidth()
                 .fillMaxHeight()
         ) {
-//            Button(onClick = {
-//                coroutineScope.launch {
-//                    if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
-//                        bottomSheetScaffoldState.bottomSheetState.expand()
-//                    } else {
-//                        bottomSheetScaffoldState.bottomSheetState.collapse()
-//                    }
-//                }
-//            }) {
-//                Text(text = "test")
-//            }
-
             Box(
                 modifier = Modifier.padding(
                     start = 24.dp,
@@ -229,7 +217,10 @@ fun OptionWithFourString(
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier.height(52.dp)
             ) {
-                //TODO: Emoji 추가
+                if (!option.emoji.isNullOrEmpty()) {
+                    //TODO: 이모지 불러오기 필요
+                }
+
                 Text(
                     text = option.content,
                     style = ProofTheme.typography.headingXS,
