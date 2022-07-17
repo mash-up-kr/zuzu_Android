@@ -5,6 +5,7 @@ import com.mashup.zuzu.data.model.ReviewOption
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+//TODO: String Resource 주입받아서 사용할 수 있도록 변경 필요함
 class ReviewWriteRepository constructor() {
     fun getSelectionWithTopic(pageNum: Int): Flow<ReviewOption> {
         val a = when (pageNum) {
