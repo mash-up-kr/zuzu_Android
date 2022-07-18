@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,8 +32,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.data.model.Wine2
+import com.mashup.zuzu.data.model.WineRepo
 import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.theme.ProofTheme
@@ -618,6 +624,62 @@ fun BlurImage(content: @Composable () -> Unit) {
                 content()
             }
         }
+    }
+}
+
+@Composable
+fun WineCellarCard(
+    modifier: Modifier,
+    wine: Wine2,
+    onWineClick: (Wine2) -> Unit
+) {
+    Column(
+        modifier = modifier.clickable {
+            onWineClick(wine)
+        }
+    ) {
+        Card() {
+            Box(
+                modifier = Modifier.weight(1f)
+                    .aspectRatio(1f).background(color = ProofTheme.color.black)
+            ) {
+                AsyncImage(
+                    modifier = Modifier.clip(CircleShape),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(wine.imageUrl).build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+                Box(
+                    modifier = Modifier.width(22.dp).height(22.dp).background(color = ProofTheme.color.primary300)
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = wine.name,
+                style = ProofTheme.typography.bodyS600,
+                color = ProofTheme.color.white,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            WineCategoryWithAlc(modifier = Modifier.padding(top = 4.dp), wine = wines[0])
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewWineCellarCard() {
+    ProofTheme {
+        WineCellarCard(
+            modifier = Modifier.width(88.dp).height(156.dp).background(color = ProofTheme.color.black),
+            wine = WineRepo.getWine2Data().get(0),
+            onWineClick = {}
+        )
     }
 }
 
