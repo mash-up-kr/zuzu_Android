@@ -1,7 +1,6 @@
 package com.mashup.zuzu
 
 import android.app.Application
-import com.example.zuzu_android.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
