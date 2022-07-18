@@ -13,12 +13,12 @@ data class BestWorldCup(
 )
 
 val bestWorldCupList = listOf(
-    BestWorldCup(day = "2022.08.15", title = "비오는 날 \n마시고 싶은 술은?", 14444, ""),
-    BestWorldCup(day = "2022.08.15", title = "더운 날 \n마시고 싶은 술은?", 14444, ""),
-    BestWorldCup(day = "2022.08.15", title = "밤에 \n마시고 싶은 술은?", 14444, ""),
-    BestWorldCup(day = "2022.08.15", title = "새벽에 \n마시고 싶은 술은?", 14444, ""),
-    BestWorldCup(day = "2022.08.15", title = "적적한 날 \n마시고 싶은 술은?", 14444, ""),
-    BestWorldCup(day = "2022.08.15", title = "기쁜 날 \n마시고 싶은 술은?", 14444, "")
+    BestWorldCup(day = "2022.08.15", title = "비오는 날 \n마시고 싶은 술은?", 14444, "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg"),
+    BestWorldCup(day = "2022.08.15", title = "더운 날 \n마시고 싶은 술은?", 14444, "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg"),
+    BestWorldCup(day = "2022.08.15", title = "밤에 \n마시고 싶은 술은?", 14444, "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg"),
+    BestWorldCup(day = "2022.08.15", title = "새벽에 \n마시고 싶은 술은?", 14444, "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg"),
+    BestWorldCup(day = "2022.08.15", title = "적적한 날 \n마시고 싶은 술은?", 14444, "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg"),
+    BestWorldCup(day = "2022.08.15", title = "기쁜 날 \n마시고 싶은 술은?", 14444, "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg")
 )
 
 object BestWorldCupRepo {
