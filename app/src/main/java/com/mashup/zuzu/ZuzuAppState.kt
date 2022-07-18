@@ -20,10 +20,11 @@ class ZuzuAppState(
     val navController: NavHostController
 ) {
 
-    val bottomBarTabs = bottomNavigationItems
-    private val bottomBarRoutes = bottomBarTabs.map { it.route }
+    val bottomBarRoutes = bottomNavigationItems
 
-    val shouldShowBottomBar: Boolean @Composable get() = navController.currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes
+    val shouldShowBottomBar: Boolean
+        @Composable
+        get() = navController.currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes
 
     val currentRoute: String?
         get() = navController.currentDestination?.route
@@ -42,6 +43,24 @@ class ZuzuAppState(
 
     fun navigateBackStack() {
         navController.popBackStack()
+    }
+
+    fun navigateDetailScreen() {
+        navController.navigate(REVIEW_DETAIL)
+    }
+
+    fun navigateReviewWriteScreen() {
+        navController.navigate(REVIEW_WRITE)
+    }
+
+    companion object {
+        const val BOTTOM_SCREEN_NAVIGATION = "Navigation"
+        const val BOTTOM_SCREEN_USER = "User"
+        const val BOTTOM_SCREEN_WORLD_CUP = "WorldCup"
+        const val BOTTOM_SCREEN_CATEGORY = "Category"
+
+        const val REVIEW_DETAIL = "reviewDetail"
+        const val REVIEW_WRITE = "reviewWrite"
     }
 }
 

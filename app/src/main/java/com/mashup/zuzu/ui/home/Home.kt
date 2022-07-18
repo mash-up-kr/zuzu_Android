@@ -19,9 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mashup.zuzu.R
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_CATEGORY
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_WORLD_CUP
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.ui.category.Category
 import com.mashup.zuzu.ui.component.*
 import com.mashup.zuzu.ui.theme.ProofTheme
@@ -30,17 +33,11 @@ import com.mashup.zuzu.ui.theme.ProofTheme
  * @Created by 김현국 2022/06/30
  * @Time 5:08 오후
  */
-
-sealed class BottomScreen(val route: String) {
-    object Navigation : BottomScreen("Navigation")
-    object User : BottomScreen("User")
-    object WorldCup : BottomScreen("WorldCup")
-    object Category : BottomScreen("Category")
-}
-
 val bottomNavigationItems = listOf(
-    BottomScreen.Navigation,
-    BottomScreen.User
+    BOTTOM_SCREEN_NAVIGATION,
+    BOTTOM_SCREEN_USER,
+    BOTTOM_SCREEN_WORLD_CUP,
+    BOTTOM_SCREEN_CATEGORY
 )
 
 @Composable
@@ -91,9 +88,10 @@ fun HomeMainTitleItems(
     ) {
         itemsIndexed(wines) { index, wine ->
             WineCardInHome(
-                modifier = Modifier.width(224.dp),
+                modifier = Modifier.width(220.dp),
                 height = 260.dp,
-                wine = wines[index], onWineBoardClick = onWineBoardClick
+                wine = wines[index],
+                onWineBoardClick = onWineBoardClick
             )
         }
     }
@@ -203,12 +201,10 @@ fun ZuzuHomeScreen(
                 .height(6.dp),
             color = ProofTheme.color.black
         )
-        // 오늘의 추천 술
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 40.dp),
             boldTitle = "오늘의 추천 술"
         )
-
         when (recommendState) {
             is RecommendWineUiState.Success -> {
                 RecommendWineCard(
@@ -236,7 +232,6 @@ fun ZuzuHomeScreen(
             }
             is RecommendWineUiState.Error -> {}
         }
-
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -275,7 +270,7 @@ fun ZuzuHomeScreen(
 fun ZuzuBottomNavigationBar(
     currentRoute: String?,
     onBottomTabsClick: (String) -> Unit,
-    bottomNavigationItems: List<BottomScreen>
+    bottomNavigationItems: List<String>
 ) {
     BottomNavigation(
         modifier = Modifier
@@ -285,17 +280,17 @@ fun ZuzuBottomNavigationBar(
             .height(52.dp),
         backgroundColor = ProofTheme.color.black
     ) {
-        bottomNavigationItems.forEach { screen ->
+        bottomNavigationItems.forEach { route ->
             BottomNavigationItem(
                 icon = {
-                    when (screen.route) {
-                        "Navigation" -> {
+                    when (route) {
+                        "navigation" -> {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_compass),
                                 contentDescription = null
                             )
                         }
-                        "User" -> {
+                        "user" -> {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_user),
                                 contentDescription = null
@@ -303,11 +298,11 @@ fun ZuzuBottomNavigationBar(
                         }
                     }
                 },
-                selected = currentRoute == screen.route, // 선택에 따라서 색상이 변경됩니다.
+                selected = currentRoute == route, // 선택에 따라서 색상이 변경됩니다.
                 selectedContentColor = ProofTheme.color.white,
                 alwaysShowLabel = false,
                 onClick = {
-                    onBottomTabsClick(screen.route)
+                    onBottomTabsClick(route)
                 }
             )
         }
@@ -352,7 +347,7 @@ fun PreviewZuzuHomeScreen() {
                 modifier = Modifier.background(color = ProofTheme.color.black),
                 {},
                 {},
-                {},
+                {}
             )
         }
     }
