@@ -15,22 +15,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mashup.zuzu.R
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_WORLD_CUP
+import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_DETAIL
+import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_WRITE
+import com.mashup.zuzu.ui.DetailScreen
 import com.mashup.zuzu.ui.category.CategoryScreen
-import com.mashup.zuzu.ui.home.BottomScreen
 import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
 import com.mashup.zuzu.ui.home.ZuzuHomeScreen
 import com.mashup.zuzu.ui.theme.Black
+import com.mashup.zuzu.ui.review.ReviewWriteRoute
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/06/30
  * @Time 4:41 오후
  */
+//TODO: Naming 변경 필요함
 @Composable
 fun ZuzuApp() {
     val zuzuAppState = rememberAppState()
-    Scaffold(
 
+    Scaffold(
         floatingActionButtonPosition = FabPosition.End,
         isFloatingActionButtonDocked = false,
         floatingActionButton = {
@@ -39,7 +46,7 @@ fun ZuzuApp() {
                     modifier = Modifier.width(64.dp).height(64.dp),
                     shape = CircleShape,
                     onClick = {
-                        zuzuAppState.navigateToBottomBarRoute(BottomScreen.WorldCup.route)
+                        zuzuAppState.navigateToBottomBarRoute(BOTTOM_SCREEN_WORLD_CUP)
                     },
                     backgroundColor = Color.White
                 ) {
@@ -59,30 +66,43 @@ fun ZuzuApp() {
                     onBottomTabsClick = { route ->
                         zuzuAppState.navigateToBottomBarRoute(route)
                     },
-                    bottomNavigationItems = zuzuAppState.bottomBarTabs
+                    bottomNavigationItems = zuzuAppState.bottomBarRoutes
                 )
         }
     ) { paddingValues ->
         NavHost(
             modifier = Modifier.padding(paddingValues),
             navController = zuzuAppState.navController,
-            startDestination = BottomScreen.Navigation.route
+            startDestination = REVIEW_DETAIL
         ) {
-            composable(BottomScreen.Navigation.route) {
+            composable(ZuzuAppState.BOTTOM_SCREEN_NAVIGATION) {
                 ZuzuHomeScreen(
                     modifier = Modifier.background(color = Black),
                     onCategoryClick = { category ->
-                        zuzuAppState.navigateToBottomBarRoute(BottomScreen.Category.route + "/${category.title}")
+                        zuzuAppState.navigateToBottomBarRoute(ZuzuAppState.BOTTOM_SCREEN_CATEGORY + "/${category.title}")
                     },
                     onWineBoardClick = {},
                     onWorldCupItemClick = {}
                 )
             }
-            composable(BottomScreen.User.route) {
+
+            composable(BOTTOM_SCREEN_USER) {
             }
-            composable(BottomScreen.WorldCup.route) {
+
+            composable(BOTTOM_SCREEN_WORLD_CUP) {
             }
-            composable(BottomScreen.Category.route + "/{category}") {
+
+            composable(REVIEW_DETAIL) {
+                DetailScreen(
+                    navigateToReviewWrite = { zuzuAppState.navigateReviewWriteScreen() }
+                )
+            }
+
+            composable(REVIEW_WRITE) {
+                ReviewWriteRoute()
+            }
+
+            composable(ZuzuAppState.BOTTOM_SCREEN_CATEGORY + "/{category}") {
                 CategoryScreen(
                     modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
                     category = it.arguments!!.getString("category")!!, onBackButtonClick = {
@@ -93,6 +113,7 @@ fun ZuzuApp() {
         }
     }
 }
+
 
 @Preview
 @Composable

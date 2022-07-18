@@ -18,6 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mashup.zuzu.R
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_CATEGORY
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_WORLD_CUP
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.ui.component.*
@@ -27,17 +31,11 @@ import com.mashup.zuzu.ui.theme.ProofTheme
  * @Created by 김현국 2022/06/30
  * @Time 5:08 오후
  */
-
-sealed class BottomScreen(val route: String) {
-    object Navigation : BottomScreen("Navigation")
-    object User : BottomScreen("User")
-    object WorldCup : BottomScreen("WorldCup")
-    object Category : BottomScreen("Category")
-}
-
 val bottomNavigationItems = listOf(
-    BottomScreen.Navigation,
-    BottomScreen.User
+    BOTTOM_SCREEN_NAVIGATION,
+    BOTTOM_SCREEN_USER,
+    BOTTOM_SCREEN_WORLD_CUP,
+    BOTTOM_SCREEN_CATEGORY
 )
 
 @Composable
@@ -48,6 +46,7 @@ fun HomeLogo(modifier: Modifier) {
         modifier = modifier
     )
 }
+
 @Composable
 fun HomeMainTitle(
     modifier: Modifier,
@@ -66,8 +65,11 @@ fun HomeMainTitle(
         Image(
             painter = painterResource(id = R.drawable.img_wine_logo),
             contentDescription = null,
-            modifier = Modifier.clickable { onSuggestionClick() }
-                .align(Alignment.Bottom).width(36.dp).height(36.dp)
+            modifier = Modifier
+                .clickable { onSuggestionClick() }
+                .align(Alignment.Bottom)
+                .width(36.dp)
+                .height(36.dp)
         )
     }
 }
@@ -82,7 +84,13 @@ fun HomeMainTitleItems(
         horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         itemsIndexed(wines) { index, wine ->
-            WineCardInHome(modifier = Modifier.height(260.dp).width(220.dp), wine = wines[index], onWineBoardClick = onWineBoardClick)
+            WineCardInHome(
+                modifier = Modifier
+                    .height(260.dp)
+                    .width(220.dp),
+                wine = wines[index],
+                onWineBoardClick = onWineBoardClick
+            )
         }
     }
 }
@@ -124,6 +132,7 @@ fun HomeBestWorldCup(
         }
     }
 }
+
 @Composable
 fun ZuzuHomeScreen(
     modifier: Modifier,
@@ -137,31 +146,44 @@ fun ZuzuHomeScreen(
     ) {
         HomeLogo(modifier = Modifier.padding(top = 24.dp, start = 24.dp))
         HomeMainTitle(modifier = Modifier.padding(top = 31.dp, start = 24.dp), {})
-        Spacer(modifier = Modifier.fillMaxWidth().height(24.dp))
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(24.dp))
         HomeMainTitleItems(
             modifier = Modifier.padding(start = 24.dp),
             onWineBoardClick = onWineBoardClick
         )
-        Spacer(modifier = Modifier.fillMaxWidth().height(32.dp))
-        ColorSpacer(modifier = Modifier.fillMaxWidth().height(6.dp), color = ProofTheme.color.black)
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(32.dp))
+        ColorSpacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(6.dp), color = ProofTheme.color.black)
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 32.dp),
             boldTitle = "무엇을 마실지 고민이라면?",
             hintTitle = "주종별로 원하는 술을 탐색해보세요!"
         )
         CategoryItems(
-            modifier = Modifier.fillMaxWidth().padding(start = 24.dp, top = 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 24.dp, top = 24.dp),
             onCategoryClick = onCategoryClick
         )
-        Spacer(modifier = Modifier.fillMaxWidth().height(32.dp))
-        ColorSpacer(modifier = Modifier.fillMaxWidth().height(6.dp), color = ProofTheme.color.black)
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(32.dp))
+        ColorSpacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(6.dp), color = ProofTheme.color.black)
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 32.dp),
             boldTitle = "지금 가장 인기있는 술드컵",
             hintTitle = "지금 바로 확인해보세요!"
         )
         HomeBestWorldCup(
-            modifier = Modifier.padding(top = 24.dp, start = 24.dp, bottom = 56.dp), bestWorldCupList = bestWorldCupList,
+            modifier = Modifier.padding(top = 24.dp, start = 24.dp, bottom = 56.dp),
+            bestWorldCupList = bestWorldCupList,
             onWorldCupItemClick = onWorldCupItemClick
         )
     }
@@ -171,7 +193,7 @@ fun ZuzuHomeScreen(
 fun ZuzuBottomNavigationBar(
     currentRoute: String?,
     onBottomTabsClick: (String) -> Unit,
-    bottomNavigationItems: List<BottomScreen>
+    bottomNavigationItems: List<String>
 ) {
     BottomNavigation(
         modifier = Modifier
@@ -181,17 +203,17 @@ fun ZuzuBottomNavigationBar(
             .height(52.dp),
         backgroundColor = ProofTheme.color.black
     ) {
-        bottomNavigationItems.forEach { screen ->
+        bottomNavigationItems.forEach { route ->
             BottomNavigationItem(
                 icon = {
-                    when (screen.route) {
-                        "Navigation" -> {
+                    when (route) {
+                        "navigation" -> {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_compass),
                                 contentDescription = null
                             )
                         }
-                        "User" -> {
+                        "user" -> {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_user),
                                 contentDescription = null
@@ -199,10 +221,10 @@ fun ZuzuBottomNavigationBar(
                         }
                     }
                 },
-                selected = currentRoute == screen.route, // 선택에 따라서 색상이 변경됩니다.
+                selected = currentRoute == route, // 선택에 따라서 색상이 변경됩니다.
                 alwaysShowLabel = false,
                 onClick = {
-                    onBottomTabsClick(screen.route)
+                    onBottomTabsClick(route)
                 }
             )
         }
@@ -218,7 +240,11 @@ fun PreviewZuzuHomeScreen() {
                 .fillMaxWidth()
                 .fillMaxHeight()
         ) {
-            ZuzuHomeScreen(modifier = Modifier.background(color = ProofTheme.color.black), {}, {}, {})
+            ZuzuHomeScreen(
+                modifier = Modifier.background(color = ProofTheme.color.black),
+                {},
+                {},
+                {})
         }
     }
 }
