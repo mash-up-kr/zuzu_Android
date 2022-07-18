@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
 import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
 import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_WORLD_CUP
 import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_DETAIL
@@ -75,7 +76,7 @@ fun ZuzuApp() {
             navController = zuzuAppState.navController,
             startDestination = REVIEW_DETAIL
         ) {
-            composable(ZuzuAppState.BOTTOM_SCREEN_NAVIGATION) {
+            composable(BOTTOM_SCREEN_NAVIGATION) {
                 ZuzuHomeScreen(
                     modifier = Modifier.background(color = Black),
                     onCategoryClick = { category ->
