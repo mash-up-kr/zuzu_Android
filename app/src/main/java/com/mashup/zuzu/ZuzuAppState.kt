@@ -31,11 +31,12 @@ class ZuzuAppState(
     fun navigateToBottomBarRoute(route: String) {
         if (route != currentRoute) {
             navController.navigate(route) {
-                launchSingleTop = true
-                restoreState = true
                 popUpTo(findStartDestination(graph = navController.graph).id) {
                     saveState = true
+                    inclusive = true
                 }
+                launchSingleTop = true
+                restoreState = true
             }
         }
     }

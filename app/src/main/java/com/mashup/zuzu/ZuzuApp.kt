@@ -15,12 +15,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mashup.zuzu.data.model.User
 import com.mashup.zuzu.ui.category.CategoryScreen
 import com.mashup.zuzu.ui.home.BottomScreen
 import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
 import com.mashup.zuzu.ui.home.ZuzuHomeScreen
 import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.ui.user.Setting
+import com.mashup.zuzu.ui.user.UserRoute
 
 /**
  * @Created by 김현국 2022/06/30
@@ -79,6 +82,12 @@ fun ZuzuApp() {
                 )
             }
             composable(BottomScreen.User.route) {
+                UserRoute(
+                    onSettingClick = { user ->
+                        zuzuAppState.navigateToBottomBarRoute(BottomScreen.Setting.route + "/$user")
+                    }
+
+                )
             }
             composable(BottomScreen.WorldCup.route) {
             }
@@ -88,6 +97,13 @@ fun ZuzuApp() {
                     category = it.arguments!!.getString("category")!!, onBackButtonClick = {
                         zuzuAppState.navigateBackStack()
                     }, onWineBoardClick = {}
+                )
+            }
+            composable(BottomScreen.Setting.route + "/{user}") {
+                Setting(
+                    onBackButtonClick = {
+                        zuzuAppState.navigateBackStack()
+                    }, user = it.arguments!!.get("user") as User
                 )
             }
         }
