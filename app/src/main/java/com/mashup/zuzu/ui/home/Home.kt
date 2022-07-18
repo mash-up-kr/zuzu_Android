@@ -36,6 +36,7 @@ sealed class BottomScreen(val route: String) {
     object User : BottomScreen("User")
     object WorldCup : BottomScreen("WorldCup")
     object Category : BottomScreen("Category")
+    object Setting : BottomScreen("Setting")
 }
 
 val bottomNavigationItems = listOf(
@@ -334,6 +335,8 @@ fun RecommendImage(
                 .width(115.dp)
                 .height(44.dp)
                 .align(Alignment.BottomCenter),
+            backgroundColor = ProofTheme.color.primary300,
+            textColor = ProofTheme.color.white,
             text = "추천술 보기", onButtonClick = onButtonClick
         )
     }
