@@ -19,10 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mashup.zuzu.R
-import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_CATEGORY
 import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
 import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
-import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_WORLD_CUP
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.ui.category.Category
@@ -36,8 +34,6 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 val bottomNavigationItems = listOf(
     BOTTOM_SCREEN_NAVIGATION,
     BOTTOM_SCREEN_USER,
-    BOTTOM_SCREEN_WORLD_CUP,
-    BOTTOM_SCREEN_CATEGORY
 )
 
 @Composable
