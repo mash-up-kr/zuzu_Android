@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mashup.zuzu.R
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.OptionWithEmoji
 import com.mashup.zuzu.ui.theme.ProofTheme
 
@@ -29,14 +29,18 @@ fun ReviewWriteRoute(
     val uiState by viewModel.uiState.collectAsState()
 
     ReviewWriteScreen(
-        uiState = uiState
+        uiState = uiState,
+        navigatePreviousWritePage = viewModel::navigatePreviousWritePage,
+        navigateTimeSelectPage = viewModel::navigateTimeSelectPage
     )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ReviewWriteScreen(
-    uiState: ReviewWriteType
+    uiState: ReviewWriteType,
+    navigatePreviousWritePage: () -> Unit,
+    navigateTimeSelectPage: (String) -> Unit
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -138,12 +142,12 @@ fun ReviewWriteScreen(
             ) {
                 //TODO: 술 이미지 추가해야함
 
-                Topic(topic = uiState.topic, totalNum = uiState.page, pageNum = uiState.page)
+                Topic(topic = uiState.topic, totalNum = uiState.page, pageNum = uiState.page, onClickBackButton = navigatePreviousWritePage)
             }
 
             when (uiState) {
                 is ReviewWriteType.ReviewWriteWithFourString -> {
-                    OptionWithFourString(options = uiState.options)
+                    OptionWithFourString(options = uiState.options, onClickOption = navigateTimeSelectPage)
                 }
 
                 else -> {
@@ -158,44 +162,35 @@ fun ReviewWriteScreen(
 fun Topic(
     topic: String,
     totalNum: Int,
-    pageNum: Int
+    pageNum: Int,
+    onClickBackButton: () -> Unit
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceAround,
+    Box(
         modifier = Modifier.fillMaxWidth()
     ) {
-        IconButton(
-            onClick = { /*TODO*/ },
-            modifier = Modifier.padding(end = 20.dp)
-        ) {
-            if (pageNum > 0) {
-
-            } else {
-
+        if (pageNum > 0) {
+            IconButton(
+                onClick = onClickBackButton,
+                modifier = Modifier.padding(start = 24.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_pre_arrow_white),
+                    contentDescription = "close"
+                )
             }
-            Icon(
-                painter = painterResource(id = R.drawable.ic_close),
-                contentDescription = "close"
-            )
-
         }
 
-        Text(
-            text = topic, style = ProofTheme.typography.headingL,
-            textAlign = TextAlign.Center,
-            color = ProofTheme.color.white,
-        )
-
-        IconButton(
-            onClick = { /*TODO*/ },
-            modifier = Modifier.padding(end = 20.dp)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_close),
-                contentDescription = "close"
+            Text(
+                text = topic, style = ProofTheme.typography.headingL,
+                textAlign = TextAlign.Center,
+                color = ProofTheme.color.white,
             )
-
         }
+
     }
 
 
@@ -203,7 +198,8 @@ fun Topic(
 
 @Composable
 fun OptionWithFourString(
-    options: List<OptionWithEmoji>
+    options: List<OptionWithEmoji>,
+    onClickOption: (String) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -213,7 +209,9 @@ fun OptionWithFourString(
     ) {
         items(options) { option ->
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    onClickOption(option.content)
+                },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier.height(52.dp)
             ) {
