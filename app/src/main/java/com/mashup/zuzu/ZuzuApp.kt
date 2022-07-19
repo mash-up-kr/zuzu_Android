@@ -40,6 +40,7 @@ fun ZuzuApp() {
     Scaffold(
         floatingActionButtonPosition = FabPosition.End,
         isFloatingActionButtonDocked = false,
+        backgroundColor = ProofTheme.color.black,
         floatingActionButton = {
             if (zuzuAppState.shouldShowBottomBar)
                 FloatingActionButton(
