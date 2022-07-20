@@ -19,6 +19,7 @@ class ReviewWriteViewModel @Inject constructor(
 
     private val page: MutableStateFlow<Int> = MutableStateFlow(0)
 
+    //TODO: 이미지와 술이름만 있으면 되는데, Wine Model 사용이 필요할까?
     private val reviewWineState: StateFlow<Wine> =
         reviewWriteRepository.getReviewWineStream().stateIn(
             scope = viewModelScope,
@@ -35,23 +36,22 @@ class ReviewWriteViewModel @Inject constructor(
             )
         )
 
-    val uiState: StateFlow<ReviewWriteType> =
+    val uiState: StateFlow<ReviewWriteUiState> =
         combine(
             reviewWineState,
             page
         ) { reviewWineState, page ->
             reviewWriteRepository.getSelectionWithTopic(page).map { it ->
-                ReviewWriteType.ReviewWriteWithFourString(
+                ReviewWriteUiState(
                     page = page,
-                    wineId = reviewWineState.id,
-                    topic = it.topic,
-                    options = it.options.map { it as OptionWithEmoji }
+                    wineImage = reviewWineState.imageUrl,
+                    selectOption = it
                 )
             }
         }.flatMapLatest { it }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ReviewWriteType.ReviewWriteWithFourString(0, 0, "", listOf())
+            initialValue = ReviewWriteUiState(0, 0)
         )
 
     fun navigatePreviousWritePage() = viewModelScope.launch {
@@ -64,11 +64,13 @@ class ReviewWriteViewModel @Inject constructor(
             }
     }
 
-    /**
-     * page를 2번째 페이지로 이동하고, 선택한 옵션을 뷰모델에서 로컬로 저장한다.
-     */
+    //TODO: 페이지마다 선택해야하는 옵션의 수가 다르기 때문에, Navigate 역시 함수를 다 쪼갤 수 밖에 없다. 재사용이 가능한가?
     fun navigateTimeSelectPage(selectOption: String) = viewModelScope.launch {
         page.value = 1
+    }
+
+    fun navigatePartnerPage(selectOption: String) = viewModelScope.launch {
+        page.value = 2
     }
 
     fun selectPage(modifyPage: Int) = viewModelScope.launch {
