@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.review
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -12,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -31,16 +33,18 @@ fun ReviewWriteRoute(
     ReviewWriteScreen(
         uiState = uiState,
         navigatePreviousWritePage = viewModel::navigatePreviousWritePage,
-        navigateTimeSelectPage = viewModel::navigateTimeSelectPage
+        navigateTimeSelectPage = viewModel::navigateTimeSelectPage,
+        navigatePartnerPage = viewModel::navigatePartnerPage
     )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ReviewWriteScreen(
-    uiState: ReviewWriteType,
+    uiState: ReviewWriteUiState,
     navigatePreviousWritePage: () -> Unit,
-    navigateTimeSelectPage: (String) -> Unit
+    navigateTimeSelectPage: (String) -> Unit,
+    navigatePartnerPage: (String) -> Unit
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -100,31 +104,44 @@ fun ReviewWriteScreen(
                 }
             }
         }, sheetPeekHeight = 0.dp, topBar = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = "리뷰 쓰기",
-                    style = ProofTheme.typography.headingXS,
-                    color = ProofTheme.color.white,
-                    modifier = Modifier.weight(1f)
-                )
-                IconButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.padding(end = 20.dp)
+                Row(
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_close),
-                        contentDescription = "close"
+                    Spacer(Modifier.weight(1f))
+
+                    Text(
+                        text = stringResource(R.string.review_write),
+                        style = ProofTheme.typography.headingXS,
+                        color = ProofTheme.color.white,
+                        modifier = Modifier.weight(1f)
                     )
 
+                    IconButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.padding(end = 20.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_close),
+                            contentDescription = "close",
+                            tint = Color.Unspecified
+                        )
+                    }
                 }
+
+                LinearProgressIndicator(
+                    progress = (uiState.page + 1) / 6f,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(4.dp),
+                    backgroundColor = ProofTheme.color.gray500,
+                    color = ProofTheme.color.primary300
+                )
             }
 
-            Divider(color = ProofTheme.color.primary300, thickness = 2.dp)
         }
     ) {
         Column(
@@ -132,26 +149,70 @@ fun ReviewWriteScreen(
                 .fillMaxWidth()
                 .fillMaxHeight()
         ) {
-            Box(
+            Column(
                 modifier = Modifier.padding(
                     start = 24.dp,
                     end = 24.dp,
                     top = 40.dp,
                     bottom = 34.dp
-                )
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                //TODO: 술 이미지 추가해야함
-
-                Topic(topic = uiState.topic, totalNum = uiState.page, pageNum = uiState.page, onClickBackButton = navigatePreviousWritePage)
-            }
-
-            when (uiState) {
-                is ReviewWriteType.ReviewWriteWithFourString -> {
-                    OptionWithFourString(options = uiState.options, onClickOption = navigateTimeSelectPage)
+                if (uiState.wineImage != 0) {
+                    Image(
+                        painter = painterResource(id = uiState.wineImage),
+                        contentDescription = "wineImage",
+                        modifier = Modifier.padding(bottom = 40.dp)
+                    )
                 }
 
-                else -> {
+                Topic(
+                    topic = uiState.selectOption?.topic ?: "",
+                    totalNum = uiState.page,
+                    pageNum = uiState.page,
+                    onClickBackButton = navigatePreviousWritePage
+                )
+            }
 
+            //TODO : 중복 코드 제거 및 추상화가 필요함
+            uiState.selectOption?.let {
+                when (uiState.page) {
+                    0 -> {
+                        OptionWithFourString(
+                            options = uiState.selectOption.options.map { it as OptionWithEmoji } ,
+                            onClickOption = navigateTimeSelectPage
+                        )
+                    }
+
+                    1 -> {
+                        OptionWithFourString(
+                            options = uiState.selectOption.options.map { it as OptionWithEmoji } ,
+                            onClickOption = navigatePartnerPage
+                        )
+                    }
+
+                    2 -> {
+                        OptionWithFourString(
+                            options = uiState.selectOption.options.map { it as OptionWithEmoji } ,
+                            onClickOption = navigateTimeSelectPage
+                        )
+                    }
+
+                    3 -> {
+
+                    }
+
+                    4 -> {
+
+                    }
+
+                    5 -> {
+
+                    }
+
+                    else -> {
+                        // error 처리
+                    }
                 }
             }
         }
@@ -175,7 +236,8 @@ fun Topic(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_pre_arrow_white),
-                    contentDescription = "close"
+                    contentDescription = "close",
+                    tint = Color.Unspecified
                 )
             }
         }

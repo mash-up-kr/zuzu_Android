@@ -2,7 +2,7 @@ package com.mashup.zuzu.data.repository
 
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.OptionWithEmoji
-import com.mashup.zuzu.data.model.ReviewOption
+import com.mashup.zuzu.data.model.ReviewWriteSelectOption
 import com.mashup.zuzu.data.model.Wine
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -24,33 +24,33 @@ class ReviewWriteRepository constructor() {
         )
     }
 
-    fun getSelectionWithTopic(pageNum: Int): Flow<ReviewOption> {
+    fun getSelectionWithTopic(pageNum: Int): Flow<ReviewWriteSelectOption> {
         val a = when (pageNum) {
             0 -> {
                 flow {
                     val option = selectWeatherOptions()
-                    emit(ReviewOption("이 술을 마셨던 날의\n날씨는...", option))
+                    emit(ReviewWriteSelectOption("이 술을 마셨던 날의\n날씨는...", option))
                 }
             }
 
             1 -> {
                 flow {
                     val option = selectDateOptions()
-                    emit(ReviewOption("이 술을 마셨던\n시간은...", option))
+                    emit(ReviewWriteSelectOption("이 술을 마셨던\n시간은...", option))
                 }
             }
 
             2 -> {
                 flow {
                     val option = selectWhoOptions()
-                    emit(ReviewOption("누구와 마셨나요?", option))
+                    emit(ReviewWriteSelectOption("누구와 마셨나요?", option))
                 }
             }
 
             else -> {
                 flow {
                     val option = selectWeatherOptions()
-                    emit(ReviewOption("topic", option))
+                    emit(ReviewWriteSelectOption("topic", option))
                 }
             }
         }

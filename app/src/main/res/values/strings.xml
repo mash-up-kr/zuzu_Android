@@ -5,4 +5,5 @@
     <string name="cancel">취소</string>
     <string name="confirm">확인</string>
     <string name="do_review">나도 리뷰하기</string>
+    <string name="review_write">리뷰 쓰기</string>
 </resources>
