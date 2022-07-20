@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.OptionWithEmoji
 import com.mashup.zuzu.ui.theme.ProofTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun ReviewWriteRoute(
@@ -121,7 +122,15 @@ fun ReviewWriteScreen(
                     )
 
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            coroutineScope.launch {
+                                if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                                    bottomSheetScaffoldState.bottomSheetState.expand()
+                                } else {
+                                    bottomSheetScaffoldState.bottomSheetState.collapse()
+                                }
+                            }
+                        },
                         modifier = Modifier.padding(end = 20.dp)
                     ) {
                         Icon(
@@ -179,21 +188,21 @@ fun ReviewWriteScreen(
                 when (uiState.page) {
                     0 -> {
                         OptionWithFourString(
-                            options = uiState.selectOption.options.map { it as OptionWithEmoji } ,
+                            options = uiState.selectOption.options.map { it as OptionWithEmoji },
                             onClickOption = navigateTimeSelectPage
                         )
                     }
 
                     1 -> {
                         OptionWithFourString(
-                            options = uiState.selectOption.options.map { it as OptionWithEmoji } ,
+                            options = uiState.selectOption.options.map { it as OptionWithEmoji },
                             onClickOption = navigatePartnerPage
                         )
                     }
 
                     2 -> {
                         OptionWithFourString(
-                            options = uiState.selectOption.options.map { it as OptionWithEmoji } ,
+                            options = uiState.selectOption.options.map { it as OptionWithEmoji },
                             onClickOption = navigateTimeSelectPage
                         )
                     }
