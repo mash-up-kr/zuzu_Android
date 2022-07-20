@@ -3,7 +3,6 @@ package com.mashup.zuzu.ui.review
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mashup.zuzu.R
-import com.mashup.zuzu.data.model.OptionWithEmoji
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.repository.ReviewWriteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,14 +40,11 @@ class ReviewWriteViewModel @Inject constructor(
             reviewWineState,
             page
         ) { reviewWineState, page ->
-            reviewWriteRepository.getSelectionWithTopic(page).map { it ->
-                ReviewWriteUiState(
-                    page = page,
-                    wineImage = reviewWineState.imageUrl,
-                    selectOption = it
-                )
-            }
-        }.flatMapLatest { it }.stateIn(
+            ReviewWriteUiState(
+                page = page,
+                wineImage = reviewWineState.imageUrl
+            )
+        }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = ReviewWriteUiState(0, 0)
@@ -65,12 +61,20 @@ class ReviewWriteViewModel @Inject constructor(
     }
 
     //TODO: 페이지마다 선택해야하는 옵션의 수가 다르기 때문에, Navigate 역시 함수를 다 쪼갤 수 밖에 없다. 재사용이 가능한가?
-    fun navigateTimeSelectPage(selectOption: String) = viewModelScope.launch {
+    fun navigateDateSelectPage(selectOption: String) = viewModelScope.launch {
         page.value = 1
     }
 
     fun navigatePartnerPage(selectOption: String) = viewModelScope.launch {
         page.value = 2
+    }
+
+    fun navigateGroupPage(selectOption: String) = viewModelScope.launch {
+        page.value = 3
+    }
+
+    fun navigateSoloPage(selectOption: String) = viewModelScope.launch {
+        page.value = 4
     }
 
     fun selectPage(modifyPage: Int) = viewModelScope.launch {

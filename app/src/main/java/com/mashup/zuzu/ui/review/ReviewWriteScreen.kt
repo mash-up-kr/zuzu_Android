@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mashup.zuzu.R
-import com.mashup.zuzu.data.model.OptionWithEmoji
 import com.mashup.zuzu.ui.theme.ProofTheme
 import kotlinx.coroutines.launch
 
@@ -34,8 +33,10 @@ fun ReviewWriteRoute(
     ReviewWriteScreen(
         uiState = uiState,
         navigatePreviousWritePage = viewModel::navigatePreviousWritePage,
-        navigateTimeSelectPage = viewModel::navigateTimeSelectPage,
-        navigatePartnerPage = viewModel::navigatePartnerPage
+        navigateDateSelectPage = viewModel::navigateDateSelectPage,
+        navigatePartnerPage = viewModel::navigatePartnerPage,
+        navigateGroupPage = viewModel::navigateGroupPage,
+        navigateSoloPage = viewModel::navigateSoloPage
     )
 }
 
@@ -44,8 +45,10 @@ fun ReviewWriteRoute(
 fun ReviewWriteScreen(
     uiState: ReviewWriteUiState,
     navigatePreviousWritePage: () -> Unit,
-    navigateTimeSelectPage: (String) -> Unit,
-    navigatePartnerPage: (String) -> Unit
+    navigateDateSelectPage: (String) -> Unit,
+    navigatePartnerPage: (String) -> Unit,
+    navigateGroupPage: (String) -> Unit,
+    navigateSoloPage: (String) -> Unit,
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -176,52 +179,26 @@ fun ReviewWriteScreen(
                 }
 
                 Topic(
-                    topic = uiState.selectOption?.topic ?: "",
                     totalNum = uiState.page,
                     pageNum = uiState.page,
                     onClickBackButton = navigatePreviousWritePage
                 )
             }
 
-            //TODO : 중복 코드 제거 및 추상화가 필요함
-            uiState.selectOption?.let {
-                when (uiState.page) {
-                    0 -> {
-                        OptionWithFourString(
-                            options = uiState.selectOption.options.map { it as OptionWithEmoji },
-                            onClickOption = navigateTimeSelectPage
-                        )
-                    }
+            when (uiState.page) {
+                0 -> {
+                    WeatherSelectOption(navigateDateSelectPage = navigateDateSelectPage)
+                }
 
-                    1 -> {
-                        OptionWithFourString(
-                            options = uiState.selectOption.options.map { it as OptionWithEmoji },
-                            onClickOption = navigatePartnerPage
-                        )
-                    }
+                1 -> {
+                    DateSelectOption(navigatePartnerPage = navigatePartnerPage)
+                }
 
-                    2 -> {
-                        OptionWithFourString(
-                            options = uiState.selectOption.options.map { it as OptionWithEmoji },
-                            onClickOption = navigateTimeSelectPage
-                        )
-                    }
-
-                    3 -> {
-
-                    }
-
-                    4 -> {
-
-                    }
-
-                    5 -> {
-
-                    }
-
-                    else -> {
-                        // error 처리
-                    }
+                2 -> {
+                    PartnerSelectOption(
+                        navigateGroupPage = navigateGroupPage,
+                        navigateSoloPage = navigateSoloPage
+                    )
                 }
             }
         }
@@ -230,7 +207,6 @@ fun ReviewWriteScreen(
 
 @Composable
 fun Topic(
-    topic: String,
     totalNum: Int,
     pageNum: Int,
     onClickBackButton: () -> Unit
@@ -255,6 +231,24 @@ fun Topic(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
+            val topic = when (pageNum) {
+                0 -> {
+                    "이 술을 마셨던 날의\n날씨는..."
+                }
+
+                1 -> {
+                    "이 술을 마셨던\n시간은..."
+                }
+
+                2 -> {
+                    "누구와 마셨나요?"
+                }
+
+                else -> {
+                    ""
+                }
+            }
+
             Text(
                 text = topic, style = ProofTheme.typography.headingL,
                 textAlign = TextAlign.Center,
@@ -263,59 +257,7 @@ fun Topic(
         }
 
     }
-
-
 }
-
-@Composable
-fun OptionWithFourString(
-    options: List<OptionWithEmoji>,
-    onClickOption: (String) -> Unit
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(horizontal = 34.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(options) { option ->
-            Button(
-                onClick = {
-                    onClickOption(option.content)
-                },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.height(52.dp)
-            ) {
-                if (!option.emoji.isNullOrEmpty()) {
-                    //TODO: 이모지 불러오기 필요
-                }
-
-                Text(
-                    text = option.content,
-                    style = ProofTheme.typography.headingXS,
-                    color = ProofTheme.color.white
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun OptionWithGroup() {
-
-}
-
-@Composable
-fun OptionWithSolo() {
-
-}
-
-
-@Composable
-fun OptionWithToggle() {
-
-}
-
 
 @Preview
 @Composable
