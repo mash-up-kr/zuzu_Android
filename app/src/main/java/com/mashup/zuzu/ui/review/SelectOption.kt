@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
 import com.mashup.zuzu.ui.theme.ProofTheme
@@ -41,7 +42,7 @@ fun WeatherSelectOption(
                 )
 
                 Text(
-                    text = "비 오는 날",
+                    text = stringResource(R.string.weather_rain),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -62,7 +63,7 @@ fun WeatherSelectOption(
                 )
 
                 Text(
-                    text = "눈 오는 날",
+                    text = stringResource(R.string.weather_snow),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -87,7 +88,7 @@ fun WeatherSelectOption(
                 )
 
                 Text(
-                    text = "맑은 날",
+                    text = stringResource(R.string.weather_sunny),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -108,7 +109,7 @@ fun WeatherSelectOption(
                 )
 
                 Text(
-                    text = "흐린 날",
+                    text = stringResource(R.string.weather_cloudy),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -146,7 +147,7 @@ fun DateSelectOption(
                 )
 
                 Text(
-                    text = "저녁에",
+                    text = stringResource(R.string.date_dinner),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -167,7 +168,7 @@ fun DateSelectOption(
                 )
 
                 Text(
-                    text = "대낮에",
+                    text = stringResource(R.string.date_afternoon),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -192,7 +193,7 @@ fun DateSelectOption(
                 )
 
                 Text(
-                    text = "한밤중에",
+                    text = stringResource(R.string.date_night),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -213,7 +214,7 @@ fun DateSelectOption(
                 )
 
                 Text(
-                    text = "새벽에",
+                    text = stringResource(R.string.date_dawn),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -253,7 +254,7 @@ fun PartnerSelectOption(
                 )
 
                 Text(
-                    text = "혼자서",
+                    text = stringResource(R.string.partner_solo),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -274,7 +275,7 @@ fun PartnerSelectOption(
                 )
 
                 Text(
-                    text = "친구/지인과",
+                    text = stringResource(R.string.partner_friends),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -299,7 +300,7 @@ fun PartnerSelectOption(
                 )
 
                 Text(
-                    text = "연인과",
+                    text = stringResource(R.string.partner_couple),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -320,7 +321,7 @@ fun PartnerSelectOption(
                 )
 
                 Text(
-                    text = "회식/단체 모임",
+                    text = stringResource(R.string.partner_party),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -357,7 +358,7 @@ fun GroupSelectOption() {
                 )
 
                 Text(
-                    text = "친근한/웃기는",
+                    text = stringResource(R.string.mood_friendly),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -377,7 +378,7 @@ fun GroupSelectOption() {
                 )
 
                 Text(
-                    text = "엄격진지한",
+                    text = stringResource(R.string.mood_serious),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -401,7 +402,7 @@ fun GroupSelectOption() {
                 )
 
                 Text(
-                    text = "로맨틱한",
+                    text = stringResource(R.string.mood_romantic),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -421,7 +422,7 @@ fun GroupSelectOption() {
                 )
 
                 Text(
-                    text = "광란의",
+                    text = stringResource(R.string.mood_crazy),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -446,7 +447,7 @@ fun GroupSelectOption() {
                 )
 
                 Text(
-                    text = "우울한",
+                    text = stringResource(R.string.mood_groomy),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -466,7 +467,7 @@ fun GroupSelectOption() {
                 )
 
                 Text(
-                    text = "축하하는",
+                    text = stringResource(R.string.mood_congratulations),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -573,7 +574,7 @@ fun SoloSelectOption() {
                 )
 
                 Text(
-                    text = "즐거운",
+                    text = stringResource(R.string.mood_happy),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -593,7 +594,7 @@ fun SoloSelectOption() {
                 )
 
                 Text(
-                    text = "엄격진지한",
+                    text = stringResource(R.string.mood_serious),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -617,7 +618,7 @@ fun SoloSelectOption() {
                 )
 
                 Text(
-                    text = "우울한",
+                    text = stringResource(R.string.mood_groomy),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -637,7 +638,7 @@ fun SoloSelectOption() {
                 )
 
                 Text(
-                    text = "광란의",
+                    text = stringResource(R.string.mood_crazy),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -662,7 +663,7 @@ fun SoloSelectOption() {
                 )
 
                 Text(
-                    text = "음미하는",
+                    text = stringResource(R.string.mood_taste),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -682,7 +683,7 @@ fun SoloSelectOption() {
                 )
 
                 Text(
-                    text = "셀프선물",
+                    text = stringResource(R.string.mood_self_cong),
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )

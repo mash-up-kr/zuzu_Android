@@ -248,23 +248,23 @@ fun Topic(
         ) {
             val topic = when (pageNum) {
                 0 -> {
-                    "이 술을 마셨던 날의\n날씨는..."
+                    stringResource(id = R.string.topic_weather)
                 }
 
                 1 -> {
-                    "이 술을 마셨던\n시간은..."
+                    stringResource(id = R.string.topic_date)
                 }
 
                 2 -> {
-                    "누구와 마셨나요?"
+                    stringResource(id = R.string.topic_partner)
                 }
 
                 3 -> {
-                    "어떤 분위기로\n마셨나요?"
+                    stringResource(id = R.string.topic_group_solo)
                 }
 
                 4 -> {
-                    "어떤 분위기로\n마셨나요?"
+                    stringResource(id = R.string.topic_group_solo)
                 }
 
                 else -> {
