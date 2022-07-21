@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mashup.zuzu.R
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
 import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
 import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_WORLD_CUP
 import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_DETAIL
@@ -24,15 +24,15 @@ import com.mashup.zuzu.ui.DetailScreen
 import com.mashup.zuzu.ui.category.CategoryScreen
 import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
 import com.mashup.zuzu.ui.home.ZuzuHomeScreen
-import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.review.ReviewWriteRoute
+import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/06/30
  * @Time 4:41 오후
  */
-//TODO: Naming 변경 필요함
+// TODO: Naming 변경 필요함
 @Composable
 fun ZuzuApp() {
     val zuzuAppState = rememberAppState()
@@ -59,6 +59,7 @@ fun ZuzuApp() {
                     )
                 }
         },
+        backgroundColor = ProofTheme.color.black,
         bottomBar = {
             if (zuzuAppState.shouldShowBottomBar) // bottomBarTabs의 BottomScreen의 경로에 있을 때만, BottomNavBar가 보이도록 했습니다.
                 ZuzuBottomNavigationBar(
@@ -75,7 +76,7 @@ fun ZuzuApp() {
             navController = zuzuAppState.navController,
             startDestination = REVIEW_DETAIL
         ) {
-            composable(ZuzuAppState.BOTTOM_SCREEN_NAVIGATION) {
+            composable(BOTTOM_SCREEN_NAVIGATION) {
                 ZuzuHomeScreen(
                     modifier = Modifier.background(color = Black),
                     onCategoryClick = { category ->
@@ -113,7 +114,6 @@ fun ZuzuApp() {
         }
     }
 }
-
 
 @Preview
 @Composable
