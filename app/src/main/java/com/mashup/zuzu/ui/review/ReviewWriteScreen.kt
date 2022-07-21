@@ -1,11 +1,14 @@
 package com.mashup.zuzu.ui.review
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -156,10 +159,13 @@ fun ReviewWriteScreen(
 
         }
     ) {
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
+                .verticalScroll(scrollState)
         ) {
             Column(
                 modifier = Modifier.padding(
@@ -185,6 +191,7 @@ fun ReviewWriteScreen(
                 )
             }
 
+            //TODO: progress 때문에 3,4 페이지에 대해서 다른 처리가 필요함 ex. 3-1, 3-2
             when (uiState.page) {
                 0 -> {
                     WeatherSelectOption(navigateDateSelectPage = navigateDateSelectPage)
@@ -199,6 +206,14 @@ fun ReviewWriteScreen(
                         navigateGroupPage = navigateGroupPage,
                         navigateSoloPage = navigateSoloPage
                     )
+                }
+
+                3 -> {
+                    GroupSelectOption()
+                }
+
+                4 -> {
+                    SoloSelectOption()
                 }
             }
         }
@@ -242,6 +257,14 @@ fun Topic(
 
                 2 -> {
                     "누구와 마셨나요?"
+                }
+
+                3 -> {
+                    "어떤 분위기로\n마셨나요?"
+                }
+
+                4 -> {
+                    "어떤 분위기로\n마셨나요?"
                 }
 
                 else -> {

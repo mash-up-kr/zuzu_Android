@@ -6,6 +6,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -17,7 +18,9 @@ fun WeatherSelectOption(
     navigateDateSelectPage: (String) -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 34.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 34.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         Row(
@@ -28,7 +31,9 @@ fun WeatherSelectOption(
                     navigateDateSelectPage("비 오는 날")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -47,7 +52,9 @@ fun WeatherSelectOption(
                     navigateDateSelectPage("눈 오는 날")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -70,7 +77,9 @@ fun WeatherSelectOption(
                     navigateDateSelectPage("맑은 날")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -89,7 +98,9 @@ fun WeatherSelectOption(
                     navigateDateSelectPage("흐린 날")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -112,7 +123,9 @@ fun DateSelectOption(
     navigatePartnerPage: (String) -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 34.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 34.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         Row(
@@ -123,7 +136,9 @@ fun DateSelectOption(
                     navigatePartnerPage("저녁에")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -142,7 +157,9 @@ fun DateSelectOption(
                     navigatePartnerPage("대낮에")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -165,7 +182,9 @@ fun DateSelectOption(
                     navigatePartnerPage("한밤중에")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -184,7 +203,9 @@ fun DateSelectOption(
                     navigatePartnerPage("새벽에")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -209,7 +230,9 @@ fun PartnerSelectOption(
     navigateSoloPage: (String) -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 34.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 34.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         Row(
@@ -220,7 +243,9 @@ fun PartnerSelectOption(
                     navigateSoloPage("혼자서")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -239,7 +264,9 @@ fun PartnerSelectOption(
                     navigateGroupPage("친구/지인과")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -262,7 +289,9 @@ fun PartnerSelectOption(
                     navigateGroupPage("연인과")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -281,7 +310,9 @@ fun PartnerSelectOption(
                     navigateGroupPage("회식/단체 모임")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
-                modifier = Modifier.weight(1f).height(52.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
@@ -302,12 +333,363 @@ fun PartnerSelectOption(
 
 @Composable
 fun GroupSelectOption() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 34.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "친근한/웃기는",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "엄격진지한",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "로맨틱한",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "광란의",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "우울한",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "축하하는",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+        }
+
+        Text(
+            text = "혹시 몇 차였어요?",
+            style = ProofTheme.typography.headingL,
+            color = ProofTheme.color.white,
+            modifier = Modifier.padding(top = 40.dp, bottom = 20.dp)
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "1차",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "2차",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "3차 이상",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+        }
+    }
 
 }
 
 @Composable
 fun SoloSelectOption() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 34.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
 
+                Text(
+                    text = "즐거운",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "엄격진지한",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "우울한",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "광란의",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "음미하는",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+            Button(
+                onClick = {
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_review_write_weather_rain),
+                    contentDescription = ""
+                )
+
+                Text(
+                    text = "셀프선물",
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
+
+        }
+    }
 }
 
 @Composable
