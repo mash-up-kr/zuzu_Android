@@ -2,14 +2,14 @@ package com.mashup.zuzu.ui.review
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
 import com.mashup.zuzu.ui.theme.ProofTheme
@@ -333,7 +333,9 @@ fun PartnerSelectOption(
 }
 
 @Composable
-fun GroupSelectOption() {
+fun GroupSelectOption(
+    navigateTastePage: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -346,6 +348,7 @@ fun GroupSelectOption() {
         ) {
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -366,6 +369,7 @@ fun GroupSelectOption() {
 
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -390,6 +394,7 @@ fun GroupSelectOption() {
         ) {
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -410,6 +415,7 @@ fun GroupSelectOption() {
 
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -435,6 +441,7 @@ fun GroupSelectOption() {
         ) {
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -455,6 +462,7 @@ fun GroupSelectOption() {
 
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -550,7 +558,9 @@ fun GroupSelectOption() {
 }
 
 @Composable
-fun SoloSelectOption() {
+fun SoloSelectOption(
+    navigateTastePage: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -562,6 +572,7 @@ fun SoloSelectOption() {
         ) {
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -582,6 +593,7 @@ fun SoloSelectOption() {
 
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -606,6 +618,7 @@ fun SoloSelectOption() {
         ) {
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -626,6 +639,7 @@ fun SoloSelectOption() {
 
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -651,6 +665,7 @@ fun SoloSelectOption() {
         ) {
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -671,6 +686,7 @@ fun SoloSelectOption() {
 
             Button(
                 onClick = {
+                    navigateTastePage("123")
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -695,7 +711,76 @@ fun SoloSelectOption() {
 
 @Composable
 fun TasteSelectOption() {
+    Column() {
+        val radioTitles = listOf(
+            Pair("가벼워요", "무거워요"),
+            Pair("달아요", "써요"),
+            Pair("은은한 술맛", "찐한 술맛"),
+            Pair("부드러운 목넘김", "화끈거리는 목넘김")
+        )
 
+        radioTitles.forEach { title ->
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 34.dp, end = 34.dp, bottom = 16.dp)
+            ) {
+                Text(
+                    text = title.first,
+                    color = ProofTheme.color.white
+                )
+
+                Text(
+                    text = title.second,
+                    color = ProofTheme.color.white
+                )
+            }
+
+            var state by remember {
+                mutableStateOf("")
+            }
+
+            val radioButtons = listOf(
+                Pair("1", 34),
+                Pair("2", 28),
+                Pair("3", 24),
+                Pair("4", 24),
+                Pair("5", 28),
+                Pair("6", 34)
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 34.dp)
+            ) {
+                radioButtons.forEach { radioButton ->
+                    val item = radioButton.first
+                    val radius = radioButton.second
+
+                    IconToggleButton(checked = state == item, onCheckedChange = { state = item }) {
+                        Icon(
+                            painter = painterResource(
+                                if (state == item) {
+                                    R.drawable.ic_taste_toggle_on
+                                } else {
+                                    R.drawable.ic_taste_toggle_off
+                                }
+                            ), contentDescription = "", modifier = Modifier
+                                .width(radius.dp)
+                                .height(radius.dp),
+                            tint = Color.Unspecified
+                        )
+                    }
+
+                }
+            }
+
+        }
+
+    }
 }
 
 @Composable

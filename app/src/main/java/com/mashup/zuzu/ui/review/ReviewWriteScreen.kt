@@ -39,7 +39,8 @@ fun ReviewWriteRoute(
         navigateDateSelectPage = viewModel::navigateDateSelectPage,
         navigatePartnerPage = viewModel::navigatePartnerPage,
         navigateGroupPage = viewModel::navigateGroupPage,
-        navigateSoloPage = viewModel::navigateSoloPage
+        navigateSoloPage = viewModel::navigateSoloPage,
+        navigateTastePage = viewModel::navigateTastePage
     )
 }
 
@@ -52,6 +53,7 @@ fun ReviewWriteScreen(
     navigatePartnerPage: (String) -> Unit,
     navigateGroupPage: (String) -> Unit,
     navigateSoloPage: (String) -> Unit,
+    navigateTastePage: (String) -> Unit
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -209,11 +211,15 @@ fun ReviewWriteScreen(
                 }
 
                 3 -> {
-                    GroupSelectOption()
+                    GroupSelectOption(navigateTastePage = navigateTastePage)
                 }
 
                 4 -> {
-                    SoloSelectOption()
+                    SoloSelectOption(navigateTastePage = navigateTastePage)
+                }
+
+                5 -> {
+                    TasteSelectOption()
                 }
             }
         }
@@ -265,6 +271,10 @@ fun Topic(
 
                 4 -> {
                     stringResource(id = R.string.topic_group_solo)
+                }
+
+                5 -> {
+                    stringResource(id = R.string.topic_taste)
                 }
 
                 else -> {

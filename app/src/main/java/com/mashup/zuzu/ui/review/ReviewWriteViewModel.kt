@@ -77,6 +77,10 @@ class ReviewWriteViewModel @Inject constructor(
         page.value = 4
     }
 
+    fun navigateTastePage(selectOption: String) = viewModelScope.launch {
+        page.value = 5
+    }
+
     fun selectPage(modifyPage: Int) = viewModelScope.launch {
         page.value = modifyPage
     }
