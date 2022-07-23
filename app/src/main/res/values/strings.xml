@@ -40,5 +40,6 @@
     <string name="mood_taste">음미하는</string>
     <string name="mood_self_cong">셀프선물</string>
 
-
+    <!-- 리뷰 작성 맛 -->
+    <string name="topic_taste">둘 중 더 가까운 것을\n골라주세요</string>
 </resources>
