@@ -26,6 +26,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.mashup.zuzu.R
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
+import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.ui.component.*
@@ -139,12 +141,10 @@ fun HomeScreen(
                 .height(6.dp),
             color = ProofTheme.color.black
         )
-        // 오늘의 추천 술
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 40.dp),
             boldTitle = "오늘의 추천 술"
         )
-
         when (recommendState) {
             is RecommendWineUiState.Success -> {
                 RecommendWineCard(
@@ -186,7 +186,6 @@ fun HomeScreen(
             }
             is RecommendWineUiState.Error -> {}
         }
-
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -235,7 +234,7 @@ fun ZuzuBottomNavigationBar(
             .height(52.dp),
         backgroundColor = ProofTheme.color.black
     ) {
-        bottomNavigationItems.forEach { screen ->
+        bottomNavigationItems.forEach { route ->
             BottomNavigationItem(
                 icon = {
                     when (screen) {

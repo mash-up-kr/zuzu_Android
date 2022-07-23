@@ -28,6 +28,7 @@ import com.mashup.zuzu.ui.theme.ProofTheme
  * @Time 4:41 오후
  */
 @OptIn(ExperimentalMaterialNavigationApi::class)
+// TODO: Naming 변경 필요함
 @Composable
 fun ZuzuApp(
     onWorldCupButtonClick: () -> Unit
@@ -95,6 +96,30 @@ fun ZuzuApp(
                 )
                 userGraph(
                     appState = zuzuAppState
+            }
+
+            composable(BOTTOM_SCREEN_USER) {
+            }
+
+            composable(BOTTOM_SCREEN_WORLD_CUP) {
+            }
+
+            composable(REVIEW_DETAIL) {
+                DetailScreen(
+                    navigateToReviewWrite = { zuzuAppState.navigateReviewWriteScreen() }
+                )
+            }
+
+            composable(REVIEW_WRITE) {
+                ReviewWriteRoute()
+            }
+
+            composable(ZuzuAppState.BOTTOM_SCREEN_CATEGORY + "/{category}") {
+                CategoryScreen(
+                    modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
+                    category = it.arguments!!.getString("category")!!, onBackButtonClick = {
+                        zuzuAppState.navigateBackStack()
+                    }, onWineBoardClick = {}
                 )
             }
         }

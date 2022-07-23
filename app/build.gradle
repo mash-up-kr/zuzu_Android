@@ -78,7 +78,9 @@ dependencies {
     // hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
     kapt(libs.hilt.compiler)
+    kapt(libs.hilt.android.compiler)
 
     //coil
     implementation(libs.io.coil.kt)
@@ -95,6 +97,7 @@ dependencies {
     //renderscript
     implementation(libs.renderscript)
 
+    // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test)
     androidTestImplementation(libs.androidx.test.espresso)
