@@ -26,4 +26,7 @@ object UserRepo {
     fun getUserData(): Flow<User> = flow {
         emit(user)
     }
+    fun getUser(id: Long) = user
+
+    fun submitUserProfile(username: String) {}
 }

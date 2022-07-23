@@ -1,7 +1,6 @@
 package com.mashup.zuzu.data.model
 
 import androidx.compose.runtime.Immutable
-import com.mashup.zuzu.R
 
 /**
  * @Created by 김현국 2022/07/01
@@ -10,18 +9,6 @@ import com.mashup.zuzu.R
 
 @Immutable
 data class Wine(
-    val id: Long,
-    val name: String,
-    val imageUrl: Int,
-    val price: Long,
-    val alc: Int,
-    val description: List<String>,
-    val favorite: Boolean,
-    val category: String
-)
-
-@Immutable
-data class Wine2(
     val id: Long,
     val name: String,
     val imageUrl: String,
@@ -36,7 +23,7 @@ val wines = listOf(
     Wine(
         id = 1L,
         name = "GoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlue",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 1000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술"),
@@ -46,7 +33,7 @@ val wines = listOf(
     Wine(
         id = 2L,
         name = "Jack Daniels",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 40000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -56,7 +43,7 @@ val wines = listOf(
     Wine(
         id = 3L,
         name = "참이슬",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 4500,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -66,7 +53,7 @@ val wines = listOf(
     Wine(
         id = 4L,
         name = "로즈와인",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 24000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -76,7 +63,7 @@ val wines = listOf(
     Wine(
         id = 5L,
         name = "진로",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 4000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -86,7 +73,7 @@ val wines = listOf(
     Wine(
         id = 6L,
         name = "Jim Beam",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 24000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -96,7 +83,7 @@ val wines = listOf(
     Wine(
         id = 7L,
         name = "Red Wine",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 3400,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -106,90 +93,7 @@ val wines = listOf(
     Wine(
         id = 8L,
         name = "Tintied Wine",
-        imageUrl = R.drawable.img_wine_dummy,
-        price = 40000,
-        alc = 17,
-        listOf("뜨는 술", "맛있는 술"),
-        favorite = false,
-        category = "와인"
-    )
-)
-
-val winesUrl = listOf(
-    Wine2(
-        id = 1L,
-        name = "GoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlue",
-        imageUrl = "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg",
-        price = 1000,
-        alc = 17,
-        listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술"),
-        favorite = true,
-        category = "와인"
-    ),
-    Wine2(
-        id = 2L,
-        name = "Jack Daniels",
-        imageUrl = "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg",
-        price = 40000,
-        alc = 17,
-        listOf("뜨는 술", "맛있는 술"),
-        favorite = false,
-        category = "양주"
-    ),
-    Wine2(
-        id = 3L,
-        name = "참이슬",
-        imageUrl = "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg",
-        price = 4500,
-        alc = 17,
-        listOf("뜨는 술", "맛있는 술"),
-        favorite = false,
-        category = "소주"
-    ),
-    Wine2(
-        id = 4L,
-        name = "로즈와인",
-        imageUrl = "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg",
-        price = 24000,
-        alc = 17,
-        listOf("뜨는 술", "맛있는 술"),
-        favorite = false,
-        category = "와인"
-    ),
-    Wine2(
-        id = 5L,
-        name = "진로",
-        imageUrl = "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg",
-        price = 4000,
-        alc = 17,
-        listOf("뜨는 술", "맛있는 술"),
-        favorite = false,
-        category = "소주"
-    ),
-    Wine2(
-        id = 6L,
-        name = "Jim Beam",
-        imageUrl = "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg",
-        price = 24000,
-        alc = 17,
-        listOf("뜨는 술", "맛있는 술"),
-        favorite = false,
-        category = "양주"
-    ),
-    Wine2(
-        id = 7L,
-        name = "Red Wine",
-        imageUrl = "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg",
-        price = 3400,
-        alc = 17,
-        listOf("뜨는 술", "맛있는 술"),
-        favorite = false,
-        category = "와인"
-    ),
-    Wine2(
-        id = 8L,
-        name = "Tintied Wine",
-        imageUrl = "https://d1sqi8cd60mbpv.cloudfront.net/w400/stella_artois_w400.jpg",
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 40000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -199,7 +103,6 @@ val winesUrl = listOf(
 )
 object WineRepo {
     fun getWineData(): List<Wine> = wines
-    fun getWine2Data(): List<Wine2> = winesUrl
     fun getWineData(wineId: Long) = wines.find { it.id == wineId }
     fun getWineDataWithCategory(category: String) = wines.filter { it.category == category }
     fun getRecommendWine() = wines[0]
