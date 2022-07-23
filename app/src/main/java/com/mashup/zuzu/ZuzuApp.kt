@@ -14,13 +14,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_DETAIL
+import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_WRITE
+import com.mashup.zuzu.ui.DetailScreen
 import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
 import com.mashup.zuzu.ui.navigation.NavigationRoute
 import com.mashup.zuzu.ui.navigation.categoryGraph
 import com.mashup.zuzu.ui.navigation.homeGraph
 import com.mashup.zuzu.ui.navigation.userGraph
+import com.mashup.zuzu.ui.review.ReviewWriteRoute
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
@@ -79,48 +84,26 @@ fun ZuzuApp(
             NavHost(
                 modifier = Modifier.padding(paddingValues),
                 navController = zuzuAppState.navController,
-                startDestination = NavigationRoute.HomeScreenGraph.route
+                startDestination = NavigationRoute.HomeScreenGraph.route // REVIEW_DETAIL
             ) {
                 homeGraph(
                     appState = zuzuAppState
                 )
-//                composable(NavigationRoute.CategoryScreenGraph.route + "/{category}") {
-//                    CategoryRoute(
-//                        category = it.arguments?.getString("category")!!,
-//                        onWineBoardClick = {},
-//                        onBackButtonClick = { zuzuAppState.navigateBackStack() }
-//                    )
-//                }
                 categoryGraph(
                     appState = zuzuAppState
                 )
                 userGraph(
                     appState = zuzuAppState
-            }
-
-            composable(BOTTOM_SCREEN_USER) {
-            }
-
-            composable(BOTTOM_SCREEN_WORLD_CUP) {
-            }
-
-            composable(REVIEW_DETAIL) {
-                DetailScreen(
-                    navigateToReviewWrite = { zuzuAppState.navigateReviewWriteScreen() }
                 )
-            }
+                composable(REVIEW_DETAIL) {
+                    DetailScreen(
+                        navigateToReviewWrite = { zuzuAppState.navigateReviewWriteScreen() }
+                    )
+                }
 
-            composable(REVIEW_WRITE) {
-                ReviewWriteRoute()
-            }
-
-            composable(ZuzuAppState.BOTTOM_SCREEN_CATEGORY + "/{category}") {
-                CategoryScreen(
-                    modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
-                    category = it.arguments!!.getString("category")!!, onBackButtonClick = {
-                        zuzuAppState.navigateBackStack()
-                    }, onWineBoardClick = {}
-                )
+                composable(REVIEW_WRITE) {
+                    ReviewWriteRoute()
+                }
             }
         }
     }
