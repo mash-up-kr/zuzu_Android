@@ -16,9 +16,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.mashup.zuzu.data.model.User
+import com.mashup.zuzu.data.model.UserRepo
+import com.mashup.zuzu.ui.setting.SettingViewModel
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
@@ -27,19 +30,42 @@ import com.mashup.zuzu.ui.theme.ProofTheme
  */
 
 @Composable
+fun SettingRoute(
+    settingViewModel: SettingViewModel = viewModel(),
+    userId: Long,
+    onBackButtonClick: () -> Unit,
+    onLeaveButtonClick: () -> Unit,
+    onEditButtonClick: () -> Unit
+) {
+    // viewModel 넣기
+    Setting(
+        userId = userId,
+        onBackButtonClick = onBackButtonClick,
+        onLeaveButtonClick = onLeaveButtonClick,
+        onEditButtonClick = onEditButtonClick
+    )
+}
+@Composable
 fun Setting(
-    user: User,
-    onBackButtonClick: () -> Unit
+    userId: Long,
+    onBackButtonClick: () -> Unit,
+    onLeaveButtonClick: () -> Unit,
+    onEditButtonClick: () -> Unit
 ) {
     Column {
         SettingTopBar(
             modifier = Modifier.padding(top = 31.5.dp).fillMaxWidth().height(52.dp),
             onBackButtonClick = onBackButtonClick
         )
-        SettingUserProfile(modifier = Modifier.padding(start = 24.dp).fillMaxWidth(), user = user)
+        SettingUserProfile(
+            modifier = Modifier.padding(start = 24.dp).fillMaxWidth(),
+            user = UserRepo.getUser(userId),
+            onEditButtonClick = onEditButtonClick
+        )
         Spacer(modifier = Modifier.fillMaxWidth().height(48.dp))
         SettingBody(
-            modifier = Modifier.padding(start = 24.dp).fillMaxWidth()
+            modifier = Modifier.padding(start = 24.dp).fillMaxWidth(),
+            onLeaveButtonClick = onLeaveButtonClick
         )
     }
 }
@@ -73,7 +99,8 @@ fun SettingTopBar(
 @Composable
 fun SettingUserProfile(
     modifier: Modifier,
-    user: User
+    user: User,
+    onEditButtonClick: () -> Unit
 ) {
     Column(modifier = modifier.padding(top = 16.dp)) {
         AsyncImage(
@@ -93,7 +120,10 @@ fun SettingUserProfile(
                 color = ProofTheme.color.white
             )
             Icon(
-                modifier = Modifier.padding(start = 10.dp).width(12.dp).height(12.dp),
+                modifier = Modifier.padding(start = 10.dp).width(12.dp).height(12.dp)
+                    .clickable {
+                        onEditButtonClick()
+                    },
                 imageVector = Icons.Filled.Edit,
                 tint = ProofTheme.color.gray400,
                 contentDescription = null
@@ -110,7 +140,8 @@ fun SettingUserProfile(
 
 @Composable
 fun SettingBody(
-    modifier: Modifier
+    modifier: Modifier,
+    onLeaveButtonClick: () -> Unit
 ) {
     Column(modifier = modifier) {
         Box(modifier = Modifier.height(30.dp)) {
@@ -146,7 +177,9 @@ fun SettingBody(
             color = ProofTheme.color.gray200
         )
         Text(
-            modifier = Modifier.padding(top = 24.dp),
+            modifier = Modifier.padding(top = 24.dp).clickable {
+                onLeaveButtonClick()
+            },
             text = "탈퇴하기",
             style = ProofTheme.typography.headingS,
             color = ProofTheme.color.gray200
@@ -168,7 +201,7 @@ fun PreviewSettingTopBar() {
 @Composable
 fun PreviewSettingScreen() {
     ProofTheme {
-        Setting(User(1,"ff","ff",""),{})
+        Setting(1, {}, {}, {})
     }
 }
 
@@ -176,6 +209,6 @@ fun PreviewSettingScreen() {
 @Composable
 fun PreviewSettingBody() {
     ProofTheme {
-        SettingBody(modifier = Modifier.fillMaxWidth())
+        SettingBody(modifier = Modifier.fillMaxWidth(), {})
     }
 }
