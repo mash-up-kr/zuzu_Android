@@ -42,4 +42,16 @@
 
     <!-- 리뷰 작성 맛 -->
     <string name="topic_taste">둘 중 더 가까운 것을\n골라주세요</string>
+
+    <!-- 리뷰 작성 느낌 -->
+    <string name="topic_feeling">이 술은\n어떤 느낌이었나요?</string>
+    <string name="feeling_fruits">상큼달달한 과일</string>
+    <string name="feeling_wood">묵직한 나무</string>
+    <string name="feeling_nooroongji">구수한 누룽지</string>
+    <string name="feeling_milk">부드러운 우유</string>
+    <string name="feeling_earth">쿰쿰한 흙냄새</string>
+    <string name="feeling_flower">향긋한 꽃</string>
+    <string name="feeling_groomy">씁슬한 인생</string>
+    <string name="feeling_chili">매운 칠리</string>
+    <string name="feeling_unknown">잘 모르겠어요</string>
 </resources>
