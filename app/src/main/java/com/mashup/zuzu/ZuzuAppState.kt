@@ -68,11 +68,6 @@ class ZuzuAppState constructor(
     }
 
     companion object {
-        const val BOTTOM_SCREEN_NAVIGATION = "navigation"
-        const val BOTTOM_SCREEN_USER = "user"
-        const val BOTTOM_SCREEN_WORLD_CUP = "worldCup"
-        const val BOTTOM_SCREEN_CATEGORY = "category"
-
         const val REVIEW_DETAIL = "reviewDetail"
         const val REVIEW_WRITE = "reviewWrite"
     }
