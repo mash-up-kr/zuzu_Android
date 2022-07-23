@@ -1,11 +1,15 @@
 package com.mashup.zuzu.ui.home
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mashup.zuzu.data.model.BestWorldCup
-import com.mashup.zuzu.data.model.BestWorldCupRepo
-import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.model.WineRepo
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
+import com.google.android.renderscript.Toolkit
+import com.mashup.zuzu.data.model.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -44,6 +48,9 @@ class HomeViewModel : ViewModel() {
     private val _recommendWine: MutableStateFlow<RecommendWineUiState> = MutableStateFlow(RecommendWineUiState.Loading)
     val recommendWine = _recommendWine.asStateFlow()
 
+    private val _bitmap: MutableStateFlow<Bitmap?> = MutableStateFlow(null)
+    val bitmap = _bitmap.asStateFlow()
+
     init {
         getMainWineList()
         getBestWorldCupList()
@@ -61,9 +68,32 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun getRecommendWine() {
+    fun getRecommendWine(
+        context: Context
+    ) {
         viewModelScope.launch {
-            _recommendWine.value = RecommendWineUiState.Success(WineRepo.getRecommendWine())
+            val s = WineRepo.getRecommendWine()
+            _recommendWine.value = RecommendWineUiState.Success(s)
+            transBitmap(context, s.imageUrl)
+        }
+    }
+
+    // bit map 을 가져오는 것을 뷰모델에서
+    fun transBitmap(context: Context, url: String) {
+        val loading = ImageLoader(context)
+        val request = ImageRequest.Builder(context)
+            .data(url).build()
+
+        viewModelScope.launch {
+            _bitmap.value = (
+                (
+                    ((loading.execute(request) as SuccessResult).drawable)
+                        as BitmapDrawable
+                    ).bitmap
+                ).copy(Bitmap.Config.ARGB_8888, true)
+                .let {
+                    Toolkit.blur(it, 10)
+                }
         }
     }
 }

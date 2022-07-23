@@ -1,6 +1,5 @@
 package com.mashup.zuzu.ui.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,10 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.bestWorldCupList
@@ -40,9 +42,11 @@ fun WorldCupCard(
     ) {
         Box {
             // Proof 태그 추가예정
-            Image(
+            AsyncImage(
                 modifier = Modifier.height(88.dp).width(88.dp).clip(shape = CircleShape),
-                painter = painterResource(id = R.drawable.img_wine_dummy),
+                model = ImageRequest.Builder(LocalContext.current).data(
+                    worldCupItem.image
+                ).build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds
             )

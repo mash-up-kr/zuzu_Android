@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
  */
 class CategoryViewModelFactory(private val category: String) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CategoryViewModel(category = category) as T
     }
 }

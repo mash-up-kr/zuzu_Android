@@ -94,6 +94,9 @@ dependencies {
     //timber
     implementation(libs.timber)
 
+    //renderscript
+    implementation(libs.renderscript)
+
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test)

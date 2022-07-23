@@ -29,7 +29,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = ProofTheme.color.black
                 ) {
-                    ZuzuApp()
+                    ZuzuApp(
+                        onWorldCupButtonClick = {}
+                    )
                 }
             }
         }

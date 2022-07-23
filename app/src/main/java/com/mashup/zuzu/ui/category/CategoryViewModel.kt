@@ -13,20 +13,6 @@ import kotlinx.coroutines.launch
  * @Time 5:57 오후
  */
 
-
-data class Category(
-    val imageText: String,
-    val title: String
-)
-
-val categoryList = listOf(
-    Category(imageText = "\uD83C\uDF7C", title = "전체"),
-    Category(imageText = "\uD83C\uDF7A", title = "맥주"),
-    Category(imageText = "\uD83E\uDD43", title = "위스키"),
-    Category(imageText = "\uD83E\uDD43", title = "와인"),
-    Category(imageText = "\uD83C\uDF78", title = "칵테일"),
-)
-
 sealed class CategoryUiState {
     object Loading : CategoryUiState()
     object Error : CategoryUiState()
