@@ -26,8 +26,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.mashup.zuzu.R
-import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
-import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.ui.component.*
@@ -234,7 +232,7 @@ fun ZuzuBottomNavigationBar(
             .height(52.dp),
         backgroundColor = ProofTheme.color.black
     ) {
-        bottomNavigationItems.forEach { route ->
+        bottomNavigationItems.forEach { screen ->
             BottomNavigationItem(
                 icon = {
                     when (screen) {
