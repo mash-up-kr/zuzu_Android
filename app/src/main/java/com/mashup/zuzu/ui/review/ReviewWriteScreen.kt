@@ -167,7 +167,7 @@ fun ReviewWriteScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .verticalScroll(scrollState)
+//                .verticalScroll(scrollState)
         ) {
             Column(
                 modifier = Modifier.padding(
