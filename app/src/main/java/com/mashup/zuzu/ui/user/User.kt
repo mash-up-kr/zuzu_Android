@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -28,8 +27,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.ui.component.*
 import com.mashup.zuzu.ui.theme.ProofTheme
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
 /**
  * @Created by 김현국 2022/07/14
@@ -55,7 +52,6 @@ fun UserRoute(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun UserScreen(
     modifier: Modifier,
@@ -74,7 +70,6 @@ fun UserScreen(
             }
         } as User
     )
-    val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = modifier) {
         UserTopBar(
@@ -84,9 +79,7 @@ fun UserScreen(
             optionList = optionList,
             onSettingClick = { onSettingClick(userState.user.id) },
             onEditButtonClick = {
-                coroutineScope.launch {
-                    onEditButtonClick()
-                }
+                onEditButtonClick()
             }
         )
         when (userState.selectionOption) {

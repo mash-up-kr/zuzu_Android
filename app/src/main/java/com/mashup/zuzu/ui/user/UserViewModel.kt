@@ -43,17 +43,6 @@ class UserViewModel() : ViewModel() {
     fun getJoinWorldCupData() {
     }
 
-    fun updateUserProfile(name: String) {
-        _user.value.let { uiState ->
-            when (uiState) {
-                is UserUiState.Success -> {
-                    uiState.userData.name = name
-                } else -> {
-                }
-            }
-        }
-    }
-
     fun submitUserProfile(name: String) {
         UserRepo.submitUserProfile(username = name)
     }
