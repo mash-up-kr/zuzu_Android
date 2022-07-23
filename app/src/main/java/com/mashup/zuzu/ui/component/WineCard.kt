@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.component
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,6 +20,7 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -35,10 +37,7 @@ import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.mashup.zuzu.R
-import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.model.Wine2
-import com.mashup.zuzu.data.model.WineRepo
-import com.mashup.zuzu.data.model.wines
+import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.theme.ProofTheme
 
@@ -59,11 +58,11 @@ fun WineImageCard(
         shape = RoundedCornerShape(10.dp),
     ) {
         Box() {
-            Image(
+            AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(),
-                painter = painterResource(id = R.drawable.img_wine_dummy),
+                model = ImageRequest.Builder(LocalContext.current).data(wine.imageUrl).build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds
             )
@@ -142,11 +141,11 @@ fun WineBoardCard(
             elevation = 0.8.dp
         ) {
             Box() {
-                Image(
+                AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(),
-                    painter = painterResource(id = R.drawable.img_wine_dummy),
+                    model = ImageRequest.Builder(LocalContext.current).data(wine.imageUrl).build(),
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds
                 )
@@ -299,7 +298,9 @@ fun WineCardInHome(
         ) {
             Box() {
                 Image(
-                    modifier = Modifier.fillMaxWidth().height(height),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(height),
                     painter = painterResource(id = R.drawable.exampleimg),
                     contentDescription = null,
                     contentScale = ContentScale.Crop
@@ -319,7 +320,9 @@ fun WineCardInHome(
         }
         WineCategoryWithAlc(modifier = Modifier.padding(top = 16.dp), wine = wine)
         Text(
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
             text = wine.name,
             fontWeight = FontWeight.W500,
             maxLines = 2,
@@ -500,6 +503,124 @@ fun WineTagCard(tagDescription: String, backgroundColor: Color, textColor: Color
     }
 }
 
+@Composable
+fun RecommendWineCardWithRenderScript(
+    modifier: Modifier,
+    recommendWine: Wine,
+    blurImage: Bitmap,
+    onRefreshButtonClick: () -> Unit
+) {
+    var rowheight by remember {
+        mutableStateOf<Dp?>(null)
+    }
+    Box(modifier = modifier) {
+        RenderBlurImage(
+            content = {
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(recommendWine.imageUrl)
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+            }, blurImage = {
+                Image(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(),
+                    bitmap = blurImage.asImageBitmap(),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = null
+                )
+            }
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .drawWithContent {
+                    clipRect(top = size.height / 1.4f) {
+                        rowheight = (size.height - size.height / 1.4f).toDp()
+                        this@drawWithContent.drawContent()
+                    }
+                }
+        ) {
+            rowheight?.let {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(it)
+                        .align(Alignment.BottomCenter)
+                        .padding(start = 20.dp, end = 20.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.75f)
+                    ) {
+                        Row {
+                            WineCategoryWithAlc(wine = recommendWine, modifier = Modifier)
+                        }
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(55.dp)
+                                .padding(top = 8.dp),
+                            text = recommendWine.name,
+                            style = ProofTheme.typography.headingS.copy(
+                                lineHeight = 22.sp
+                            ),
+                            color = ProofTheme.color.white,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.25f)
+                            .padding(start = 20.dp),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .width(46.dp)
+                                .height(46.dp)
+                                .background(
+                                    color = ProofTheme.color.primary300,
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .clickable { onRefreshButtonClick() }
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .width(16.dp)
+                                    .height(16.dp)
+                                    .align(Alignment.Center),
+                                imageVector = Icons.Outlined.Refresh,
+                                tint = ProofTheme.color.white,
+                                contentDescription = null
+                            )
+                        }
+                        Text(
+                            modifier = Modifier.padding(top = 4.dp),
+                            text = "다른술 보기",
+                            style = ProofTheme.typography.body3XS,
+                            color = ProofTheme.color.white
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 // 이미지를 두번 불러와서 블러처리할 부분만 자르고, 알파를 적용하는 방법
 @Composable
 fun RecommendWineCard(
@@ -512,39 +633,50 @@ fun RecommendWineCard(
     }
     Box(modifier = modifier) {
         BlurImage {
-            Card() {
-                Image(
-                    modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-                    painter = painterResource(id = R.drawable.exampleimg),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
-                )
-            }
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                model = ImageRequest.Builder(LocalContext.current).data(recommendWine.imageUrl).build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
         }
         Box(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight().drawWithContent {
-                clipRect(top = size.height / 1.4f) {
-                    rowheight = (size.height - size.height / 1.4f).toDp()
-                    this@drawWithContent.drawContent()
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .drawWithContent {
+                    clipRect(top = size.height / 1.4f) {
+                        rowheight = (size.height - size.height / 1.4f).toDp()
+                        this@drawWithContent.drawContent()
+                    }
                 }
-            }
         ) {
             rowheight?.let {
                 Row(
-                    modifier = Modifier.fillMaxWidth().height(it).align(Alignment.BottomCenter)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(it)
+                        .align(Alignment.BottomCenter)
                         .padding(start = 20.dp, end = 20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
 
                 ) {
                     Column(
-                        modifier = Modifier.fillMaxWidth().weight(0.75f)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.75f)
                     ) {
                         Row {
                             WineCategoryWithAlc(wine = recommendWine, modifier = Modifier)
                         }
                         Text(
-                            modifier = Modifier.fillMaxWidth().height(55.dp).padding(top = 8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(55.dp)
+                                .padding(top = 8.dp),
                             text = recommendWine.name,
                             style = ProofTheme.typography.headingS.copy(
                                 lineHeight = 22.sp
@@ -555,11 +687,16 @@ fun RecommendWineCard(
                         )
                     }
                     Column(
-                        modifier = Modifier.fillMaxWidth().weight(0.25f).padding(start = 20.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.25f)
+                            .padding(start = 20.dp),
                         horizontalAlignment = Alignment.End
                     ) {
                         Box(
-                            modifier = Modifier.width(46.dp).height(46.dp)
+                            modifier = Modifier
+                                .width(46.dp)
+                                .height(46.dp)
                                 .background(
                                     color = ProofTheme.color.primary300,
                                     shape = RoundedCornerShape(8.dp)
@@ -567,7 +704,9 @@ fun RecommendWineCard(
                                 .clickable { onRefreshButtonClick() }
                         ) {
                             Icon(
-                                modifier = Modifier.width(16.dp).height(16.dp)
+                                modifier = Modifier
+                                    .width(16.dp)
+                                    .height(16.dp)
                                     .align(Alignment.Center),
                                 imageVector = Icons.Outlined.Refresh,
                                 tint = ProofTheme.color.white,
@@ -588,8 +727,31 @@ fun RecommendWineCard(
 }
 
 @Composable
-fun BlurImage(content: @Composable () -> Unit) {
+fun RenderBlurImage(content: @Composable () -> Unit, blurImage: @Composable () -> Unit) {
+    Box {
+        content()
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .drawWithContent {
+                    clipRect(top = size.height / 1.4f) {
+                        val colors = listOf(Color.Transparent, Color.White)
+                        this@drawWithContent.drawContent()
+                        drawRect(
+                            brush = Brush.verticalGradient(colors),
+                            blendMode = BlendMode.DstIn
+                        )
+                    }
+                }
+        ) {
+            blurImage()
+        }
+    }
+}
 
+@Composable
+fun BlurImage(content: @Composable () -> Unit) {
     Box {
         content()
         Box(
@@ -609,20 +771,8 @@ fun BlurImage(content: @Composable () -> Unit) {
                 .blur(
                     radiusX = 10.dp, radiusY = 10.dp
                 )
-                .align(Alignment.BottomCenter)
         ) {
-            Box(
-                modifier = Modifier
-                    .background(
-                        color = ProofTheme.color.black.copy(
-                            alpha = 0.1f,
-                        )
-                    )
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-            ) {
-                content()
-            }
+            content()
         }
     }
 }
@@ -630,8 +780,8 @@ fun BlurImage(content: @Composable () -> Unit) {
 @Composable
 fun WineCellarCard(
     modifier: Modifier,
-    wine: Wine2,
-    onWineClick: (Wine2) -> Unit
+    wine: Wine,
+    onWineClick: (Wine) -> Unit
 ) {
     Column(
         modifier = modifier.clickable {
@@ -640,8 +790,10 @@ fun WineCellarCard(
     ) {
         Card() {
             Box(
-                modifier = Modifier.weight(1f)
-                    .aspectRatio(1f).background(color = ProofTheme.color.black)
+                modifier = Modifier
+                    .weight(1f)
+                    .aspectRatio(1f)
+                    .background(color = ProofTheme.color.black)
             ) {
                 AsyncImage(
                     modifier = Modifier.clip(CircleShape),
@@ -651,12 +803,17 @@ fun WineCellarCard(
                     contentScale = ContentScale.Crop
                 )
                 Box(
-                    modifier = Modifier.width(22.dp).height(22.dp).background(color = ProofTheme.color.primary300)
+                    modifier = Modifier
+                        .width(22.dp)
+                        .height(22.dp)
+                        .background(color = ProofTheme.color.primary300)
                 )
             }
         }
         Column(
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -666,7 +823,7 @@ fun WineCellarCard(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-            WineCategoryWithAlc(modifier = Modifier.padding(top = 4.dp), wine = wines[0])
+            WineCategoryWithAlc(modifier = Modifier.padding(top = 4.dp), wine = wine)
         }
     }
 }
@@ -676,8 +833,11 @@ fun WineCellarCard(
 fun PreviewWineCellarCard() {
     ProofTheme {
         WineCellarCard(
-            modifier = Modifier.width(88.dp).height(156.dp).background(color = ProofTheme.color.black),
-            wine = WineRepo.getWine2Data().get(0),
+            modifier = Modifier
+                .width(88.dp)
+                .height(156.dp)
+                .background(color = ProofTheme.color.black),
+            wine = WineRepo.getWineData()[0],
             onWineClick = {}
         )
     }
@@ -740,7 +900,7 @@ fun PreviewRecommendWineCard() {
                 .height(367.dp)
                 .padding(start = 24.dp, end = 24.dp, top = 19.dp)
                 .clip(RoundedCornerShape(16.dp)),
-            recommendWine = wines[0],
+            recommendWine = WineRepo.getRecommendWine(),
             onRefreshButtonClick = {
             }
         )
