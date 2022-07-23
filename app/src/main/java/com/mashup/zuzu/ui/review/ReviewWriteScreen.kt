@@ -40,7 +40,8 @@ fun ReviewWriteRoute(
         navigatePartnerPage = viewModel::navigatePartnerPage,
         navigateGroupPage = viewModel::navigateGroupPage,
         navigateSoloPage = viewModel::navigateSoloPage,
-        navigateTastePage = viewModel::navigateTastePage
+        navigateTastePage = viewModel::navigateTastePage,
+        navigateSummaryPage = viewModel::navigateSummaryPage
     )
 }
 
@@ -53,7 +54,8 @@ fun ReviewWriteScreen(
     navigatePartnerPage: (String) -> Unit,
     navigateGroupPage: (String) -> Unit,
     navigateSoloPage: (String) -> Unit,
-    navigateTastePage: (String) -> Unit
+    navigateTastePage: (String) -> Unit,
+    navigateSummaryPage: (List<Int>) -> Unit
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -219,7 +221,11 @@ fun ReviewWriteScreen(
                 }
 
                 5 -> {
-                    TasteSelectOption()
+                    TasteSelectOption(navigateSummaryPage = navigateSummaryPage)
+                }
+
+                6 -> {
+                    SummarySelectOption()
                 }
             }
         }
@@ -275,6 +281,10 @@ fun Topic(
 
                 5 -> {
                     stringResource(id = R.string.topic_taste)
+                }
+
+                6 -> {
+                    stringResource(id = R.string.topic_feeling)
                 }
 
                 else -> {
