@@ -21,6 +21,7 @@ accompanist = "0.24.13-rc"
 util = "1.1.1"
 icon = "1.1.1"
 timber = "5.0.1"
+renderscript = "b6363490c3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
@@ -43,6 +44,7 @@ android-material = { group = "com.google.android.material", name = "material", v
 
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist"}
+accompanist-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist"}
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
@@ -62,9 +64,11 @@ coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core",
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber"}
 
+renderscript = { group = "com.github.android", name = "renderscript-intrinsics-replacement-toolkit", version.ref = "renderscript"}
+
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]
-accompanist = ["accompanist-pager", "accompanist-systemuicontroller"]
+accompanist = ["accompanist-pager", "accompanist-systemuicontroller","accompanist-navigation-material"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradleplugin" }
