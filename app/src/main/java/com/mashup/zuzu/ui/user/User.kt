@@ -39,13 +39,19 @@ import kotlinx.coroutines.launch
 @Composable
 fun UserRoute(
     viewModel: UserViewModel = viewModel(),
-    onSettingClick: (User) -> Unit,
+    onSettingClick: (Long) -> Unit,
+    onEditButtonClick: () -> Unit,
+    onWorldCupItemClick: (BestWorldCup) -> Unit,
+    onWineClick: (Wine) -> Unit
 ) {
     val uiState by viewModel.user.collectAsState() // userData
     UserScreen(
         modifier = Modifier.fillMaxWidth().fillMaxHeight().background(color = ProofTheme.color.black),
         onSettingClick = onSettingClick,
-        uiState = uiState
+        uiState = uiState,
+        onEditButtonClick = onEditButtonClick,
+        onWorldCupItemClick = onWorldCupItemClick,
+        onWineClick = onWineClick
     )
 }
 
@@ -53,8 +59,11 @@ fun UserRoute(
 @Composable
 fun UserScreen(
     modifier: Modifier,
-    onSettingClick: (User) -> Unit,
-    uiState: UserUiState
+    onSettingClick: (Long) -> Unit,
+    uiState: UserUiState,
+    onEditButtonClick: () -> Unit,
+    onWorldCupItemClick: (BestWorldCup) -> Unit,
+    onWineClick: (Wine) -> Unit
 ) {
     val userState = rememberUserState(
         when (uiState) {
@@ -67,59 +76,48 @@ fun UserScreen(
     )
     val coroutineScope = rememberCoroutineScope()
 
-    BottomSheetScaffold(
-        modifier = modifier,
-        sheetBackgroundColor = ProofTheme.color.gray600,
-        scaffoldState = userState.bottomSheetState,
-        sheetContent = {
-            EditProfileBottomSheet(
-                modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 44.dp).fillMaxWidth().height(263.dp).background(color = ProofTheme.color.gray600),
-                userName = userState.user.name,
-                userNameChange = { name ->
-                    userState.updateUserProfileName(name = name)
+    Column(modifier = modifier) {
+        UserTopBar(
+            user = userState.user,
+            selectionOption = userState.selectionOption,
+            onSelectionChange = userState.onSelectionChange,
+            optionList = optionList,
+            onSettingClick = { onSettingClick(userState.user.id) },
+            onEditButtonClick = {
+                coroutineScope.launch {
+                    onEditButtonClick()
                 }
-            )
-        }, sheetPeekHeight = 0.dp,
-        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
-    ) {
-        Column(modifier = modifier) {
-            UserTopBar(
-                selectionOption = userState.selectionOption,
-                onSelectionChange = userState.onSelectionChange,
-                optionList = optionList,
-                onSettingClick = { onSettingClick(userState.user) },
-                onEditButtonClick = {
-                    coroutineScope.launch {
-                        userState.changeBottomSheetState()
+            }
+        )
+        when (userState.selectionOption) {
+            optionList[0] -> {
+                when (uiState) {
+                    is UserUiState.NoItem -> {
+                        NoItemWineOrWorldCup(
+                            modifier = Modifier.fillMaxHeight().fillMaxWidth(),
+                            userName = userState.user.name,
+                            type = "참여한 술드컵"
+                        )
+                    }
+                    is UserUiState.Success -> {
+                        WineCaller(
+                            modifier = Modifier.fillMaxWidth(),
+                            WineRepo.getWineData(),
+                            onWineClick = { wine ->
+                                onWineClick(wine)
+                            },
+                        )
                     }
                 }
-            )
-            when (userState.selectionOption) {
-                optionList[0] -> {
-                    when (uiState) {
-                        is UserUiState.NoItem -> {
-                            NoItemWineOrWorldCup(
-                                modifier = Modifier.fillMaxHeight().fillMaxWidth(),
-                                userName = userState.user.name,
-                                type = "참여한 술드컵"
-                            )
-                        }
-                        is UserUiState.Success -> {
-                            WineCaller(
-                                modifier = Modifier.fillMaxWidth(),
-                                WineRepo.getWine2Data(),
-                                onWineClick = {} // 호이스팅 필요
-                            )
-                        }
+            }
+            optionList[1] -> {
+                JoinWorldCup(
+                    modifier = Modifier.padding(top = 36.dp, start = 24.dp, end = 24.dp)
+                        .fillMaxWidth().fillMaxHeight(),
+                    onWorldCupItemClick = { bestWorldCup ->
+                        onWorldCupItemClick(bestWorldCup)
                     }
-                }
-                optionList[1] -> {
-                    JoinWorldCup(
-                        modifier = Modifier.padding(top = 36.dp, start = 24.dp, end = 24.dp)
-                            .fillMaxWidth().fillMaxHeight(),
-                        {} // 호이스팅 필요
-                    )
-                }
+                )
             }
         }
     }
@@ -145,6 +143,7 @@ fun JoinWorldCup(
 }
 @Composable
 fun UserTopBar(
+    user: User,
     selectionOption: String,
     optionList: List<String>,
     onSelectionChange: (String) -> Unit,
@@ -185,7 +184,7 @@ fun UserTopBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "위스키 다이스키",
+                text = user.name,
                 style = ProofTheme.typography.headingL,
                 color = ProofTheme.color.white
             )
@@ -217,8 +216,8 @@ fun UserTopBar(
 @Composable
 fun WineCaller(
     modifier: Modifier,
-    wines: List<Wine2>,
-    onWineClick: (Wine2) -> Unit
+    wines: List<Wine>,
+    onWineClick: (Wine) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 36.dp),
@@ -275,45 +274,11 @@ fun NoItemWineOrWorldCup(
     }
 }
 
-@Composable
-fun EditProfileBottomSheet(
-    modifier: Modifier,
-    userName: String,
-    userNameChange: (String) -> Unit
-) {
-    Column(modifier = modifier) {
-        Text(
-            text = "프로필 수정하기",
-            style = ProofTheme.typography.headingL,
-            color = ProofTheme.color.white
-        )
-        Spacer(modifier = Modifier.fillMaxWidth().height(24.dp))
-        ProfileImageItems(
-            modifier = Modifier.fillMaxWidth(),
-            profileImages = profileImages,
-            onProfileImageClick = {},
-            selectedProfileImage = profileImages[0]
-        )
-        Spacer(modifier = Modifier.fillMaxWidth().height(24.dp))
-        Text(
-            text = "내 별명",
-            style = ProofTheme.typography.headingXS,
-            color = ProofTheme.color.white
-        )
-        Spacer(modifier = Modifier.fillMaxWidth().height(6.dp))
-        TextField(
-            modifier = Modifier.fillMaxWidth().background(color = ProofTheme.color.gray500, shape = RoundedCornerShape(12.dp)),
-            value = userName,
-            onValueChange = userNameChange,
-            textStyle = ProofTheme.typography.bodyM
-        )
-    }
-}
 @Preview
 @Composable
 fun PreviewUserScreen() {
     ProofTheme {
-        UserScreen(modifier = Modifier.fillMaxWidth().fillMaxHeight(), {}, uiState = UserUiState.NoItem)
+        UserScreen(modifier = Modifier.fillMaxWidth().fillMaxHeight(), {}, uiState = UserUiState.NoItem, {}, {}, {})
     }
 }
 

@@ -19,8 +19,7 @@ sealed class UserUiState {
     data class Success(val userData: User) : UserUiState()
     object NoItem : UserUiState()
 }
-class UserViewModel(
-) : ViewModel() {
+class UserViewModel() : ViewModel() {
 
     private val _user: MutableStateFlow<UserUiState> =
         MutableStateFlow(UserUiState.Loading)
@@ -42,5 +41,20 @@ class UserViewModel(
     }
 
     fun getJoinWorldCupData() {
+    }
+
+    fun updateUserProfile(name: String) {
+        _user.value.let { uiState ->
+            when (uiState) {
+                is UserUiState.Success -> {
+                    uiState.userData.name = name
+                } else -> {
+                }
+            }
+        }
+    }
+
+    fun submitUserProfile(name: String) {
+        UserRepo.submitUserProfile(username = name)
     }
 }
