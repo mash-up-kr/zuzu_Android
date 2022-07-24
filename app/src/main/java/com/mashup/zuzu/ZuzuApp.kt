@@ -60,7 +60,6 @@ fun ZuzuApp() {
                     )
                 }
         },
-        backgroundColor = ProofTheme.color.black,
         bottomBar = {
             if (zuzuAppState.shouldShowBottomBar) // bottomBarTabs의 BottomScreen의 경로에 있을 때만, BottomNavBar가 보이도록 했습니다.
                 ZuzuBottomNavigationBar(
