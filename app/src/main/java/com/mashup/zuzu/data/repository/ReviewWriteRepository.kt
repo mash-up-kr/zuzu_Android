@@ -5,7 +5,6 @@ import com.mashup.zuzu.data.model.Wine
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-//TODO: String Resource 주입받아서 사용할 수 있도록 변경 필요함
 class ReviewWriteRepository constructor() {
     //TODO: Wine Repository를 따로 분리해야할 수도?
     fun getReviewWineStream(): Flow<Wine> = flow {

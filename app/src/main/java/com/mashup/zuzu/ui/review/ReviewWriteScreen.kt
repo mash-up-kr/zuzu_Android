@@ -1,6 +1,7 @@
 package com.mashup.zuzu.ui.review
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -66,6 +67,7 @@ fun ReviewWriteScreen(
         scaffoldState = bottomSheetScaffoldState,
         sheetShape = RoundedCornerShape(24.dp, 24.dp),
         backgroundColor = ProofTheme.color.black,
+        sheetBackgroundColor = ProofTheme.color.gray600,
         sheetContent = {
             Column(
                 modifier = Modifier
@@ -76,11 +78,13 @@ fun ReviewWriteScreen(
                 Text(
                     text = stringResource(R.string.review_cancel_title),
                     style = ProofTheme.typography.headingL,
+                    color = ProofTheme.color.white
                 )
 
                 Text(
                     text = stringResource(R.string.review_cancel_content),
                     style = ProofTheme.typography.bodyM,
+                    color = ProofTheme.color.gray200,
                     modifier = Modifier.padding(top = 12.dp)
                 )
 
@@ -95,11 +99,13 @@ fun ReviewWriteScreen(
                         colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray400),
                         modifier = Modifier
                             .weight(1f)
+                            .height(52.dp)
                             .padding(end = 6.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.cancel),
-                            style = ProofTheme.typography.buttonL
+                            style = ProofTheme.typography.buttonL,
+                            color = ProofTheme.color.white
                         )
                     }
                     Button(
@@ -107,11 +113,13 @@ fun ReviewWriteScreen(
                         colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
                         modifier = Modifier
                             .weight(1f)
+                            .height(52.dp)
                             .padding(start = 6.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.confirm),
-                            style = ProofTheme.typography.buttonL
+                            style = ProofTheme.typography.buttonL,
+                            color = ProofTheme.color.white
                         )
                     }
                 }
@@ -165,14 +173,10 @@ fun ReviewWriteScreen(
 
         }
     ) {
-        val scrollState = rememberScrollState()
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .verticalScroll(scrollState)
-                .wrapContentSize(unbounded = true)
         ) {
             Column(
                 modifier = Modifier.padding(
