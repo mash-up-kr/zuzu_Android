@@ -54,4 +54,15 @@
     <string name="feeling_groomy">씁슬한 인생</string>
     <string name="feeling_chili">매운 칠리</string>
     <string name="feeling_unknown">잘 모르겠어요</string>
+
+    <!-- 리뷰 작성 느낌 2페이지 -->
+    <string name="topic_summary">혹시 바쁘지 않다면,\n조금만 더 알려주실래요?</string>
+    <string name="summary_roast">구이류</string>
+    <string name="summary_fry">튀김/전류</string>
+    <string name="summary_cheese">치즈</string>
+    <string name="summary_salad">샐러드</string>
+    <string name="summary_fruits">과일</string>
+    <string name="summary_soup">국물/스프류</string>
+    <string name="summary_desert">디저트</string>
+    <string name="summary_noodle">면류</string>
 </resources>

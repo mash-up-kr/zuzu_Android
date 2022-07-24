@@ -41,7 +41,8 @@ fun ReviewWriteRoute(
         navigateGroupPage = viewModel::navigateGroupPage,
         navigateSoloPage = viewModel::navigateSoloPage,
         navigateTastePage = viewModel::navigateTastePage,
-        navigateSummaryPage = viewModel::navigateSummaryPage
+        navigateSummaryPage = viewModel::navigateSummaryPage,
+        navigateSecondarySummaryPage = viewModel::navigateSecondarySummaryPage,
     )
 }
 
@@ -55,7 +56,8 @@ fun ReviewWriteScreen(
     navigateGroupPage: (String) -> Unit,
     navigateSoloPage: (String) -> Unit,
     navigateTastePage: (String) -> Unit,
-    navigateSummaryPage: (List<Int>) -> Unit
+    navigateSummaryPage: (List<Int>) -> Unit,
+    navigateSecondarySummaryPage: (String) -> Unit,
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -152,7 +154,7 @@ fun ReviewWriteScreen(
                 }
 
                 LinearProgressIndicator(
-                    progress = (uiState.page + 1) / 6f,
+                    progress = (uiState.page + 1) / 7f,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(4.dp),
@@ -169,7 +171,8 @@ fun ReviewWriteScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-//                .verticalScroll(scrollState)
+                .verticalScroll(scrollState)
+                .wrapContentSize(unbounded = true)
         ) {
             Column(
                 modifier = Modifier.padding(
@@ -225,7 +228,11 @@ fun ReviewWriteScreen(
                 }
 
                 6 -> {
-                    SummarySelectOption()
+                    SummarySelectOption(navigateSecondarySummaryPage = navigateSecondarySummaryPage)
+                }
+
+                7 -> {
+                    SecondarySummaryPage()
                 }
             }
         }
@@ -285,6 +292,10 @@ fun Topic(
 
                 6 -> {
                     stringResource(id = R.string.topic_feeling)
+                }
+
+                7 -> {
+                    stringResource(id = R.string.topic_summary)
                 }
 
                 else -> {
