@@ -24,6 +24,8 @@ class ZuzuAppState constructor(
     val navController: NavHostController,
 ) {
 
+    var shouldShowProgressBar: Boolean by mutableStateOf(false)
+
     var bottomSheetNavigator by mutableStateOf(bottomSheetNavigator)
 
     val bottomBarRoutes = shouldShowNavigationItems.map { it.route }
@@ -65,6 +67,10 @@ class ZuzuAppState constructor(
 
     fun navigateReviewWriteScreen() {
         navController.navigate(REVIEW_WRITE)
+    }
+
+    fun showProgressBar() {
+        shouldShowProgressBar = !shouldShowProgressBar
     }
 
     companion object {
