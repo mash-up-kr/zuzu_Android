@@ -8,8 +8,10 @@ import com.google.accompanist.navigation.material.bottomSheet
 import com.mashup.zuzu.ZuzuAppState
 import com.mashup.zuzu.ui.category.CategoryRoute
 import com.mashup.zuzu.ui.home.HomeRoute
+import com.mashup.zuzu.ui.leave.LeaveUiEventState
 import com.mashup.zuzu.ui.user.LeaveRoute
 import com.mashup.zuzu.ui.user.SettingRoute
+import com.mashup.zuzu.ui.user.UpdateProfileUiEventState
 import com.mashup.zuzu.ui.user.UserRoute
 import com.mashup.zuzu.ui.user.edit.EditUserProfileRoute
 
@@ -84,7 +86,6 @@ internal fun NavGraphBuilder.userGraph(
             route = NavigationRoute.UserScreenGraph.SettingScreen.route
         ) {
             SettingRoute(
-                userId = 0,
                 onBackButtonClick = {
                     appState.navigateBackStack()
                 },
@@ -103,9 +104,19 @@ internal fun NavGraphBuilder.userGraph(
                 onBackButtonClick = {
                     appState.navigateBackStack()
                 },
-                onLeaveButtonClick = { /*TODO*/ },
                 onKeepUsingButtonClick = {
                     appState.navigateBackStack()
+                },
+                onLeaveState = { leaveUiEventState ->
+                    when (leaveUiEventState) {
+                        is LeaveUiEventState.Success -> {
+                            appState.showProgressBar()
+                            appState.navigateBackStack()
+                        }
+                        is LeaveUiEventState.Loading -> {
+                            appState.showProgressBar()
+                        }
+                    }
                 }
             )
         }
@@ -113,8 +124,16 @@ internal fun NavGraphBuilder.userGraph(
             route = NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route
         ) {
             EditUserProfileRoute(
-                onSubmitButtonClick = {
-                    appState.navigateBackStack()
+                onSubmitState = { updateProfileUiEventState ->
+                    when (updateProfileUiEventState) {
+                        is UpdateProfileUiEventState.Success -> {
+                            appState.showProgressBar()
+                            appState.navigateBackStack()
+                        }
+                        is UpdateProfileUiEventState.Loading -> {
+                            appState.showProgressBar()
+                        }
+                    }
                 }
             )
         }
