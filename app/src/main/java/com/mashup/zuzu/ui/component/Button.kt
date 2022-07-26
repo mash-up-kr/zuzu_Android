@@ -85,12 +85,6 @@ fun CustomButtonGroup(
     selectionOption: String,
     onSelectionChange: (String) -> Unit
 ) {
-//    var selectionOption by remember {
-//        mutableStateOf(optionList[0])
-//    }
-//    var onSelectionChange = { text: String ->
-//        selectionOption = text
-//    }
     Row(
         modifier = modifier
     ) {
