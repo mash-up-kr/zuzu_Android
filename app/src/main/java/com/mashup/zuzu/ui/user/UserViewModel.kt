@@ -2,11 +2,21 @@ package com.mashup.zuzu.ui.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mashup.zuzu.data.model.BestWorldCup
+import com.mashup.zuzu.data.model.Results
 import com.mashup.zuzu.data.model.User
-import com.mashup.zuzu.data.model.UserRepo
+import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.domain.usecase.GetJoinedWorldCupListUseCase
+import com.mashup.zuzu.domain.usecase.GetUserDataUseCase
+import com.mashup.zuzu.domain.usecase.GetWineCallerListUseCase
+import com.mashup.zuzu.domain.usecase.UpdateUserProfileUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/18
@@ -17,33 +27,129 @@ sealed class UserUiState {
     object Loading : UserUiState()
     object Error : UserUiState()
     data class Success(val userData: User) : UserUiState()
-    object NoItem : UserUiState()
 }
-class UserViewModel() : ViewModel() {
+sealed class WineCallerUiState {
+    object Loading : WineCallerUiState()
+    object Error : WineCallerUiState()
+    data class Success(val wineCaller: List<Wine>) : WineCallerUiState()
+    object NoItem : WineCallerUiState()
+}
+sealed class JoinedWorldCupUiState {
+    object Loading : JoinedWorldCupUiState()
+    object Error : JoinedWorldCupUiState()
+    data class Success(val joinedWorldCupList: List<BestWorldCup>) : JoinedWorldCupUiState()
+    object NoItem : JoinedWorldCupUiState()
+}
 
-    private val _user: MutableStateFlow<UserUiState> =
-        MutableStateFlow(UserUiState.Loading)
+sealed class UpdateProfileUiEventState {
+    object Loading : UpdateProfileUiEventState()
+    object Error : UpdateProfileUiEventState()
+    object Success : UpdateProfileUiEventState()
+    object Init : UpdateProfileUiEventState()
+}
+
+@HiltViewModel
+class UserViewModel @Inject constructor(
+    private val getUserDataUseCase: GetUserDataUseCase,
+    private val getJoinedWorldCupListUseCase: GetJoinedWorldCupListUseCase,
+    private val getWineCallerListUseCase: GetWineCallerListUseCase,
+    private val updateUserProfileUseCase: UpdateUserProfileUseCase
+) : ViewModel() {
+
+    private val _user: MutableStateFlow<UserUiState> = MutableStateFlow(UserUiState.Loading)
     val user = _user.asStateFlow()
 
+    private val _wineCaller: MutableStateFlow<WineCallerUiState> = MutableStateFlow(WineCallerUiState.Loading)
+    val wineCaller = _wineCaller.asStateFlow()
+
+    private val _joinedWorldCup: MutableStateFlow<JoinedWorldCupUiState> = MutableStateFlow(JoinedWorldCupUiState.Loading)
+    val joinedWorldCup = _joinedWorldCup.asStateFlow()
+
+    private val _submit: MutableSharedFlow<UpdateProfileUiEventState> = MutableStateFlow(UpdateProfileUiEventState.Init)
+    val submit = _submit.asSharedFlow()
+
     init {
-        getUserData()
+        getUserData(userId = 0L) // userId 수정
+        getWineCallerData(userId = 0L)
+        getJoinWorldCupData(userId = 0L)
     }
 
-    fun getUserData() {
+    private fun getUserData(userId: Long) {
         viewModelScope.launch {
-            UserRepo.getUserData().collect { user ->
-                _user.value = UserUiState.Success(userData = user)
+            getUserDataUseCase(userId = userId).collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        _user.value = UserUiState.Success(result.value)
+                    }
+                    is Results.Failure -> {
+                    }
+                    is Results.Loading -> {
+                        _user.value = UserUiState.Loading
+                    }
+                }
             }
         }
     }
 
-    fun getWineCallerData() {
+    fun getWineCallerData(userId: Long) {
+        viewModelScope.launch {
+            getWineCallerListUseCase(userId = userId).collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        if (result.value.isEmpty()) {
+                            _wineCaller.value = WineCallerUiState.NoItem
+                        } else {
+                            _wineCaller.value = WineCallerUiState.Success(result.value)
+                        }
+                    }
+                    is Results.Loading -> {
+                        _wineCaller.value = WineCallerUiState.Loading
+                    }
+                    is Results.Failure -> {
+                        _wineCaller.value = WineCallerUiState.Error
+                    }
+                }
+            }
+        }
     }
 
-    fun getJoinWorldCupData() {
+    fun getJoinWorldCupData(userId: Long) {
+        viewModelScope.launch {
+            getJoinedWorldCupListUseCase(userId = userId).collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        if (result.value.isEmpty()) {
+                            _joinedWorldCup.value = JoinedWorldCupUiState.NoItem
+                        } else {
+                            _joinedWorldCup.value = JoinedWorldCupUiState.Success(result.value)
+                        }
+                    }
+                    is Results.Loading -> {
+                        _joinedWorldCup.value = JoinedWorldCupUiState.Loading
+                    }
+                    is Results.Failure -> {
+                        _joinedWorldCup.value = JoinedWorldCupUiState.Error
+                    }
+                }
+            }
+        }
     }
 
     fun submitUserProfile(name: String) {
-        UserRepo.submitUserProfile(username = name)
+        viewModelScope.launch {
+            updateUserProfileUseCase(profileName = name).collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        _submit.emit(UpdateProfileUiEventState.Success)
+                    }
+                    is Results.Loading -> {
+                        _submit.emit(UpdateProfileUiEventState.Loading)
+                    }
+                    is Results.Failure -> {
+                        _submit.emit(UpdateProfileUiEventState.Error)
+                    }
+                }
+            }
+        }
     }
 }
