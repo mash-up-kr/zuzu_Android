@@ -11,10 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mashup.zuzu.ui.component.ProfileImageItems
 import com.mashup.zuzu.ui.component.profileImages
 import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.ui.user.UpdateProfileUiEventState
 import com.mashup.zuzu.ui.user.UserUiState
 import com.mashup.zuzu.ui.user.UserViewModel
 
@@ -25,24 +26,23 @@ import com.mashup.zuzu.ui.user.UserViewModel
 
 @Composable
 fun EditUserProfileRoute(
-    editProfileViewModel: UserViewModel = viewModel(),
-    onSubmitButtonClick: () -> Unit
+    viewModel: UserViewModel = hiltViewModel(),
+    onSubmitState: (UpdateProfileUiEventState) -> Unit
 ) {
-    val uiState by editProfileViewModel.user.collectAsState() // userData
+    val uiState by viewModel.user.collectAsState() // userData
+    val submitState by viewModel.submit.collectAsState(initial = UpdateProfileUiEventState.Init)
 
-    var userName by remember {
-        mutableStateOf<String>(
-            uiState.let { uiState ->
-                when (uiState) {
-                    is UserUiState.Success -> {
-                        uiState.userData.name
-                    }
-                    else -> {
-                        ""
-                    }
-                }
-            }
-        )
+    var userName = when (uiState) {
+        is UserUiState.Success -> {
+            (uiState as UserUiState.Success).userData.name
+        }
+        else -> {
+            ""
+        }
+    }
+
+    LaunchedEffect(key1 = submitState) {
+        onSubmitState(submitState)
     }
 
     EditProfileBottomSheet(
@@ -56,8 +56,7 @@ fun EditUserProfileRoute(
             userName = it
         },
         onSubmitButtonClick = {
-            editProfileViewModel.submitUserProfile(userName)
-            onSubmitButtonClick()
+            viewModel.submitUserProfile(userName)
         }
     )
 }
