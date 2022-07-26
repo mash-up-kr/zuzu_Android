@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -32,10 +33,10 @@ fun LeaveRoute(
     onLeaveState: (LeaveUiEventState) -> Unit
 ) {
 
-    val leaveUiEventState = viewModel.leave.collectAsState(initial = LeaveUiEventState.Init)
+    val leaveUiEventState by viewModel.leave.collectAsState()
 
-    LaunchedEffect(leaveUiEventState.value) {
-        onLeaveState(leaveUiEventState.value)
+    LaunchedEffect(leaveUiEventState) {
+        onLeaveState(leaveUiEventState)
     }
     LeaveScreen(
         modifier = Modifier.padding(top = 31.5.dp).fillMaxWidth().fillMaxHeight().background(color = ProofTheme.color.black),

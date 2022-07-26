@@ -55,7 +55,7 @@ fun CategoryRoute(
 ) {
 
     val index = categoryList.withIndex().filter { it.value.title == category }.map { it.index }[0]
-    val wineState = categoryViewModel.wineList.collectAsState().value
+    val wineState by categoryViewModel.wineList.collectAsState()
 
     CategoryScreen(
         modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),

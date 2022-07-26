@@ -46,10 +46,10 @@ fun HomeRoute(
     onCategoryClick: (Category) -> Unit
 ) {
 
-    val bestWorldCupState = viewModel.bestWorldCupList.collectAsState().value
-    val recommendState = viewModel.recommendWine.collectAsState().value
-    val mainWineState = viewModel.mainWineList.collectAsState().value
-    val blurBitmap = viewModel.bitmap.collectAsState().value
+    val bestWorldCupState by viewModel.bestWorldCupList.collectAsState()
+    val recommendState by viewModel.recommendWine.collectAsState()
+    val mainWineState by viewModel.mainWineList.collectAsState()
+    val blurBitmap by viewModel.bitmap.collectAsState()
 
     HomeScreen(
         modifier = Modifier

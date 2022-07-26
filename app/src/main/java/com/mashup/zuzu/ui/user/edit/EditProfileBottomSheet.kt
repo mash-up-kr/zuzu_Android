@@ -30,7 +30,7 @@ fun EditUserProfileRoute(
     onSubmitState: (UpdateProfileUiEventState) -> Unit
 ) {
     val uiState by viewModel.user.collectAsState() // userData
-    val submitState by viewModel.submit.collectAsState(initial = UpdateProfileUiEventState.Init)
+    val submitState by viewModel.submit.collectAsState()
 
     var userName = when (uiState) {
         is UserUiState.Success -> {

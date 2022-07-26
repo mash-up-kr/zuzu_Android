@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,11 +37,11 @@ fun SettingRoute(
     onLeaveButtonClick: () -> Unit,
     onEditButtonClick: () -> Unit
 ) {
-    val userState = viewModel.user.collectAsState()
-    when (userState.value) {
+    val userState by viewModel.user.collectAsState()
+    when (userState) {
         is UserUiState.Success -> {
             Setting(
-                user = (userState.value as UserUiState.Success).userData,
+                user = (userState as UserUiState.Success).userData,
                 onBackButtonClick = onBackButtonClick,
                 onLeaveButtonClick = onLeaveButtonClick,
                 onEditButtonClick = onEditButtonClick

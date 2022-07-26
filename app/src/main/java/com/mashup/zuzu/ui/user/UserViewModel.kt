@@ -11,9 +11,7 @@ import com.mashup.zuzu.domain.usecase.GetUserDataUseCase
 import com.mashup.zuzu.domain.usecase.GetWineCallerListUseCase
 import com.mashup.zuzu.domain.usecase.UpdateUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -65,8 +63,8 @@ class UserViewModel @Inject constructor(
     private val _joinedWorldCup: MutableStateFlow<JoinedWorldCupUiState> = MutableStateFlow(JoinedWorldCupUiState.Loading)
     val joinedWorldCup = _joinedWorldCup.asStateFlow()
 
-    private val _submit: MutableSharedFlow<UpdateProfileUiEventState> = MutableStateFlow(UpdateProfileUiEventState.Init)
-    val submit = _submit.asSharedFlow()
+    private val _submit: MutableStateFlow<UpdateProfileUiEventState> = MutableStateFlow(UpdateProfileUiEventState.Init)
+    val submit = _submit.asStateFlow()
 
     init {
         getUserData(userId = 0L) // userId 수정
@@ -140,13 +138,13 @@ class UserViewModel @Inject constructor(
             updateUserProfileUseCase(profileName = name).collect { result ->
                 when (result) {
                     is Results.Success -> {
-                        _submit.emit(UpdateProfileUiEventState.Success)
+                        _submit.value = UpdateProfileUiEventState.Success
                     }
                     is Results.Loading -> {
-                        _submit.emit(UpdateProfileUiEventState.Loading)
+                        _submit.value = UpdateProfileUiEventState.Loading
                     }
                     is Results.Failure -> {
-                        _submit.emit(UpdateProfileUiEventState.Error)
+                        _submit.value = UpdateProfileUiEventState.Error
                     }
                 }
             }
