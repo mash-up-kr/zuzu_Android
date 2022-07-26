@@ -9,7 +9,7 @@ import com.mashup.zuzu.ZuzuAppState
 import com.mashup.zuzu.ui.category.CategoryRoute
 import com.mashup.zuzu.ui.home.HomeRoute
 import com.mashup.zuzu.ui.leave.LeaveUiEventState
-import com.mashup.zuzu.ui.user.LeaveRoute
+import com.mashup.zuzu.ui.leave.LeaveRoute
 import com.mashup.zuzu.ui.user.SettingRoute
 import com.mashup.zuzu.ui.user.UpdateProfileUiEventState
 import com.mashup.zuzu.ui.user.UserRoute
