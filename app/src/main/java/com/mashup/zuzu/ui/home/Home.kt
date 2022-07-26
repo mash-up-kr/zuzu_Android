@@ -1,16 +1,21 @@
 package com.mashup.zuzu.ui.home
 
+import android.content.Context
+import android.graphics.Bitmap
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -18,127 +23,62 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import com.mashup.zuzu.R
-import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
-import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.ui.category.Category
 import com.mashup.zuzu.ui.component.*
+import com.mashup.zuzu.ui.model.Category
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/06/30
  * @Time 5:08 오후
  */
-val bottomNavigationItems = listOf(
-    BOTTOM_SCREEN_NAVIGATION,
-    BOTTOM_SCREEN_USER,
-)
 
 @Composable
-fun HomeLogo(modifier: Modifier) {
-    Image(
-        painterResource(id = R.drawable.ic_logo),
-        contentDescription = null,
-        modifier = modifier
+fun HomeRoute(
+    viewModel: HomeViewModel = viewModel(),
+    onWineBoardClick: (Wine) -> Unit,
+    onWorldCupItemClick: (BestWorldCup) -> Unit,
+    onCategoryClick: (Category) -> Unit
+) {
+
+    val bestWorldCupState = viewModel.bestWorldCupList.collectAsState().value
+    val recommendState = viewModel.recommendWine.collectAsState().value
+    val mainWineState = viewModel.mainWineList.collectAsState().value
+    val blurBitmap = viewModel.bitmap.collectAsState().value
+
+    HomeScreen(
+        modifier = Modifier.fillMaxWidth().fillMaxHeight().background(color = ProofTheme.color.black),
+        onCategoryClick = onCategoryClick,
+        onWorldCupItemClick = onWorldCupItemClick,
+        onWineBoardClick = onWineBoardClick,
+        onRefreshButtonClick = { context ->
+            viewModel.getRecommendWine(context = context)
+        },
+        bestWorldCupState = bestWorldCupState,
+        recommendState = recommendState,
+        mainWineState = mainWineState,
+        blurBitmap = blurBitmap
     )
 }
 
 @Composable
-fun HomeMainTitle(
-    modifier: Modifier,
-    onSuggestionClick: () -> Unit
-) {
-    Row {
-        Text(
-            modifier = modifier,
-            style = TextStyle(
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            color = ProofTheme.color.white,
-            text = "요즘 사람들은 \n어떤 술을 마실까?"
-        )
-        Image(
-            painter = painterResource(id = R.drawable.img_wine_logo),
-            contentDescription = null,
-            modifier = Modifier
-                .clickable { onSuggestionClick() }
-                .align(Alignment.Bottom)
-                .width(36.dp)
-                .height(36.dp)
-        )
-    }
-}
-
-@Composable
-fun HomeMainTitleItems(
-    wines: List<Wine>,
-    modifier: Modifier,
-    onWineBoardClick: (Wine) -> Unit
-) {
-    LazyRow(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(14.dp)
-    ) {
-        itemsIndexed(wines) { index, wine ->
-            WineCardInHome(
-                modifier = Modifier.width(220.dp),
-                height = 260.dp,
-                wine = wines[index],
-                onWineBoardClick = onWineBoardClick
-            )
-        }
-    }
-}
-
-@Composable
-fun HomeSubTitle(
-    modifier: Modifier,
-    boldTitle: String
-) {
-    Column(modifier = modifier) {
-        Text(
-            text = boldTitle,
-            style = ProofTheme.typography.headingL,
-            color = ProofTheme.color.white
-        )
-    }
-}
-
-@Composable
-fun HomeBestWorldCup(
-    modifier: Modifier,
-    bestWorldCupList: List<BestWorldCup>,
-    onWorldCupItemClick: (BestWorldCup) -> Unit
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(32.dp)
-    ) {
-        bestWorldCupList.forEach { bestWorldCup ->
-            WorldCupCard(
-                modifier = Modifier.fillMaxWidth(),
-                worldCupItem = bestWorldCup,
-                onWorldCupItemClick = onWorldCupItemClick
-            )
-        }
-    }
-}
-
-@Composable
-fun ZuzuHomeScreen(
+fun HomeScreen(
     modifier: Modifier,
     onCategoryClick: (Category) -> Unit,
     onWorldCupItemClick: (BestWorldCup) -> Unit,
     onWineBoardClick: (Wine) -> Unit,
-    homeViewModel: HomeViewModel = viewModel(),
+    onRefreshButtonClick: (Context) -> Unit,
+    bestWorldCupState: BestWorldCupUiState,
+    recommendState: RecommendWineUiState,
+    mainWineState: MainWineUiState,
+    blurBitmap: Bitmap?
 ) {
     val scrollState = rememberScrollState()
-    val bestWorldCupState = homeViewModel.bestWorldCupList.collectAsState().value
-    val recommendState = homeViewModel.recommendWine.collectAsState().value
-    val mainWineState = homeViewModel.mainWineList.collectAsState().value
+    val context = LocalContext.current
 
     Column(
         modifier = modifier.verticalScroll(scrollState)
@@ -153,7 +93,9 @@ fun ZuzuHomeScreen(
         when (mainWineState) {
             is MainWineUiState.Success -> {
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(372.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(372.dp)
                 ) {
                     HomeMainTitleItems(
                         modifier = Modifier.padding(start = 24.dp),
@@ -211,9 +153,23 @@ fun ZuzuHomeScreen(
                         .clip(RoundedCornerShape(16.dp)),
                     recommendWine = recommendState.recommendWine,
                     onRefreshButtonClick = {
-                        homeViewModel.getRecommendWine()
+                        onRefreshButtonClick(context)
                     }
                 )
+//                if (blurBitmap != null) {
+//                    RecommendWineCardWithRenderScript(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(367.dp)
+//                            .padding(start = 24.dp, end = 24.dp, top = 19.dp)
+//                            .clip(RoundedCornerShape(16.dp)),
+//                        recommendWine = recommendState.recommendWine,
+//                        onRefreshButtonClick = {
+//                            homeViewModel.getRecommendWine(context)
+//                        },
+//                        blurImage = blurBitmap
+//                    )
+//                }
             }
             is RecommendWineUiState.Loading -> {
                 RecommendImage(
@@ -222,7 +178,7 @@ fun ZuzuHomeScreen(
                         .height(367.dp)
                         .padding(start = 24.dp, end = 24.dp, top = 19.dp),
                     onButtonClick = {
-                        homeViewModel.getRecommendWine()
+                        onRefreshButtonClick(context)
                     }
                 )
             }
@@ -264,7 +220,7 @@ fun ZuzuHomeScreen(
 
 @Composable
 fun ZuzuBottomNavigationBar(
-    currentRoute: String?,
+    currentRoute: NavDestination?,
     onBottomTabsClick: (String) -> Unit,
     bottomNavigationItems: List<String>
 ) {
@@ -276,30 +232,120 @@ fun ZuzuBottomNavigationBar(
             .height(52.dp),
         backgroundColor = ProofTheme.color.black
     ) {
-        bottomNavigationItems.forEach { route ->
+        bottomNavigationItems.forEach { screen ->
             BottomNavigationItem(
                 icon = {
-                    when (route) {
-                        "navigation" -> {
+                    when (screen) {
+                        "home_screen.screen" -> {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_compass),
+                                painter = painterResource(id = R.drawable.ic_home_variant),
                                 contentDescription = null
                             )
                         }
-                        "user" -> {
+                        "user_screen.screen" -> {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_user),
+                                imageVector = Icons.Filled.AccountCircle,
                                 contentDescription = null
                             )
                         }
                     }
                 },
-                selected = currentRoute == route, // 선택에 따라서 색상이 변경됩니다.
-                selectedContentColor = ProofTheme.color.white,
+                selected = currentRoute?.hierarchy?.any { it.route == screen } == true, // 선택에 따라서 색상이 변경됩니다.
+                selectedContentColor = ProofTheme.color.primary50,
                 alwaysShowLabel = false,
                 onClick = {
-                    onBottomTabsClick(route)
+                    onBottomTabsClick(screen)
                 }
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeLogo(modifier: Modifier) {
+    Image(
+        painterResource(id = R.drawable.ic_logo),
+        contentDescription = null,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun HomeMainTitle(
+    modifier: Modifier,
+    onSuggestionClick: () -> Unit
+) {
+    Row {
+        Text(
+            modifier = modifier,
+            style = TextStyle(
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            color = ProofTheme.color.white,
+            text = "요즘 사람들은 \n어떤 술을 마실까?"
+        )
+        Image(
+            painter = painterResource(id = R.drawable.img_wine_logo),
+            contentDescription = null,
+            modifier = Modifier
+                .clickable { onSuggestionClick() }
+                .align(Alignment.Bottom)
+                .width(36.dp)
+                .height(36.dp)
+        )
+    }
+}
+
+@Composable
+fun HomeMainTitleItems(
+    wines: List<Wine>,
+    modifier: Modifier,
+    onWineBoardClick: (Wine) -> Unit
+) {
+    LazyRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        itemsIndexed(wines) { index, wine ->
+            WineCardInHome(
+                modifier = Modifier.width(224.dp),
+                height = 260.dp,
+                wine = wines[index], onWineBoardClick = onWineBoardClick
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeSubTitle(
+    modifier: Modifier,
+    boldTitle: String
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = boldTitle,
+            style = ProofTheme.typography.headingL,
+            color = ProofTheme.color.white
+        )
+    }
+}
+
+@Composable
+fun HomeBestWorldCup(
+    modifier: Modifier,
+    bestWorldCupList: List<BestWorldCup>,
+    onWorldCupItemClick: (BestWorldCup) -> Unit
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(32.dp)
+    ) {
+        bestWorldCupList.forEach { bestWorldCup ->
+            WorldCupCard(
+                modifier = Modifier.fillMaxWidth(),
+                worldCupItem = bestWorldCup,
+                onWorldCupItemClick = onWorldCupItemClick
             )
         }
     }
@@ -325,6 +371,8 @@ fun RecommendImage(
                 .width(115.dp)
                 .height(44.dp)
                 .align(Alignment.BottomCenter),
+            backgroundColor = ProofTheme.color.primary300,
+            textColor = ProofTheme.color.white,
             text = "추천술 보기", onButtonClick = onButtonClick
         )
     }
@@ -339,11 +387,16 @@ fun PreviewZuzuHomeScreen() {
                 .fillMaxWidth()
                 .fillMaxHeight()
         ) {
-            ZuzuHomeScreen(
+            HomeScreen(
                 modifier = Modifier.background(color = ProofTheme.color.black),
-                {},
-                {},
-                {}
+                onCategoryClick = {},
+                onWineBoardClick = {},
+                onWorldCupItemClick = {},
+                onRefreshButtonClick = {},
+                bestWorldCupState = BestWorldCupUiState.Loading,
+                mainWineState = MainWineUiState.Loading,
+                recommendState = RecommendWineUiState.Loading,
+                blurBitmap = null
             )
         }
     }
@@ -356,7 +409,7 @@ fun PreviewZuzuNavigationBar() {
         ZuzuBottomNavigationBar(
             currentRoute = null,
             onBottomTabsClick = {},
-            bottomNavigationItems = bottomNavigationItems
+            bottomNavigationItems = listOf("")
         )
     }
 }

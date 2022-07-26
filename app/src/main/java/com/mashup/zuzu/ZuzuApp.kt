@@ -1,9 +1,9 @@
 package com.mashup.zuzu
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
@@ -15,101 +15,95 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_NAVIGATION
-import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_USER
-import com.mashup.zuzu.ZuzuAppState.Companion.BOTTOM_SCREEN_WORLD_CUP
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_DETAIL
 import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_WRITE
 import com.mashup.zuzu.ui.DetailScreen
-import com.mashup.zuzu.ui.category.CategoryScreen
 import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
-import com.mashup.zuzu.ui.home.ZuzuHomeScreen
+import com.mashup.zuzu.ui.navigation.NavigationRoute
+import com.mashup.zuzu.ui.navigation.categoryGraph
+import com.mashup.zuzu.ui.navigation.homeGraph
+import com.mashup.zuzu.ui.navigation.userGraph
 import com.mashup.zuzu.ui.review.ReviewWriteRoute
-import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/06/30
  * @Time 4:41 오후
  */
+@OptIn(ExperimentalMaterialNavigationApi::class)
 // TODO: Naming 변경 필요함
 @Composable
-fun ZuzuApp() {
+fun ZuzuApp(
+    onWorldCupButtonClick: () -> Unit
+) {
     val zuzuAppState = rememberAppState()
 
-    Scaffold(
-        floatingActionButtonPosition = FabPosition.End,
-        isFloatingActionButtonDocked = false,
-        floatingActionButton = {
-            if (zuzuAppState.shouldShowBottomBar)
-                FloatingActionButton(
-                    modifier = Modifier.width(64.dp).height(64.dp),
-                    shape = CircleShape,
-                    onClick = {
-                        zuzuAppState.navigateToBottomBarRoute(BOTTOM_SCREEN_WORLD_CUP)
-                    },
-                    backgroundColor = Color.White
-                ) {
-                    Image(
+    ModalBottomSheetLayout(
+        bottomSheetNavigator = zuzuAppState.bottomSheetNavigator,
+        sheetBackgroundColor = ProofTheme.color.gray600,
+        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+    ) {
+        Scaffold(
+            floatingActionButtonPosition = FabPosition.End,
+            isFloatingActionButtonDocked = false,
+            floatingActionButton = {
+                if (zuzuAppState.shouldShowFloatingButton)
+                    FloatingActionButton(
                         modifier = Modifier
-                            .width(40.dp)
-                            .height(40.dp),
-                        painter = painterResource(id = R.drawable.ic_worldcup),
-                        contentDescription = null
+                            .width(64.dp)
+                            .height(64.dp),
+                        shape = CircleShape,
+                        onClick = {
+                            onWorldCupButtonClick()
+                        },
+                        backgroundColor = Color.White
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .width(40.dp)
+                                .height(40.dp),
+                            painter = painterResource(id = R.drawable.ic_worldcup),
+                            contentDescription = null
+                        )
+                    }
+            },
+            backgroundColor = ProofTheme.color.black,
+            bottomBar = {
+                if (zuzuAppState.shouldShowBottomBar) // bottomBarTabs의 BottomScreen의 경로에 있을 때만, BottomNavBar가 보이도록 했습니다.
+                    ZuzuBottomNavigationBar(
+                        currentRoute = zuzuAppState.currentDestination,
+                        onBottomTabsClick = { route ->
+                            zuzuAppState.navigateToBottomBarRoute(route)
+                        },
+                        bottomNavigationItems = zuzuAppState.bottomBarRoutes
+                    )
+            }
+        ) { paddingValues ->
+            NavHost(
+                modifier = Modifier.padding(paddingValues),
+                navController = zuzuAppState.navController,
+                startDestination = NavigationRoute.HomeScreenGraph.route // REVIEW_DETAIL
+            ) {
+                homeGraph(
+                    appState = zuzuAppState
+                )
+                categoryGraph(
+                    appState = zuzuAppState
+                )
+                userGraph(
+                    appState = zuzuAppState
+                )
+                composable(REVIEW_DETAIL) {
+                    DetailScreen(
+                        navigateToReviewWrite = { zuzuAppState.navigateReviewWriteScreen() }
                     )
                 }
-        },
-        backgroundColor = ProofTheme.color.black,
-        bottomBar = {
-            if (zuzuAppState.shouldShowBottomBar) // bottomBarTabs의 BottomScreen의 경로에 있을 때만, BottomNavBar가 보이도록 했습니다.
-                ZuzuBottomNavigationBar(
-                    zuzuAppState.currentRoute,
-                    onBottomTabsClick = { route ->
-                        zuzuAppState.navigateToBottomBarRoute(route)
-                    },
-                    bottomNavigationItems = zuzuAppState.bottomBarRoutes
-                )
-        }
-    ) { paddingValues ->
-        NavHost(
-            modifier = Modifier.padding(paddingValues),
-            navController = zuzuAppState.navController,
-            startDestination = REVIEW_DETAIL
-        ) {
-            composable(BOTTOM_SCREEN_NAVIGATION) {
-                ZuzuHomeScreen(
-                    modifier = Modifier.background(color = Black),
-                    onCategoryClick = { category ->
-                        zuzuAppState.navigateToBottomBarRoute(ZuzuAppState.BOTTOM_SCREEN_CATEGORY + "/${category.title}")
-                    },
-                    onWineBoardClick = {},
-                    onWorldCupItemClick = {}
-                )
-            }
 
-            composable(BOTTOM_SCREEN_USER) {
-            }
-
-            composable(BOTTOM_SCREEN_WORLD_CUP) {
-            }
-
-            composable(REVIEW_DETAIL) {
-                DetailScreen(
-                    navigateToReviewWrite = { zuzuAppState.navigateReviewWriteScreen() }
-                )
-            }
-
-            composable(REVIEW_WRITE) {
-                ReviewWriteRoute()
-            }
-
-            composable(ZuzuAppState.BOTTOM_SCREEN_CATEGORY + "/{category}") {
-                CategoryScreen(
-                    modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
-                    category = it.arguments!!.getString("category")!!, onBackButtonClick = {
-                        zuzuAppState.navigateBackStack()
-                    }, onWineBoardClick = {}
-                )
+                composable(REVIEW_WRITE) {
+                    ReviewWriteRoute()
+                }
             }
         }
     }
@@ -119,6 +113,6 @@ fun ZuzuApp() {
 @Composable
 fun PreviewZuzuApp() {
     ProofTheme() {
-        ZuzuApp()
+        ZuzuApp({})
     }
 }

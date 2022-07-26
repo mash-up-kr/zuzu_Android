@@ -1,7 +1,6 @@
 package com.mashup.zuzu.data.model
 
 import androidx.compose.runtime.Immutable
-import com.mashup.zuzu.R
 
 /**
  * @Created by 김현국 2022/07/01
@@ -12,7 +11,7 @@ import com.mashup.zuzu.R
 data class Wine(
     val id: Long,
     val name: String,
-    val imageUrl: Int,
+    val imageUrl: String,
     val price: Long,
     val alc: Int,
     val description: List<String>,
@@ -24,7 +23,7 @@ val wines = listOf(
     Wine(
         id = 1L,
         name = "GoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlue",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 1000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술"),
@@ -34,7 +33,7 @@ val wines = listOf(
     Wine(
         id = 2L,
         name = "Jack Daniels",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 40000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -44,7 +43,7 @@ val wines = listOf(
     Wine(
         id = 3L,
         name = "참이슬",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 4500,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -54,7 +53,7 @@ val wines = listOf(
     Wine(
         id = 4L,
         name = "로즈와인",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 24000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -64,7 +63,7 @@ val wines = listOf(
     Wine(
         id = 5L,
         name = "진로",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 4000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -74,7 +73,7 @@ val wines = listOf(
     Wine(
         id = 6L,
         name = "Jim Beam",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 24000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -84,7 +83,7 @@ val wines = listOf(
     Wine(
         id = 7L,
         name = "Red Wine",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 3400,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),
@@ -94,7 +93,7 @@ val wines = listOf(
     Wine(
         id = 8L,
         name = "Tintied Wine",
-        imageUrl = R.drawable.img_wine_dummy,
+        imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
         price = 40000,
         alc = 17,
         listOf("뜨는 술", "맛있는 술"),

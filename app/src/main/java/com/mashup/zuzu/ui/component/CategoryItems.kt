@@ -10,8 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mashup.zuzu.ui.category.Category
-import com.mashup.zuzu.ui.category.categoryList
+import com.mashup.zuzu.ui.model.Category
+import com.mashup.zuzu.ui.model.categoryList
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
