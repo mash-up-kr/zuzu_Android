@@ -12,13 +12,9 @@ val sortMenuItem = listOf("최신순", "오래된순", "인기순")
 @Stable
 class CategoryState(
     initSelectedTabIndex: Int,
-    initExpanded: Boolean,
-    initSortMenuItemText: String,
     initViewMode: Boolean
 ) {
     var selectedTabIndex by mutableStateOf(initSelectedTabIndex)
-    var expanded by mutableStateOf(initExpanded)
-    var sortMenuItemText by mutableStateOf(initSortMenuItemText)
     var viewMode by mutableStateOf(initViewMode)
 
     fun updateSelectedTabIndex(index: Int) {
@@ -36,8 +32,6 @@ fun rememberCategoryState(
 ): CategoryState = remember() {
     CategoryState(
         initSelectedTabIndex = index,
-        initExpanded = false,
-        initSortMenuItemText = sortMenuItem[0],
         initViewMode = true
     )
 }
