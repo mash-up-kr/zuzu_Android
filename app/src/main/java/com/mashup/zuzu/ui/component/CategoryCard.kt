@@ -10,8 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mashup.zuzu.ui.model.Category
-import com.mashup.zuzu.ui.model.categoryList
+import coil.compose.AsyncImage
+import com.mashup.zuzu.data.model.Category
+import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
@@ -31,9 +32,10 @@ fun CategoryCard(
         Box(
             modifier = modifier
         ) {
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = category.imageText
+            AsyncImage(
+                modifier = Modifier.fillMaxSize().align(Alignment.Center),
+                model = category.imageUrl,
+                contentDescription = null
             )
         }
         Text(
