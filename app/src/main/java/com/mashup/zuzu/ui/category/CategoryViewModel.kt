@@ -18,10 +18,10 @@ import javax.inject.Inject
  * @Time 5:57 오후
  */
 
-sealed class CategoryUiState {
-    object Loading : CategoryUiState()
-    object Error : CategoryUiState()
-    data class Success(val wineList: List<Wine>) : CategoryUiState()
+sealed class WineListWithCategoryUiState {
+    object Loading : WineListWithCategoryUiState()
+    object Error : WineListWithCategoryUiState()
+    data class Success(val wineList: List<Wine>) : WineListWithCategoryUiState()
 }
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
@@ -30,8 +30,8 @@ class CategoryViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _wineList: MutableStateFlow<CategoryUiState> =
-        MutableStateFlow(CategoryUiState.Loading)
+    private val _wineList: MutableStateFlow<WineListWithCategoryUiState> =
+        MutableStateFlow(WineListWithCategoryUiState.Loading)
     val wineList = _wineList.asStateFlow()
 
     init {
@@ -45,13 +45,13 @@ class CategoryViewModel @Inject constructor(
                 getWineListUseCase().collect { result ->
                     when (result) {
                         is Results.Success -> {
-                            _wineList.value = CategoryUiState.Success(result.value)
+                            _wineList.value = WineListWithCategoryUiState.Success(result.value)
                         }
                         is Results.Loading -> {
-                            _wineList.value = CategoryUiState.Loading
+                            _wineList.value = WineListWithCategoryUiState.Loading
                         }
                         is Results.Failure -> {
-                            _wineList.value = CategoryUiState.Error
+                            _wineList.value = WineListWithCategoryUiState.Error
                         }
                     }
                 }
@@ -59,13 +59,13 @@ class CategoryViewModel @Inject constructor(
                 getWineListWithCategoryUseCase(category = category).collect { result ->
                     when (result) {
                         is Results.Success -> {
-                            _wineList.value = CategoryUiState.Success(result.value)
+                            _wineList.value = WineListWithCategoryUiState.Success(result.value)
                         }
                         is Results.Loading -> {
-                            _wineList.value = CategoryUiState.Loading
+                            _wineList.value = WineListWithCategoryUiState.Loading
                         }
                         is Results.Failure -> {
-                            _wineList.value = CategoryUiState.Error
+                            _wineList.value = WineListWithCategoryUiState.Error
                         }
                     }
                 }
