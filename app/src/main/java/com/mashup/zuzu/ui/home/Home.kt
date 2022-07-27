@@ -19,18 +19,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.BestWorldCup
+import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.ui.component.*
-import com.mashup.zuzu.ui.model.Category
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
@@ -43,13 +44,14 @@ fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel(),
     onWineBoardClick: (Wine) -> Unit,
     onWorldCupItemClick: (BestWorldCup) -> Unit,
-    onCategoryClick: (Category) -> Unit
+    onCategoryClick: (List<Category>, Category) -> Unit
 ) {
 
     val bestWorldCupState by viewModel.bestWorldCupList.collectAsState()
     val recommendState by viewModel.recommendWine.collectAsState()
     val mainWineState by viewModel.mainWineList.collectAsState()
     val blurBitmap by viewModel.bitmap.collectAsState()
+    val categoryListState by viewModel.categoryList.collectAsState()
 
     HomeScreen(
         modifier = Modifier
@@ -65,21 +67,23 @@ fun HomeRoute(
         bestWorldCupState = bestWorldCupState,
         recommendState = recommendState,
         mainWineState = mainWineState,
-        blurBitmap = blurBitmap
+        blurBitmap = blurBitmap,
+        categoryListState = categoryListState
     )
 }
 
 @Composable
 fun HomeScreen(
     modifier: Modifier,
-    onCategoryClick: (Category) -> Unit,
+    onCategoryClick: (List<Category>, Category) -> Unit,
     onWorldCupItemClick: (BestWorldCup) -> Unit,
     onWineBoardClick: (Wine) -> Unit,
     onRefreshButtonClick: (Context) -> Unit,
     bestWorldCupState: BestWorldCupUiState,
     recommendState: RecommendWineUiState,
     mainWineState: MainWineUiState,
-    blurBitmap: Bitmap?
+    blurBitmap: Bitmap?,
+    categoryListState: CategoryListUiState
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -88,25 +92,19 @@ fun HomeScreen(
         modifier = modifier.verticalScroll(scrollState)
     ) {
         HomeLogo(modifier = Modifier.padding(top = 24.dp, start = 24.dp))
-        HomeMainTitle(modifier = Modifier.padding(top = 31.dp, start = 24.dp), {})
+        HomeMainTitle(modifier = Modifier.fillMaxWidth().padding(top = 31.dp))
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(24.dp)
+                .height(22.dp)
         )
         when (mainWineState) {
             is MainWineUiState.Success -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(372.dp)
-                ) {
-                    HomeMainTitleItems(
-                        modifier = Modifier.padding(start = 24.dp),
-                        wines = mainWineState.mainWines,
-                        onWineBoardClick = onWineBoardClick
-                    )
-                }
+                HorizontalPagerWithOffsetTransition(
+                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                    onWineBoardClick = onWineBoardClick,
+                    wines = mainWineState.mainWines
+                )
             }
             is MainWineUiState.Error -> {}
             is MainWineUiState.Loading -> {}
@@ -120,18 +118,29 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(6.dp),
-            color = ProofTheme.color.black
+            color = ProofTheme.color.gray600
         )
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 32.dp),
             boldTitle = "무엇을 마실지 고민이라면?"
         )
-        CategoryItems(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, top = 24.dp),
-            onCategoryClick = onCategoryClick
-        )
+        when (categoryListState) {
+            is CategoryListUiState.Success -> {
+                CategoryItems(
+                    modifier = Modifier
+                        .padding(start = 24.dp, top = 24.dp),
+                    categoryList = categoryListState.categoryList,
+                    onCategoryClick = { category ->
+                        onCategoryClick(categoryListState.categoryList, category)
+                    }
+                )
+            }
+            is CategoryListUiState.Loading -> {
+            }
+            is CategoryListUiState.Error -> {
+            }
+        }
+
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -141,7 +150,7 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(6.dp),
-            color = ProofTheme.color.black
+            color = ProofTheme.color.gray600
         )
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 40.dp),
@@ -197,7 +206,7 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(6.dp),
-            color = ProofTheme.color.black
+            color = ProofTheme.color.gray600
         )
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 32.dp),
@@ -277,26 +286,19 @@ fun HomeLogo(modifier: Modifier) {
 @Composable
 fun HomeMainTitle(
     modifier: Modifier,
-    onSuggestionClick: () -> Unit
 ) {
-    Row {
+    Box(
+        modifier = modifier
+    ) {
         Text(
-            modifier = modifier,
+            modifier = Modifier.align(Alignment.Center),
             style = TextStyle(
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             ),
             color = ProofTheme.color.white,
-            text = "요즘 사람들은 \n어떤 술을 마실까?"
-        )
-        Image(
-            painter = painterResource(id = R.drawable.img_wine_logo),
-            contentDescription = null,
-            modifier = Modifier
-                .clickable { onSuggestionClick() }
-                .align(Alignment.Bottom)
-                .width(36.dp)
-                .height(36.dp)
+            text = "요즘 사람들은 \n어떤 술을 마실까?",
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -393,14 +395,15 @@ fun PreviewZuzuHomeScreen() {
         ) {
             HomeScreen(
                 modifier = Modifier.background(color = ProofTheme.color.black),
-                onCategoryClick = {},
+                onCategoryClick = { _, _ -> },
                 onWineBoardClick = {},
                 onWorldCupItemClick = {},
                 onRefreshButtonClick = {},
                 bestWorldCupState = BestWorldCupUiState.Loading,
                 mainWineState = MainWineUiState.Loading,
                 recommendState = RecommendWineUiState.Loading,
-                blurBitmap = null
+                blurBitmap = null,
+                categoryListState = CategoryListUiState.Loading
             )
         }
     }
@@ -433,8 +436,10 @@ fun PreviewZuzuWineCategoryNavigationTitle() {
 @Composable
 fun PreviewZuzuWineCategoryItems() {
     ProofTheme() {
-        CategoryItems(modifier = Modifier.fillMaxWidth(), onCategoryClick = {})
-//
+        CategoryItems(
+            modifier = Modifier.fillMaxWidth(), categoryList = categoryList, onCategoryClick = { category ->
+            }
+        )
     }
 }
 
