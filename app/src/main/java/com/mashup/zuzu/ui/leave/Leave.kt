@@ -5,20 +5,20 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mashup.zuzu.ui.component.Button
 import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.R
 
 /**
  * @Created by 김현국 2022/07/18
@@ -107,7 +107,7 @@ fun LeaveTopBar(
                 .padding(start = 33.dp).clickable {
                     onBackButtonClick()
                 }.align(Alignment.CenterStart),
-            imageVector = Icons.Outlined.ArrowBack,
+            painter = painterResource(id = R.drawable.ic_arrow_left),
             tint = ProofTheme.color.white,
             contentDescription = null
         )
