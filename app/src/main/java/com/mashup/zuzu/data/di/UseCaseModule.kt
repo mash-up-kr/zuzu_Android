@@ -77,4 +77,10 @@ class UseCaseModule {
     fun provideLeaveMembershipUseCase(userRepository: UserRepository): LeaveMembershipUseCase {
         return LeaveMembershipUseCase(repository = userRepository)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetCategoryListUseCase(categoryRepository: CategoryRepository): GetCategoryListUseCase {
+        return GetCategoryListUseCase(repository = categoryRepository)
+    }
 }
