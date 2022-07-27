@@ -5,4 +5,64 @@
     <string name="cancel">취소</string>
     <string name="confirm">확인</string>
     <string name="do_review">나도 리뷰하기</string>
+    <string name="review_write">리뷰 쓰기</string>
+
+    <!-- 리뷰 작성 날씨 -->
+    <string name="topic_weather">이 술을 마셨던 날의\n날씨는...</string>
+    <string name="weather_rain">비 오는 날</string>
+    <string name="weather_snow">눈 오는 날</string>
+    <string name="weather_sunny">맑은 날</string>
+    <string name="weather_cloudy">흐린 날</string>
+
+    <!-- 리뷰 작성 시간 -->
+    <string name="topic_date">이 술을 마셨던\n시간은...</string>
+    <string name="date_dinner">저녁에</string>
+    <string name="date_afternoon">대낮에</string>
+    <string name="date_night">한밤중에</string>
+    <string name="date_dawn">새벽에</string>
+
+    <!-- 리뷰 작성 누구 -->
+    <string name="topic_partner">"누구와 마셨나요?"</string>
+    <string name="partner_solo">혼자서</string>
+    <string name="partner_friends">친구/지인과</string>
+    <string name="partner_couple">연인과</string>
+    <string name="partner_party">회식/단체 모임</string>
+
+    <!-- 리뷰 작성 그룹, 혼자 -->
+    <string name="topic_group_solo">어떤 분위기로\n마셨나요?</string>
+    <string name="mood_friendly">친근한/웃기는</string>
+    <string name="mood_serious">엄격진지한</string>
+    <string name="mood_romantic">로맨틱한</string>
+    <string name="mood_crazy">광란의</string>
+    <string name="mood_groomy">우울한</string>
+    <string name="mood_congratulations">축하하는</string>
+    <string name="mood_happy">즐거운</string>
+    <string name="mood_taste">음미하는</string>
+    <string name="mood_self_cong">셀프선물</string>
+
+    <!-- 리뷰 작성 맛 -->
+    <string name="topic_taste">둘 중 더 가까운 것을\n골라주세요</string>
+
+    <!-- 리뷰 작성 느낌 -->
+    <string name="topic_feeling">이 술은\n어떤 느낌이었나요?</string>
+    <string name="feeling_fruits">상큼달달한 과일</string>
+    <string name="feeling_wood">묵직한 나무</string>
+    <string name="feeling_nooroongji">구수한 누룽지</string>
+    <string name="feeling_milk">부드러운 우유</string>
+    <string name="feeling_earth">쿰쿰한 흙냄새</string>
+    <string name="feeling_flower">향긋한 꽃</string>
+    <string name="feeling_groomy">씁슬한 인생</string>
+    <string name="feeling_chili">매운 칠리</string>
+    <string name="feeling_unknown">잘 모르겠어요</string>
+
+    <!-- 리뷰 작성 느낌 2페이지 -->
+    <string name="topic_summary">혹시 바쁘지 않다면,\n조금만 더 알려주실래요?</string>
+    <string name="summary_roast">구이류</string>
+    <string name="summary_fry">튀김/전류</string>
+    <string name="summary_cheese">치즈</string>
+    <string name="summary_salad">샐러드</string>
+    <string name="summary_fruits">과일</string>
+    <string name="summary_soup">국물/스프류</string>
+    <string name="summary_desert">디저트</string>
+    <string name="summary_noodle">면류</string>
 </resources>
