@@ -36,6 +36,9 @@ import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.ui.component.*
+import com.mashup.zuzu.ui.model.Category
+import com.mashup.zuzu.ui.model.categoryList
+import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.theme.ProofTheme
 import kotlin.math.absoluteValue
 
@@ -45,18 +48,40 @@ import kotlin.math.absoluteValue
  */
 
 @Composable
-fun CategoryScreen(
-    modifier: Modifier,
+fun CategoryRoute(
     category: String,
-    onWineBoardClick: (Wine) -> Unit,
-    onBackButtonClick: () -> Unit,
     categoryViewModel: CategoryViewModel = viewModel(
         factory = CategoryViewModelFactory(category = category)
-    )
+    ),
+    onWineBoardClick: (Wine) -> Unit,
+    onBackButtonClick: () -> Unit,
 ) {
-    val index = categoryList.withIndex().filter { it.value.title == category }.map { it.index }
-    val categoryState = rememberCategoryState(index[0])
+
+    val index = categoryList.withIndex().filter { it.value.title == category }.map { it.index }[0]
     val wineState = categoryViewModel.wineList.collectAsState().value
+
+    CategoryScreen(
+        modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
+        index = index,
+        wineState = wineState,
+        onWineBoardClick = onWineBoardClick,
+        onBackButtonClick = onBackButtonClick,
+        getWineList = { category ->
+            categoryViewModel.getWineList(category = category)
+        }
+    )
+}
+
+@Composable
+fun CategoryScreen(
+    modifier: Modifier,
+    index: Int,
+    onWineBoardClick: (Wine) -> Unit,
+    onBackButtonClick: () -> Unit,
+    getWineList: (String) -> Unit,
+    wineState: CategoryUiState
+) {
+    val categoryState = rememberCategoryState(index)
 
     Column(
         modifier = modifier
@@ -78,7 +103,7 @@ fun CategoryScreen(
         ) { tabIndex ->
             categoryState.updateSelectedTabIndex(tabIndex)
             // 여기서 아이템 갱신
-            categoryViewModel.getWineList(categoryList[tabIndex].title)
+            getWineList(categoryList[tabIndex].title)
         }
 
         Row(
@@ -196,18 +221,18 @@ fun HorizontalPagerWithOffsetTransition(
                         fraction = 1f - pageOffset.coerceIn(0f, 1f)
                     )
                 }
-                // We add an offset lambda, to apply a light parallax effect
-                .offset {
-                    // Calculate the offset for the current page from the
-                    // scroll position
-                    val pageOffset =
-                        this@HorizontalPager.calculateCurrentOffsetForPage(page)
-                    // Then use it as a multiplier to apply an offset
-                    IntOffset(
-                        x = (36.dp * pageOffset).roundToPx(),
-                        y = 0
-                    )
-                }
+//                // We add an offset lambda, to apply a light parallax effect // 옆에 자를 수 있는 코드
+//                .offset {
+//                    // Calculate the offset for the current page from the
+//                    // scroll position
+//                    val pageOffset =
+//                        this@HorizontalPager.calculateCurrentOffsetForPage(page)
+//                    // Then use it as a multiplier to apply an offset
+//                    IntOffset(
+//                        x = (36.dp * pageOffset).roundToPx(),
+//                        y = 0
+//                    )
+//                }
                 .width(282.dp).height(448.dp),
             wine = wines[page],
             onWineBoardClick = { onWineBoardClick(it) }
@@ -328,9 +353,11 @@ fun PreviewCategoryScreen() {
     ProofTheme() {
         CategoryScreen(
             modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = ProofTheme.color.black),
-            category = "전부",
+            index = 0,
             onBackButtonClick = {},
-            onWineBoardClick = {}
+            onWineBoardClick = {},
+            getWineList = {},
+            wineState = CategoryUiState.Loading
         )
     }
 }
