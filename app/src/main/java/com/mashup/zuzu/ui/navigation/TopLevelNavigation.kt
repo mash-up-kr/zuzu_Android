@@ -8,9 +8,9 @@ import com.google.accompanist.navigation.material.bottomSheet
 import com.mashup.zuzu.ZuzuAppState
 import com.mashup.zuzu.ui.category.CategoryRoute
 import com.mashup.zuzu.ui.home.HomeRoute
-import com.mashup.zuzu.ui.leave.LeaveUiEventState
 import com.mashup.zuzu.ui.leave.LeaveRoute
-import com.mashup.zuzu.ui.user.SettingRoute
+import com.mashup.zuzu.ui.leave.LeaveUiEventState
+import com.mashup.zuzu.ui.setting.SettingRoute
 import com.mashup.zuzu.ui.user.UpdateProfileUiEventState
 import com.mashup.zuzu.ui.user.UserRoute
 import com.mashup.zuzu.ui.user.edit.EditUserProfileRoute
@@ -31,7 +31,8 @@ internal fun NavGraphBuilder.homeGraph(
             route = NavigationRoute.HomeScreenGraph.HomeScreen.route
         ) {
             HomeRoute(
-                onCategoryClick = { category ->
+                onCategoryClick = { categoryList, category ->
+                    appState.putCategoryList(category = categoryList)
                     appState.navigateRoute(NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/${category.title}")
                 },
                 onWorldCupItemClick = {},
@@ -52,6 +53,7 @@ internal fun NavGraphBuilder.categoryGraph(
         ) {
             CategoryRoute(
                 category = it.arguments?.getString("category")!!,
+                categoryList = appState.categoryList,
                 onWineBoardClick = {},
                 onBackButtonClick = {
                     appState.navigateBackStack()
