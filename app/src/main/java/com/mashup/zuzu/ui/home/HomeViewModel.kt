@@ -11,6 +11,7 @@ import coil.request.SuccessResult
 import com.google.android.renderscript.Toolkit
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.domain.usecase.GetBestWorldCupListUseCase
+import com.mashup.zuzu.domain.usecase.GetCategoryListUseCase
 import com.mashup.zuzu.domain.usecase.GetMainWineListUseCase
 import com.mashup.zuzu.domain.usecase.GetRecommendWineUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,11 +43,18 @@ sealed class MainWineUiState {
     data class Success(val mainWines: List<Wine>) : MainWineUiState()
 }
 
+sealed class CategoryListUiState {
+    object Loading : CategoryListUiState()
+    object Error : CategoryListUiState()
+    data class Success(val categoryList: List<Category>) : CategoryListUiState()
+}
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMainWineListUseCase: GetMainWineListUseCase,
     private val getBestWorldCupListUseCase: GetBestWorldCupListUseCase,
-    private val getRecommendWineUseCase: GetRecommendWineUseCase
+    private val getRecommendWineUseCase: GetRecommendWineUseCase,
+    private val getCategoryListUseCase: GetCategoryListUseCase
 ) : ViewModel() {
 
     private val _mainWineList: MutableStateFlow<MainWineUiState> = MutableStateFlow(MainWineUiState.Loading)
@@ -58,12 +66,16 @@ class HomeViewModel @Inject constructor(
     private val _recommendWine: MutableStateFlow<RecommendWineUiState> = MutableStateFlow(RecommendWineUiState.Loading)
     val recommendWine = _recommendWine.asStateFlow()
 
+    private val _categoryList: MutableStateFlow<CategoryListUiState> = MutableStateFlow(CategoryListUiState.Loading)
+    val categoryList = _categoryList.asStateFlow()
+
     private val _bitmap: MutableStateFlow<Bitmap?> = MutableStateFlow(null)
     val bitmap = _bitmap.asStateFlow()
 
     init {
         getMainWineList()
         getBestWorldCupList()
+        getCategoryList()
     }
 
     private fun getMainWineList() {
@@ -118,6 +130,24 @@ class HomeViewModel @Inject constructor(
                     }
                     is Results.Failure -> {
                         _recommendWine.value = RecommendWineUiState.Error
+                    }
+                }
+            }
+        }
+    }
+
+    fun getCategoryList() {
+        viewModelScope.launch {
+            getCategoryListUseCase().collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        _categoryList.value = CategoryListUiState.Success(result.value)
+                    }
+                    is Results.Loading -> {
+                        _categoryList.value = CategoryListUiState.Loading
+                    }
+                    is Results.Failure -> {
+                        _categoryList.value = CategoryListUiState.Error
                     }
                 }
             }
