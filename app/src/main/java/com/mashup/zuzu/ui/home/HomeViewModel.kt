@@ -3,12 +3,14 @@ package com.mashup.zuzu.ui.home
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.google.android.renderscript.Toolkit
+import com.mashup.zuzu.BuildConfig
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.domain.usecase.GetBestWorldCupListUseCase
 import com.mashup.zuzu.domain.usecase.GetCategoryListUseCase
@@ -18,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -122,7 +125,10 @@ class HomeViewModel @Inject constructor(
                 when (result) {
                     is Results.Success -> {
                         _recommendWine.value = RecommendWineUiState.Success(result.value)
-                        // transBitmap(context, result.value.imageUrl)
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                            Timber.tag("blur").d("transBitmap")
+                            transBitmap(context, result.value.imageUrl)
+                        }
                     }
 
                     is Results.Loading -> {

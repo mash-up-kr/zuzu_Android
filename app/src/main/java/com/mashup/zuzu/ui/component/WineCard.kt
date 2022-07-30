@@ -49,7 +49,7 @@ fun WineImageCard(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(10.dp)
     ) {
         Box() {
             AsyncImage(
@@ -78,7 +78,6 @@ fun WineImageCard(
                             .fillMaxWidth(),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
-
                         Text(
                             text = wine.name,
                             maxLines = 4,
@@ -124,7 +123,6 @@ fun WineBoardCard(
     wine: Wine,
     onWineBoardClick: (Wine) -> Unit
 ) {
-
     Column() {
         Card(
             modifier = modifier,
@@ -158,7 +156,7 @@ fun WineBoardCard(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
                         .padding(start = 12.dp, bottom = 12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
                         modifier = Modifier
@@ -203,7 +201,7 @@ fun WineBoardCard(
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             wine.description.filterIndexed { index, tag ->
                 index < 2
@@ -311,13 +309,13 @@ fun WineCardInHome(
             text = wine.name,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            style= ProofTheme.typography.headingS,
+            style = ProofTheme.typography.headingS,
             color = ProofTheme.color.white
         )
         Row(
             modifier = Modifier.padding(top = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             wine.description.filterIndexed { index, tag ->
                 index < 2
@@ -345,12 +343,10 @@ fun PagerWineCard(
     wine: Wine,
     onWineBoardClick: (Wine) -> Unit
 ) {
-
     val gradient = listOf(ProofTheme.color.gradientPurple, ProofTheme.color.gradientBlack)
     Column(
         modifier = modifier.background(brush = Brush.verticalGradient(gradient))
     ) {
-
         Column(
             modifier = Modifier.padding(12.dp).fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
@@ -388,11 +384,11 @@ fun PagerWineCard(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 style = ProofTheme.typography.buttonL,
-                color = ProofTheme.color.white,
+                color = ProofTheme.color.white
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 wine.description.filterIndexed { index, tag ->
                     index < 2
@@ -467,7 +463,8 @@ fun RecommendWineCardWithRenderScript(
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
-            }, blurImage = {
+            },
+            blurImage = {
                 Image(
                     modifier = Modifier
                         .fillMaxHeight()
@@ -505,9 +502,7 @@ fun RecommendWineCardWithRenderScript(
                             .fillMaxWidth()
                             .weight(0.75f)
                     ) {
-                        Row {
-                            WineCategoryWithAlc(wine = recommendWine, modifier = Modifier)
-                        }
+                        WineCategoryWithAlc(wine = recommendWine, modifier = Modifier.width(78.dp).height(20.dp).align(Alignment.Start))
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -708,7 +703,8 @@ fun BlurImage(content: @Composable () -> Unit) {
                     }
                 }
                 .blur(
-                    radiusX = 10.dp, radiusY = 10.dp
+                    radiusX = 10.dp,
+                    radiusY = 10.dp
                 )
         ) {
             content()
@@ -810,7 +806,8 @@ fun PreviewWindBoardCard() {
             modifier = Modifier
                 .height(260.dp)
                 .width(220.dp),
-            wine = wines[0], onWineBoardClick = {}
+            wine = wines[0],
+            onWineBoardClick = {}
         )
     }
 }
@@ -823,7 +820,8 @@ fun PreviewPagerCard() {
             modifier = Modifier
                 .width(282.dp)
                 .height(448.dp),
-            wine = wines[0], onWineBoardClick = {}
+            wine = wines[0],
+            onWineBoardClick = {}
         )
     }
 }

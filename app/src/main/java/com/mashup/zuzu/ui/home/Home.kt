@@ -2,6 +2,7 @@ package com.mashup.zuzu.ui.home
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.Build
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.mashup.zuzu.BuildConfig
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.Category
@@ -33,6 +35,7 @@ import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.ui.component.*
 import com.mashup.zuzu.ui.theme.ProofTheme
+import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/06/30
@@ -46,7 +49,6 @@ fun HomeRoute(
     onWorldCupItemClick: (BestWorldCup) -> Unit,
     onCategoryClick: (List<Category>, Category) -> Unit
 ) {
-
     val bestWorldCupState by viewModel.bestWorldCupList.collectAsState()
     val recommendState by viewModel.recommendWine.collectAsState()
     val mainWineState by viewModel.mainWineList.collectAsState()
@@ -92,7 +94,11 @@ fun HomeScreen(
         modifier = modifier.verticalScroll(scrollState)
     ) {
         HomeLogo(modifier = Modifier.padding(top = 24.dp, start = 24.dp))
-        HomeMainTitle(modifier = Modifier.fillMaxWidth().padding(top = 31.dp))
+        HomeMainTitle(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 31.dp)
+        )
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -101,7 +107,9 @@ fun HomeScreen(
         when (mainWineState) {
             is MainWineUiState.Success -> {
                 HorizontalPagerWithOffsetTransition(
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
                     onWineBoardClick = onWineBoardClick,
                     wines = mainWineState.mainWines
                 )
@@ -158,31 +166,35 @@ fun HomeScreen(
         )
         when (recommendState) {
             is RecommendWineUiState.Success -> {
-                RecommendWineCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(367.dp)
-                        .padding(start = 24.dp, end = 24.dp, top = 19.dp)
-                        .clip(RoundedCornerShape(16.dp)),
-                    recommendWine = recommendState.recommendWine,
-                    onRefreshButtonClick = {
-                        onRefreshButtonClick(context)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    RecommendWineCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(367.dp)
+                            .padding(start = 24.dp, end = 24.dp, top = 19.dp)
+                            .clip(RoundedCornerShape(16.dp)),
+                        recommendWine = recommendState.recommendWine,
+                        onRefreshButtonClick = {
+                            onRefreshButtonClick(context)
+                        }
+                    )
+                } else {
+                    if (blurBitmap != null) {
+                        Timber.tag("blur").d("api <31")
+                        RecommendWineCardWithRenderScript(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(367.dp)
+                                .padding(start = 24.dp, end = 24.dp, top = 19.dp)
+                                .clip(RoundedCornerShape(16.dp)),
+                            recommendWine = recommendState.recommendWine,
+                            onRefreshButtonClick = {
+                                onRefreshButtonClick(context)
+                            },
+                            blurImage = blurBitmap
+                        )
                     }
-                )
-//                if (blurBitmap != null) {
-//                    RecommendWineCardWithRenderScript(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(367.dp)
-//                            .padding(start = 24.dp, end = 24.dp, top = 19.dp)
-//                            .clip(RoundedCornerShape(16.dp)),
-//                        recommendWine = recommendState.recommendWine,
-//                        onRefreshButtonClick = {
-//                            homeViewModel.getRecommendWine(context)
-//                        },
-//                        blurImage = blurBitmap
-//                    )
-//                }
+                }
             }
             is RecommendWineUiState.Loading -> {
                 RecommendImage(
@@ -285,7 +297,7 @@ fun HomeLogo(modifier: Modifier) {
 
 @Composable
 fun HomeMainTitle(
-    modifier: Modifier,
+    modifier: Modifier
 ) {
     Box(
         modifier = modifier
@@ -317,7 +329,8 @@ fun HomeMainTitleItems(
             WineCardInHome(
                 modifier = Modifier.width(224.dp),
                 height = 260.dp,
-                wine = wines[index], onWineBoardClick = onWineBoardClick
+                wine = wines[index],
+                onWineBoardClick = onWineBoardClick
             )
         }
     }
@@ -379,7 +392,8 @@ fun RecommendImage(
                 .align(Alignment.BottomCenter),
             backgroundColor = ProofTheme.color.primary300,
             textColor = ProofTheme.color.white,
-            text = "추천술 보기", onButtonClick = onButtonClick
+            text = "추천술 보기",
+            onButtonClick = onButtonClick
         )
     }
 }
@@ -437,7 +451,9 @@ fun PreviewZuzuWineCategoryNavigationTitle() {
 fun PreviewZuzuWineCategoryItems() {
     ProofTheme() {
         CategoryItems(
-            modifier = Modifier.fillMaxWidth(), categoryList = categoryList, onCategoryClick = { category ->
+            modifier = Modifier.fillMaxWidth(),
+            categoryList = categoryList,
+            onCategoryClick = { category ->
             }
         )
     }
