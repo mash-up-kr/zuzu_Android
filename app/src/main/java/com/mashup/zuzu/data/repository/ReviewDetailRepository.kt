@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class ReviewDetailRepository {
-    fun getReviewDetailInfoStream() : Flow<ReviewDetailUiState> {
+    fun getReviewDetailInfoStream(wineId: Long) : Flow<ReviewDetailUiState> {
         return flow {
             emit(
                 ReviewDetailUiState.Normal(

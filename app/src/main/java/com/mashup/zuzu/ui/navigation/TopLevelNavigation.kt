@@ -2,7 +2,9 @@ package com.mashup.zuzu.ui.navigation
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
@@ -85,7 +87,7 @@ internal fun NavGraphBuilder.userGraph(
                 },
                 onWorldCupItemClick = {},
                 onWineClick = {
-                    appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewDetailScreen.route)
+                    appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${it.id}")
                 }
             )
         }
@@ -152,10 +154,15 @@ internal fun NavGraphBuilder.reviewGraph(
 ) {
     navigation(
         route = NavigationRoute.ReviewGraph.route,
-        startDestination = NavigationRoute.ReviewGraph.ReviewDetailScreen.route
+        startDestination = "${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/{wineId}"
     ) {
         composable(
-            route = NavigationRoute.ReviewGraph.ReviewDetailScreen.route
+            route = "${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/{wineId}",
+            arguments = listOf(
+                navArgument("wineId") {
+                    type = NavType.LongType
+                }
+            )
         ) {
             ReviewDetailRoute(
                 viewModel = hiltViewModel(),
