@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.navigation
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -10,6 +11,7 @@ import com.mashup.zuzu.ui.category.CategoryRoute
 import com.mashup.zuzu.ui.home.HomeRoute
 import com.mashup.zuzu.ui.leave.LeaveRoute
 import com.mashup.zuzu.ui.leave.LeaveUiEventState
+import com.mashup.zuzu.ui.review.ReviewDetailRoute
 import com.mashup.zuzu.ui.setting.SettingRoute
 import com.mashup.zuzu.ui.user.UpdateProfileUiEventState
 import com.mashup.zuzu.ui.user.UserRoute
@@ -62,6 +64,7 @@ internal fun NavGraphBuilder.categoryGraph(
         }
     }
 }
+
 @OptIn(ExperimentalMaterialNavigationApi::class)
 internal fun NavGraphBuilder.userGraph(
     appState: ZuzuAppState
@@ -81,7 +84,9 @@ internal fun NavGraphBuilder.userGraph(
                     appState.navigateRoute(NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route)
                 },
                 onWorldCupItemClick = {},
-                onWineClick = {}
+                onWineClick = {
+                    appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewDetailScreen.route)
+                }
             )
         }
         composable(
@@ -137,6 +142,25 @@ internal fun NavGraphBuilder.userGraph(
                         }
                     }
                 }
+            )
+        }
+    }
+}
+
+internal fun NavGraphBuilder.reviewGraph(
+    appState: ZuzuAppState
+) {
+    navigation(
+        route = NavigationRoute.ReviewGraph.route,
+        startDestination = NavigationRoute.ReviewGraph.ReviewDetailScreen.route
+    ) {
+        composable(
+            route = NavigationRoute.ReviewGraph.ReviewDetailScreen.route
+        ) {
+            ReviewDetailRoute(
+                viewModel = hiltViewModel(),
+                navigateBack = {},
+                navigateToReviewWrite = { appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewWriteScreen.route) }
             )
         }
     }
