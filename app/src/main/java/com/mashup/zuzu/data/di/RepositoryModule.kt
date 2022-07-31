@@ -1,5 +1,6 @@
 package com.mashup.zuzu.data.di
 
+import com.mashup.zuzu.data.repository.ReviewDetailRepository
 import com.mashup.zuzu.data.repository.ReviewWriteRepository
 import dagger.Module
 import dagger.Provides
@@ -15,5 +16,11 @@ class RepositoryModule {
     @Provides
     fun provideReviewWriteRepository() : ReviewWriteRepository {
         return ReviewWriteRepository()
+    }
+
+    @Singleton
+    @Provides
+    fun provideReviewDetailRepository() : ReviewDetailRepository {
+        return ReviewDetailRepository()
     }
 }
