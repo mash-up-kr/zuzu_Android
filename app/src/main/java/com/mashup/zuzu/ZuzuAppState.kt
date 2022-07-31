@@ -58,19 +58,6 @@ class ZuzuAppState constructor(
     fun navigateBackStack() {
         navController.popBackStack()
     }
-
-    fun navigateDetailScreen() {
-        navController.navigate(REVIEW_DETAIL)
-    }
-
-    fun navigateReviewWriteScreen() {
-        navController.navigate(REVIEW_WRITE)
-    }
-
-    companion object {
-        const val REVIEW_DETAIL = "reviewDetail"
-        const val REVIEW_WRITE = "reviewWrite"
-    }
 }
 
 private val NavGraph.startDestination: NavDestination?
