@@ -2,7 +2,6 @@ package com.mashup.zuzu.ui.navigation
 
 /**
  * @Created by 김현국 2022/07/23
- * @Time 3:49 오후
  */
 sealed class NavigationRoute(val route: String) {
     object HomeScreenGraph : NavigationRoute("home_screen") {
