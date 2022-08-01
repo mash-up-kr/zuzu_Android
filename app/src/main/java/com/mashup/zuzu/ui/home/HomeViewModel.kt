@@ -3,20 +3,24 @@ package com.mashup.zuzu.ui.home
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.google.android.renderscript.Toolkit
+import com.mashup.zuzu.BuildConfig
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.domain.usecase.GetBestWorldCupListUseCase
+import com.mashup.zuzu.domain.usecase.GetCategoryListUseCase
 import com.mashup.zuzu.domain.usecase.GetMainWineListUseCase
 import com.mashup.zuzu.domain.usecase.GetRecommendWineUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -42,11 +46,18 @@ sealed class MainWineUiState {
     data class Success(val mainWines: List<Wine>) : MainWineUiState()
 }
 
+sealed class CategoryListUiState {
+    object Loading : CategoryListUiState()
+    object Error : CategoryListUiState()
+    data class Success(val categoryList: List<Category>) : CategoryListUiState()
+}
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMainWineListUseCase: GetMainWineListUseCase,
     private val getBestWorldCupListUseCase: GetBestWorldCupListUseCase,
-    private val getRecommendWineUseCase: GetRecommendWineUseCase
+    private val getRecommendWineUseCase: GetRecommendWineUseCase,
+    private val getCategoryListUseCase: GetCategoryListUseCase
 ) : ViewModel() {
 
     private val _mainWineList: MutableStateFlow<MainWineUiState> = MutableStateFlow(MainWineUiState.Loading)
@@ -58,12 +69,16 @@ class HomeViewModel @Inject constructor(
     private val _recommendWine: MutableStateFlow<RecommendWineUiState> = MutableStateFlow(RecommendWineUiState.Loading)
     val recommendWine = _recommendWine.asStateFlow()
 
+    private val _categoryList: MutableStateFlow<CategoryListUiState> = MutableStateFlow(CategoryListUiState.Loading)
+    val categoryList = _categoryList.asStateFlow()
+
     private val _bitmap: MutableStateFlow<Bitmap?> = MutableStateFlow(null)
     val bitmap = _bitmap.asStateFlow()
 
     init {
         getMainWineList()
         getBestWorldCupList()
+        getCategoryList()
     }
 
     private fun getMainWineList() {
@@ -110,7 +125,10 @@ class HomeViewModel @Inject constructor(
                 when (result) {
                     is Results.Success -> {
                         _recommendWine.value = RecommendWineUiState.Success(result.value)
-                        // transBitmap(context, result.value.imageUrl)
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                            Timber.tag("blur").d("transBitmap")
+                            transBitmap(context, result.value.imageUrl)
+                        }
                     }
 
                     is Results.Loading -> {
@@ -118,6 +136,24 @@ class HomeViewModel @Inject constructor(
                     }
                     is Results.Failure -> {
                         _recommendWine.value = RecommendWineUiState.Error
+                    }
+                }
+            }
+        }
+    }
+
+    fun getCategoryList() {
+        viewModelScope.launch {
+            getCategoryListUseCase().collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        _categoryList.value = CategoryListUiState.Success(result.value)
+                    }
+                    is Results.Loading -> {
+                        _categoryList.value = CategoryListUiState.Loading
+                    }
+                    is Results.Failure -> {
+                        _categoryList.value = CategoryListUiState.Error
                     }
                 }
             }

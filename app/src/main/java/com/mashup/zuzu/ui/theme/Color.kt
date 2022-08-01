@@ -28,6 +28,10 @@ val Orange100 = Color(0xFFFFD9CF)
 val Orange200 = Color(0xFFFF9B81)
 val Orange300 = Color(0xFFEF562D)
 
+// Gradient
+val GradientPurple = Color(0xFF5646A3)
+val GradientBlack = Color(0xFF2A2C3C)
+
 @Stable
 class Colors(
     primary50: Color,
@@ -52,6 +56,8 @@ class Colors(
     orange100: Color,
     orange200: Color,
     orange300: Color,
+    gradientPurple: Color,
+    gradientBlack: Color
 
 ) {
     var primary50 by mutableStateOf(primary50, structuralEqualityPolicy())
@@ -98,6 +104,10 @@ class Colors(
         internal set
     var orange300 by mutableStateOf(orange300, structuralEqualityPolicy())
         internal set
+    var gradientPurple by mutableStateOf(gradientPurple, structuralEqualityPolicy())
+        internal set
+    var gradientBlack by mutableStateOf(gradientBlack, structuralEqualityPolicy())
+        internal set
 
     /**
      * Returns a copy of this Colors, optionally overriding some of the values.
@@ -124,7 +134,9 @@ class Colors(
         green300: Color = this.green300,
         orange100: Color = this.orange100,
         orange200: Color = this.orange200,
-        orange300: Color = this.orange300
+        orange300: Color = this.orange300,
+        gradientPurple: Color = this.gradientPurple,
+        gradientBlack: Color = this.gradientBlack
     ): Colors = Colors(
         primary50,
         primary100,
@@ -147,7 +159,9 @@ class Colors(
         green300,
         orange100,
         orange200,
-        orange300
+        orange300,
+        gradientPurple,
+        gradientBlack
     )
 
     override fun toString(): String {
@@ -176,7 +190,9 @@ fun lightColors(
     green300: Color = Green300,
     orange100: Color = Orange100,
     orange200: Color = Orange200,
-    orange300: Color = Orange300
+    orange300: Color = Orange300,
+    gradientPurple: Color = GradientPurple,
+    gradientBlack: Color = GradientBlack
 ): Colors = Colors(
     primary50,
     primary100,
@@ -199,7 +215,9 @@ fun lightColors(
     green300,
     orange100,
     orange200,
-    orange300
+    orange300,
+    gradientPurple,
+    gradientBlack
 )
 
 fun darkColors(
@@ -223,7 +241,9 @@ fun darkColors(
     green300: Color = Green300,
     orange100: Color = Orange100,
     orange200: Color = Orange200,
-    orange300: Color = Orange300
+    orange300: Color = Orange300,
+    gradientPurple: Color = GradientPurple,
+    gradientBlack: Color = GradientBlack
 ): Colors = Colors(
     primary50,
     primary100,
@@ -246,7 +266,9 @@ fun darkColors(
     green300,
     orange100,
     orange200,
-    orange300
+    orange300,
+    gradientPurple,
+    gradientBlack
 )
 
 val LocalProofColor = staticCompositionLocalOf {

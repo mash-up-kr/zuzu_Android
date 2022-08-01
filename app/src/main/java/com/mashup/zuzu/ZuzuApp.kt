@@ -60,13 +60,13 @@ fun ZuzuApp(
                         onClick = {
                             onWorldCupButtonClick()
                         },
-                        backgroundColor = Color.White
+                        backgroundColor = ProofTheme.color.primary300
                     ) {
                         Image(
                             modifier = Modifier
                                 .width(40.dp)
                                 .height(40.dp),
-                            painter = painterResource(id = R.drawable.ic_worldcup),
+                            painter = painterResource(id = R.drawable.img_wine_logo),
                             contentDescription = null
                         )
                     }

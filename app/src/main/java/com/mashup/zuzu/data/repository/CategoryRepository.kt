@@ -1,8 +1,6 @@
 package com.mashup.zuzu.data.repository
 
-import com.mashup.zuzu.data.model.Results
-import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.model.wines
+import com.mashup.zuzu.data.model.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -27,6 +25,13 @@ class CategoryRepository @Inject constructor() {
             emit(Results.Loading)
             delay(500)
             emit(Results.Success(wines.filter { it.category == category }))
+        }
+    }
+    fun getCategoryList(): Flow<Results<List<Category>>> {
+        return flow {
+            emit(Results.Loading)
+            delay(300)
+            emit(Results.Success(categoryList))
         }
     }
 }

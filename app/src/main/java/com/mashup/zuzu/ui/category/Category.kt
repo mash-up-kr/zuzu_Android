@@ -11,35 +11,28 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.mashup.zuzu.R
+import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.ui.component.*
-import com.mashup.zuzu.ui.model.Category
-import com.mashup.zuzu.ui.model.categoryList
+import com.mashup.zuzu.ui.component.TabPosition
 import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.theme.ProofTheme
-import kotlin.math.absoluteValue
 
 /**
  * @Created by 김현국 2022/07/03
@@ -49,6 +42,7 @@ import kotlin.math.absoluteValue
 @Composable
 fun CategoryRoute(
     category: String,
+    categoryList: List<Category>,
     categoryViewModel: CategoryViewModel = hiltViewModel(),
     onWineBoardClick: (Wine) -> Unit,
     onBackButtonClick: () -> Unit,
@@ -60,6 +54,7 @@ fun CategoryRoute(
     CategoryScreen(
         modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
         index = index,
+        categoryList = categoryList,
         wineState = wineState,
         onWineBoardClick = onWineBoardClick,
         onBackButtonClick = onBackButtonClick,
@@ -73,10 +68,11 @@ fun CategoryRoute(
 fun CategoryScreen(
     modifier: Modifier,
     index: Int,
+    categoryList: List<Category>,
     onWineBoardClick: (Wine) -> Unit,
     onBackButtonClick: () -> Unit,
     getWineList: (String) -> Unit,
-    wineState: CategoryUiState
+    wineState: WineListWithCategoryUiState
 ) {
     val categoryState = rememberCategoryState(index)
 
@@ -88,7 +84,7 @@ fun CategoryScreen(
                 .padding(top = 30.dp, bottom = 24.dp, start = 24.dp).clickable {
                     onBackButtonClick()
                 },
-            imageVector = Icons.Outlined.ArrowBack,
+            painter = painterResource(id = R.drawable.ic_arrow_left),
             tint = ProofTheme.color.white,
             contentDescription = null
         )
@@ -143,10 +139,10 @@ fun CategoryScreen(
 
         // 하단 wine items
         when (wineState) {
-            is CategoryUiState.Loading -> {
+            is WineListWithCategoryUiState.Loading -> {
                 // some indicator or loading screen
             }
-            is CategoryUiState.Success -> {
+            is WineListWithCategoryUiState.Success -> {
                 if (categoryState.viewMode)
                     CategoryWineItems(
                         wines = wineState.wineList, onWineBoardClick = onWineBoardClick,
@@ -161,79 +157,12 @@ fun CategoryScreen(
                         onWineBoardClick = onWineBoardClick,
                         wines = wineState.wineList
                     )
-                    Box(
-                        modifier = Modifier.fillMaxHeight().fillMaxWidth().padding(top = 16.dp)
-                    ) {
-                        RoundedButton(
-                            modifier = Modifier.align(Center)
-                                .height(41.dp).width(148.dp),
-                            onButtonClick = { /*TODO*/ }, fontSize = 13.sp, text = "+ 내 술 저장고에 추가"
-                        )
-                    }
                 }
             }
-            is CategoryUiState.Error -> {
+            is WineListWithCategoryUiState.Error -> {
                 // some toast message ?
             }
         }
-    }
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-fun HorizontalPagerWithOffsetTransition(
-    modifier: Modifier,
-    onWineBoardClick: (Wine) -> Unit,
-    wines: List<Wine>
-) {
-    HorizontalPager(
-        count = wines.size,
-        // Add 32.dp horizontal padding to 'center' the pages
-        contentPadding = PaddingValues(horizontal = 50.dp), // 양옆 패팅
-        modifier = modifier.fillMaxWidth()
-    ) { page ->
-
-        PagerWineCard(
-            modifier = Modifier
-                .graphicsLayer {
-                    // Calculate the absolute offset for the current page from the
-                    // scroll position. We use the absolute value which allows us to mirror
-                    // any effects for both directions
-                    val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-
-                    // We animate the scaleX + scaleY, between 85% and 100% // 가운데에 오면 아이템이 커짐
-                    lerp(
-                        start = 0.85f,
-                        stop = 1f,
-                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                    ).also { scale ->
-                        scaleX = scale
-                        scaleY = scale
-                    }
-
-                    // We animate the alpha, between 50% and 100%
-                    alpha = lerp(
-                        start = 0.5f,
-                        stop = 1f,
-                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                    )
-                }
-//                // We add an offset lambda, to apply a light parallax effect // 옆에 자를 수 있는 코드
-//                .offset {
-//                    // Calculate the offset for the current page from the
-//                    // scroll position
-//                    val pageOffset =
-//                        this@HorizontalPager.calculateCurrentOffsetForPage(page)
-//                    // Then use it as a multiplier to apply an offset
-//                    IntOffset(
-//                        x = (36.dp * pageOffset).roundToPx(),
-//                        y = 0
-//                    )
-//                }
-                .width(282.dp).height(448.dp),
-            wine = wines[page],
-            onWineBoardClick = { onWineBoardClick(it) }
-        )
     }
 }
 
@@ -251,10 +180,11 @@ fun CustomScrollableTabRow(
         }
         tabWidthStateList
     }
-    ScrollableTabRow(
+    CustomScrollableTabRow(
+        modifier = Modifier.fillMaxWidth(),
         backgroundColor = ProofTheme.color.black,
         selectedTabIndex = selectedTabIndex,
-        contentColor = ProofTheme.color.white,
+        contentColor = ProofTheme.color.gray100,
         edgePadding = 0.dp,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
@@ -264,32 +194,26 @@ fun CustomScrollableTabRow(
                 ),
                 color = ProofTheme.color.primary200
             )
-        }
+        },
     ) {
         tabs.forEachIndexed { tabIndex, tab ->
+            val selected = selectedTabIndex == tabIndex
             Tab(
-                selected = selectedTabIndex == tabIndex,
+                selected = selected,
                 onClick = { onTabClick(tabIndex) },
                 text = {
-                    if (selectedTabIndex == tabIndex) {
-                        Text(
-                            text = tab.title,
-                            color = ProofTheme.color.primary200,
-                            onTextLayout = { textLayoutResult ->
-                                tabWidths[tabIndex] =
-                                    with(density) { textLayoutResult.size.width.toDp() }
-                            }
-                        )
-                    } else {
-                        Text(
-                            text = tab.title,
-                            onTextLayout = { textLayoutResult ->
-                                tabWidths[tabIndex] =
-                                    with(density) { textLayoutResult.size.width.toDp() }
-                            }
-                        )
-                    }
-                }
+                    Text(
+                        maxLines = 1,
+                        text = tab.title,
+                        style = if (selected) ProofTheme.typography.headingXS else ProofTheme.typography.bodyM,
+                        textAlign = TextAlign.Center,
+                        onTextLayout = { textLayoutResult ->
+                            tabWidths[tabIndex] = with(density) { textLayoutResult.size.width.toDp() }
+                        }
+                    )
+                },
+                selectedContentColor = ProofTheme.color.primary200,
+                unselectedContentColor = ProofTheme.color.gray100
             )
         }
     }
@@ -354,7 +278,8 @@ fun PreviewCategoryScreen() {
             onBackButtonClick = {},
             onWineBoardClick = {},
             getWineList = {},
-            wineState = CategoryUiState.Loading
+            wineState = WineListWithCategoryUiState.Loading,
+            categoryList = categoryList
         )
     }
 }

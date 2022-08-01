@@ -19,10 +19,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.ui.component.*
 import com.mashup.zuzu.ui.theme.ProofTheme
@@ -47,7 +49,10 @@ fun UserRoute(
     when (uiState) {
         is UserUiState.Success -> {
             UserScreen(
-                modifier = Modifier.fillMaxWidth().fillMaxHeight().background(color = ProofTheme.color.black),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .background(color = ProofTheme.color.black),
                 onSettingClick = onSettingClick,
                 user = (uiState as UserUiState.Success).userData,
                 wineCallerState = wineCallerState,
@@ -103,7 +108,9 @@ fun UserScreen(
                     }
                     is WineCallerUiState.NoItem -> {
                         NoItemWineOrWorldCup(
-                            modifier = Modifier.fillMaxHeight().fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(),
                             userName = userState.user.name,
                             type = " 리뷰한 술"
                         )
@@ -118,8 +125,10 @@ fun UserScreen(
                 when (joinedWorldCupState) {
                     is JoinedWorldCupUiState.Success -> {
                         JoinWorldCup(
-                            modifier = Modifier.padding(top = 36.dp, start = 24.dp, end = 24.dp)
-                                .fillMaxWidth().fillMaxHeight(),
+                            modifier = Modifier
+                                .padding(top = 36.dp, start = 24.dp, end = 24.dp)
+                                .fillMaxWidth()
+                                .fillMaxHeight(),
                             onWorldCupItemClick = { bestWorldCup ->
                                 onWorldCupItemClick(bestWorldCup)
                             }
@@ -127,7 +136,9 @@ fun UserScreen(
                     }
                     is JoinedWorldCupUiState.NoItem -> {
                         NoItemWineOrWorldCup(
-                            modifier = Modifier.fillMaxHeight().fillMaxHeight(),
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxHeight(),
                             type = "참여한 술드컵", userName = userState.user.name
                         )
                     }
@@ -173,32 +184,45 @@ fun UserTopBar(
         modifier = Modifier.background(color = ProofTheme.color.gray600)
     ) {
         Row(
-            modifier = Modifier.padding(top = 31.5.dp, end = 24.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(top = 31.5.dp, end = 24.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             Icon(
-                modifier = Modifier.width(20.dp).height(22.dp).clickable {
-                    onSettingClick()
-                },
+                modifier = Modifier
+                    .width(20.dp)
+                    .height(22.dp)
+                    .clickable {
+                        onSettingClick()
+                    },
                 imageVector = Icons.Filled.Settings,
                 tint = ProofTheme.color.gray200,
                 contentDescription = null
             )
         }
-        Spacer(modifier = Modifier.fillMaxWidth().height(31.dp))
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(31.dp))
         Row(
-            modifier = Modifier.padding(start = 24.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(start = 24.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.Start
         ) {
             Image( // ProfileImage
-                modifier = Modifier.width(36.dp).height(36.dp),
+                modifier = Modifier
+                    .width(36.dp)
+                    .height(36.dp),
                 imageVector = Icons.Filled.Person,
                 colorFilter = ColorFilter.tint(ProofTheme.color.gray300),
                 contentDescription = null
             )
         }
         Row(
-            modifier = Modifier.padding(start = 24.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(start = 24.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -215,13 +239,14 @@ fun UserTopBar(
                     .clickable {
                         onEditButtonClick()
                     },
-                imageVector = Icons.Filled.Edit,
-                tint = ProofTheme.color.gray400,
+                painter = painterResource(id = R.drawable.ic_edit),
+                tint = ProofTheme.color.gray200,
                 contentDescription = null
             )
         }
         CustomButtonGroup(
-            modifier = Modifier.padding(top = 24.dp)
+            modifier = Modifier
+                .padding(top = 24.dp)
                 .height(54.dp)
                 .width(170.dp),
             optionList = optionList,
@@ -245,7 +270,9 @@ fun WineCaller(
     ) {
         items(wines) { wine ->
             WineCellarCard(
-                modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
                 wine = wine,
                 onWineClick = onWineClick
             )
@@ -265,7 +292,9 @@ fun NoItemWineOrWorldCup(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -287,7 +316,8 @@ fun NoItemWineOrWorldCup(
                     color = ProofTheme.color.primary200,
                     shape = RoundedCornerShape(8.dp)
                 )
-                .width(280.dp).height(280.dp)
+                .width(280.dp)
+                .height(280.dp)
         )
     }
 }
@@ -297,7 +327,9 @@ fun NoItemWineOrWorldCup(
 fun PreviewUserScreen() {
     ProofTheme {
         UserScreen(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
             onSettingClick = {},
             user = user, wineCallerState = WineCallerUiState.Loading,
             joinedWorldCupState = JoinedWorldCupUiState.Loading,
@@ -312,6 +344,8 @@ fun PreviewUserScreen() {
 @Composable
 fun PreviewNoItemWineOrWorldCup() {
     ProofTheme {
-        NoItemWineOrWorldCup(userName = "위스키다이스키", modifier = Modifier.fillMaxWidth().fillMaxHeight(), type = "참여한 술드컵")
+        NoItemWineOrWorldCup(userName = "위스키다이스키", modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(), type = "참여한 술드컵")
     }
 }
