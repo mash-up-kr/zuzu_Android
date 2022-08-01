@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,7 +15,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.User
@@ -27,24 +24,19 @@ import com.mashup.zuzu.ui.user.UserUiState
 
 /**
  * @Created by 김현국 2022/07/15
- * @Time 5:22 오후
  */
 
 @Composable
 fun SettingRoute(
-    viewModel: SettingViewModel = hiltViewModel(),
-    onBackButtonClick: () -> Unit,
-    onLeaveButtonClick: () -> Unit,
-    onEditButtonClick: () -> Unit
+    viewModel: SettingViewModel,
+    onButtonClick: (SettingUiEvents) -> Unit
 ) {
     val userState by viewModel.user.collectAsState()
     when (userState) {
         is UserUiState.Success -> {
             Setting(
                 user = (userState as UserUiState.Success).userData,
-                onBackButtonClick = onBackButtonClick,
-                onLeaveButtonClick = onLeaveButtonClick,
-                onEditButtonClick = onEditButtonClick
+                onButtonClick = onButtonClick
             )
         }
         is UserUiState.Loading -> {
@@ -53,12 +45,11 @@ fun SettingRoute(
         }
     }
 }
+
 @Composable
 fun Setting(
     user: User,
-    onBackButtonClick: () -> Unit,
-    onLeaveButtonClick: () -> Unit,
-    onEditButtonClick: () -> Unit
+    onButtonClick: (SettingUiEvents) -> Unit
 ) {
     Column {
         SettingTopBar(
@@ -66,14 +57,14 @@ fun Setting(
                 .padding(top = 31.5.dp)
                 .fillMaxWidth()
                 .height(52.dp),
-            onBackButtonClick = onBackButtonClick
+            onBackButtonClick = { onButtonClick(SettingUiEvents.BackButtonClick) }
         )
         SettingUserProfile(
             modifier = Modifier
                 .padding(start = 24.dp)
                 .fillMaxWidth(),
             user = user,
-            onEditButtonClick = onEditButtonClick
+            onEditButtonClick = { onButtonClick(SettingUiEvents.EditButtonClick) }
         )
 
         Spacer(
@@ -85,7 +76,7 @@ fun Setting(
             modifier = Modifier
                 .padding(start = 24.dp)
                 .fillMaxWidth(),
-            onLeaveButtonClick = onLeaveButtonClick
+            onLeaveButtonClick = { onButtonClick(SettingUiEvents.LeaveButtonClick) }
         )
     }
 }
@@ -96,7 +87,7 @@ fun SettingTopBar(
     onBackButtonClick: () -> Unit
 ) {
     Box(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Icon(
             modifier = Modifier
@@ -178,7 +169,7 @@ fun SettingBody(
                 modifier = Modifier.align(Alignment.Center),
                 text = "서비스 이용",
                 style = ProofTheme.typography.bodyXS,
-                color = ProofTheme.color.gray200,
+                color = ProofTheme.color.gray200
             )
         }
         Text(
@@ -201,7 +192,7 @@ fun SettingBody(
         Text(
             text = "계정",
             style = ProofTheme.typography.bodyXS,
-            color = ProofTheme.color.gray200,
+            color = ProofTheme.color.gray200
         )
         Text(
             modifier = Modifier.padding(top = 20.dp),
@@ -239,7 +230,7 @@ fun PreviewSettingTopBar() {
 @Composable
 fun PreviewSettingScreen() {
     ProofTheme {
-        Setting(user = user, {}, {}, {})
+        Setting(user = user, {})
     }
 }
 
