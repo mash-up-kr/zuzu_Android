@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.data.model.Wine
@@ -36,31 +35,24 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/03
- * @Time 5:51 오후
  */
 
 @Composable
 fun CategoryRoute(
+    viewModel: CategoryViewModel,
     category: String,
     categoryList: List<Category>,
-    categoryViewModel: CategoryViewModel = hiltViewModel(),
-    onWineBoardClick: (Wine) -> Unit,
-    onBackButtonClick: () -> Unit,
+    onClick: (CategoryUiEvents) -> Unit
 ) {
-
     val index = categoryList.withIndex().filter { it.value.title == category }.map { it.index }[0]
-    val wineState by categoryViewModel.wineList.collectAsState()
+    val wineState by viewModel.wineList.collectAsState()
 
     CategoryScreen(
         modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
         index = index,
         categoryList = categoryList,
         wineState = wineState,
-        onWineBoardClick = onWineBoardClick,
-        onBackButtonClick = onBackButtonClick,
-        getWineList = { category ->
-            categoryViewModel.getWineList(category = category)
-        }
+        onClick = onClick
     )
 }
 
@@ -69,10 +61,8 @@ fun CategoryScreen(
     modifier: Modifier,
     index: Int,
     categoryList: List<Category>,
-    onWineBoardClick: (Wine) -> Unit,
-    onBackButtonClick: () -> Unit,
-    getWineList: (String) -> Unit,
-    wineState: WineListWithCategoryUiState
+    wineState: WineListWithCategoryUiState,
+    onClick: (CategoryUiEvents) -> Unit
 ) {
     val categoryState = rememberCategoryState(index)
 
@@ -82,7 +72,7 @@ fun CategoryScreen(
         Icon(
             modifier = Modifier
                 .padding(top = 30.dp, bottom = 24.dp, start = 24.dp).clickable {
-                    onBackButtonClick()
+                    onClick(CategoryUiEvents.BackButtonClick)
                 },
             painter = painterResource(id = R.drawable.ic_arrow_left),
             tint = ProofTheme.color.white,
@@ -96,7 +86,7 @@ fun CategoryScreen(
         ) { tabIndex ->
             categoryState.updateSelectedTabIndex(tabIndex)
             // 여기서 아이템 갱신
-            getWineList(categoryList[tabIndex].title)
+            onClick(CategoryUiEvents.TabClick(categoryList[tabIndex].title))
         }
 
         Row(
@@ -131,7 +121,7 @@ fun CategoryScreen(
                         contentDescription = null,
                         modifier = Modifier.clickable {
                             categoryState.changeViewMode()
-                        },
+                        }
                     )
                 }
             }
@@ -143,18 +133,23 @@ fun CategoryScreen(
                 // some indicator or loading screen
             }
             is WineListWithCategoryUiState.Success -> {
-                if (categoryState.viewMode)
+                if (categoryState.viewMode) {
                     CategoryWineItems(
-                        wines = wineState.wineList, onWineBoardClick = onWineBoardClick,
+                        wines = wineState.wineList,
+                        onWineBoardClick = { wine ->
+                            onClick(CategoryUiEvents.WineBoardClick(wine = wine))
+                        },
                         modifier = Modifier
                             .padding(top = 28.dp)
                             .fillMaxWidth()
                     )
-                else {
+                } else {
                     HorizontalPagerWithOffsetTransition(
                         modifier = Modifier.wrapContentHeight().fillMaxWidth()
                             .padding(top = 28.dp),
-                        onWineBoardClick = onWineBoardClick,
+                        onWineBoardClick = { wine ->
+                            onClick(CategoryUiEvents.WineBoardClick(wine = wine))
+                        },
                         wines = wineState.wineList
                     )
                 }
@@ -194,7 +189,7 @@ fun CustomScrollableTabRow(
                 ),
                 color = ProofTheme.color.primary200
             )
-        },
+        }
     ) {
         tabs.forEachIndexed { tabIndex, tab ->
             val selected = selectedTabIndex == tabIndex
@@ -252,7 +247,7 @@ fun CategoryWineItems(
         modifier = modifier.padding(start = 20.dp, end = 20.dp),
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(32.dp),
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         items(wines) { wine ->
             Box(
@@ -261,7 +256,8 @@ fun CategoryWineItems(
                 WineCardInHome(
                     modifier = Modifier.fillMaxWidth(),
                     height = 210.dp,
-                    wine = wine, onWineBoardClick = onWineBoardClick
+                    wine = wine,
+                    onWineBoardClick = onWineBoardClick
                 )
             }
         }
@@ -275,11 +271,9 @@ fun PreviewCategoryScreen() {
         CategoryScreen(
             modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = ProofTheme.color.black),
             index = 0,
-            onBackButtonClick = {},
-            onWineBoardClick = {},
-            getWineList = {},
             wineState = WineListWithCategoryUiState.Loading,
-            categoryList = categoryList
+            categoryList = categoryList,
+            onClick = {}
         )
     }
 }
