@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -39,19 +40,22 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 
 @Composable
 fun HomeRoute(
-    viewModel: HomeViewModel = viewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
     onWineBoardClick: (Wine) -> Unit,
     onWorldCupItemClick: (BestWorldCup) -> Unit,
     onCategoryClick: (Category) -> Unit
 ) {
 
-    val bestWorldCupState = viewModel.bestWorldCupList.collectAsState().value
-    val recommendState = viewModel.recommendWine.collectAsState().value
-    val mainWineState = viewModel.mainWineList.collectAsState().value
-    val blurBitmap = viewModel.bitmap.collectAsState().value
+    val bestWorldCupState by viewModel.bestWorldCupList.collectAsState()
+    val recommendState by viewModel.recommendWine.collectAsState()
+    val mainWineState by viewModel.mainWineList.collectAsState()
+    val blurBitmap by viewModel.bitmap.collectAsState()
 
     HomeScreen(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight().background(color = ProofTheme.color.black),
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = ProofTheme.color.black),
         onCategoryClick = onCategoryClick,
         onWorldCupItemClick = onWorldCupItemClick,
         onWineBoardClick = onWineBoardClick,

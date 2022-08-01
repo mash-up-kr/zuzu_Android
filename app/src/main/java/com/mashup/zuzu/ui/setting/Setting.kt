@@ -9,18 +9,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.mashup.zuzu.data.model.User
-import com.mashup.zuzu.data.model.UserRepo
+import com.mashup.zuzu.data.model.user
 import com.mashup.zuzu.ui.setting.SettingViewModel
 import com.mashup.zuzu.ui.theme.ProofTheme
 
@@ -31,23 +32,30 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 
 @Composable
 fun SettingRoute(
-    settingViewModel: SettingViewModel = viewModel(),
-    userId: Long,
+    viewModel: SettingViewModel = hiltViewModel(),
     onBackButtonClick: () -> Unit,
     onLeaveButtonClick: () -> Unit,
     onEditButtonClick: () -> Unit
 ) {
-    // viewModel 넣기
-    Setting(
-        userId = userId,
-        onBackButtonClick = onBackButtonClick,
-        onLeaveButtonClick = onLeaveButtonClick,
-        onEditButtonClick = onEditButtonClick
-    )
+    val userState by viewModel.user.collectAsState()
+    when (userState) {
+        is UserUiState.Success -> {
+            Setting(
+                user = (userState as UserUiState.Success).userData,
+                onBackButtonClick = onBackButtonClick,
+                onLeaveButtonClick = onLeaveButtonClick,
+                onEditButtonClick = onEditButtonClick
+            )
+        }
+        is UserUiState.Loading -> {
+        }
+        is UserUiState.Error -> {
+        }
+    }
 }
 @Composable
 fun Setting(
-    userId: Long,
+    user: User,
     onBackButtonClick: () -> Unit,
     onLeaveButtonClick: () -> Unit,
     onEditButtonClick: () -> Unit
@@ -59,9 +67,10 @@ fun Setting(
         )
         SettingUserProfile(
             modifier = Modifier.padding(start = 24.dp).fillMaxWidth(),
-            user = UserRepo.getUser(userId),
+            user = user,
             onEditButtonClick = onEditButtonClick
         )
+
         Spacer(modifier = Modifier.fillMaxWidth().height(48.dp))
         SettingBody(
             modifier = Modifier.padding(start = 24.dp).fillMaxWidth(),
@@ -105,8 +114,7 @@ fun SettingUserProfile(
     Column(modifier = modifier.padding(top = 16.dp)) {
         AsyncImage(
             modifier = Modifier.width(36.dp).height(36.dp).clip(RoundedCornerShape(8.dp)),
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(user.image).build(),
+            model = user.image,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
@@ -201,7 +209,7 @@ fun PreviewSettingTopBar() {
 @Composable
 fun PreviewSettingScreen() {
     ProofTheme {
-        Setting(1, {}, {}, {})
+        Setting(user = user, {}, {}, {})
     }
 }
 

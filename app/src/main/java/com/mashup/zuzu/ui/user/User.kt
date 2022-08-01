@@ -15,14 +15,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.ui.component.*
@@ -35,41 +34,49 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 
 @Composable
 fun UserRoute(
-    viewModel: UserViewModel = viewModel(),
+    viewModel: UserViewModel = hiltViewModel(),
     onSettingClick: (Long) -> Unit,
     onEditButtonClick: () -> Unit,
     onWorldCupItemClick: (BestWorldCup) -> Unit,
     onWineClick: (Wine) -> Unit
 ) {
-    val uiState by viewModel.user.collectAsState() // userData
-    UserScreen(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight().background(color = ProofTheme.color.black),
-        onSettingClick = onSettingClick,
-        uiState = uiState,
-        onEditButtonClick = onEditButtonClick,
-        onWorldCupItemClick = onWorldCupItemClick,
-        onWineClick = onWineClick
-    )
+    val uiState by viewModel.user.collectAsState() // userData 아마 sharedPreference
+    val wineCallerState by viewModel.wineCaller.collectAsState() // wineCallerData
+    val joinedWorldCupState by viewModel.joinedWorldCup.collectAsState() // 참여한 술드컵
+
+    when (uiState) {
+        is UserUiState.Success -> {
+            UserScreen(
+                modifier = Modifier.fillMaxWidth().fillMaxHeight().background(color = ProofTheme.color.black),
+                onSettingClick = onSettingClick,
+                user = (uiState as UserUiState.Success).userData,
+                wineCallerState = wineCallerState,
+                joinedWorldCupState = joinedWorldCupState,
+                onEditButtonClick = onEditButtonClick,
+                onWorldCupItemClick = onWorldCupItemClick,
+                onWineClick = onWineClick
+            )
+        }
+        is UserUiState.Loading -> {
+        }
+        is UserUiState.Error -> {
+        }
+    }
 }
 
 @Composable
 fun UserScreen(
     modifier: Modifier,
     onSettingClick: (Long) -> Unit,
-    uiState: UserUiState,
+    user: User,
+    wineCallerState: WineCallerUiState,
+    joinedWorldCupState: JoinedWorldCupUiState,
     onEditButtonClick: () -> Unit,
     onWorldCupItemClick: (BestWorldCup) -> Unit,
     onWineClick: (Wine) -> Unit
 ) {
-    val userState = rememberUserState(
-        when (uiState) {
-            is UserUiState.Success -> {
-                uiState.userData
-            } else -> {
-                ""
-            }
-        } as User
-    )
+
+    val userState = rememberUserState(user)
 
     Column(modifier = modifier) {
         UserTopBar(
@@ -84,15 +91,8 @@ fun UserScreen(
         )
         when (userState.selectionOption) {
             optionList[0] -> {
-                when (uiState) {
-                    is UserUiState.NoItem -> {
-                        NoItemWineOrWorldCup(
-                            modifier = Modifier.fillMaxHeight().fillMaxWidth(),
-                            userName = userState.user.name,
-                            type = "참여한 술드컵"
-                        )
-                    }
-                    is UserUiState.Success -> {
+                when (wineCallerState) {
+                    is WineCallerUiState.Success -> {
                         WineCaller(
                             modifier = Modifier.fillMaxWidth(),
                             WineRepo.getWineData(),
@@ -101,16 +101,41 @@ fun UserScreen(
                             },
                         )
                     }
+                    is WineCallerUiState.NoItem -> {
+                        NoItemWineOrWorldCup(
+                            modifier = Modifier.fillMaxHeight().fillMaxWidth(),
+                            userName = userState.user.name,
+                            type = " 리뷰한 술"
+                        )
+                    }
+                    is WineCallerUiState.Loading -> {
+                    }
+                    is WineCallerUiState.Error -> {
+                    }
                 }
             }
             optionList[1] -> {
-                JoinWorldCup(
-                    modifier = Modifier.padding(top = 36.dp, start = 24.dp, end = 24.dp)
-                        .fillMaxWidth().fillMaxHeight(),
-                    onWorldCupItemClick = { bestWorldCup ->
-                        onWorldCupItemClick(bestWorldCup)
+                when (joinedWorldCupState) {
+                    is JoinedWorldCupUiState.Success -> {
+                        JoinWorldCup(
+                            modifier = Modifier.padding(top = 36.dp, start = 24.dp, end = 24.dp)
+                                .fillMaxWidth().fillMaxHeight(),
+                            onWorldCupItemClick = { bestWorldCup ->
+                                onWorldCupItemClick(bestWorldCup)
+                            }
+                        )
                     }
-                )
+                    is JoinedWorldCupUiState.NoItem -> {
+                        NoItemWineOrWorldCup(
+                            modifier = Modifier.fillMaxHeight().fillMaxHeight(),
+                            type = "참여한 술드컵", userName = userState.user.name
+                        )
+                    }
+                    is JoinedWorldCupUiState.Loading -> {
+                    }
+                    is JoinedWorldCupUiState.Error -> {
+                    }
+                }
             }
         }
     }
@@ -138,8 +163,8 @@ fun JoinWorldCup(
 fun UserTopBar(
     user: User,
     selectionOption: String,
-    optionList: List<String>,
     onSelectionChange: (String) -> Unit,
+    optionList: List<String>,
     onSettingClick: () -> Unit,
     onEditButtonClick: () -> Unit
 ) {
@@ -271,7 +296,15 @@ fun NoItemWineOrWorldCup(
 @Composable
 fun PreviewUserScreen() {
     ProofTheme {
-        UserScreen(modifier = Modifier.fillMaxWidth().fillMaxHeight(), {}, uiState = UserUiState.NoItem, {}, {}, {})
+        UserScreen(
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            onSettingClick = {},
+            user = user, wineCallerState = WineCallerUiState.Loading,
+            joinedWorldCupState = JoinedWorldCupUiState.Loading,
+            onEditButtonClick = {},
+            onWorldCupItemClick = {},
+            onWineClick = {}
+        )
     }
 }
 

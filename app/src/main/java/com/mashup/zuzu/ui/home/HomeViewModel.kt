@@ -10,9 +10,14 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.google.android.renderscript.Toolkit
 import com.mashup.zuzu.data.model.*
+import com.mashup.zuzu.domain.usecase.GetBestWorldCupListUseCase
+import com.mashup.zuzu.domain.usecase.GetMainWineListUseCase
+import com.mashup.zuzu.domain.usecase.GetRecommendWineUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/11
@@ -37,7 +42,12 @@ sealed class MainWineUiState {
     data class Success(val mainWines: List<Wine>) : MainWineUiState()
 }
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val getMainWineListUseCase: GetMainWineListUseCase,
+    private val getBestWorldCupListUseCase: GetBestWorldCupListUseCase,
+    private val getRecommendWineUseCase: GetRecommendWineUseCase
+) : ViewModel() {
 
     private val _mainWineList: MutableStateFlow<MainWineUiState> = MutableStateFlow(MainWineUiState.Loading)
     val mainWineList = _mainWineList.asStateFlow()
@@ -58,13 +68,37 @@ class HomeViewModel : ViewModel() {
 
     private fun getMainWineList() {
         viewModelScope.launch {
-            _mainWineList.value = MainWineUiState.Success(WineRepo.getWineData())
+            getMainWineListUseCase().collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        _mainWineList.value = MainWineUiState.Success(result.value)
+                    }
+                    is Results.Loading -> {
+                        _mainWineList.value = MainWineUiState.Loading
+                    }
+                    is Results.Failure -> {
+                        _mainWineList.value = MainWineUiState.Error
+                    }
+                }
+            }
         }
     }
 
     private fun getBestWorldCupList() {
         viewModelScope.launch {
-            _bestWorldCupList.value = BestWorldCupUiState.Success(BestWorldCupRepo.getBestWorldCupData())
+            getBestWorldCupListUseCase().collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        _bestWorldCupList.value = BestWorldCupUiState.Success(result.value)
+                    }
+                    is Results.Loading -> {
+                        _bestWorldCupList.value = BestWorldCupUiState.Loading
+                    }
+                    is Results.Failure -> {
+                        _bestWorldCupList.value = BestWorldCupUiState.Error
+                    }
+                }
+            }
         }
     }
 
@@ -72,9 +106,21 @@ class HomeViewModel : ViewModel() {
         context: Context
     ) {
         viewModelScope.launch {
-            val s = WineRepo.getRecommendWine()
-            _recommendWine.value = RecommendWineUiState.Success(s)
-            transBitmap(context, s.imageUrl)
+            getRecommendWineUseCase().collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        _recommendWine.value = RecommendWineUiState.Success(result.value)
+                        // transBitmap(context, result.value.imageUrl)
+                    }
+
+                    is Results.Loading -> {
+                        _recommendWine.value = RecommendWineUiState.Loading
+                    }
+                    is Results.Failure -> {
+                        _recommendWine.value = RecommendWineUiState.Error
+                    }
+                }
+            }
         }
     }
 

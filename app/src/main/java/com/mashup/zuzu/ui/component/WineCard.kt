@@ -13,7 +13,6 @@ import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
@@ -23,8 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.theme.ProofTheme
@@ -62,7 +57,7 @@ fun WineImageCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(),
-                model = ImageRequest.Builder(LocalContext.current).data(wine.imageUrl).build(),
+                model = wine.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds
             )
@@ -145,7 +140,7 @@ fun WineBoardCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(),
-                    model = ImageRequest.Builder(LocalContext.current).data(wine.imageUrl).build(),
+                    model = wine.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds
                 )
@@ -297,11 +292,11 @@ fun WineCardInHome(
             elevation = 0.8.dp
         ) {
             Box() {
-                Image(
+                AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(height),
-                    painter = painterResource(id = R.drawable.exampleimg),
+                    model = wine.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
@@ -376,11 +371,11 @@ fun PagerWineCard(
                     .fillMaxHeight()
                     .fillMaxWidth()
             ) {
-                Image(
+                AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp),
-                    painter = painterResource(id = R.drawable.exampleimg),
+                    model = wine.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds
                 )
@@ -520,9 +515,7 @@ fun RecommendWineCardWithRenderScript(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(recommendWine.imageUrl)
-                        .build(),
+                    model = recommendWine.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
@@ -637,7 +630,7 @@ fun RecommendWineCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(),
-                model = ImageRequest.Builder(LocalContext.current).data(recommendWine.imageUrl).build(),
+                model = recommendWine.imageUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -797,8 +790,7 @@ fun WineCellarCard(
             ) {
                 AsyncImage(
                     modifier = Modifier.clip(CircleShape),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(wine.imageUrl).build(),
+                    model = wine.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )

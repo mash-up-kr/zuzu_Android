@@ -4,10 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -81,28 +83,35 @@ fun ZuzuApp(
                     )
             }
         ) { paddingValues ->
-            NavHost(
-                modifier = Modifier.padding(paddingValues),
-                navController = zuzuAppState.navController,
-                startDestination = NavigationRoute.HomeScreenGraph.route // REVIEW_DETAIL
-            ) {
-                homeGraph(
-                    appState = zuzuAppState
-                )
-                categoryGraph(
-                    appState = zuzuAppState
-                )
-                userGraph(
-                    appState = zuzuAppState
-                )
-                composable(REVIEW_DETAIL) {
-                    DetailScreen(
-                        navigateToReviewWrite = { zuzuAppState.navigateReviewWriteScreen() }
+            Box {
+                NavHost(
+                    modifier = Modifier.padding(paddingValues),
+                    navController = zuzuAppState.navController,
+                    startDestination = NavigationRoute.HomeScreenGraph.route // REVIEW_DETAIL
+                ) {
+                    homeGraph(
+                        appState = zuzuAppState
                     )
+                    categoryGraph(
+                        appState = zuzuAppState
+                    )
+                    userGraph(
+                        appState = zuzuAppState
+                    )
+                    composable(REVIEW_DETAIL) {
+                        DetailScreen(
+                            navigateToReviewWrite = { zuzuAppState.navigateReviewWriteScreen() }
+                        )
+                    }
+                    composable(REVIEW_WRITE) {
+                        ReviewWriteRoute()
+                    }
                 }
-
-                composable(REVIEW_WRITE) {
-                    ReviewWriteRoute()
+                // progressbar
+                if (zuzuAppState.shouldShowProgressBar) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
             }
         }

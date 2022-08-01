@@ -1,6 +1,9 @@
 package com.mashup.zuzu.data.di
 
+import com.mashup.zuzu.data.repository.CategoryRepository
+import com.mashup.zuzu.data.repository.HomeRepository
 import com.mashup.zuzu.data.repository.ReviewWriteRepository
+import com.mashup.zuzu.data.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,7 +16,25 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideReviewWriteRepository() : ReviewWriteRepository {
+    fun provideReviewWriteRepository(): ReviewWriteRepository {
         return ReviewWriteRepository()
+    }
+
+    @Singleton
+    @Provides
+    fun provideHomeRepository(): HomeRepository {
+        return HomeRepository()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCategoryRepository(): CategoryRepository {
+        return CategoryRepository()
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserRepository(): UserRepository {
+        return UserRepository()
     }
 }

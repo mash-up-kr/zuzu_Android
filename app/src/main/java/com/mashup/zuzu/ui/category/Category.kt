@@ -24,11 +24,10 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
@@ -50,15 +49,13 @@ import kotlin.math.absoluteValue
 @Composable
 fun CategoryRoute(
     category: String,
-    categoryViewModel: CategoryViewModel = viewModel(
-        factory = CategoryViewModelFactory(category = category)
-    ),
+    categoryViewModel: CategoryViewModel = hiltViewModel(),
     onWineBoardClick: (Wine) -> Unit,
     onBackButtonClick: () -> Unit,
 ) {
 
     val index = categoryList.withIndex().filter { it.value.title == category }.map { it.index }[0]
-    val wineState = categoryViewModel.wineList.collectAsState().value
+    val wineState by categoryViewModel.wineList.collectAsState()
 
     CategoryScreen(
         modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
