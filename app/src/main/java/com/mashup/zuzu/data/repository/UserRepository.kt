@@ -8,7 +8,6 @@ import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/24
- * @Time 4:18 오후
  */
 class UserRepository @Inject constructor() {
     fun getUserData(userId: Long): Flow<Results<User>> {

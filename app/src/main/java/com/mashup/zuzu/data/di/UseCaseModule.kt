@@ -12,7 +12,6 @@ import javax.inject.Singleton
 
 /**
  * @Created by 김현국 2022/07/24
- * @Time 5:13 오후
  */
 @Module
 @InstallIn(SingletonComponent::class)

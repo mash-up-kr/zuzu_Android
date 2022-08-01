@@ -20,7 +20,6 @@ import kotlin.math.absoluteValue
 
 /**
  * @Created by 김현국 2022/07/26
- * @Time 10:42 오후
  */
 
 @OptIn(ExperimentalPagerApi::class)

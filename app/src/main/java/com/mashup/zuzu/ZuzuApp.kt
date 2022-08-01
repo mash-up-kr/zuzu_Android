@@ -32,7 +32,6 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/06/30
- * @Time 4:41 오후
  */
 @OptIn(ExperimentalMaterialNavigationApi::class)
 // TODO: Naming 변경 필요함

@@ -8,7 +8,6 @@ import androidx.compose.ui.graphics.Color
 
 /**
  * @Created by 김현국 2022/07/01
- * @Time 6:19 오후
  */
 
 @Composable

@@ -7,8 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * @Created by 김현국 2022/07/24
- * @Time 4:23 오후
- * @Description User Screen 내 술 저장고 */
+ */
 class GetWineCallerListUseCase(
     private val repository: UserRepository
 ) {

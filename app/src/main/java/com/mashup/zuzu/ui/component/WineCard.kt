@@ -37,7 +37,6 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/01
- * @Time 3:23 오후
  */
 
 val backgroundGradient = listOf(Color(0x00E4E8F5), Color(0xFF788098))

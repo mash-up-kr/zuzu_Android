@@ -15,7 +15,6 @@ import com.mashup.zuzu.ui.navigation.shouldShowNavigationItems
 
 /**
  * @Created by 김현국 2022/06/30
- * @Time 5:01 오후
  */
 
 @Stable

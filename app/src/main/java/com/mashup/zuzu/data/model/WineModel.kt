@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 
 /**
  * @Created by 김현국 2022/07/01
- * @Time 3:34 오후
  */
 
 @Immutable

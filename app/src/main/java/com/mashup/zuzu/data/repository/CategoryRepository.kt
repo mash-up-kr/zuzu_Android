@@ -8,7 +8,6 @@ import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/24
- * @Time 4:34 오후
  */
 class CategoryRepository @Inject constructor() {
 

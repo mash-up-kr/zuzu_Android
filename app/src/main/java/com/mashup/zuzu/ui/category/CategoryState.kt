@@ -4,10 +4,7 @@ import androidx.compose.runtime.*
 
 /**
  * @Created by 김현국 2022/07/05
- * @Time 4:20 오후
  */
-
-val sortMenuItem = listOf("최신순", "오래된순", "인기순")
 
 @Stable
 class CategoryState(
