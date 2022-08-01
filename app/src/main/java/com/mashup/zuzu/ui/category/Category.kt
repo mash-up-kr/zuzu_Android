@@ -48,7 +48,6 @@ fun CategoryRoute(
     val wineState by viewModel.wineList.collectAsState()
 
     CategoryScreen(
-        modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = Black),
         index = index,
         categoryList = categoryList,
         wineState = wineState,
@@ -58,7 +57,7 @@ fun CategoryRoute(
 
 @Composable
 fun CategoryScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     index: Int,
     categoryList: List<Category>,
     wineState: WineListWithCategoryUiState,
@@ -68,6 +67,9 @@ fun CategoryScreen(
 
     Column(
         modifier = modifier
+            .fillMaxHeight()
+            .fillMaxWidth()
+            .background(color = Black)
     ) {
         Icon(
             modifier = Modifier

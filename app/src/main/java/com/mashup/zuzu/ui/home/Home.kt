@@ -49,10 +49,6 @@ fun HomeRoute(
     val categoryListState by viewModel.categoryList.collectAsState()
 
     HomeScreen(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .background(color = ProofTheme.color.black),
         bestWorldCupState = bestWorldCupState,
         recommendState = recommendState,
         mainWineState = mainWineState,
@@ -64,7 +60,7 @@ fun HomeRoute(
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     bestWorldCupState: BestWorldCupUiState,
     recommendState: RecommendWineUiState,
     mainWineState: MainWineUiState,
@@ -76,7 +72,11 @@ fun HomeScreen(
     val context = LocalContext.current
 
     Column(
-        modifier = modifier.verticalScroll(scrollState)
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = ProofTheme.color.black)
+            .verticalScroll(scrollState)
     ) {
         HomeLogo(modifier = Modifier.padding(top = 24.dp, start = 24.dp))
         HomeMainTitle(
@@ -245,11 +245,8 @@ fun ZuzuBottomNavigationBar(
 ) {
     BottomNavigation(
         modifier = Modifier
-            .clip(
-                RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp)
-            )
             .height(52.dp),
-        backgroundColor = ProofTheme.color.black
+        backgroundColor = ProofTheme.color.black,
     ) {
         bottomNavigationItems.forEach { screen ->
             BottomNavigationItem(

@@ -48,10 +48,11 @@ fun SettingRoute(
 
 @Composable
 fun Setting(
+    modifier: Modifier = Modifier,
     user: User,
     onButtonClick: (SettingUiEvents) -> Unit
 ) {
-    Column {
+    Column(modifier = modifier.fillMaxWidth().fillMaxHeight()) {
         SettingTopBar(
             modifier = Modifier
                 .padding(top = 31.5.dp)
@@ -230,7 +231,7 @@ fun PreviewSettingTopBar() {
 @Composable
 fun PreviewSettingScreen() {
     ProofTheme {
-        Setting(user = user, {})
+        Setting(modifier = Modifier.fillMaxWidth().fillMaxHeight(), user = user, {})
     }
 }
 

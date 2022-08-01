@@ -35,17 +35,22 @@ fun LeaveRoute(
         leaveState(leaveUiEventState)
     }
     LeaveScreen(
-        modifier = Modifier.padding(top = 31.5.dp).fillMaxWidth().fillMaxHeight().background(color = ProofTheme.color.black),
         onClick = onClick
     )
 }
 
 @Composable
 fun LeaveScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onClick: (LeaveUiEvents) -> Unit
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .padding(top = 31.5.dp)
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = ProofTheme.color.black)
+    ) {
         LeaveTopBar(
             modifier = Modifier.fillMaxWidth().height(52.dp),
             onBackButtonClick = { onClick(LeaveUiEvents.BackButtonClick) }

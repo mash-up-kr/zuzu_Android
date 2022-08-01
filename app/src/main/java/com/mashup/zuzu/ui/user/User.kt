@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.*
@@ -44,10 +43,6 @@ fun UserRoute(
     when (uiState) {
         is UserUiState.Success -> {
             UserScreen(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .background(color = ProofTheme.color.black),
                 user = (uiState as UserUiState.Success).userData,
                 wineCallerState = wineCallerState,
                 joinedWorldCupState = joinedWorldCupState,
@@ -63,7 +58,7 @@ fun UserRoute(
 
 @Composable
 fun UserScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     user: User,
     wineCallerState: WineCallerUiState,
     joinedWorldCupState: JoinedWorldCupUiState,
@@ -71,7 +66,12 @@ fun UserScreen(
 ) {
     val userState = rememberUserState(user)
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = ProofTheme.color.black)
+    ) {
         UserTopBar(
             user = userState.user,
             selectionOption = userState.selectionOption,
