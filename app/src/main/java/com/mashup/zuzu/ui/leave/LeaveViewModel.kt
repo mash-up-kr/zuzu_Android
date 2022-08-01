@@ -12,22 +12,16 @@ import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/20
- * @Time 3:42 오후
  */
 
-sealed class LeaveUiEventState {
-    object Loading : LeaveUiEventState()
-    object Error : LeaveUiEventState()
-    object Success : LeaveUiEventState()
-    object Init : LeaveUiEventState()
-}
+
 
 @HiltViewModel
 class LeaveViewModel @Inject constructor(
     private val leaveMembershipUseCase: LeaveMembershipUseCase
 ) : ViewModel() {
 
-    private val _leave: MutableStateFlow<LeaveUiEventState> = MutableStateFlow(LeaveUiEventState.Init)
+    private val _leave: MutableStateFlow<LeaveUiState> = MutableStateFlow(LeaveUiState.Init)
     val leave = _leave.asStateFlow()
 
     fun leaveMembership(userId: Long) {
@@ -35,13 +29,13 @@ class LeaveViewModel @Inject constructor(
             leaveMembershipUseCase(userId = userId).collect { result ->
                 when (result) {
                     is Results.Success -> {
-                        _leave.value = LeaveUiEventState.Success
+                        _leave.value = LeaveUiState.Success
                     }
                     is Results.Loading -> {
-                        _leave.value = LeaveUiEventState.Loading
+                        _leave.value = LeaveUiState.Loading
                     }
                     is Results.Failure -> {
-                        _leave.value = LeaveUiEventState.Error
+                        _leave.value = LeaveUiState.Error
                     }
                 }
             }
