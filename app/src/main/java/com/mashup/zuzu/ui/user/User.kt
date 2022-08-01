@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
@@ -31,16 +30,12 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/14
- * @Time 6:59 오후
  */
 
 @Composable
 fun UserRoute(
-    viewModel: UserViewModel = hiltViewModel(),
-    onSettingClick: (Long) -> Unit,
-    onEditButtonClick: () -> Unit,
-    onWorldCupItemClick: (BestWorldCup) -> Unit,
-    onWineClick: (Wine) -> Unit
+    viewModel: UserViewModel,
+    onClick: (UserUiEvents) -> Unit
 ) {
     val uiState by viewModel.user.collectAsState() // userData 아마 sharedPreference
     val wineCallerState by viewModel.wineCaller.collectAsState() // wineCallerData
@@ -53,13 +48,10 @@ fun UserRoute(
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .background(color = ProofTheme.color.black),
-                onSettingClick = onSettingClick,
                 user = (uiState as UserUiState.Success).userData,
                 wineCallerState = wineCallerState,
                 joinedWorldCupState = joinedWorldCupState,
-                onEditButtonClick = onEditButtonClick,
-                onWorldCupItemClick = onWorldCupItemClick,
-                onWineClick = onWineClick
+                onClick = onClick
             )
         }
         is UserUiState.Loading -> {
@@ -72,15 +64,11 @@ fun UserRoute(
 @Composable
 fun UserScreen(
     modifier: Modifier,
-    onSettingClick: (Long) -> Unit,
     user: User,
     wineCallerState: WineCallerUiState,
     joinedWorldCupState: JoinedWorldCupUiState,
-    onEditButtonClick: () -> Unit,
-    onWorldCupItemClick: (BestWorldCup) -> Unit,
-    onWineClick: (Wine) -> Unit
+    onClick: (UserUiEvents) -> Unit
 ) {
-
     val userState = rememberUserState(user)
 
     Column(modifier = modifier) {
@@ -89,9 +77,11 @@ fun UserScreen(
             selectionOption = userState.selectionOption,
             onSelectionChange = userState.onSelectionChange,
             optionList = optionList,
-            onSettingClick = { onSettingClick(userState.user.id) },
+            onSettingClick = {
+                onClick(UserUiEvents.SettingButtonClick(userId = userState.user.id))
+            },
             onEditButtonClick = {
-                onEditButtonClick()
+                onClick(UserUiEvents.EditButtonClick)
             }
         )
         when (userState.selectionOption) {
@@ -102,8 +92,8 @@ fun UserScreen(
                             modifier = Modifier.fillMaxWidth(),
                             WineRepo.getWineData(),
                             onWineClick = { wine ->
-                                onWineClick(wine)
-                            },
+                                onClick(UserUiEvents.WineItemClick(wine = wine))
+                            }
                         )
                     }
                     is WineCallerUiState.NoItem -> {
@@ -130,7 +120,7 @@ fun UserScreen(
                                 .fillMaxWidth()
                                 .fillMaxHeight(),
                             onWorldCupItemClick = { bestWorldCup ->
-                                onWorldCupItemClick(bestWorldCup)
+                                onClick(UserUiEvents.WorldCupItemClick(bestWorldCup = bestWorldCup))
                             }
                         )
                     }
@@ -139,7 +129,8 @@ fun UserScreen(
                             modifier = Modifier
                                 .fillMaxHeight()
                                 .fillMaxHeight(),
-                            type = "참여한 술드컵", userName = userState.user.name
+                            type = "참여한 술드컵",
+                            userName = userState.user.name
                         )
                     }
                     is JoinedWorldCupUiState.Loading -> {
@@ -170,6 +161,7 @@ fun JoinWorldCup(
         }
     }
 }
+
 @Composable
 fun UserTopBar(
     user: User,
@@ -179,7 +171,6 @@ fun UserTopBar(
     onSettingClick: () -> Unit,
     onEditButtonClick: () -> Unit
 ) {
-
     Column(
         modifier = Modifier.background(color = ProofTheme.color.gray600)
     ) {
@@ -201,9 +192,11 @@ fun UserTopBar(
                 contentDescription = null
             )
         }
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(31.dp))
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(31.dp)
+        )
         Row(
             modifier = Modifier
                 .padding(start = 24.dp)
@@ -307,7 +300,7 @@ fun NoItemWineOrWorldCup(
                 text = "${userName}님의 술경험을 알려주세요.",
                 style = ProofTheme.typography.bodyM,
                 color = ProofTheme.color.gray200,
-                maxLines = 1,
+                maxLines = 1
             )
         }
         Box(
@@ -330,12 +323,10 @@ fun PreviewUserScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(),
-            onSettingClick = {},
-            user = user, wineCallerState = WineCallerUiState.Loading,
+            user = user,
+            wineCallerState = WineCallerUiState.Loading,
             joinedWorldCupState = JoinedWorldCupUiState.Loading,
-            onEditButtonClick = {},
-            onWorldCupItemClick = {},
-            onWineClick = {}
+            onClick = {}
         )
     }
 }
@@ -344,8 +335,12 @@ fun PreviewUserScreen() {
 @Composable
 fun PreviewNoItemWineOrWorldCup() {
     ProofTheme {
-        NoItemWineOrWorldCup(userName = "위스키다이스키", modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(), type = "참여한 술드컵")
+        NoItemWineOrWorldCup(
+            userName = "위스키다이스키",
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            type = "참여한 술드컵"
+        )
     }
 }
