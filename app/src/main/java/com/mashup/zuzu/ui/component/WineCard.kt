@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.ui.theme.ProofTheme
 
@@ -865,22 +867,6 @@ fun PreviewWindBoardCard() {
                 .width(220.dp),
             wine = wines[0],
             onWineBoardClick = {}
-        )
-    }
-}
-
-@Preview(
-    showBackground = true,
-    name = "리뷰 디테일 용"
-)
-@Composable
-fun PreviewWindBoardCardForReviewDetail() {
-    ProofTheme() {
-        WineImageCardForReviewDetail(
-            modifier = Modifier
-                .height(260.dp)
-                .width(220.dp),
-            wine = wines[0]
         )
     }
 }

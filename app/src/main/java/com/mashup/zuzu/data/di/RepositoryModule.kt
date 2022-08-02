@@ -39,6 +39,8 @@ class RepositoryModule {
         return UserRepository()
     }
 
+    @Singleton
+    @Provides
     fun provideReviewDetailRepository() : ReviewDetailRepository {
         return ReviewDetailRepository()
     }
