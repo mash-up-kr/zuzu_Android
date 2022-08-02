@@ -885,6 +885,22 @@ fun PreviewWindBoardCardForReviewDetail() {
     }
 }
 
+@Preview(
+    showBackground = true,
+    name = "리뷰 디테일 용"
+)
+@Composable
+fun PreviewWindBoardCardForReviewDetail() {
+    ProofTheme() {
+        WineImageCardForReviewDetail(
+            modifier = Modifier
+                .height(260.dp)
+                .width(220.dp),
+            wine = wines[0]
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewPagerCard() {
