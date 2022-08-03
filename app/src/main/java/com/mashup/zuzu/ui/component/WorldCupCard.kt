@@ -50,7 +50,6 @@ fun WorldCupCard(
         Column(
             modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
         ) {
-
             Text(
                 text = worldCupItem.day,
                 style = ProofTheme.typography.bodyXS,

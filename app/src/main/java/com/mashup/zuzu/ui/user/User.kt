@@ -90,7 +90,7 @@ fun UserScreen(
                     is WineCallerUiState.Success -> {
                         WineCaller(
                             modifier = Modifier.fillMaxWidth(),
-                            WineRepo.getWineData(),
+                            wines = wineCallerState.wineCaller,
                             onWineClick = { wine ->
                                 onClick(UserUiEvents.WineItemClick(wine = wine))
                             }
