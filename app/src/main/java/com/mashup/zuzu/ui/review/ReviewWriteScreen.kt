@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.mashup.zuzu.R
 import com.mashup.zuzu.ui.theme.ProofTheme
 import kotlinx.coroutines.launch
@@ -187,9 +188,9 @@ fun ReviewWriteScreen(
                 ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (uiState.wineImage != 0) {
+                if (uiState.wineImage != "") {
                     Image(
-                        painter = painterResource(id = uiState.wineImage),
+                        painter = rememberAsyncImagePainter(uiState.wineImage),
                         contentDescription = "wineImage",
                         modifier = Modifier.padding(bottom = 40.dp)
                     )

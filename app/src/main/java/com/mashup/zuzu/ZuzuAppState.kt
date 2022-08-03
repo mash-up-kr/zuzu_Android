@@ -62,24 +62,12 @@ class ZuzuAppState constructor(
         navController.popBackStack()
     }
 
-    fun navigateDetailScreen() {
-        navController.navigate(REVIEW_DETAIL)
-    }
-
-    fun navigateReviewWriteScreen() {
-        navController.navigate(REVIEW_WRITE)
-    }
-
     fun showProgressBar() {
         shouldShowProgressBar = !shouldShowProgressBar
     }
 
     fun putCategoryList(category: List<Category>) {
         categoryList = category.toMutableStateList()
-    }
-    companion object {
-        const val REVIEW_DETAIL = "reviewDetail"
-        const val REVIEW_WRITE = "reviewWrite"
     }
 }
 

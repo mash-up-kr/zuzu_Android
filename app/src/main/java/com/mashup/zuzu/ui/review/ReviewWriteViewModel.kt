@@ -26,7 +26,7 @@ class ReviewWriteViewModel @Inject constructor(
             initialValue = Wine(
                 id = 1L,
                 name = "GoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlue",
-                imageUrl = R.drawable.img_wine_dummy,
+                imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
                 price = 1000,
                 alc = 17,
                 listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술"),
@@ -47,7 +47,7 @@ class ReviewWriteViewModel @Inject constructor(
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ReviewWriteUiState(0, 0)
+            initialValue = ReviewWriteUiState(0, "")
         )
 
     fun navigatePreviousWritePage() = viewModelScope.launch {

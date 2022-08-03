@@ -1,7 +1,10 @@
 package com.mashup.zuzu
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
@@ -11,23 +14,14 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_DETAIL
-import com.mashup.zuzu.ZuzuAppState.Companion.REVIEW_WRITE
-import com.mashup.zuzu.ui.DetailScreen
 import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
-import com.mashup.zuzu.ui.navigation.NavigationRoute
-import com.mashup.zuzu.ui.navigation.categoryGraph
-import com.mashup.zuzu.ui.navigation.homeGraph
-import com.mashup.zuzu.ui.navigation.userGraph
-import com.mashup.zuzu.ui.review.ReviewWriteRoute
+import com.mashup.zuzu.ui.navigation.*
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
@@ -98,14 +92,9 @@ fun ZuzuApp(
                     userGraph(
                         appState = zuzuAppState
                     )
-                    composable(REVIEW_DETAIL) {
-                        DetailScreen(
-                            navigateToReviewWrite = { zuzuAppState.navigateReviewWriteScreen() }
-                        )
-                    }
-                    composable(REVIEW_WRITE) {
-                        ReviewWriteRoute()
-                    }
+                    reviewGraph(
+                        appState = zuzuAppState
+                    )
                 }
                 // progressbar
                 if (zuzuAppState.shouldShowProgressBar) {
