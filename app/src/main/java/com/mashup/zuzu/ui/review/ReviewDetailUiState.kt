@@ -6,6 +6,7 @@ sealed interface ReviewDetailUiState {
     object Loading : ReviewDetailUiState
 
     data class Normal(
-        val wine: Wine
+        val wine: Wine,
+        val dummyWorldCupData: DummyWorldCupData
     ) : ReviewDetailUiState
 }

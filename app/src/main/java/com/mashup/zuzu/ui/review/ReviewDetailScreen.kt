@@ -1,8 +1,12 @@
 package com.mashup.zuzu.ui.review
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -11,14 +15,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.mashup.zuzu.R
 import com.mashup.zuzu.ui.component.WineImageCardForReviewDetail
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 @Composable
 fun ReviewDetailRoute(
     viewModel: ReviewDetailViewModel,
-    navigateBack : () -> Unit,
+    navigateBack: () -> Unit,
     navigateToReviewWrite: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -57,14 +64,24 @@ fun ReviewDetailScreen(
         //TODO: 왜 description이 리스트지?
         WineInformation(content = reviewDetailUiState.wine.description[0])
 
-        WorldCupInfo()
+        WorldCupInfo(reviewDetailUiState.dummyWorldCupData)
+
+        Spacer(
+            modifier = Modifier
+                .padding(vertical = 40.dp)
+                .fillMaxWidth()
+                .height(6.dp)
+                .background(color = ProofTheme.color.gray600)
+        )
 
         WineByReview()
 
         Button(
             onClick = navigateToReviewWrite,
             colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
-            modifier = Modifier.fillMaxWidth().height(52.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(52.dp)
         ) {
             Text(
                 text = "나도 리뷰하기",
@@ -107,15 +124,43 @@ fun WineInformation(
 }
 
 @Composable
-fun WorldCupInfo() {
+fun WorldCupInfo(
+    dummyWorldCupData: DummyWorldCupData
+) {
     Column(
         modifier = Modifier.padding(top = 40.dp, start = 24.dp, end = 24.dp)
     ) {
-        Text(
-            text = "월드컵에서는",
-            style = ProofTheme.typography.headingM,
-            color = ProofTheme.color.white
-        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "월드컵에서는",
+                style = ProofTheme.typography.headingM,
+                color = ProofTheme.color.white
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_result_help), contentDescription = ""
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .background(
+                    color = ProofTheme.color.gray600,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = dummyWorldCupData.first.toString(),
+                style = ProofTheme.typography.headingS,
+                color = ProofTheme.color.white,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
     }
 }
 
