@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.ui.theme.ProofTheme
 
@@ -114,6 +116,63 @@ fun WineImageCard(
         }
     }
 }
+
+@Composable
+fun WineImageCardForReviewDetail(
+    wine: Wine,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(10.dp),
+    ) {
+        Box() {
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                model = ImageRequest.Builder(LocalContext.current).data(wine.imageUrl).build(),
+                contentDescription = null,
+                contentScale = ContentScale.FillWidth
+            )
+
+            Box(
+                modifier = Modifier
+                    .background(
+                        brush = Brush.verticalGradient(colors = backgroundGradient),
+                        alpha = 0.6f
+                    )
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.5f)
+                    .align(Alignment.BottomCenter)
+                    .padding(start = 24.dp, end = 24.dp, top = 39.dp, bottom = 20.dp)
+            ) {
+                CompositionLocalProvider(LocalContentColor provides ProofTheme.color.white) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "${wine.category} Alc ${wine.alc}%",
+                            style = ProofTheme.typography.bodyS600
+                        )
+
+                        Text(
+                            text = wine.name,
+                            maxLines = 4,
+                            fontWeight = FontWeight.W400,
+                            fontSize = 24.sp,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -807,6 +866,22 @@ fun PreviewWindBoardCard() {
                 .width(220.dp),
             wine = wines[0],
             onWineBoardClick = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "리뷰 디테일 용"
+)
+@Composable
+fun PreviewWindBoardCardForReviewDetail() {
+    ProofTheme() {
+        WineImageCardForReviewDetail(
+            modifier = Modifier
+                .height(260.dp)
+                .width(220.dp),
+            wine = wines[0]
         )
     }
 }
