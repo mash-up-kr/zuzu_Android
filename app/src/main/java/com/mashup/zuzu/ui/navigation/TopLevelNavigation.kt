@@ -2,7 +2,9 @@ package com.mashup.zuzu.ui.navigation
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
@@ -122,6 +124,16 @@ internal fun NavGraphBuilder.userGraph(
                         }
                     }
                 }
+                onSettingClick = {
+                    appState.navigateRoute(NavigationRoute.UserScreenGraph.SettingScreen.route)
+                },
+                onEditButtonClick = {
+                    appState.navigateRoute(NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route)
+                },
+                onWorldCupItemClick = {},
+                onWineClick = {
+                    appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${it.id}")
+                }
             )
         }
         composable(
@@ -198,6 +210,38 @@ internal fun NavGraphBuilder.userGraph(
                         is UpdateProfileUiEventState.Init -> {}
                     }
                 }
+            )
+        }
+    }
+}
+
+internal fun NavGraphBuilder.reviewGraph(
+    appState: ZuzuAppState
+) {
+    navigation(
+        route = NavigationRoute.ReviewGraph.route,
+        startDestination = "${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/{wineId}"
+    ) {
+        composable(
+            route = "${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/{wineId}",
+            arguments = listOf(
+                navArgument("wineId") {
+                    type = NavType.LongType
+                }
+            )
+        ) {
+            ReviewDetailRoute(
+                viewModel = hiltViewModel(),
+                navigateBack = {},
+                navigateToReviewWrite = { appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewWriteScreen.route) }
+            )
+        }
+
+        composable(
+            route = NavigationRoute.ReviewGraph.ReviewWriteScreen.route
+        ) {
+            ReviewWriteRoute(
+                viewModel = hiltViewModel()
             )
         }
     }
