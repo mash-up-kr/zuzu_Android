@@ -1,10 +1,7 @@
 package com.mashup.zuzu.data.model
 
-import com.mashup.zuzu.R
-
 /**
  * @Created by 김현국 2022/07/20
- * @Time 4:25 오후
  */
 
 data class Category(

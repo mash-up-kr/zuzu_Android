@@ -8,8 +8,6 @@ import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/24
- * @Time 3:41 오후
- * @Description Home Screen에서 인기 술드컵
  */
 class GetBestWorldCupListUseCase @Inject constructor(
     private val repository: HomeRepository

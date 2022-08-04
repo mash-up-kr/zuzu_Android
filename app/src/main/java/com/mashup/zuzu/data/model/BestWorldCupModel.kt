@@ -2,7 +2,6 @@ package com.mashup.zuzu.data.model
 
 /**
  * @Created by 김현국 2022/07/11
- * @Time 3:25 오후
  */
 
 data class BestWorldCup(

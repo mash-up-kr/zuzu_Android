@@ -25,7 +25,6 @@ import java.util.*
 
 /**
  * @Created by 김현국 2022/07/01
- * @Time 7:13 오후
  */
 
 @Composable

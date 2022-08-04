@@ -15,50 +15,45 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.mashup.zuzu.R
 import com.mashup.zuzu.ui.component.Button
 import com.mashup.zuzu.ui.theme.ProofTheme
-import com.mashup.zuzu.R
 
 /**
  * @Created by 김현국 2022/07/18
- * @Time 5:26 오후
  */
 
 @Composable
 fun LeaveRoute(
-    viewModel: LeaveViewModel = hiltViewModel(),
-    onBackButtonClick: () -> Unit,
-    onKeepUsingButtonClick: () -> Unit,
-    onLeaveState: (LeaveUiEventState) -> Unit
+    viewModel: LeaveViewModel,
+    leaveState: (LeaveUiState) -> Unit,
+    onClick: (LeaveUiEvents) -> Unit
 ) {
-
     val leaveUiEventState by viewModel.leave.collectAsState()
 
     LaunchedEffect(leaveUiEventState) {
-        onLeaveState(leaveUiEventState)
+        leaveState(leaveUiEventState)
     }
     LeaveScreen(
-        modifier = Modifier.padding(top = 31.5.dp).fillMaxWidth().fillMaxHeight().background(color = ProofTheme.color.black),
-        onBackButtonClick = onBackButtonClick,
-        onLeaveButtonClick = {
-            viewModel.leaveMembership(userId = 0L) // sharedPre
-        },
-        onKeepUsingButtonClick = onKeepUsingButtonClick
+        onClick = onClick
     )
 }
 
 @Composable
 fun LeaveScreen(
-    modifier: Modifier,
-    onBackButtonClick: () -> Unit,
-    onLeaveButtonClick: () -> Unit,
-    onKeepUsingButtonClick: () -> Unit
+    modifier: Modifier = Modifier,
+    onClick: (LeaveUiEvents) -> Unit
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .padding(top = 31.5.dp)
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = ProofTheme.color.black)
+    ) {
         LeaveTopBar(
             modifier = Modifier.fillMaxWidth().height(52.dp),
-            onBackButtonClick = onBackButtonClick
+            onBackButtonClick = { onClick(LeaveUiEvents.BackButtonClick) }
         )
         Column(
             modifier = Modifier.fillMaxWidth().fillMaxHeight(),
@@ -74,20 +69,20 @@ fun LeaveScreen(
                 text = "탈퇴하기",
                 backgroundColor = ProofTheme.color.primary300,
                 textColor = ProofTheme.color.white,
-                onButtonClick = onLeaveButtonClick
+                onButtonClick = { onClick(LeaveUiEvents.LeaveButtonClick) }
             )
             Spacer(modifier = Modifier.fillMaxWidth().height(25.dp))
             Box(
                 modifier = Modifier.padding(start = 24.dp, end = 24.dp).fillMaxWidth().height(40.dp)
                     .clickable {
-                        onKeepUsingButtonClick()
+                        onClick(LeaveUiEvents.KeepUsingButtonClick)
                     }
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
                     text = "계속 사용할래요",
                     style = ProofTheme.typography.buttonL,
-                    color = ProofTheme.color.primary100,
+                    color = ProofTheme.color.primary100
                 )
             }
         }
@@ -100,7 +95,7 @@ fun LeaveTopBar(
     onBackButtonClick: () -> Unit
 ) {
     Box(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Icon(
             modifier = Modifier

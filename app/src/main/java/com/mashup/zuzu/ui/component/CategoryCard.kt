@@ -17,7 +17,6 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/01
- * @Time 6:49 오후
  */
 
 @Composable

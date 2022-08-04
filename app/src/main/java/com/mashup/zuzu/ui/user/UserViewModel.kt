@@ -2,10 +2,7 @@ package com.mashup.zuzu.ui.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.Results
-import com.mashup.zuzu.data.model.User
-import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.domain.usecase.GetJoinedWorldCupListUseCase
 import com.mashup.zuzu.domain.usecase.GetUserDataUseCase
 import com.mashup.zuzu.domain.usecase.GetWineCallerListUseCase
@@ -18,33 +15,7 @@ import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/18
- * @Time 1:31 오후
  */
-
-sealed class UserUiState {
-    object Loading : UserUiState()
-    object Error : UserUiState()
-    data class Success(val userData: User) : UserUiState()
-}
-sealed class WineCallerUiState {
-    object Loading : WineCallerUiState()
-    object Error : WineCallerUiState()
-    data class Success(val wineCaller: List<Wine>) : WineCallerUiState()
-    object NoItem : WineCallerUiState()
-}
-sealed class JoinedWorldCupUiState {
-    object Loading : JoinedWorldCupUiState()
-    object Error : JoinedWorldCupUiState()
-    data class Success(val joinedWorldCupList: List<BestWorldCup>) : JoinedWorldCupUiState()
-    object NoItem : JoinedWorldCupUiState()
-}
-
-sealed class UpdateProfileUiEventState {
-    object Loading : UpdateProfileUiEventState()
-    object Error : UpdateProfileUiEventState()
-    object Success : UpdateProfileUiEventState()
-    object Init : UpdateProfileUiEventState()
-}
 
 @HiltViewModel
 class UserViewModel @Inject constructor(

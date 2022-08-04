@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * @Created by 김현국 2022/07/27
- * @Time 4:44 오후
  */
 class GetCategoryListUseCase(
     private val repository: CategoryRepository

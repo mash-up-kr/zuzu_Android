@@ -10,19 +10,28 @@ import com.google.accompanist.navigation.material.ExperimentalMaterialNavigation
 import com.google.accompanist.navigation.material.bottomSheet
 import com.mashup.zuzu.ZuzuAppState
 import com.mashup.zuzu.ui.category.CategoryRoute
+import com.mashup.zuzu.ui.category.CategoryUiEvents
+import com.mashup.zuzu.ui.category.CategoryViewModel
 import com.mashup.zuzu.ui.home.HomeRoute
+import com.mashup.zuzu.ui.home.HomeUiEvents
+import com.mashup.zuzu.ui.home.HomeViewModel
 import com.mashup.zuzu.ui.leave.LeaveRoute
-import com.mashup.zuzu.ui.leave.LeaveUiEventState
+import com.mashup.zuzu.ui.leave.LeaveUiEvents
+import com.mashup.zuzu.ui.leave.LeaveUiState
+import com.mashup.zuzu.ui.leave.LeaveViewModel
 import com.mashup.zuzu.ui.review.ReviewDetailRoute
 import com.mashup.zuzu.ui.review.ReviewWriteRoute
 import com.mashup.zuzu.ui.setting.SettingRoute
+import com.mashup.zuzu.ui.setting.SettingUiEvents
+import com.mashup.zuzu.ui.setting.SettingViewModel
 import com.mashup.zuzu.ui.user.UpdateProfileUiEventState
 import com.mashup.zuzu.ui.user.UserRoute
+import com.mashup.zuzu.ui.user.UserUiEvents
+import com.mashup.zuzu.ui.user.UserViewModel
 import com.mashup.zuzu.ui.user.edit.EditUserProfileRoute
 
 /**
  * @Created by 김현국 2022/07/23
- * @Time 3:57 오후
  */
 
 internal fun NavGraphBuilder.homeGraph(
@@ -35,13 +44,24 @@ internal fun NavGraphBuilder.homeGraph(
         composable(
             route = NavigationRoute.HomeScreenGraph.HomeScreen.route
         ) {
+            val viewModel: HomeViewModel = hiltViewModel()
             HomeRoute(
-                onCategoryClick = { categoryList, category ->
-                    appState.putCategoryList(category = categoryList)
-                    appState.navigateRoute(NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/${category.title}")
-                },
-                onWorldCupItemClick = {},
-                onWineBoardClick = {}
+                viewModel = viewModel,
+                onClick = { homeUiEvents ->
+                    when (homeUiEvents) {
+                        is HomeUiEvents.CategoryClick -> {
+                            appState.putCategoryList(category = homeUiEvents.categoryList)
+                            appState.navigateRoute(route = NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/${homeUiEvents.category.title}")
+                        }
+                        is HomeUiEvents.WineBoardClick -> {
+                        }
+                        is HomeUiEvents.WorldCupItemClick -> {
+                        }
+                        is HomeUiEvents.RefreshButtonClick -> {
+                            viewModel.getRecommendWine(context = homeUiEvents.context)
+                        }
+                    }
+                }
             )
         }
     }
@@ -56,12 +76,22 @@ internal fun NavGraphBuilder.categoryGraph(
         composable(
             route = NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/{category}"
         ) {
+            val viewModel: CategoryViewModel = hiltViewModel()
             CategoryRoute(
+                viewModel = viewModel,
                 category = it.arguments?.getString("category")!!,
                 categoryList = appState.categoryList,
-                onWineBoardClick = {},
-                onBackButtonClick = {
-                    appState.navigateBackStack()
+                onClick = { categoryUiEvents ->
+                    when (categoryUiEvents) {
+                        is CategoryUiEvents.WineBoardClick -> {
+                        }
+                        is CategoryUiEvents.BackButtonClick -> {
+                            appState.navigateBackStack()
+                        }
+                        is CategoryUiEvents.TabClick -> {
+                            viewModel.getWineList(categoryUiEvents.tag)
+                        }
+                    }
                 }
             )
         }
@@ -79,52 +109,76 @@ internal fun NavGraphBuilder.userGraph(
         composable(
             route = NavigationRoute.UserScreenGraph.UserScreen.route
         ) {
+            val viewModel: UserViewModel = hiltViewModel()
             UserRoute(
-                onSettingClick = {
-                    appState.navigateRoute(NavigationRoute.UserScreenGraph.SettingScreen.route)
-                },
-                onEditButtonClick = {
-                    appState.navigateRoute(NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route)
-                },
-                onWorldCupItemClick = {},
-                onWineClick = {
-                    appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${it.id}")
+                viewModel = viewModel,
+                onClick = { userUiEvents ->
+                    when (userUiEvents) {
+                        is UserUiEvents.WorldCupItemClick -> {
+                        }
+                        is UserUiEvents.WineItemClick -> {
+                            appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${userUiEvents.wine.id}")
+                        }
+                        is UserUiEvents.EditButtonClick -> {
+                            appState.navigateRoute(NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route)
+                        }
+                        is UserUiEvents.SettingButtonClick -> {
+                            appState.navigateRoute(NavigationRoute.UserScreenGraph.SettingScreen.route)
+                        }
+                    }
                 }
             )
         }
         composable(
             route = NavigationRoute.UserScreenGraph.SettingScreen.route
         ) {
+            val viewModel: SettingViewModel = hiltViewModel()
             SettingRoute(
-                onBackButtonClick = {
-                    appState.navigateBackStack()
-                },
-                onLeaveButtonClick = {
-                    appState.navigateRoute(NavigationRoute.UserScreenGraph.LeaveScreen.route)
-                },
-                onEditButtonClick = {
-                    appState.navigateRoute(NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route)
+                viewModel = viewModel,
+                onButtonClick = { settingScreenEvents ->
+                    when (settingScreenEvents) {
+                        is SettingUiEvents.LeaveButtonClick -> {
+                            appState.navigateRoute(NavigationRoute.UserScreenGraph.LeaveScreen.route)
+                        }
+                        is SettingUiEvents.BackButtonClick -> {
+                            appState.navigateBackStack()
+                        }
+                        is SettingUiEvents.EditButtonClick -> {
+                            appState.navigateRoute(NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route)
+                        }
+                    }
                 }
             )
         }
         composable(
             route = NavigationRoute.UserScreenGraph.LeaveScreen.route
         ) {
+            val viewModel: LeaveViewModel = hiltViewModel()
             LeaveRoute(
-                onBackButtonClick = {
-                    appState.navigateBackStack()
-                },
-                onKeepUsingButtonClick = {
-                    appState.navigateBackStack()
-                },
-                onLeaveState = { leaveUiEventState ->
-                    when (leaveUiEventState) {
-                        is LeaveUiEventState.Success -> {
+                viewModel = viewModel,
+                leaveState = { leaveUiState ->
+                    when (leaveUiState) {
+                        is LeaveUiState.Success -> {
                             appState.showProgressBar()
                             appState.navigateBackStack()
                         }
-                        is LeaveUiEventState.Loading -> {
+                        is LeaveUiState.Loading -> {
                             appState.showProgressBar()
+                        }
+                        is LeaveUiState.Error -> {}
+                        is LeaveUiState.Init -> {}
+                    }
+                },
+                onClick = { leaveUiEvents ->
+                    when (leaveUiEvents) {
+                        is LeaveUiEvents.KeepUsingButtonClick -> {
+                            appState.navigateBackStack()
+                        }
+                        is LeaveUiEvents.BackButtonClick -> {
+                            appState.navigateBackStack()
+                        }
+                        is LeaveUiEvents.LeaveButtonClick -> {
+                            viewModel.leaveMembership(userId = 0L)
                         }
                     }
                 }
@@ -133,7 +187,9 @@ internal fun NavGraphBuilder.userGraph(
         bottomSheet(
             route = NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route
         ) {
+            val viewModel: UserViewModel = hiltViewModel()
             EditUserProfileRoute(
+                viewModel = viewModel,
                 onSubmitState = { updateProfileUiEventState ->
                     when (updateProfileUiEventState) {
                         is UpdateProfileUiEventState.Success -> {
@@ -143,6 +199,8 @@ internal fun NavGraphBuilder.userGraph(
                         is UpdateProfileUiEventState.Loading -> {
                             appState.showProgressBar()
                         }
+                        is UpdateProfileUiEventState.Error -> {}
+                        is UpdateProfileUiEventState.Init -> {}
                     }
                 }
             )

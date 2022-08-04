@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * @Created by 김현국 2022/07/24
- * @Time 4:31 오후
  */
 class UpdateUserProfileUseCase(
     private val repository: UserRepository

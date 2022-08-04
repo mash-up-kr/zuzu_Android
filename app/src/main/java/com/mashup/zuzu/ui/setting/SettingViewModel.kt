@@ -13,7 +13,6 @@ import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/20
- * @Time 3:43 오후
  */
 
 @HiltViewModel

@@ -15,8 +15,7 @@ import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
- * @Creatd by 김현국 2022/07/03
- * @Time 6:05 오후
+ * @Created by 김현국 2022/07/03
  */
 
 @Composable
@@ -33,7 +32,8 @@ fun CategoryItems(
             CategoryCard(
                 modifier = Modifier.width(52.dp).height(52.dp)
                     .background(color = ProofTheme.color.gray500, shape = CircleShape),
-                category = category, onCategoryClick = onCategoryClick
+                category = category,
+                onCategoryClick = onCategoryClick
             )
         }
     }

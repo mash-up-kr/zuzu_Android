@@ -8,7 +8,6 @@ import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/24
- * @Time 5:24 오후
  */
 class GetWineListUseCase @Inject constructor(
     private val repository: CategoryRepository

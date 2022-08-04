@@ -8,7 +8,6 @@ import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/24
- * @Time 3:45 오후
  */
 class HomeRepository @Inject constructor() {
     fun getMainWineList(): Flow<Results<List<Wine>>> {

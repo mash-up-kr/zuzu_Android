@@ -18,7 +18,6 @@ import com.mashup.zuzu.ui.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/18
- * @Time 3:35 오후
  */
 
 data class ProfileImage(

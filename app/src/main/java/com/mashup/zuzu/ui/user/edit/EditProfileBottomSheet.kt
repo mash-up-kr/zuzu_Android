@@ -21,12 +21,11 @@ import com.mashup.zuzu.ui.user.UserViewModel
 
 /**
  * @Created by 김현국 2022/07/21
- * @Time 3:26 오후
  */
 
 @Composable
 fun EditUserProfileRoute(
-    viewModel: UserViewModel = hiltViewModel(),
+    viewModel: UserViewModel,
     onSubmitState: (UpdateProfileUiEventState) -> Unit
 ) {
     val uiState by viewModel.user.collectAsState() // userData

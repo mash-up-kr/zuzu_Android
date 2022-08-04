@@ -1,6 +1,5 @@
 package com.mashup.zuzu.ui.home
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.compose.foundation.*
@@ -24,13 +23,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import com.mashup.zuzu.BuildConfig
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.BestWorldCup
-import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.ui.component.*
@@ -39,15 +35,12 @@ import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/06/30
- * @Time 5:08 오후
  */
 
 @Composable
 fun HomeRoute(
-    viewModel: HomeViewModel = hiltViewModel(),
-    onWineBoardClick: (Wine) -> Unit,
-    onWorldCupItemClick: (BestWorldCup) -> Unit,
-    onCategoryClick: (List<Category>, Category) -> Unit
+    viewModel: HomeViewModel,
+    onClick: (HomeUiEvents) -> Unit
 ) {
     val bestWorldCupState by viewModel.bestWorldCupList.collectAsState()
     val recommendState by viewModel.recommendWine.collectAsState()
@@ -56,42 +49,34 @@ fun HomeRoute(
     val categoryListState by viewModel.categoryList.collectAsState()
 
     HomeScreen(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .background(color = ProofTheme.color.black),
-        onCategoryClick = onCategoryClick,
-        onWorldCupItemClick = onWorldCupItemClick,
-        onWineBoardClick = onWineBoardClick,
-        onRefreshButtonClick = { context ->
-            viewModel.getRecommendWine(context = context)
-        },
         bestWorldCupState = bestWorldCupState,
         recommendState = recommendState,
         mainWineState = mainWineState,
         blurBitmap = blurBitmap,
-        categoryListState = categoryListState
+        categoryListState = categoryListState,
+        onClick = onClick
     )
 }
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier,
-    onCategoryClick: (List<Category>, Category) -> Unit,
-    onWorldCupItemClick: (BestWorldCup) -> Unit,
-    onWineBoardClick: (Wine) -> Unit,
-    onRefreshButtonClick: (Context) -> Unit,
+    modifier: Modifier = Modifier,
     bestWorldCupState: BestWorldCupUiState,
     recommendState: RecommendWineUiState,
     mainWineState: MainWineUiState,
     blurBitmap: Bitmap?,
-    categoryListState: CategoryListUiState
+    categoryListState: CategoryListUiState,
+    onClick: (HomeUiEvents) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
 
     Column(
-        modifier = modifier.verticalScroll(scrollState)
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = ProofTheme.color.black)
+            .verticalScroll(scrollState)
     ) {
         HomeLogo(modifier = Modifier.padding(top = 24.dp, start = 24.dp))
         HomeMainTitle(
@@ -110,7 +95,9 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    onWineBoardClick = onWineBoardClick,
+                    onWineBoardClick = { wine ->
+                        onClick(HomeUiEvents.WineBoardClick(wine))
+                    },
                     wines = mainWineState.mainWines
                 )
             }
@@ -139,7 +126,12 @@ fun HomeScreen(
                         .padding(start = 24.dp, top = 24.dp),
                     categoryList = categoryListState.categoryList,
                     onCategoryClick = { category ->
-                        onCategoryClick(categoryListState.categoryList, category)
+                        onClick(
+                            HomeUiEvents.CategoryClick(
+                                categoryList = categoryListState.categoryList,
+                                category = category
+                            )
+                        )
                     }
                 )
             }
@@ -175,7 +167,7 @@ fun HomeScreen(
                             .clip(RoundedCornerShape(16.dp)),
                         recommendWine = recommendState.recommendWine,
                         onRefreshButtonClick = {
-                            onRefreshButtonClick(context)
+                            onClick(HomeUiEvents.RefreshButtonClick(context = context))
                         }
                     )
                 } else {
@@ -189,7 +181,7 @@ fun HomeScreen(
                                 .clip(RoundedCornerShape(16.dp)),
                             recommendWine = recommendState.recommendWine,
                             onRefreshButtonClick = {
-                                onRefreshButtonClick(context)
+                                onClick(HomeUiEvents.RefreshButtonClick(context = context))
                             },
                             blurImage = blurBitmap
                         )
@@ -203,7 +195,7 @@ fun HomeScreen(
                         .height(367.dp)
                         .padding(start = 24.dp, end = 24.dp, top = 19.dp),
                     onButtonClick = {
-                        onRefreshButtonClick(context)
+                        onClick(HomeUiEvents.RefreshButtonClick(context = context))
                     }
                 )
             }
@@ -236,7 +228,9 @@ fun HomeScreen(
                         .fillMaxHeight()
                         .padding(top = 24.dp, start = 24.dp, end = 24.dp),
                     bestWorldCupList = bestWorldCupState.bestWorldCupList,
-                    onWorldCupItemClick = onWorldCupItemClick
+                    onWorldCupItemClick = { bestWorldCup ->
+                        onClick(HomeUiEvents.WorldCupItemClick(bestWorldCup = bestWorldCup))
+                    }
                 )
             }
         }
@@ -251,11 +245,8 @@ fun ZuzuBottomNavigationBar(
 ) {
     BottomNavigation(
         modifier = Modifier
-            .clip(
-                RoundedCornerShape(24.dp, 24.dp, 0.dp, 0.dp)
-            )
             .height(52.dp),
-        backgroundColor = ProofTheme.color.black
+        backgroundColor = ProofTheme.color.black,
     ) {
         bottomNavigationItems.forEach { screen ->
             BottomNavigationItem(
@@ -409,15 +400,12 @@ fun PreviewZuzuHomeScreen() {
         ) {
             HomeScreen(
                 modifier = Modifier.background(color = ProofTheme.color.black),
-                onCategoryClick = { _, _ -> },
-                onWineBoardClick = {},
-                onWorldCupItemClick = {},
-                onRefreshButtonClick = {},
                 bestWorldCupState = BestWorldCupUiState.Loading,
                 mainWineState = MainWineUiState.Loading,
                 recommendState = RecommendWineUiState.Loading,
                 blurBitmap = null,
-                categoryListState = CategoryListUiState.Loading
+                categoryListState = CategoryListUiState.Loading,
+                onClick = {}
             )
         }
     }
