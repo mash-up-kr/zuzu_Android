@@ -19,6 +19,8 @@ import com.mashup.zuzu.ui.leave.LeaveRoute
 import com.mashup.zuzu.ui.leave.LeaveUiEvents
 import com.mashup.zuzu.ui.leave.LeaveUiState
 import com.mashup.zuzu.ui.leave.LeaveViewModel
+import com.mashup.zuzu.ui.review.ReviewDetailRoute
+import com.mashup.zuzu.ui.review.ReviewWriteRoute
 import com.mashup.zuzu.ui.setting.SettingRoute
 import com.mashup.zuzu.ui.setting.SettingUiEvents
 import com.mashup.zuzu.ui.setting.SettingViewModel
@@ -115,6 +117,7 @@ internal fun NavGraphBuilder.userGraph(
                         is UserUiEvents.WorldCupItemClick -> {
                         }
                         is UserUiEvents.WineItemClick -> {
+                            appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${userUiEvents.wine.id}")
                         }
                         is UserUiEvents.EditButtonClick -> {
                             appState.navigateRoute(NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route)
@@ -123,16 +126,6 @@ internal fun NavGraphBuilder.userGraph(
                             appState.navigateRoute(NavigationRoute.UserScreenGraph.SettingScreen.route)
                         }
                     }
-                }
-                onSettingClick = {
-                    appState.navigateRoute(NavigationRoute.UserScreenGraph.SettingScreen.route)
-                },
-                onEditButtonClick = {
-                    appState.navigateRoute(NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route)
-                },
-                onWorldCupItemClick = {},
-                onWineClick = {
-                    appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${it.id}")
                 }
             )
         }
