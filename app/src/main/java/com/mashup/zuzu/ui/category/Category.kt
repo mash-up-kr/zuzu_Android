@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,18 +19,23 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.ui.component.*
 import com.mashup.zuzu.ui.component.TabPosition
 import com.mashup.zuzu.ui.theme.Black
 import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.util.items
+import kotlinx.coroutines.flow.Flow
+import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/07/03
@@ -46,11 +50,13 @@ fun CategoryRoute(
 ) {
     val index = categoryList.withIndex().filter { it.value.title == category }.map { it.index }[0]
     val wineState by viewModel.wineList.collectAsState()
+    val pagingWineState = viewModel.getWineListWithPageAndCategory(category = category).collectAsLazyPagingItems()
 
     CategoryScreen(
         index = index,
         categoryList = categoryList,
         wineState = wineState,
+        pagingWineState = pagingWineState,
         onClick = onClick
     )
 }
@@ -61,6 +67,7 @@ fun CategoryScreen(
     index: Int,
     categoryList: List<Category>,
     wineState: WineListWithCategoryUiState,
+    pagingWineState: LazyPagingItems<Wine>,
     onClick: (CategoryUiEvents) -> Unit
 ) {
     val categoryState = rememberCategoryState(index)
@@ -130,35 +137,58 @@ fun CategoryScreen(
         }
 
         // 하단 wine items
-        when (wineState) {
-            is WineListWithCategoryUiState.Loading -> {
-                // some indicator or loading screen
-            }
-            is WineListWithCategoryUiState.Success -> {
-                if (categoryState.viewMode) {
-                    CategoryWineItems(
-                        wines = wineState.wineList,
-                        onWineBoardClick = { wine ->
-                            onClick(CategoryUiEvents.WineBoardClick(wine = wine))
-                        },
-                        modifier = Modifier
-                            .padding(top = 28.dp)
-                            .fillMaxWidth()
-                    )
-                } else {
-                    HorizontalPagerWithOffsetTransition(
-                        modifier = Modifier.wrapContentHeight().fillMaxWidth()
-                            .padding(top = 28.dp),
-                        onWineBoardClick = { wine ->
-                            onClick(CategoryUiEvents.WineBoardClick(wine = wine))
-                        },
-                        wines = wineState.wineList
-                    )
-                }
-            }
-            is WineListWithCategoryUiState.Error -> {
-                // some toast message ?
-            }
+//        when (wineState) {
+//            is WineListWithCategoryUiState.Loading -> {
+//                // some indicator or loading screen
+//            }
+//            is WineListWithCategoryUiState.Success -> {
+//                if (categoryState.viewMode) {
+//                    CategoryWineItems(
+//                        wines = wineState.wineList,
+//                        onWineBoardClick = { wine ->
+//                            onClick(CategoryUiEvents.WineBoardClick(wine = wine))
+//                        },
+//                        modifier = Modifier
+//                            .padding(top = 28.dp)
+//                            .fillMaxWidth()
+//                    )
+//                } else {
+//                    HorizontalPagerWithOffsetTransition(
+//                        modifier = Modifier.wrapContentHeight().fillMaxWidth()
+//                            .padding(top = 28.dp),
+//                        onWineBoardClick = { wine ->
+//                            onClick(CategoryUiEvents.WineBoardClick(wine = wine))
+//                        },
+//                        wines = wineState.wineList
+//                    )
+//                }
+//            }
+//            is WineListWithCategoryUiState.Error -> {
+//                // some toast message ?
+//            }
+//        }
+
+        if (categoryState.viewMode) {
+            CategoryWineItems(
+                wines = pagingWineState,
+                onWineBoardClick = { wine ->
+                    onClick(CategoryUiEvents.WineBoardClick(wine = wine))
+                },
+                modifier = Modifier
+                    .padding(top = 28.dp)
+                    .fillMaxWidth()
+            )
+            Timber.tag("categoryWineItems").d("in")
+        } else {
+            HorizontalPagerWithOffsetTransitionWithPage(
+                modifier = Modifier.wrapContentHeight().fillMaxWidth()
+                    .padding(top = 28.dp),
+                onWineBoardClick = { wine ->
+                    onClick(CategoryUiEvents.WineBoardClick(wine = wine))
+                },
+                pagingWineState = pagingWineState
+            )
+            Timber.tag("HorizontalPagerWithOffsetTransitionWithPage").d("in")
         }
     }
 }
@@ -241,7 +271,7 @@ fun Modifier.customTabIndicatorOffset(
 
 @Composable
 fun CategoryWineItems(
-    wines: List<Wine>,
+    wines: LazyPagingItems<Wine>,
     modifier: Modifier,
     onWineBoardClick: (Wine) -> Unit
 ) {
@@ -255,39 +285,24 @@ fun CategoryWineItems(
             Box(
                 contentAlignment = Center
             ) {
-                WineCardInHome(
-                    modifier = Modifier.fillMaxWidth(),
-                    height = 210.dp,
-                    wine = wine,
-                    onWineBoardClick = onWineBoardClick
-                )
+                if (wine != null) {
+                    WineCardInHome(
+                        modifier = Modifier.fillMaxWidth(),
+                        height = 210.dp,
+                        wine = wine,
+                        onWineBoardClick = onWineBoardClick
+                    )
+                }
             }
         }
-    }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun PreviewCategoryScreen() {
-    ProofTheme() {
-        CategoryScreen(
-            modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = ProofTheme.color.black),
-            index = 0,
-            wineState = WineListWithCategoryUiState.Loading,
-            categoryList = categoryList,
-            onClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = false)
-@Composable
-fun PreviewPagerCard() {
-    ProofTheme() {
-        HorizontalPagerWithOffsetTransition(
-            onWineBoardClick = {},
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-            wines = wines
-        )
+        wines.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                }
+                loadState.append is LoadState.Loading -> {}
+                loadState.refresh is LoadState.Error -> {}
+                loadState.append is LoadState.Error -> {}
+            }
+        }
     }
 }

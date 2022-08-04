@@ -82,4 +82,10 @@ class UseCaseModule {
     fun provideGetCategoryListUseCase(categoryRepository: CategoryRepository): GetCategoryListUseCase {
         return GetCategoryListUseCase(repository = categoryRepository)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetWineListWithPageAndCategory(categoryRepository: CategoryRepository): GetWineListWithPageAndCategoryUseCase {
+        return GetWineListWithPageAndCategoryUseCase(repository = categoryRepository)
+    }
 }

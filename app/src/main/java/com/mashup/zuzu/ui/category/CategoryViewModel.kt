@@ -3,10 +3,14 @@ package com.mashup.zuzu.ui.category
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.mashup.zuzu.data.model.Results
+import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.domain.usecase.GetWineListUseCase
 import com.mashup.zuzu.domain.usecase.GetWineListWithCategoryUseCase
+import com.mashup.zuzu.domain.usecase.GetWineListWithPageAndCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,16 +24,17 @@ import javax.inject.Inject
 class CategoryViewModel @Inject constructor(
     private val getWineListUseCase: GetWineListUseCase,
     private val getWineListWithCategoryUseCase: GetWineListWithCategoryUseCase,
+    private val getWineListWithPageAndCategoryUseCase: GetWineListWithPageAndCategoryUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _wineList: MutableStateFlow<WineListWithCategoryUiState> =
         MutableStateFlow(WineListWithCategoryUiState.Loading)
     val wineList = _wineList.asStateFlow()
-
     init {
         val argument = savedStateHandle.get<String>("category").orEmpty()
-        getWineList(category = argument)
+        // getWineList(category = argument)
+        getWineListWithPageAndCategory(category = argument)
     }
 
     fun getWineList(category: String) {
@@ -64,5 +69,9 @@ class CategoryViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getWineListWithPageAndCategory(category: String): Flow<PagingData<Wine>> {
+        return getWineListWithPageAndCategoryUseCase(category = category)
     }
 }

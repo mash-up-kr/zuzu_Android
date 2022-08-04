@@ -1,6 +1,10 @@
 package com.mashup.zuzu.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.mashup.zuzu.data.model.*
+import com.mashup.zuzu.data.source.pager.WineListPagingSource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,6 +30,19 @@ class CategoryRepository @Inject constructor() {
             emit(Results.Success(wines.filter { it.category == category }))
         }
     }
+
+    fun getWineListWithPageAndCategory(category: String): Flow<PagingData<Wine>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 8, // networkPageSize,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                WineListPagingSource(category = category)
+            }
+        ).flow
+    }
+
     fun getCategoryList(): Flow<Results<List<Category>>> {
         return flow {
             emit(Results.Loading)
