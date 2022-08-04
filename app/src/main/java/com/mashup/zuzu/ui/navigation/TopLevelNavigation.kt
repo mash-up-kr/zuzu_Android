@@ -85,7 +85,8 @@ internal fun NavGraphBuilder.categoryGraph(
                             appState.navigateBackStack()
                         }
                         is CategoryUiEvents.TabClick -> {
-                            viewModel.getWineList(categoryUiEvents.tag)
+                            // viewModel.getWineList(categoryUiEvents.tag)
+                            viewModel.getWineListWithPageAndCategory(categoryUiEvents.tag)
                         }
                     }
                 }
