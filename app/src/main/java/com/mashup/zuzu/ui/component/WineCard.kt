@@ -261,7 +261,7 @@ fun WineBoardCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            wine.description.filterIndexed { index, tag ->
+            wine.tags.filterIndexed { index, tag ->
                 index < 2
             }.map { tag ->
                 WineTagCard(
@@ -270,9 +270,9 @@ fun WineBoardCard(
                     textColor = ProofTheme.color.gray50
                 )
             }
-            if (wine.description.size >= 3) {
+            if (wine.tags.size >= 3) {
                 OverflowText(
-                    count = wine.description.size - 2,
+                    count = wine.tags.size - 2,
                     color = ProofTheme.color.gray300
                 )
             }
@@ -375,7 +375,7 @@ fun WineCardInHome(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            wine.description.filterIndexed { index, tag ->
+            wine.tags.filterIndexed { index, tag ->
                 index < 2
             }.map { tag ->
                 WineTagCard(
@@ -384,9 +384,9 @@ fun WineCardInHome(
                     textColor = ProofTheme.color.gray50
                 )
             }
-            if (wine.description.size >= 3) {
+            if (wine.tags.size >= 3) {
                 OverflowText(
-                    count = wine.description.size - 2,
+                    count = wine.tags.size - 2,
                     color = ProofTheme.color.gray100
                 )
             }
@@ -448,7 +448,7 @@ fun PagerWineCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                wine.description.filterIndexed { index, tag ->
+                wine.tags.filterIndexed { index, tag ->
                     index < 2
                 }.map { tag ->
                     WineTagCard(
@@ -457,9 +457,9 @@ fun PagerWineCard(
                         textColor = ProofTheme.color.gray50
                     )
                 }
-                if (wine.description.size >= 3) {
+                if (wine.tags.size >= 3) {
                     OverflowText(
-                        count = wine.description.size - 2,
+                        count = wine.tags.size - 2,
                         color = ProofTheme.color.gray100
                     )
                 }

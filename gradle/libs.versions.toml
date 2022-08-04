@@ -22,6 +22,8 @@ util = "1.1.1"
 icon = "1.1.1"
 timber = "5.0.1"
 renderscript = "b6363490c3"
+paging = "1.0.0-alpha15"
+retrofit = "2.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
@@ -35,16 +37,17 @@ androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-juni
 androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose" }
-androidx-compose-ui-util = { module = "androidx.compose.ui:ui-util", version.ref ="util" }
+androidx-compose-ui-util = { module = "androidx.compose.ui:ui-util", version.ref = "util" }
 androidx-compose-material-icon-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "icon" }
+androidx-paging = { module = "androidx.paging:paging-compose", version.ref = "paging" }
 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist"}
-accompanist-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist"}
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+accompanist-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
@@ -62,16 +65,18 @@ hilt-compiler = "androidx.hilt:hilt-compiler:1.0.0"
 hilt-gradlePlugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
 hilt-navigation-compose = "androidx.hilt:hilt-navigation-compose:1.0.0"
 
-io-coil-kt = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil"}
+io-coil-kt = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
 
-timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber"}
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
-renderscript = { group = "com.github.android", name = "renderscript-intrinsics-replacement-toolkit", version.ref = "renderscript"}
+renderscript = { group = "com.github.android", name = "renderscript-intrinsics-replacement-toolkit", version.ref = "renderscript" }
+
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]
-accompanist = ["accompanist-pager", "accompanist-systemuicontroller","accompanist-navigation-material"]
+accompanist = ["accompanist-pager", "accompanist-systemuicontroller", "accompanist-navigation-material"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradleplugin" }

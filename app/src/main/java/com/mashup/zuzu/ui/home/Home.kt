@@ -246,7 +246,7 @@ fun ZuzuBottomNavigationBar(
     BottomNavigation(
         modifier = Modifier
             .height(52.dp),
-        backgroundColor = ProofTheme.color.black,
+        backgroundColor = ProofTheme.color.black
     ) {
         bottomNavigationItems.forEach { screen ->
             BottomNavigationItem(

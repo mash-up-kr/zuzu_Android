@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material.icon.extended)
     implementation(libs.androidx.navigation)
+    implementation(libs.androidx.paging)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
@@ -96,6 +97,9 @@ dependencies {
 
     //renderscript
     implementation(libs.renderscript)
+
+    //retrofit
+    implementation(libs.retrofit)
 
     // test
     testImplementation(libs.junit)
