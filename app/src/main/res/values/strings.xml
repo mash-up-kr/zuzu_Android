@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Zuzu-Android</string>
+    <string name="app_name">Proof</string>
     <string name="review_cancel_title">작성을 그만두시겠어요?</string>
     <string name="review_cancel_content">지금 그만두면 작성한 내용이 사라져요.</string>
     <string name="cancel">취소</string>
