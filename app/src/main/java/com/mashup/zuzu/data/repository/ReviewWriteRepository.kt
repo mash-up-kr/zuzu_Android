@@ -13,9 +13,10 @@ class ReviewWriteRepository constructor() {
             imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
             price = 1000,
             alc = 17,
-            listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술"),
+            description = "하이하이하이하이",
             favorite = true,
-            category = "와인"
+            category = "와인",
+            tags = listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술")
         )
     }
 }
