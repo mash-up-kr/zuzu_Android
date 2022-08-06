@@ -65,7 +65,7 @@ fun ReviewDetailScreen(
         WineImageCardForReviewDetail(wine = reviewDetailUiState.wine)
 
         //TODO: 왜 description이 리스트지?
-        WineInformation(content = reviewDetailUiState.wine.description[0])
+        WineInformation(content = reviewDetailUiState.wine.description)
 
         WorldCupInfo(reviewDetailUiState.dummyWorldCupData)
 
