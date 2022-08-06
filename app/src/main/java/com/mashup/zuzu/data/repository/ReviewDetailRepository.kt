@@ -16,8 +16,8 @@ class ReviewDetailRepository {
                     price = 1000,
                     alc = 17,
                     listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술"),
-                    favorite = true,
-                    category = "와인"
+                    category = "와인",
+                    favorite = true
                 )
             )
         }

@@ -22,7 +22,8 @@ class ReviewDetailViewModel @Inject constructor(
                     emit(
                         ReviewDetailUiState.Normal(
                             wine = it,
-                            dummyWorldCupData = DummyWorldCupData()
+                            dummyWorldCupData = DummyWorldCupData(),
+                            dummyWineReview = DummyWineReview()
                         )
                     )
                 }
@@ -45,5 +46,6 @@ data class DummyWineReview(
     val sweetOrBitter: Pair<Int, Int> = Pair(60, 30),
     val lightOrHeavy: Pair<Int, Int> = Pair(100, 10),
     val softOrDeep: Pair<Int, Int> = Pair(20, 80),
-    val mildOrHot: Pair<Int, Int> = Pair(30, 90)
+    val mildOrHot: Pair<Int, Int> = Pair(30, 90),
+    val foods: List<String> = listOf("치즈", "샐러드", "샐러드")
 )
