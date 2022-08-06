@@ -9,7 +9,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.theme.ProofTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

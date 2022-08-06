@@ -16,8 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
-import com.mashup.zuzu.ui.component.Button
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.component.Button
+import com.mashup.zuzu.compose.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/18

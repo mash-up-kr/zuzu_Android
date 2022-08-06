@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.theme.ProofTheme
 
 @Composable
 fun WeatherSelectOption(

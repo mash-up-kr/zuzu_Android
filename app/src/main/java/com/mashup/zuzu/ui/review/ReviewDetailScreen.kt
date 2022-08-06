@@ -21,9 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
-import com.mashup.zuzu.ui.component.WineImageCardForReviewDetail
-import com.mashup.zuzu.ui.theme.ProofTheme
-import timber.log.Timber
+import com.mashup.zuzu.compose.component.WineImageCardForReviewDetail
+import com.mashup.zuzu.compose.theme.ProofTheme
 
 @Composable
 fun ReviewDetailRoute(

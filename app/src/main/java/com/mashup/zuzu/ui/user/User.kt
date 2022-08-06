@@ -21,11 +21,10 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.*
-import com.mashup.zuzu.ui.component.*
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.component.*
+import com.mashup.zuzu.compose.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/14
