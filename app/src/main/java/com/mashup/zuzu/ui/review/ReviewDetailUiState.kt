@@ -7,6 +7,7 @@ sealed interface ReviewDetailUiState {
 
     data class Normal(
         val wine: Wine,
-        val dummyWorldCupData: DummyWorldCupData
+        val dummyWorldCupData: DummyWorldCupData,
+        val dummyWineReview: DummyWineReview
     ) : ReviewDetailUiState
 }
