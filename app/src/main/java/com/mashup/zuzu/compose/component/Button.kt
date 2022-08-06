@@ -1,4 +1,4 @@
-package com.mashup.zuzu.ui.component
+package com.mashup.zuzu.compose.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,8 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mashup.zuzu.ui.theme.Black
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.theme.Black
+import com.mashup.zuzu.compose.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/05

@@ -11,10 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.mashup.zuzu.ui.component.ProfileImageItems
-import com.mashup.zuzu.ui.component.profileImages
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.component.ProfileImageItems
+import com.mashup.zuzu.compose.component.profileImages
+import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.ui.user.UpdateProfileUiEventState
 import com.mashup.zuzu.ui.user.UserUiState
 import com.mashup.zuzu.ui.user.UserViewModel

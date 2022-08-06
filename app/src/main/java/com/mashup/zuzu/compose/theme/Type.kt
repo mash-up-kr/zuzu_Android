@@ -1,4 +1,4 @@
-package com.mashup.zuzu.ui.theme
+package com.mashup.zuzu.compose.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
