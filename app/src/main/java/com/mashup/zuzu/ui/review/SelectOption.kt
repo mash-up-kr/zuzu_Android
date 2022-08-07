@@ -47,7 +47,7 @@ fun WeatherSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = Modifier.padding(horizontal = 34.dp)
+        modifier = Modifier.height(130.dp)
     ) {
         items(optionContents) { optionContent ->
             Button(
@@ -60,7 +60,8 @@ fun WeatherSelectOption(
             ) {
                 Image(
                     painter = optionContent.first,
-                    contentDescription = ""
+                    contentDescription = "",
+                    modifier = Modifier.padding(end = 4.dp).width(24.dp).height(24.dp)
                 )
 
                 Text(
@@ -100,7 +101,7 @@ fun DateSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = Modifier.padding(horizontal = 34.dp)
+        modifier = Modifier.height(130.dp)
     ) {
         items(optionContents) { optionContent ->
             Button(
@@ -113,7 +114,8 @@ fun DateSelectOption(
             ) {
                 Image(
                     painter = optionContent.first,
-                    contentDescription = ""
+                    contentDescription = "",
+                    modifier = Modifier.padding(end = 4.dp).width(24.dp).height(24.dp)
                 )
 
                 Text(
@@ -154,7 +156,7 @@ fun PartnerSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = Modifier.padding(horizontal = 34.dp)
+        modifier = Modifier.height(130.dp)
     ) {
         itemsIndexed(optionContents) { index, optionContent ->
             Button(
@@ -175,7 +177,8 @@ fun PartnerSelectOption(
             ) {
                 Image(
                     painter = optionContent.first,
-                    contentDescription = ""
+                    contentDescription = "",
+                    modifier = Modifier.padding(end = 4.dp).width(24.dp).height(24.dp)
                 )
 
                 Text(
@@ -223,7 +226,7 @@ fun GroupSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = Modifier.padding(horizontal = 34.dp)
+        modifier = Modifier.height(180.dp)
     ) {
         items(optionContents) { optionContent ->
             Button(
@@ -236,7 +239,8 @@ fun GroupSelectOption(
             ) {
                 Image(
                     painter = optionContent.first,
-                    contentDescription = ""
+                    contentDescription = "",
+                    modifier = Modifier.padding(end = 4.dp).width(24.dp).height(24.dp)
                 )
 
                 Text(
@@ -314,7 +318,7 @@ fun SoloSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = Modifier.padding(horizontal = 34.dp)
+        modifier = Modifier.height(150.dp)
     ) {
         items(optionContents) { optionContent ->
             Button(
@@ -327,7 +331,8 @@ fun SoloSelectOption(
             ) {
                 Image(
                     painter = optionContent.first,
-                    contentDescription = ""
+                    contentDescription = "",
+                    modifier = Modifier.padding(end = 4.dp).width(24.dp).height(24.dp)
                 )
 
                 Text(
@@ -351,7 +356,6 @@ fun TasteSelectOption(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .verticalScroll(scrollState)
     ) {
         val radioTitles = listOf(
             Pair("가벼워요", "무거워요"),
@@ -490,7 +494,7 @@ fun SummarySelectOption(
         columns = GridCells.Fixed(3),
         verticalArrangement = Arrangement.spacedBy(24.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier.padding(horizontal = 34.dp)
+        modifier = Modifier.height(150.dp)
     ) {
         items(optionContents) { optionContent ->
             Column(
@@ -560,39 +564,39 @@ fun SecondarySummaryPage() {
 
     val optionContents = listOf(
         Pair(
-            painterResource(id = R.drawable.ig_summary_menu),
+            painterResource(id = R.drawable.ic_menu_category),
             stringResource(R.string.summary_roast)
         ),
         Pair(
-            painterResource(id = R.drawable.ig_summary_menu),
+            painterResource(id = R.drawable.ic_menu_category),
             stringResource(R.string.summary_roast)
         ),
         Pair(
-            painterResource(id = R.drawable.ig_summary_menu),
+            painterResource(id = R.drawable.ic_menu_category),
             stringResource(R.string.summary_fry)
         ),
         Pair(
-            painterResource(id = R.drawable.ig_summary_menu),
+            painterResource(id = R.drawable.ic_menu_category),
             stringResource(R.string.summary_cheese)
         ),
         Pair(
-            painterResource(id = R.drawable.ig_summary_menu),
+            painterResource(id = R.drawable.ic_menu_category),
             stringResource(R.string.summary_salad)
         ),
         Pair(
-            painterResource(id = R.drawable.ig_summary_menu),
+            painterResource(id = R.drawable.ic_menu_category),
             stringResource(R.string.summary_fruits)
         ),
         Pair(
-            painterResource(id = R.drawable.ig_summary_menu),
+            painterResource(id = R.drawable.ic_menu_category),
             stringResource(R.string.summary_soup)
         ),
         Pair(
-            painterResource(id = R.drawable.ig_summary_menu),
+            painterResource(id = R.drawable.ic_menu_category),
             stringResource(R.string.summary_desert)
         ),
         Pair(
-            painterResource(id = R.drawable.ig_summary_menu),
+            painterResource(id = R.drawable.ic_menu_category),
             stringResource(R.string.summary_noodle)
         )
     )
