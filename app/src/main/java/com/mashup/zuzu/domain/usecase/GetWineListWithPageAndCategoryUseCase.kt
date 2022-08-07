@@ -1,6 +1,5 @@
 package com.mashup.zuzu.domain.usecase
 
-import androidx.paging.PagingData
 import com.mashup.zuzu.data.model.Results
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.repository.CategoryRepository
@@ -15,7 +14,7 @@ import javax.inject.Singleton
 class GetWineListWithPageAndCategoryUseCase @Inject constructor(
     private val repository: CategoryRepository
 ) {
-    operator fun invoke(category: String): Flow<PagingData<Wine>> {
-        return repository.getWineListWithPageAndCategory(category = category)
+    operator fun invoke(category: String, page: Int): Flow<Results<List<Wine>>> {
+        return repository.getWineListWithPageAndCategory(category = category, page = page)
     }
 }
