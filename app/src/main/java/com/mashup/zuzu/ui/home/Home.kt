@@ -35,8 +35,8 @@ import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.data.model.dummy.dummyCategoryList
 import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
-import com.mashup.zuzu.ui.component.*
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.component.*
+import com.mashup.zuzu.compose.theme.ProofTheme
 import timber.log.Timber
 
 /**

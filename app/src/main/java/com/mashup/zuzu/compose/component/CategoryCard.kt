@@ -1,4 +1,4 @@
-package com.mashup.zuzu.ui.component
+package com.mashup.zuzu.compose.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +18,7 @@ import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
 import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.data.model.categoryList
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/01

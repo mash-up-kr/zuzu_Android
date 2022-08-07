@@ -1,4 +1,4 @@
-package com.mashup.zuzu.ui.component
+package com.mashup.zuzu.compose.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +13,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.data.model.wines
+import com.mashup.zuzu.compose.theme.ProofTheme
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 

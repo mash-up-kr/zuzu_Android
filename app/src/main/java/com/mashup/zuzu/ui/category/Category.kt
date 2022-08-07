@@ -24,9 +24,12 @@ import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.ui.component.*
-import com.mashup.zuzu.ui.component.TabPosition
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.data.model.categoryList
+import com.mashup.zuzu.data.model.wines
+import com.mashup.zuzu.compose.component.*
+import com.mashup.zuzu.compose.component.TabPosition
+import com.mashup.zuzu.compose.theme.Black
+import com.mashup.zuzu.compose.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/03

@@ -20,7 +20,7 @@ import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.User
 import com.mashup.zuzu.data.model.dummyUser
 import com.mashup.zuzu.data.model.user
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.ui.user.UserUiState
 
 /**

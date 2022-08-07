@@ -27,8 +27,8 @@ import com.google.accompanist.placeholder.shimmer
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.data.model.dummy.dummyWineList
-import com.mashup.zuzu.ui.component.*
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.component.*
+import com.mashup.zuzu.compose.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/07/14

@@ -1,4 +1,4 @@
-package com.mashup.zuzu.ui.component
+package com.mashup.zuzu.compose.component
 
 import androidx.compose.foundation.background
 import androidx.compose.material.Divider

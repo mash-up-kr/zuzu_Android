@@ -1,4 +1,4 @@
-package com.mashup.zuzu.ui.component
+package com.mashup.zuzu.compose.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,7 +19,7 @@ import coil.compose.AsyncImage
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.bestWorldCupList
-import com.mashup.zuzu.ui.theme.ProofTheme
+import com.mashup.zuzu.compose.theme.ProofTheme
 import java.text.NumberFormat
 import java.util.*
 
