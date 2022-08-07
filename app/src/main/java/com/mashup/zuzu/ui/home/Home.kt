@@ -25,10 +25,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.shimmer
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.categoryList
+import com.mashup.zuzu.data.model.dummy.dummyCategoryList
+import com.mashup.zuzu.data.model.dummy.dummyWineList
+import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
 import com.mashup.zuzu.ui.component.*
 import com.mashup.zuzu.ui.theme.ProofTheme
 import timber.log.Timber
@@ -75,7 +81,6 @@ fun HomeScreen(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(color = ProofTheme.color.black)
             .verticalScroll(scrollState)
     ) {
         HomeLogo(modifier = Modifier.padding(top = 24.dp, start = 24.dp))
@@ -98,11 +103,25 @@ fun HomeScreen(
                     onWineBoardClick = { wine ->
                         onClick(HomeUiEvents.WineBoardClick(wine))
                     },
-                    wines = mainWineState.mainWines
+                    wines = mainWineState.mainWines,
+                    childModifier = null
                 )
             }
             is MainWineUiState.Error -> {}
-            is MainWineUiState.Loading -> {}
+            is MainWineUiState.Loading -> {
+                HorizontalPagerWithOffsetTransition(
+                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                    onWineBoardClick = {},
+                    wines = dummyWineList,
+                    childModifier = Modifier.placeholder(
+                        visible = true,
+                        color = ProofTheme.color.gray600,
+                        highlight = PlaceholderHighlight.shimmer(
+                            highlightColor = ProofTheme.color.gray500
+                        )
+                    )
+                )
+            }
         }
         Spacer(
             modifier = Modifier
@@ -132,10 +151,23 @@ fun HomeScreen(
                                 category = category
                             )
                         )
-                    }
+                    },
+                    childModifier = null
                 )
             }
             is CategoryListUiState.Loading -> {
+                CategoryItems(
+                    modifier = Modifier.padding(start = 24.dp, top = 24.dp),
+                    categoryList = dummyCategoryList,
+                    onCategoryClick = {},
+                    childModifier = Modifier.placeholder(
+                        visible = true,
+                        color = ProofTheme.color.gray600,
+                        highlight = PlaceholderHighlight.shimmer(
+                            highlightColor = ProofTheme.color.gray500
+                        )
+                    )
+                )
             }
             is CategoryListUiState.Error -> {
             }
@@ -189,11 +221,25 @@ fun HomeScreen(
                 }
             }
             is RecommendWineUiState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxWidth().height(367.dp).padding(start = 24.dp, end = 24.dp, top = 19.dp)
+                        .clip(shape = RoundedCornerShape(16.dp))
+                        .placeholder(
+                            visible = true,
+                            color = ProofTheme.color.gray600,
+                            highlight = PlaceholderHighlight.shimmer(
+                                highlightColor = ProofTheme.color.gray500
+                            )
+                        )
+                )
+            }
+            is RecommendWineUiState.Init -> {
                 RecommendImage(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(367.dp)
-                        .padding(start = 24.dp, end = 24.dp, top = 19.dp),
+                        .padding(start = 24.dp, end = 24.dp, top = 19.dp)
+                        .clip(shape = RoundedCornerShape(16.dp)),
                     onButtonClick = {
                         onClick(HomeUiEvents.RefreshButtonClick(context = context))
                     }
@@ -218,6 +264,23 @@ fun HomeScreen(
         )
         when (bestWorldCupState) {
             is BestWorldCupUiState.Loading -> {
+                HomeBestWorldCup(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(top = 24.dp, start = 24.dp, end = 24.dp),
+                    bestWorldCupList = dummyWorldCupList,
+                    onWorldCupItemClick = { bestWorldCup ->
+                        onClick(HomeUiEvents.WorldCupItemClick(bestWorldCup = bestWorldCup))
+                    },
+                    childModifier = Modifier.placeholder(
+                        visible = true,
+                        color = ProofTheme.color.gray600,
+                        highlight = PlaceholderHighlight.shimmer(
+                            highlightColor = ProofTheme.color.gray500
+                        )
+                    )
+                )
             }
             is BestWorldCupUiState.Error -> {
             }
@@ -230,7 +293,8 @@ fun HomeScreen(
                     bestWorldCupList = bestWorldCupState.bestWorldCupList,
                     onWorldCupItemClick = { bestWorldCup ->
                         onClick(HomeUiEvents.WorldCupItemClick(bestWorldCup = bestWorldCup))
-                    }
+                    },
+                    childModifier = null
                 )
             }
         }
@@ -345,7 +409,8 @@ fun HomeSubTitle(
 fun HomeBestWorldCup(
     modifier: Modifier,
     bestWorldCupList: List<BestWorldCup>,
-    onWorldCupItemClick: (BestWorldCup) -> Unit
+    onWorldCupItemClick: (BestWorldCup) -> Unit,
+    childModifier: Modifier?
 ) {
     Column(
         modifier = modifier,
@@ -355,7 +420,8 @@ fun HomeBestWorldCup(
             WorldCupCard(
                 modifier = Modifier.fillMaxWidth(),
                 worldCupItem = bestWorldCup,
-                onWorldCupItemClick = onWorldCupItemClick
+                onWorldCupItemClick = onWorldCupItemClick,
+                childModifier = childModifier
             )
         }
     }
@@ -366,7 +432,7 @@ fun RecommendImage(
     modifier: Modifier,
     onButtonClick: () -> Unit
 ) {
-    Box(modifier = modifier.clip(shape = RoundedCornerShape(8.dp))) {
+    Box(modifier = modifier) {
         Image(
             modifier = Modifier
                 .fillMaxWidth()
@@ -442,7 +508,8 @@ fun PreviewZuzuWineCategoryItems() {
             modifier = Modifier.fillMaxWidth(),
             categoryList = categoryList,
             onCategoryClick = { category ->
-            }
+            },
+            null
         )
     }
 }

@@ -4,18 +4,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import androidx.paging.compose.LazyPagingItems
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.model.wines
 import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
 /**
  * @Created by 김현국 2022/07/26
@@ -26,10 +25,11 @@ import kotlin.math.absoluteValue
 fun HorizontalPagerWithOffsetTransitionWithPage(
     modifier: Modifier,
     onWineBoardClick: (Wine) -> Unit,
-    pagingWineState: LazyPagingItems<Wine>
+    wineList: List<Wine>,
+    childModifier: Modifier?
 ) {
     HorizontalPager(
-        count = pagingWineState.itemCount,
+        count = wineList.size,
         // Add 32.dp horizontal padding to 'center' the pages
         contentPadding = PaddingValues(horizontal = 50.dp), // 양옆 패팅
         modifier = modifier
@@ -61,8 +61,9 @@ fun HorizontalPagerWithOffsetTransitionWithPage(
                     )
                 }
                 .width(262.dp).height(415.dp).clip(RoundedCornerShape(6.dp)),
-            wine = pagingWineState[page]!!,
-            onWineBoardClick = { onWineBoardClick(it) }
+            wine = wineList[page],
+            onWineBoardClick = { onWineBoardClick(it) },
+            childModifier = childModifier
         )
     }
 }
@@ -72,10 +73,12 @@ fun HorizontalPagerWithOffsetTransitionWithPage(
 fun HorizontalPagerWithOffsetTransition(
     modifier: Modifier,
     onWineBoardClick: (Wine) -> Unit,
-    wines: List<Wine>
+    wines: List<Wine>,
+    childModifier: Modifier?
 ) {
     HorizontalPager(
         count = wines.size,
+        state = PagerState(currentPage = (wines.size / 2).toDouble().roundToInt()),
         // Add 32.dp horizontal padding to 'center' the pages
         contentPadding = PaddingValues(horizontal = 50.dp), // 양옆 패팅
         modifier = modifier
@@ -106,9 +109,10 @@ fun HorizontalPagerWithOffsetTransition(
                         fraction = 1f - pageOffset.coerceIn(0f, 1f)
                     )
                 }
-                .width(262.dp).height(415.dp).clip(RoundedCornerShape(6.dp)),
+                .width(262.dp).height(415.dp).clip(RoundedCornerShape(12.dp)),
             wine = wines[page],
-            onWineBoardClick = { onWineBoardClick(it) }
+            onWineBoardClick = { onWineBoardClick(it) },
+            childModifier = childModifier
         )
     }
 }
