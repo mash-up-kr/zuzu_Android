@@ -172,6 +172,49 @@ fun WineImageCardForReviewDetail(
     }
 }
 
+@Composable
+fun WineImageCardForReviewWrite(
+    wine: Wine,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(10.dp),
+    ) {
+        Box() {
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                model = ImageRequest.Builder(LocalContext.current).data(wine.imageUrl).build(),
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight
+            )
+
+            Box(
+                modifier = Modifier
+                    .background(
+                        brush = Brush.verticalGradient(colors = backgroundGradient),
+                        alpha = 0.6f
+                    )
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.5f)
+                    .align(Alignment.BottomCenter)
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Text(
+                    text = wine.name,
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white,
+                    textAlign = TextAlign.Start
+                )
+            }
+        }
+    }
+}
+
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -358,7 +401,9 @@ fun WineCardInHome(
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
-        WineCategoryWithAlc(modifier = Modifier.width(79.dp).height(19.dp), wine = wine)
+        WineCategoryWithAlc(modifier = Modifier
+            .width(79.dp)
+            .height(19.dp), wine = wine)
         Text(
             modifier = Modifier
                 .fillMaxWidth()
@@ -405,7 +450,9 @@ fun PagerWineCard(
         modifier = modifier.background(brush = Brush.verticalGradient(gradient))
     ) {
         Column(
-            modifier = Modifier.padding(12.dp).fillMaxSize(),
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Box(modifier = Modifier.clip(RoundedCornerShape(6.dp))) {
@@ -430,7 +477,10 @@ fun PagerWineCard(
             }
 
             WineCategoryWithAlc(
-                modifier = Modifier.width(78.dp).height(20.dp).align(Alignment.Start),
+                modifier = Modifier
+                    .width(78.dp)
+                    .height(20.dp)
+                    .align(Alignment.Start),
                 wine = wine
             )
             Text(
@@ -559,7 +609,10 @@ fun RecommendWineCardWithRenderScript(
                             .fillMaxWidth()
                             .weight(0.75f)
                     ) {
-                        WineCategoryWithAlc(wine = recommendWine, modifier = Modifier.width(78.dp).height(20.dp).align(Alignment.Start))
+                        WineCategoryWithAlc(wine = recommendWine, modifier = Modifier
+                            .width(78.dp)
+                            .height(20.dp)
+                            .align(Alignment.Start))
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -662,7 +715,10 @@ fun RecommendWineCard(
                             .fillMaxWidth()
                             .weight(0.75f)
                     ) {
-                        WineCategoryWithAlc(wine = recommendWine, modifier = Modifier.width(78.dp).height(20.dp).align(Alignment.Start))
+                        WineCategoryWithAlc(wine = recommendWine, modifier = Modifier
+                            .width(78.dp)
+                            .height(20.dp)
+                            .align(Alignment.Start))
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -806,7 +862,10 @@ fun WineCellarCard(
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         ) {
-            WineCategoryWithAlc(modifier = Modifier.width(68.29.dp).height(18.dp).align(Alignment.Start), wine = wine)
+            WineCategoryWithAlc(modifier = Modifier
+                .width(68.29.dp)
+                .height(18.dp)
+                .align(Alignment.Start), wine = wine)
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = wine.name,
@@ -1872,5 +1931,13 @@ fun PreviewRecommendWineCard() {
             onRefreshButtonClick = {
             }
         )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewWineImageCardForReviewWrite() {
+    ProofTheme() {
+        WineImageCardForReviewWrite(wine = wines[0])
     }
 }
