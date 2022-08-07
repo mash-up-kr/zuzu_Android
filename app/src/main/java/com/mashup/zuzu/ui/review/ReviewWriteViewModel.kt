@@ -2,7 +2,6 @@ package com.mashup.zuzu.ui.review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.repository.ReviewWriteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,12 +42,24 @@ class ReviewWriteViewModel @Inject constructor(
         ) { reviewWineState, page ->
             ReviewWriteUiState(
                 page = page,
-                wineImage = reviewWineState.imageUrl
+                wine = reviewWineState
             )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ReviewWriteUiState(0, "")
+            initialValue = ReviewWriteUiState(
+                page = 0, wine = Wine(
+                    id = 1L,
+                    name = "GoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlue",
+                    imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
+                    price = 1000,
+                    alc = 17,
+                    description = "하이하이하이하이",
+                    favorite = true,
+                    category = "와인",
+                    tags = listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술")
+                )
+            )
         )
 
     fun navigatePreviousWritePage() = viewModelScope.launch {
