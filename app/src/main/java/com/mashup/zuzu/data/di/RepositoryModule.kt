@@ -17,7 +17,7 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideReviewWriteRepository() : ReviewWriteRepository {
+    fun provideReviewWriteRepository(): ReviewWriteRepository {
         return ReviewWriteRepository()
     }
 
@@ -41,7 +41,7 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideReviewDetailRepository() : ReviewDetailRepository {
+    fun provideReviewDetailRepository(): ReviewDetailRepository {
         return ReviewDetailRepository()
     }
 }

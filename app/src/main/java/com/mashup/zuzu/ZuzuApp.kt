@@ -44,7 +44,7 @@ fun ZuzuApp(
             floatingActionButtonPosition = FabPosition.End,
             isFloatingActionButtonDocked = false,
             floatingActionButton = {
-                if (zuzuAppState.shouldShowFloatingButton)
+                if (zuzuAppState.shouldShowFloatingButton) {
                     FloatingActionButton(
                         modifier = Modifier
                             .width(64.dp)
@@ -63,10 +63,11 @@ fun ZuzuApp(
                             contentDescription = null
                         )
                     }
+                }
             },
             backgroundColor = ProofTheme.color.black,
             bottomBar = {
-                if (zuzuAppState.shouldShowBottomBar) // bottomBarTabs의 BottomScreen의 경로에 있을 때만, BottomNavBar가 보이도록 했습니다.
+                if (zuzuAppState.shouldShowBottomBar) { // bottomBarTabs의 BottomScreen의 경로에 있을 때만, BottomNavBar가 보이도록 했습니다.
                     ZuzuBottomNavigationBar(
                         currentRoute = zuzuAppState.currentDestination,
                         onBottomTabsClick = { route ->
@@ -74,6 +75,7 @@ fun ZuzuApp(
                         },
                         bottomNavigationItems = zuzuAppState.bottomBarRoutes
                     )
+                }
             }
         ) { paddingValues ->
             Box {

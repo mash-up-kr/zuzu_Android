@@ -52,7 +52,8 @@ fun Auth(
 
         Row(
             modifier = Modifier.width(280.dp).height(280.dp).background(
-                color = ProofTheme.color.primary200, shape = RoundedCornerShape(8.dp)
+                color = ProofTheme.color.primary200,
+                shape = RoundedCornerShape(8.dp)
             )
         ) {}
         Button(

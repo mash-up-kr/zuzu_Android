@@ -39,5 +39,72 @@ val dummyWineList = listOf(
         description = "",
         favorite = false,
         category = ""
+    ),
+    Wine(
+        id = 4L,
+        name = "",
+        imageUrl = "",
+        price = 0,
+        alc = 0,
+        tags = emptyList(),
+        description = "",
+        favorite = false,
+        category = ""
+    ),
+    Wine(
+        id = 5L,
+        name = "",
+        imageUrl = "",
+        price = 0,
+        alc = 0,
+        tags = emptyList(),
+        description = "",
+        favorite = false,
+        category = ""
+    ),
+    Wine(
+        id = 6L,
+        name = "",
+        imageUrl = "",
+        price = 0,
+        alc = 0,
+        tags = emptyList(),
+        description = "",
+        favorite = false,
+        category = ""
+    ),
+    Wine(
+        id = 7L,
+        name = "",
+        imageUrl = "",
+        price = 0,
+        alc = 0,
+        tags = emptyList(),
+        description = "",
+        favorite = false,
+        category = ""
+    ),
+    Wine(
+        id = 8L,
+        name = "",
+        imageUrl = "",
+        price = 0,
+        alc = 0,
+        tags = emptyList(),
+        description = "",
+        favorite = false,
+        category = ""
+    ),
+    Wine(
+        id = 9L,
+        name = "",
+        imageUrl = "",
+        price = 0,
+        alc = 0,
+        tags = emptyList(),
+        description = "",
+        favorite = false,
+        category = ""
     )
+
 )

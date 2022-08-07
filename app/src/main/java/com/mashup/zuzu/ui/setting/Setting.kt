@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.User
+import com.mashup.zuzu.data.model.dummyUser
 import com.mashup.zuzu.data.model.user
 import com.mashup.zuzu.ui.theme.ProofTheme
 import com.mashup.zuzu.ui.user.UserUiState
@@ -40,6 +41,10 @@ fun SettingRoute(
             )
         }
         is UserUiState.Loading -> {
+            Setting(
+                user = dummyUser,
+                onButtonClick = {}
+            )
         }
         is UserUiState.Error -> {
         }

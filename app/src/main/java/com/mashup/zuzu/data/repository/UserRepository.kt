@@ -13,7 +13,7 @@ class UserRepository @Inject constructor() {
     fun getUserData(userId: Long): Flow<Results<User>> {
         return flow {
             emit(Results.Loading)
-            delay(500)
+            delay(1000)
             emit(Results.Success(user))
         }
     }
@@ -21,7 +21,7 @@ class UserRepository @Inject constructor() {
     fun getWineCallerList(userId: Long): Flow<Results<List<Wine>>> {
         return flow {
             emit(Results.Loading)
-            delay(500)
+            delay(1000)
             emit(Results.Success(wines))
         }
     }
@@ -29,7 +29,7 @@ class UserRepository @Inject constructor() {
     fun getJoinedWorldCupList(userId: Long): Flow<Results<List<BestWorldCup>>> {
         return flow {
             emit(Results.Loading)
-            delay(500)
+            delay(1000)
             emit(Results.Success(bestWorldCupList))
         }
     }
@@ -37,7 +37,7 @@ class UserRepository @Inject constructor() {
     fun updateUserProfile(): Flow<Results<String>> {
         return flow {
             emit(Results.Loading)
-            delay(500)
+            delay(1000)
             emit(Results.Success("완료했습니다"))
         }
     }

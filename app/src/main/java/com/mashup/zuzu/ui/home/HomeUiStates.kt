@@ -15,6 +15,8 @@ sealed class BestWorldCupUiState {
 }
 
 sealed class RecommendWineUiState {
+
+    object Init : RecommendWineUiState()
     object Loading : RecommendWineUiState()
     object Error : RecommendWineUiState()
     data class Success(val recommendWine: Wine) : RecommendWineUiState()
