@@ -8,13 +8,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
+import com.google.accompanist.pager.*
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.wines
-import com.mashup.zuzu.compose.theme.ProofTheme
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
@@ -78,9 +74,10 @@ fun HorizontalPagerWithOffsetTransition(
     wines: List<Wine>,
     childModifier: Modifier?
 ) {
+    val pagerState = rememberPagerState((wines.size / 2).toDouble().roundToInt())
     HorizontalPager(
         count = wines.size,
-        state = PagerState(currentPage = (wines.size / 2).toDouble().roundToInt()),
+        state = pagerState,
         // Add 32.dp horizontal padding to 'center' the pages
         contentPadding = PaddingValues(horizontal = 50.dp), // 양옆 패팅
         modifier = modifier
