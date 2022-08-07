@@ -1,5 +1,7 @@
 package com.mashup.zuzu.ui.navigation
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -9,6 +11,7 @@ import androidx.navigation.navigation
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 import com.mashup.zuzu.ZuzuAppState
+import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.ui.category.CategoryRoute
 import com.mashup.zuzu.ui.category.CategoryUiEvents
 import com.mashup.zuzu.ui.category.CategoryViewModel
@@ -64,49 +67,6 @@ internal fun NavGraphBuilder.homeGraph(
                 }
             )
         }
-    }
-}
-internal fun NavGraphBuilder.categoryGraph(
-    appState: ZuzuAppState
-) {
-    navigation(
-        route = NavigationRoute.CategoryScreenGraph.route,
-        startDestination = NavigationRoute.CategoryScreenGraph.CategoryScreen.route
-    ) {
-        composable(
-            route = NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/{category}"
-        ) {
-            val viewModel: CategoryViewModel = hiltViewModel()
-            CategoryRoute(
-                viewModel = viewModel,
-                category = it.arguments?.getString("category")!!,
-                categoryList = appState.categoryList,
-                onClick = { categoryUiEvents ->
-                    when (categoryUiEvents) {
-                        is CategoryUiEvents.WineBoardClick -> {
-                        }
-                        is CategoryUiEvents.BackButtonClick -> {
-                            appState.navigateBackStack()
-                        }
-                        is CategoryUiEvents.TabClick -> {
-                            // viewModel.getWineList(categoryUiEvents.tag)
-                            viewModel.getWineListWithPageAndCategory(categoryUiEvents.tag)
-                        }
-                    }
-                }
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterialNavigationApi::class)
-internal fun NavGraphBuilder.userGraph(
-    appState: ZuzuAppState
-) {
-    navigation(
-        route = NavigationRoute.UserScreenGraph.route,
-        startDestination = NavigationRoute.UserScreenGraph.UserScreen.route
-    ) {
         composable(
             route = NavigationRoute.UserScreenGraph.UserScreen.route
         ) {
@@ -130,6 +90,57 @@ internal fun NavGraphBuilder.userGraph(
                 }
             )
         }
+    }
+}
+internal fun NavGraphBuilder.categoryGraph(
+    appState: ZuzuAppState
+) {
+    navigation(
+        route = NavigationRoute.CategoryScreenGraph.route,
+        startDestination = NavigationRoute.CategoryScreenGraph.CategoryScreen.route
+    ) {
+        composable(
+            route = NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/{category}"
+        ) {
+            val viewModel: CategoryViewModel = hiltViewModel()
+            val category = it.arguments?.getString("category")!!
+            val index = appState.categoryList.withIndex().filter { it.value.title == category }.map { it.index }[0]
+
+            LaunchedEffect(true) {
+                viewModel.updateCategory(category = category)
+                viewModel.getWineListWithPageAndCategory()
+            }
+
+            CategoryRoute(
+                viewModel = viewModel,
+                index = index,
+                categoryList = appState.categoryList,
+                onClick = { categoryUiEvents ->
+                    when (categoryUiEvents) {
+                        is CategoryUiEvents.WineBoardClick -> {
+                        }
+                        is CategoryUiEvents.BackButtonClick -> {
+                            appState.navigateBackStack()
+                        }
+                        is CategoryUiEvents.TabClick -> {
+                            viewModel.updateCategory(category = categoryUiEvents.tag)
+                            viewModel.getWineListWithPageAndCategory()
+                        }
+                    }
+                }
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialNavigationApi::class)
+internal fun NavGraphBuilder.userGraph(
+    appState: ZuzuAppState
+) {
+    navigation(
+        route = NavigationRoute.UserScreenGraph.route,
+        startDestination = NavigationRoute.UserScreenGraph.UserScreen.route
+    ) {
         composable(
             route = NavigationRoute.UserScreenGraph.SettingScreen.route
         ) {
@@ -187,8 +198,11 @@ internal fun NavGraphBuilder.userGraph(
         }
         bottomSheet(
             route = NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route
-        ) {
-            val viewModel: UserViewModel = hiltViewModel()
+        ) { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                appState.navController.getBackStackEntry(NavigationRoute.UserScreenGraph.UserScreen.route)
+            }
+            val viewModel: UserViewModel = hiltViewModel(parentEntry) // sharedViewModel
             EditUserProfileRoute(
                 viewModel = viewModel,
                 onSubmitState = { updateProfileUiEventState ->
