@@ -24,6 +24,7 @@ timber = "5.0.1"
 renderscript = "b6363490c3"
 paging = "1.0.0-alpha15"
 retrofit = "2.9.0"
+okHttp = "4.10.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
@@ -75,6 +76,9 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 renderscript = { group = "com.github.android", name = "renderscript-intrinsics-replacement-toolkit", version.ref = "renderscript" }
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+
+okHttpLog = { group = "com.squareup.okhttp3", name = "logging-interceptor" , version.ref = "okHttp"}
 
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]
