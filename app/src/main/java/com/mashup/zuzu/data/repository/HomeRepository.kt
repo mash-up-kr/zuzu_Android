@@ -13,7 +13,7 @@ class HomeRepository @Inject constructor() {
     fun getMainWineList(): Flow<Results<List<Wine>>> {
         return flow {
             emit(Results.Loading)
-            delay(500)
+            delay(1000)
             emit(Results.Success(wines))
         }
     }

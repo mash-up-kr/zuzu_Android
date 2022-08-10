@@ -26,8 +26,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = ProofTheme.color.black
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     ZuzuApp(
                         onWorldCupButtonClick = {}

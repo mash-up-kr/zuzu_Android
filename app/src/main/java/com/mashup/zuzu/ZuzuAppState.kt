@@ -85,6 +85,6 @@ fun rememberAppState(
 ) = remember(navController) {
     ZuzuAppState(
         bottomSheetNavigator = bottomSheetNavigator,
-        navController = navController,
+        navController = navController
     )
 }

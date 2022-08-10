@@ -49,7 +49,6 @@ fun LeaveScreen(
             .padding(top = 31.5.dp)
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(color = ProofTheme.color.black)
     ) {
         LeaveTopBar(
             modifier = Modifier.fillMaxWidth().height(52.dp),

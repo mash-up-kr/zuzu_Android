@@ -4,12 +4,11 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,7 +19,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
@@ -40,18 +38,24 @@ import com.mashup.zuzu.compose.theme.ProofTheme
 @Composable
 fun CategoryRoute(
     viewModel: CategoryViewModel,
-    category: String,
+    index: Int,
     categoryList: List<Category>,
     onClick: (CategoryUiEvents) -> Unit
 ) {
-    val index = categoryList.withIndex().filter { it.value.title == category }.map { it.index }[0]
-    val wineState by viewModel.wineList.collectAsState()
-
+    val wineListState by viewModel.wineListState.collectAsState()
+    val page by viewModel.page
+    val pageSize = viewModel.PAGE_SIZE
     CategoryScreen(
         index = index,
         categoryList = categoryList,
-        wineState = wineState,
-        onClick = onClick
+        wineListState = wineListState,
+        onClick = onClick,
+        onLoadNextPage = { viewModel.getWineListWithPageAndCategoryNextPage() },
+        onScrollPositionChange = { position ->
+            viewModel.onChangeWineListScrollPosition(position = position)
+        },
+        page = page,
+        pageSize = pageSize
     )
 }
 
@@ -60,7 +64,11 @@ fun CategoryScreen(
     modifier: Modifier = Modifier,
     index: Int,
     categoryList: List<Category>,
-    wineState: WineListWithCategoryUiState,
+    wineListState: WineListWithPageAndCategoryUiState,
+    onScrollPositionChange: (Int) -> Unit,
+    onLoadNextPage: () -> Unit,
+    page: Int,
+    pageSize: Int,
     onClick: (CategoryUiEvents) -> Unit
 ) {
     val categoryState = rememberCategoryState(index)
@@ -69,7 +77,6 @@ fun CategoryScreen(
         modifier = modifier
             .fillMaxHeight()
             .fillMaxWidth()
-            .background(color = Black)
     ) {
         Icon(
             modifier = Modifier
@@ -129,35 +136,35 @@ fun CategoryScreen(
             }
         }
 
-        // 하단 wine items
-        when (wineState) {
-            is WineListWithCategoryUiState.Loading -> {
-                // some indicator or loading screen
-            }
-            is WineListWithCategoryUiState.Success -> {
+        when (wineListState) {
+            is WineListWithPageAndCategoryUiState.Success -> {
                 if (categoryState.viewMode) {
                     CategoryWineItems(
-                        wines = wineState.wineList,
+                        wines = wineListState.wineList,
                         onWineBoardClick = { wine ->
                             onClick(CategoryUiEvents.WineBoardClick(wine = wine))
                         },
                         modifier = Modifier
                             .padding(top = 28.dp)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
+                        onScrollPositionChange = onScrollPositionChange,
+                        onLoadNextPage = onLoadNextPage,
+                        page = page,
+                        pageSize = pageSize
                     )
                 } else {
-                    HorizontalPagerWithOffsetTransition(
+                    HorizontalPagerWithOffsetTransitionWithPage(
                         modifier = Modifier.wrapContentHeight().fillMaxWidth()
                             .padding(top = 28.dp),
                         onWineBoardClick = { wine ->
                             onClick(CategoryUiEvents.WineBoardClick(wine = wine))
                         },
-                        wines = wineState.wineList
+                        wineList = wineListState.wineList,
+                        null
                     )
                 }
             }
-            is WineListWithCategoryUiState.Error -> {
-                // some toast message ?
+            is WineListWithPageAndCategoryUiState.Loading -> {
             }
         }
     }
@@ -243,7 +250,11 @@ fun Modifier.customTabIndicatorOffset(
 fun CategoryWineItems(
     wines: List<Wine>,
     modifier: Modifier,
-    onWineBoardClick: (Wine) -> Unit
+    onWineBoardClick: (Wine) -> Unit,
+    onScrollPositionChange: (Int) -> Unit,
+    onLoadNextPage: () -> Unit,
+    page: Int,
+    pageSize: Int
 ) {
     LazyVerticalGrid(
         modifier = modifier.padding(start = 20.dp, end = 20.dp),
@@ -251,10 +262,16 @@ fun CategoryWineItems(
         verticalArrangement = Arrangement.spacedBy(32.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        items(wines) { wine ->
+        itemsIndexed(wines) { index, wine ->
             Box(
                 contentAlignment = Center
             ) {
+                onScrollPositionChange(index)
+
+                if (index + 1 >= page * pageSize) {
+                    onLoadNextPage()
+                }
+
                 WineCardInHome(
                     modifier = Modifier.fillMaxWidth(),
                     height = 210.dp,
@@ -263,31 +280,5 @@ fun CategoryWineItems(
                 )
             }
         }
-    }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun PreviewCategoryScreen() {
-    ProofTheme() {
-        CategoryScreen(
-            modifier = Modifier.fillMaxHeight().fillMaxWidth().background(color = ProofTheme.color.black),
-            index = 0,
-            wineState = WineListWithCategoryUiState.Loading,
-            categoryList = categoryList,
-            onClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = false)
-@Composable
-fun PreviewPagerCard() {
-    ProofTheme() {
-        HorizontalPagerWithOffsetTransition(
-            onWineBoardClick = {},
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-            wines = wines
-        )
     }
 }

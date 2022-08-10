@@ -10,7 +10,6 @@ import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.google.android.renderscript.Toolkit
-import com.mashup.zuzu.BuildConfig
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.domain.usecase.GetBestWorldCupListUseCase
 import com.mashup.zuzu.domain.usecase.GetCategoryListUseCase
@@ -27,8 +26,6 @@ import javax.inject.Inject
  * @Created by 김현국 2022/07/11
  */
 
-
-
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMainWineListUseCase: GetMainWineListUseCase,
@@ -43,7 +40,7 @@ class HomeViewModel @Inject constructor(
     private val _bestWorldCupList: MutableStateFlow<BestWorldCupUiState> = MutableStateFlow(BestWorldCupUiState.Loading)
     val bestWorldCupList = _bestWorldCupList.asStateFlow()
 
-    private val _recommendWine: MutableStateFlow<RecommendWineUiState> = MutableStateFlow(RecommendWineUiState.Loading)
+    private val _recommendWine: MutableStateFlow<RecommendWineUiState> = MutableStateFlow(RecommendWineUiState.Init)
     val recommendWine = _recommendWine.asStateFlow()
 
     private val _categoryList: MutableStateFlow<CategoryListUiState> = MutableStateFlow(CategoryListUiState.Loading)

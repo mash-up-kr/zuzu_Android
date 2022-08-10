@@ -11,3 +11,9 @@ sealed class WineListWithCategoryUiState {
     object Error : WineListWithCategoryUiState()
     data class Success(val wineList: List<Wine>) : WineListWithCategoryUiState()
 }
+
+sealed class WineListWithPageAndCategoryUiState {
+    object Loading : WineListWithPageAndCategoryUiState()
+    data class Success(val wineList: List<Wine>) : WineListWithPageAndCategoryUiState()
+    object Init : WineListWithPageAndCategoryUiState()
+}

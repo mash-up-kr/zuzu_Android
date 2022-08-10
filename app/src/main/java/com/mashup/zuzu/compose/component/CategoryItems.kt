@@ -21,7 +21,8 @@ import com.mashup.zuzu.compose.theme.ProofTheme
 fun CategoryItems(
     modifier: Modifier,
     categoryList: List<Category>,
-    onCategoryClick: (Category) -> Unit
+    onCategoryClick: (Category) -> Unit,
+    childModifier: Modifier?
 ) {
     LazyRow(
         modifier = modifier,
@@ -32,7 +33,8 @@ fun CategoryItems(
                 modifier = Modifier.width(52.dp).height(52.dp)
                     .background(color = ProofTheme.color.gray500, shape = CircleShape),
                 category = category,
-                onCategoryClick = onCategoryClick
+                onCategoryClick = onCategoryClick,
+                childModifier = childModifier
             )
         }
     }
