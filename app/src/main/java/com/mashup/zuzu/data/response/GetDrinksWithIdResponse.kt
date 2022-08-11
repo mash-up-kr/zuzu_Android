@@ -1,6 +1,7 @@
 package com.mashup.zuzu.data.response
 
 import com.google.gson.annotations.SerializedName
+import com.mashup.zuzu.data.response.model.Category
 
 /**
  * @Created by 김현국 2022/08/08
@@ -28,10 +29,4 @@ data class GetDrinksWithIdResponse(
     @SerializedName("category")
     val category: Category
 
-)
-
-data class Category(
-
-    @SerializedName("name")
-    val name: String
 )

@@ -28,7 +28,7 @@ fun wineResponseToModel(getDrinksResponse: List<GetDrinksResponse>): List<Wine> 
             tags = emptyList(),
             description = getDrinksResponse.description,
             favorite = false,
-            category = ""
+            category = nameToKorean(getDrinksResponse.category.name)
         )
     }
 }
