@@ -74,6 +74,8 @@ renderscript = { group = "com.github.android", name = "renderscript-intrinsics-r
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 
+snapper = "dev.chrisbanes.snapper:snapper:0.2.2"
+
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]
 accompanist = ["accompanist-pager", "accompanist-systemuicontroller", "accompanist-navigation-material"]

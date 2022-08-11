@@ -206,38 +206,96 @@ fun ReviewWriteScreen(
                 //TODO: progress 때문에 3,4 페이지에 대해서 다른 처리가 필요함 ex. 3-1, 3-2
                 when (uiState.page) {
                     0 -> {
-                        WeatherSelectOption(navigateDateSelectPage = navigateDateSelectPage)
+                        WeatherSelectOption(
+                            navigateDateSelectPage = navigateDateSelectPage,
+                            modifier = Modifier.padding(
+                                start = 24.dp,
+                                end = 24.dp,
+                                top = 40.dp,
+                                bottom = 34.dp
+                            )
+                        )
                     }
 
                     1 -> {
-                        DateSelectOption(navigatePartnerPage = navigatePartnerPage)
+                        DateSelectOption(
+                            navigatePartnerPage = navigatePartnerPage,
+                            modifier = Modifier.padding(
+                                start = 24.dp,
+                                end = 24.dp,
+                                top = 40.dp,
+                                bottom = 34.dp
+                            )
+                        )
                     }
 
                     2 -> {
                         PartnerSelectOption(
                             navigateGroupPage = navigateGroupPage,
-                            navigateSoloPage = navigateSoloPage
+                            navigateSoloPage = navigateSoloPage,
+                            modifier = Modifier.padding(
+                                start = 24.dp,
+                                end = 24.dp,
+                                top = 40.dp,
+                                bottom = 34.dp
+                            )
                         )
                     }
 
                     3 -> {
-                        GroupSelectOption(navigateTastePage = navigateTastePage)
+                        GroupSelectOption(
+                            navigateTastePage = navigateTastePage,
+                            modifier = Modifier.padding(
+                                start = 24.dp,
+                                end = 24.dp,
+                                top = 40.dp,
+                                bottom = 34.dp
+                            )
+                        )
                     }
 
                     4 -> {
-                        SoloSelectOption(navigateTastePage = navigateTastePage)
+                        SoloSelectOption(
+                            navigateTastePage = navigateTastePage,
+                            modifier = Modifier.padding(
+                                start = 24.dp,
+                                end = 24.dp,
+                                top = 40.dp,
+                                bottom = 34.dp
+                            )
+                        )
                     }
 
                     5 -> {
-                        TasteSelectOption(navigateSummaryPage = navigateSummaryPage)
+                        TasteSelectOption(navigateSummaryPage = navigateSummaryPage, modifier = Modifier.padding(
+                            start = 24.dp,
+                            end = 24.dp,
+                            top = 40.dp,
+                            bottom = 34.dp
+                        ))
                     }
 
                     6 -> {
-                        SummarySelectOption(navigateSecondarySummaryPage = navigateSecondarySummaryPage)
+                        SummarySelectOption(
+                            navigateSecondarySummaryPage = navigateSecondarySummaryPage,
+                            modifier = Modifier.padding(
+                                start = 24.dp,
+                                end = 24.dp,
+                                top = 40.dp,
+                                bottom = 34.dp
+                            )
+                        )
                     }
 
                     7 -> {
-                        SecondarySummaryPage()
+                        SecondarySummaryPage(
+                            modifier = Modifier.padding(
+                                start = 24.dp,
+                                end = 24.dp,
+                                top = 40.dp,
+                                bottom = 34.dp
+                            )
+                        )
                     }
                 }
             }
