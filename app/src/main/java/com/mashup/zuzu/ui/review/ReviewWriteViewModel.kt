@@ -3,6 +3,7 @@ package com.mashup.zuzu.ui.review
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.data.repository.ReviewWriteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -13,26 +14,14 @@ import javax.inject.Inject
 class ReviewWriteViewModel @Inject constructor(
     private val reviewWriteRepository: ReviewWriteRepository
 ) : ViewModel() {
-    private val selectDataList = listOf<Int>()
-
+    private var request = ReviewWriteRequest()
     private val page: MutableStateFlow<Int> = MutableStateFlow(0)
 
-    //TODO: 이미지와 술이름만 있으면 되는데, Wine Model 사용이 필요할까?
     private val reviewWineState: StateFlow<Wine> =
         reviewWriteRepository.getReviewWineStream().stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = Wine(
-                id = 1L,
-                name = "GoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlue",
-                imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
-                price = 1000,
-                alc = 17,
-                description = "하이하이하이하이",
-                favorite = true,
-                category = "와인",
-                tags = listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술")
-            )
+            initialValue = wines[0]
         )
 
     val uiState: StateFlow<ReviewWriteUiState> =
@@ -48,17 +37,7 @@ class ReviewWriteViewModel @Inject constructor(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = ReviewWriteUiState(
-                page = 0, wine = Wine(
-                    id = 1L,
-                    name = "GoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlueGoldenBlue",
-                    imageUrl = "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500",
-                    price = 1000,
-                    alc = 17,
-                    description = "하이하이하이하이",
-                    favorite = true,
-                    category = "와인",
-                    tags = listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술")
-                )
+                page = 0, wine = wines[0]
             )
         )
 
@@ -72,7 +51,6 @@ class ReviewWriteViewModel @Inject constructor(
             }
     }
 
-    //TODO: 페이지마다 선택해야하는 옵션의 수가 다르기 때문에, Navigate 역시 함수를 다 쪼갤 수 밖에 없다. 재사용이 가능한가?
     fun navigateDateSelectPage(selectOption: String) = viewModelScope.launch {
         page.value = 1
     }
@@ -101,7 +79,7 @@ class ReviewWriteViewModel @Inject constructor(
         page.value = 7
     }
 
-    fun selectPage(modifyPage: Int) = viewModelScope.launch {
-        page.value = modifyPage
+    fun completeReviewWrite() {
+        //request 객체로 Api 요청
     }
 }
