@@ -21,12 +21,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.placeholder
-import com.google.accompanist.placeholder.shimmer
 import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.*
-import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.compose.component.*
 import com.mashup.zuzu.compose.theme.ProofTheme
 
@@ -53,12 +49,6 @@ fun UserRoute(
             )
         }
         is UserUiState.Loading -> {
-            UserScreen(
-                user = dummyUser,
-                wineCallerState = WineCallerUiState.Loading,
-                joinedWorldCupState = JoinedWorldCupUiState.Loading,
-                onClick = {}
-            )
         }
         is UserUiState.Error -> {
         }
@@ -79,6 +69,7 @@ fun UserScreen(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .background(color = ProofTheme.color.black)
     ) {
         UserTopBar(
             user = userState.user,
@@ -101,8 +92,7 @@ fun UserScreen(
                             wines = wineCallerState.wineCaller,
                             onWineClick = { wine ->
                                 onClick(UserUiEvents.WineItemClick(wine = wine))
-                            },
-                            null
+                            }
                         )
                     }
                     is WineCallerUiState.NoItem -> {
@@ -115,18 +105,6 @@ fun UserScreen(
                         )
                     }
                     is WineCallerUiState.Loading -> {
-                        WineCaller(
-                            modifier = Modifier.fillMaxWidth(),
-                            wines = dummyWineList,
-                            onWineClick = {},
-                            childModifier = Modifier.placeholder(
-                                visible = true,
-                                color = ProofTheme.color.gray600,
-                                highlight = PlaceholderHighlight.shimmer(
-                                    highlightColor = ProofTheme.color.gray500
-                                )
-                            )
-                        )
                     }
                     is WineCallerUiState.Error -> {
                     }
@@ -142,8 +120,7 @@ fun UserScreen(
                                 .fillMaxHeight(),
                             onWorldCupItemClick = { bestWorldCup ->
                                 onClick(UserUiEvents.WorldCupItemClick(bestWorldCup = bestWorldCup))
-                            },
-                            null
+                            }
                         )
                     }
                     is JoinedWorldCupUiState.NoItem -> {
@@ -156,22 +133,6 @@ fun UserScreen(
                         )
                     }
                     is JoinedWorldCupUiState.Loading -> {
-                        JoinWorldCup(
-                            modifier = Modifier
-                                .padding(top = 36.dp, start = 24.dp, end = 24.dp)
-                                .fillMaxWidth()
-                                .fillMaxHeight(),
-                            onWorldCupItemClick = { bestWorldCup ->
-                                onClick(UserUiEvents.WorldCupItemClick(bestWorldCup = bestWorldCup))
-                            },
-                            childModifier = Modifier.placeholder(
-                                visible = true,
-                                color = ProofTheme.color.gray600,
-                                highlight = PlaceholderHighlight.shimmer(
-                                    highlightColor = ProofTheme.color.gray500
-                                )
-                            )
-                        )
                     }
                     is JoinedWorldCupUiState.Error -> {
                     }
@@ -184,8 +145,7 @@ fun UserScreen(
 @Composable
 fun JoinWorldCup(
     modifier: Modifier,
-    onWorldCupItemClick: (BestWorldCup) -> Unit,
-    childModifier: Modifier?
+    onWorldCupItemClick: (BestWorldCup) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -195,8 +155,7 @@ fun JoinWorldCup(
             WorldCupCard(
                 modifier = Modifier.fillMaxWidth(),
                 worldCupItem = bestWorldCup,
-                onWorldCupItemClick = onWorldCupItemClick,
-                childModifier = childModifier
+                onWorldCupItemClick = onWorldCupItemClick
             )
         }
     }
@@ -293,8 +252,7 @@ fun UserTopBar(
 fun WineCaller(
     modifier: Modifier,
     wines: List<Wine>,
-    onWineClick: (Wine) -> Unit,
-    childModifier: Modifier?
+    onWineClick: (Wine) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 36.dp),
@@ -308,8 +266,7 @@ fun WineCaller(
                     .fillMaxWidth()
                     .fillMaxHeight(),
                 wine = wine,
-                onWineClick = onWineClick,
-                childModifier = childModifier
+                onWineClick = onWineClick
             )
         }
     }
