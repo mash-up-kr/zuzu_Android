@@ -1,4 +1,4 @@
-package com.mashup.zuzu.data.source.remote
+package com.mashup.zuzu.data.source.remote.category
 
 import com.mashup.zuzu.data.response.GetDrinksCategoryResponse
 import com.mashup.zuzu.data.response.GetDrinksWithCategoryResponse
@@ -7,11 +7,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 /**
- * @Created by 김현국 2022/08/08
+ * @Created by 김현국 2022/08/12
  */
-interface CategoryRemoteDataSource {
+interface CategoryApi {
 
-    // 주류 카테고리 가져오기
     @GET("/drinks-category")
     suspend fun getDrinksCategory(): Response<List<GetDrinksCategoryResponse>>
 
