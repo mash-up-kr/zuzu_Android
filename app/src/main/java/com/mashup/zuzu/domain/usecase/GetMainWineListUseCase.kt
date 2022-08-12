@@ -15,6 +15,6 @@ class GetMainWineListUseCase @Inject constructor(
     private val repository: HomeRepository
 ) {
     operator fun invoke(): Flow<Results<List<Wine>>> {
-        return repository.getMainWineList()
+        return repository.getDrinks()
     }
 }

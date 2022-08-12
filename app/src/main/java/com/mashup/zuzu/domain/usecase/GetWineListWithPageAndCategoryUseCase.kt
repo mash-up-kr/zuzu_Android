@@ -15,6 +15,6 @@ class GetWineListWithPageAndCategoryUseCase @Inject constructor(
     private val repository: CategoryRepository
 ) {
     operator fun invoke(category: String, page: Int): Flow<Results<List<Wine>>> {
-        return repository.getWineListWithPageAndCategory(category = category, page = page)
+        return repository.getDrinksWithCategory(category = category, page = page)
     }
 }
