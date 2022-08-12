@@ -1,13 +1,12 @@
 package com.mashup.zuzu.ui.user
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -17,6 +16,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,10 +25,11 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
 import com.mashup.zuzu.R
-import com.mashup.zuzu.data.model.*
-import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.compose.component.*
 import com.mashup.zuzu.compose.theme.ProofTheme
+import com.mashup.zuzu.data.model.*
+import com.mashup.zuzu.data.model.dummy.dummyWineList
+import com.mashup.zuzu.util.rememberScrollContext
 
 /**
  * @Created by 김현국 2022/07/14
@@ -97,7 +98,7 @@ fun UserScreen(
                 when (wineCallerState) {
                     is WineCallerUiState.Success -> {
                         WineCaller(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxSize(),
                             wines = wineCallerState.wineCaller,
                             onWineClick = { wine ->
                                 onClick(UserUiEvents.WineItemClick(wine = wine))
@@ -116,7 +117,7 @@ fun UserScreen(
                     }
                     is WineCallerUiState.Loading -> {
                         WineCaller(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxSize(),
                             wines = dummyWineList,
                             onWineClick = {},
                             childModifier = Modifier.placeholder(
@@ -296,20 +297,39 @@ fun WineCaller(
     onWineClick: (Wine) -> Unit,
     childModifier: Modifier?
 ) {
-    LazyVerticalGrid(
-        modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 36.dp),
-        columns = GridCells.Fixed(3),
-        verticalArrangement = Arrangement.spacedBy(32.dp),
-        horizontalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        items(wines) { wine ->
-            WineCellarCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                wine = wine,
-                onWineClick = onWineClick,
-                childModifier = childModifier
+    val scrollState = rememberLazyGridState()
+    val scrollContext = rememberScrollContext(state = scrollState)
+    val gradientColor = listOf(ProofTheme.color.black.copy(alpha = 0f), ProofTheme.color.black)
+
+    Box {
+        LazyVerticalGrid(
+            modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 36.dp),
+            columns = GridCells.Fixed(3),
+            state = scrollState,
+            verticalArrangement = Arrangement.spacedBy(25.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            items(
+                items = wines,
+                key = { wine ->
+                    wine.id
+                }
+            ) { wine ->
+                WineCellarCard(
+                    modifier = Modifier.width(88.dp).height(160.dp),
+                    wine = wine,
+                    onWineClick = onWineClick,
+                    childModifier = childModifier
+                )
+            }
+        }
+        AnimatedVisibility(
+            visible = !scrollContext.isBottom,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            Box(
+                modifier = Modifier.fillMaxWidth().height(121.dp)
+                    .background(brush = Brush.verticalGradient(colors = gradientColor))
             )
         }
     }
@@ -384,5 +404,20 @@ fun PreviewNoItemWineOrWorldCup() {
                 .fillMaxHeight(),
             type = "참여한 술드컵"
         )
+    }
+}
+
+@Preview
+@Composable
+fun BottomShadow() {
+    ProofTheme {
+        val gradientColor = listOf(ProofTheme.color.black.copy(alpha = 0f), ProofTheme.color.primary400)
+
+        Box {
+            Box(
+                modifier = Modifier.fillMaxWidth().height(121.dp).align(Alignment.BottomCenter)
+                    .background(brush = Brush.verticalGradient(colors = gradientColor))
+            )
+        }
     }
 }
