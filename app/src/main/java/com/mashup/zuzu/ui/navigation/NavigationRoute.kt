@@ -17,6 +17,7 @@ sealed class NavigationRoute(val route: String) {
         object SettingScreen : NavigationRoute("user_screen.setting")
         object EditUserProfileBottomSheet : NavigationRoute("user_screen.edit_user_profile")
         object LeaveScreen : NavigationRoute("user_screen.leave")
+        object UserReviewDetailScreen : NavigationRoute("user_screen.review")
     }
 
     object ReviewGraph : NavigationRoute("review_screen") {
