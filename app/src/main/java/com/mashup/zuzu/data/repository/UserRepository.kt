@@ -1,7 +1,8 @@
 package com.mashup.zuzu.data.repository
 
 import com.mashup.zuzu.data.model.*
-import com.mashup.zuzu.data.source.remote.UserRemoteDataSource
+import com.mashup.zuzu.data.source.remote.user.UserApi
+import com.mashup.zuzu.data.source.remote.user.UserRemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -13,9 +14,9 @@ import javax.inject.Inject
  * @Created by 김현국 2022/07/24
  */
 class UserRepository @Inject constructor(
-    private val userRemoteDataSource: UserRemoteDataSource
-) {
-    fun getUserData(userId: Long): Flow<Results<User>> {
+    private val userApi: UserApi
+) : UserRemoteDataSource {
+    override fun getUserData(userId: Long): Flow<Results<User>> {
         return flow {
             emit(Results.Loading)
             delay(1000)
@@ -23,7 +24,7 @@ class UserRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getWineCallerList(userId: Long): Flow<Results<List<Wine>>> {
+    override fun getWineCallerList(userId: Long): Flow<Results<List<Wine>>> {
         return flow {
             emit(Results.Loading)
             delay(1000)
@@ -31,7 +32,7 @@ class UserRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getJoinedWorldCupList(userId: Long): Flow<Results<List<BestWorldCup>>> {
+    override fun getJoinedWorldCupList(userId: Long): Flow<Results<List<BestWorldCup>>> {
         return flow {
             emit(Results.Loading)
             delay(1000)
@@ -39,7 +40,7 @@ class UserRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun updateUserProfile(): Flow<Results<String>> {
+    override fun updateUserProfile(): Flow<Results<String>> {
         return flow {
             emit(Results.Loading)
             delay(1000)
@@ -47,7 +48,7 @@ class UserRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun leaveMembership(userId: Long): Flow<Results<String>> {
+    override fun leaveMembership(userId: Long): Flow<Results<String>> {
         return flow {
             emit(Results.Loading)
             delay(1000)
