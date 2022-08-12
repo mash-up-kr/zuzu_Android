@@ -5,9 +5,11 @@ import com.mashup.zuzu.data.repository.HomeRepository
 import com.mashup.zuzu.data.repository.ReviewDetailRepository
 import com.mashup.zuzu.data.repository.ReviewWriteRepository
 import com.mashup.zuzu.data.repository.UserRepository
-import com.mashup.zuzu.data.source.remote.CategoryRemoteDataSource
-import com.mashup.zuzu.data.source.remote.UserRemoteDataSource
-import com.mashup.zuzu.data.source.remote.WineRemoteDataSource
+import com.mashup.zuzu.data.source.remote.category.CategoryApi
+import com.mashup.zuzu.data.source.remote.category.CategoryRemoteDataSource
+import com.mashup.zuzu.data.source.remote.user.UserApi
+import com.mashup.zuzu.data.source.remote.user.UserRemoteDataSource
+import com.mashup.zuzu.data.source.remote.wine.WineApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,20 +28,20 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideHomeRepository(wineRemoteDataSource: WineRemoteDataSource): HomeRepository {
-        return HomeRepository(wineRemoteDataSource = wineRemoteDataSource)
+    fun provideHomeRepository(wineApi: WineApi): HomeRepository {
+        return HomeRepository(wineApi = wineApi)
     }
 
     @Singleton
     @Provides
-    fun provideCategoryRepository(categoryRemoteDataSource: CategoryRemoteDataSource): CategoryRepository {
-        return CategoryRepository(categoryRemoteDataSource = categoryRemoteDataSource)
+    fun provideCategoryRepository(categoryApi: CategoryApi): CategoryRepository {
+        return CategoryRepository(categoryApi = categoryApi)
     }
 
     @Singleton
     @Provides
-    fun provideUserRepository(userRemoteDataSource: UserRemoteDataSource): UserRepository {
-        return UserRepository(userRemoteDataSource = userRemoteDataSource)
+    fun provideUserRepository(userApi: UserApi): UserRepository {
+        return UserRepository(userApi = userApi)
     }
 
     @Singleton
