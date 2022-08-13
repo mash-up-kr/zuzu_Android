@@ -22,6 +22,7 @@ sealed class NavigationRoute(val route: String) {
     object ReviewGraph : NavigationRoute("review_screen") {
         object ReviewDetailScreen : NavigationRoute("review_screen.detail")
         object ReviewWriteScreen : NavigationRoute("review_screen.write")
+        object ReviewShareCardScreen : NavigationRoute("review_screen.share")
     }
 }
 

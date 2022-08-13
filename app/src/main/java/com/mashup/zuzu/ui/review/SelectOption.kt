@@ -560,7 +560,8 @@ fun SummarySelectOption(
 
 @Composable
 fun SecondarySummaryPage(
-    modifier: Modifier
+    modifier: Modifier,
+    navigateReviewShareCard: () -> Unit
 ) {
     var content by remember {
         mutableStateOf("")
@@ -672,15 +673,16 @@ fun SecondarySummaryPage(
     }
 
     Button(
-        onClick = { },
+        onClick = { navigateReviewShareCard() },
+        colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
         modifier = Modifier
             .fillMaxWidth()
             .height(52.dp)
-            .background(color = ProofTheme.color.primary300)
     ) {
         Text(
             text = "작성 완료",
-            style = ProofTheme.typography.buttonL
+            style = ProofTheme.typography.buttonL,
+            color = ProofTheme.color.white
         )
     }
 }

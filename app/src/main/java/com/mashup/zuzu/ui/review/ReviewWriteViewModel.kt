@@ -79,6 +79,10 @@ class ReviewWriteViewModel @Inject constructor(
         page.value = 7
     }
 
+    fun navigateReviewShareCard() = viewModelScope.launch {
+
+    }
+
     fun completeReviewWrite() {
         //request 객체로 Api 요청
     }

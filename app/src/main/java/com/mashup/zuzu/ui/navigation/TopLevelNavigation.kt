@@ -23,6 +23,7 @@ import com.mashup.zuzu.ui.leave.LeaveUiEvents
 import com.mashup.zuzu.ui.leave.LeaveUiState
 import com.mashup.zuzu.ui.leave.LeaveViewModel
 import com.mashup.zuzu.ui.review.ReviewDetailRoute
+import com.mashup.zuzu.ui.review.ReviewShareCardRoute
 import com.mashup.zuzu.ui.review.ReviewWriteRoute
 import com.mashup.zuzu.ui.setting.SettingRoute
 import com.mashup.zuzu.ui.setting.SettingUiEvents
@@ -249,8 +250,18 @@ internal fun NavGraphBuilder.reviewGraph(
             route = NavigationRoute.ReviewGraph.ReviewWriteScreen.route
         ) {
             ReviewWriteRoute(
+                viewModel = hiltViewModel(),
+                navigateReviewShareCard = { appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewShareCardScreen.route) }
+            )
+        }
+
+        composable(
+            route = NavigationRoute.ReviewGraph.ReviewShareCardScreen.route
+        ) {
+            ReviewShareCardRoute(
                 viewModel = hiltViewModel()
             )
         }
+
     }
 }
