@@ -101,9 +101,6 @@ dependencies {
     //retrofit
     implementation(libs.retrofit)
 
-    //snapper
-    implementation(libs.snapper)
-
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test)

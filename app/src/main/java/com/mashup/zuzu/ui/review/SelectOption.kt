@@ -1,35 +1,28 @@
 package com.mashup.zuzu.ui.review
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.ProofTheme
-import dev.chrisbanes.snapper.ExperimentalSnapperApi
-import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 
 @Composable
 fun WeatherSelectOption(
-    navigateDateSelectPage: (String) -> Unit,
-    modifier: Modifier
+    navigateDateSelectPage: (String) -> Unit
 ) {
     val optionContents = listOf(
         Pair(
@@ -54,7 +47,7 @@ fun WeatherSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(130.dp)
+        modifier = Modifier.padding(horizontal = 34.dp)
     ) {
         items(optionContents) { optionContent ->
             Button(
@@ -67,11 +60,7 @@ fun WeatherSelectOption(
             ) {
                 Image(
                     painter = optionContent.first,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .width(24.dp)
-                        .height(24.dp)
+                    contentDescription = ""
                 )
 
                 Text(
@@ -86,8 +75,7 @@ fun WeatherSelectOption(
 
 @Composable
 fun DateSelectOption(
-    navigatePartnerPage: (String) -> Unit,
-    modifier: Modifier
+    navigatePartnerPage: (String) -> Unit
 ) {
     val optionContents = listOf(
         Pair(
@@ -112,7 +100,7 @@ fun DateSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(130.dp)
+        modifier = Modifier.padding(horizontal = 34.dp)
     ) {
         items(optionContents) { optionContent ->
             Button(
@@ -125,11 +113,7 @@ fun DateSelectOption(
             ) {
                 Image(
                     painter = optionContent.first,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .width(24.dp)
-                        .height(24.dp)
+                    contentDescription = ""
                 )
 
                 Text(
@@ -146,7 +130,6 @@ fun DateSelectOption(
 fun PartnerSelectOption(
     navigateGroupPage: (String) -> Unit,
     navigateSoloPage: (String) -> Unit,
-    modifier: Modifier
 ) {
     val optionContents = listOf(
         Pair(
@@ -171,7 +154,7 @@ fun PartnerSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(130.dp)
+        modifier = Modifier.padding(horizontal = 34.dp)
     ) {
         itemsIndexed(optionContents) { index, optionContent ->
             Button(
@@ -192,11 +175,7 @@ fun PartnerSelectOption(
             ) {
                 Image(
                     painter = optionContent.first,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .width(24.dp)
-                        .height(24.dp)
+                    contentDescription = ""
                 )
 
                 Text(
@@ -211,8 +190,7 @@ fun PartnerSelectOption(
 
 @Composable
 fun GroupSelectOption(
-    navigateTastePage: (String) -> Unit,
-    modifier: Modifier
+    navigateTastePage: (String) -> Unit
 ) {
     val optionContents = listOf(
         Pair(
@@ -245,7 +223,7 @@ fun GroupSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(180.dp)
+        modifier = Modifier.padding(horizontal = 34.dp)
     ) {
         items(optionContents) { optionContent ->
             Button(
@@ -258,11 +236,7 @@ fun GroupSelectOption(
             ) {
                 Image(
                     painter = optionContent.first,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .width(24.dp)
-                        .height(24.dp)
+                    contentDescription = ""
                 )
 
                 Text(
@@ -307,8 +281,7 @@ fun GroupSelectOption(
 
 @Composable
 fun SoloSelectOption(
-    navigateTastePage: (String) -> Unit,
-    modifier: Modifier
+    navigateTastePage: (String) -> Unit
 ) {
     val optionContents = listOf(
         Pair(
@@ -341,7 +314,7 @@ fun SoloSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(150.dp)
+        modifier = Modifier.padding(horizontal = 34.dp)
     ) {
         items(optionContents) { optionContent ->
             Button(
@@ -354,11 +327,7 @@ fun SoloSelectOption(
             ) {
                 Image(
                     painter = optionContent.first,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .width(24.dp)
-                        .height(24.dp)
+                    contentDescription = ""
                 )
 
                 Text(
@@ -371,66 +340,39 @@ fun SoloSelectOption(
     }
 }
 
-@OptIn(ExperimentalSnapperApi::class)
 @Composable
 fun TasteSelectOption(
-    navigateSummaryPage: (List<Int>) -> Unit,
-    modifier: Modifier
+    navigateSummaryPage: (List<Int>) -> Unit
 ) {
-    val lazyListState = rememberLazyListState()
-    val layoutInfo = rememberSnapperFlingBehavior(lazyListState)
+    //TODO: 스크롤을 전체 페이지에서 해야할지....옵션에서 해야할지?
+    val scrollState = rememberScrollState()
 
-    val radioTitles = listOf(
-        Pair("가벼워요", "무거워요"),
-        Pair("달아요", "써요"),
-        Pair("은은한 술맛", "찐한 술맛"),
-        Pair("부드러운 목넘김", "화끈거리는 목넘김")
-    )
-
-    var selectedList by remember {
-        mutableStateOf(listOf(0, 0, 0, 0))
-    }
-
-    if (!selectedList.contains(0)) {
-        navigateSummaryPage(selectedList)
-    }
-
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        ProofTheme.color.black,
-                        ProofTheme.color.black
-                    )
-                ),
-                alpha = 0.7f
-            )
+            .verticalScroll(scrollState)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .background(
-                    brush = Brush.horizontalGradient(
-                        colors = listOf(
-                            ProofTheme.color.primary300,
-                            ProofTheme.color.black
-                        )
-                    ),
-                    alpha = 0.2f
-                )
-                .align(Alignment.Center)
+        val radioTitles = listOf(
+            Pair("가벼워요", "무거워요"),
+            Pair("달아요", "써요"),
+            Pair("은은한 술맛", "찐한 술맛"),
+            Pair("부드러운 목넘김", "화끈거리는 목넘김")
         )
 
-        LazyColumn(
-            modifier = modifier.height(200.dp),
-            state = lazyListState,
-            flingBehavior = layoutInfo
-        ) {
-            itemsIndexed(radioTitles) { index, it ->
+        var selectedList by remember {
+            mutableStateOf(listOf(0, 0, 0, 0))
+        }
+
+        if (!selectedList.contains(0)) {
+            navigateSummaryPage(selectedList)
+        }
+
+        radioTitles.forEachIndexed { index, title ->
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 34.dp)
+            ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
@@ -438,13 +380,13 @@ fun TasteSelectOption(
                         .padding(bottom = 16.dp, top = 28.dp)
                 ) {
                     Text(
-                        text = it.first,
+                        text = title.first,
                         style = ProofTheme.typography.headingXS,
                         color = ProofTheme.color.white
                     )
 
                     Text(
-                        text = it.second,
+                        text = title.second,
                         style = ProofTheme.typography.headingXS,
                         color = ProofTheme.color.white
                     )
@@ -494,17 +436,16 @@ fun TasteSelectOption(
                         }
                     }
                 }
-
             }
-        }
-    }
 
+        }
+
+    }
 }
 
 @Composable
 fun SummarySelectOption(
-    navigateSecondarySummaryPage: (String) -> Unit,
-    modifier: Modifier
+    navigateSecondarySummaryPage: (String) -> Unit
 ) {
     val optionContents = listOf(
         Pair(
@@ -549,7 +490,7 @@ fun SummarySelectOption(
         columns = GridCells.Fixed(3),
         verticalArrangement = Arrangement.spacedBy(24.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier.height(240.dp)
+        modifier = Modifier.padding(horizontal = 34.dp)
     ) {
         items(optionContents) { optionContent ->
             Column(
@@ -579,17 +520,11 @@ fun SummarySelectOption(
 }
 
 @Composable
-fun SecondarySummaryPage(
-    modifier: Modifier
-) {
-    var content by remember {
-        mutableStateOf("")
-    }
-
+fun SecondarySummaryPage() {
     Column(
-        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    )
+    {
         Text(
             text = "바쁘다면 패스해도 괜찮아요",
             style = ProofTheme.typography.bodyM,
@@ -597,82 +532,67 @@ fun SecondarySummaryPage(
         )
     }
 
-    Column(
-        modifier = modifier.fillMaxWidth()
-    ) {
+    Column {
         Text(
             text = "이 술을 먹었던 장소는",
             style = ProofTheme.typography.headingS,
             color = ProofTheme.color.white
         )
 
-        TextField(
-            value = content,
-            onValueChange = {
-                content = it
-            },
-            placeholder = {
-                Text(
-                    text = "장소 입력하기",
-                    color = ProofTheme.color.gray300
-                )
-            },
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .background(color = ProofTheme.color.gray600, shape = RoundedCornerShape(12.dp))
-        )
+        TextField(value = "", onValueChange = {
+
+        }, placeholder = {
+            Text(text = "장소 입력하기")
+        })
 
         Text(
             text = "곁들인 안주의 종류는",
             style = ProofTheme.typography.headingS,
-            color = ProofTheme.color.white,
-            modifier = Modifier.padding(top = 44.dp)
+            color = ProofTheme.color.white
         )
 
         Text(
             text = "여러 개 선택해도 돼요",
             style = ProofTheme.typography.bodyM,
-            color = ProofTheme.color.gray200,
-            modifier = Modifier.padding(top = 8.dp)
+            color = ProofTheme.color.gray200
         )
     }
 
     val optionContents = listOf(
         Pair(
-            painterResource(id = R.drawable.ic_menu_category),
+            painterResource(id = R.drawable.ig_summary_menu),
             stringResource(R.string.summary_roast)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_menu_category),
+            painterResource(id = R.drawable.ig_summary_menu),
             stringResource(R.string.summary_roast)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_menu_category),
+            painterResource(id = R.drawable.ig_summary_menu),
             stringResource(R.string.summary_fry)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_menu_category),
+            painterResource(id = R.drawable.ig_summary_menu),
             stringResource(R.string.summary_cheese)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_menu_category),
+            painterResource(id = R.drawable.ig_summary_menu),
             stringResource(R.string.summary_salad)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_menu_category),
+            painterResource(id = R.drawable.ig_summary_menu),
             stringResource(R.string.summary_fruits)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_menu_category),
+            painterResource(id = R.drawable.ig_summary_menu),
             stringResource(R.string.summary_soup)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_menu_category),
+            painterResource(id = R.drawable.ig_summary_menu),
             stringResource(R.string.summary_desert)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_menu_category),
+            painterResource(id = R.drawable.ig_summary_menu),
             stringResource(R.string.summary_noodle)
         )
     )
@@ -681,9 +601,7 @@ fun SecondarySummaryPage(
         columns = GridCells.Fixed(3),
         verticalArrangement = Arrangement.spacedBy(18.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier
-            .padding(top = 24.dp)
-            .height(240.dp)
+        modifier = Modifier.padding(horizontal = 87.dp)
     ) {
         items(optionContents) { optionContent ->
             Column(
@@ -709,14 +627,8 @@ fun SecondarySummaryPage(
 
     Button(
         onClick = { },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(52.dp)
-            .background(color = ProofTheme.color.primary300)
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = "작성 완료",
-            style = ProofTheme.typography.buttonL
-        )
+        Text(text = "작성 완료", style = ProofTheme.typography.buttonL)
     }
 }
