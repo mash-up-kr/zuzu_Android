@@ -31,94 +31,54 @@ import java.util.*
 fun WorldCupCard(
     modifier: Modifier,
     worldCupItem: BestWorldCup,
-    onWorldCupItemClick: (BestWorldCup) -> Unit,
-    childModifier: Modifier?
+    onWorldCupItemClick: (BestWorldCup) -> Unit
 ) {
-    if (childModifier != null) {
-        Row(
-            modifier = modifier.clickable { onWorldCupItemClick(worldCupItem) }
-                .background(color = ProofTheme.color.black)
-        ) {
-            Box {
-                // Proof 태그 추가예정
-                AsyncImage(
-                    modifier = Modifier.height(88.dp).width(88.dp).clip(shape = CircleShape)
-                        .then(childModifier),
-                    model = worldCupItem.image,
-                    contentDescription = null,
-                    contentScale = ContentScale.FillBounds
-                )
-            }
-
-            Column(
-                modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
-            ) {
-                Box(
-                    modifier = Modifier.width(78.dp).height(19.dp).then(childModifier)
-                )
-                Spacer(
-                    modifier = Modifier.height(4.dp)
-                )
-                Box(
-                    modifier = Modifier.width(208.dp).height(44.dp).then(childModifier)
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Box(
-                    modifier = Modifier.height(19.dp).width(87.dp).then(childModifier)
-                )
-            }
+    Row(
+        modifier = modifier.clickable { onWorldCupItemClick(worldCupItem) }
+            .background(color = ProofTheme.color.black)
+    ) {
+        Box {
+            // Proof 태그 추가예정
+            AsyncImage(
+                modifier = Modifier.height(88.dp).width(88.dp).clip(shape = CircleShape),
+                model = worldCupItem.image,
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds
+            )
         }
-    } else {
-        Row(
-            modifier = modifier.clickable { onWorldCupItemClick(worldCupItem) }
-                .background(color = ProofTheme.color.black)
-        ) {
-            Box {
-                // Proof 태그 추가예정
-                AsyncImage(
-                    modifier = Modifier.height(88.dp).width(88.dp).clip(shape = CircleShape),
-                    model = worldCupItem.image,
-                    contentDescription = null,
-                    contentScale = ContentScale.FillBounds
-                )
-            }
 
-            Column(
-                modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
+        ) {
+            Text(
+                text = worldCupItem.day,
+                style = ProofTheme.typography.bodyXS,
+                color = ProofTheme.color.gray300
+            )
+            Text(
+                modifier = Modifier.padding(top = 4.dp),
+                text = worldCupItem.title,
+                maxLines = 2,
+                style = ProofTheme.typography.buttonL.copy(
+                    fontWeight = FontWeight.Normal
+                ),
+                color = ProofTheme.color.white
+            )
+            Row(
+                modifier = Modifier.padding(top = 8.5.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_voted),
+                    tint = ProofTheme.color.green200,
+                    contentDescription = null
+                )
                 Text(
-                    text = worldCupItem.day,
+                    modifier = Modifier.padding(start = 5.dp),
+                    text = "${NumberFormat.getNumberInstance(Locale.US).format(worldCupItem.participants)}명 참여",
                     style = ProofTheme.typography.bodyXS,
                     color = ProofTheme.color.gray300
                 )
-                Text(
-                    modifier = Modifier.padding(top = 4.dp),
-                    text = worldCupItem.title,
-                    maxLines = 2,
-                    style = ProofTheme.typography.buttonL.copy(
-                        fontWeight = FontWeight.Normal
-                    ),
-                    color = ProofTheme.color.white
-                )
-                Row(
-                    modifier = Modifier.padding(top = 8.5.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_voted),
-                        tint = ProofTheme.color.green200,
-                        contentDescription = null
-                    )
-                    Text(
-                        modifier = Modifier.padding(start = 5.dp),
-                        text = "${
-                        NumberFormat.getNumberInstance(Locale.US)
-                            .format(worldCupItem.participants)
-                        }명 참여",
-                        style = ProofTheme.typography.bodyXS,
-                        color = ProofTheme.color.gray300
-                    )
-                }
             }
         }
     }
@@ -128,6 +88,6 @@ fun WorldCupCard(
 @Composable
 fun PreviewWorldCupCard() {
     ProofTheme() {
-        WorldCupCard(modifier = Modifier.fillMaxWidth(), worldCupItem = bestWorldCupList[0], {}, Modifier)
+        WorldCupCard(modifier = Modifier.fillMaxWidth(), worldCupItem = bestWorldCupList[0], {})
     }
 }
