@@ -1,17 +1,15 @@
 package com.mashup.zuzu.data.di
 
-import com.mashup.zuzu.data.repository.CategoryRepository
-import com.mashup.zuzu.data.repository.HomeRepository
-import com.mashup.zuzu.data.repository.ReviewDetailRepository
-import com.mashup.zuzu.data.repository.ReviewWriteRepository
-import com.mashup.zuzu.data.repository.UserRepository
-import com.mashup.zuzu.data.source.remote.CategoryRemoteDataSource
-import com.mashup.zuzu.data.source.remote.UserRemoteDataSource
-import com.mashup.zuzu.data.source.remote.WineRemoteDataSource
+import com.mashup.zuzu.data.repository.*
+import com.mashup.zuzu.data.source.remote.category.CategoryRemoteDataSource
+import com.mashup.zuzu.data.source.remote.user.UserRemoteDataSource
+import com.mashup.zuzu.data.source.remote.wine.WineRemoteDataSource
+import com.mashup.zuzu.data.source.remote.worldcup.WorldCupRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -26,25 +24,55 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideHomeRepository(wineRemoteDataSource: WineRemoteDataSource): HomeRepository {
-        return HomeRepository(wineRemoteDataSource = wineRemoteDataSource)
+    fun provideHomeRepository(
+        wineRemoteDataSource: WineRemoteDataSource,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): WineRepository {
+        return WineRepository(
+            wineRemoteDataSource = wineRemoteDataSource,
+            ioDispatcher = ioDispatcher
+        )
     }
 
     @Singleton
     @Provides
-    fun provideCategoryRepository(categoryRemoteDataSource: CategoryRemoteDataSource): CategoryRepository {
-        return CategoryRepository(categoryRemoteDataSource = categoryRemoteDataSource)
+    fun provideCategoryRepository(
+        categoryRemoteDataSource: CategoryRemoteDataSource,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): CategoryRepository {
+        return CategoryRepository(
+            categoryRemoteDataSource = categoryRemoteDataSource,
+            ioDispatcher = ioDispatcher
+        )
     }
 
     @Singleton
     @Provides
-    fun provideUserRepository(userRemoteDataSource: UserRemoteDataSource): UserRepository {
-        return UserRepository(userRemoteDataSource = userRemoteDataSource)
+    fun provideUserRepository(
+        userRemoteDataSource: UserRemoteDataSource,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): UserRepository {
+        return UserRepository(
+            userRemoteDataSource = userRemoteDataSource,
+            ioDispatcher = ioDispatcher
+        )
     }
 
     @Singleton
     @Provides
     fun provideReviewDetailRepository(): ReviewDetailRepository {
         return ReviewDetailRepository()
+    }
+
+    @Singleton
+    @Provides
+    fun provideWorldCupRepository(
+        worldCupRemoteDataSource: WorldCupRemoteDataSource,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): WorldCupRepository {
+        return WorldCupRepository(
+            worldCupRemoteDataSource = worldCupRemoteDataSource,
+            ioDispatcher = ioDispatcher
+        )
     }
 }

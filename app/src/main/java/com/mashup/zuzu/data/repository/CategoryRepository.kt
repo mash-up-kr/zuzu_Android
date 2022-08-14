@@ -2,7 +2,8 @@ package com.mashup.zuzu.data.repository
 
 import com.mashup.zuzu.data.mapper.categoryResponseToModel
 import com.mashup.zuzu.data.model.*
-import com.mashup.zuzu.data.source.remote.CategoryRemoteDataSource
+import com.mashup.zuzu.data.source.remote.category.CategoryRemoteDataSource
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -13,21 +14,10 @@ import javax.inject.Inject
  * @Created by 김현국 2022/07/24
  */
 class CategoryRepository @Inject constructor(
-    private val categoryRemoteDataSource: CategoryRemoteDataSource
+    private val categoryRemoteDataSource: CategoryRemoteDataSource,
+    private val ioDispatcher: CoroutineDispatcher
 ) {
-
-    fun getWineListWithPageAndCategory(category: String, page: Int): Flow<Results<List<Wine>>> {
-        return flow {
-            emit(Results.Loading)
-            emit(
-                Results.Success(
-                    PageWineRepo.getWineListWithPage(pageNumber = page, category = category).wines
-                )
-            )
-        }.flowOn(Dispatchers.IO)
-    }
-
-    fun getCategoryList(): Flow<Results<List<Category>>> {
+    fun getDrinksCategory(): Flow<Results<List<Category>>> {
         return flow {
             emit(Results.Loading)
             val response = categoryRemoteDataSource.getDrinksCategory()
@@ -36,6 +26,6 @@ class CategoryRepository @Inject constructor(
                 val data = categoryResponseToModel(categoryResponse = body)
                 emit(Results.Success(data))
             }
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(ioDispatcher)
     }
 }

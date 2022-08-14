@@ -35,6 +35,8 @@ class CategoryViewModel @Inject constructor(
 
     val page = mutableStateOf(1)
 
+    private val wineMaxPage: MutableStateFlow<Int> = MutableStateFlow(0)
+
     init {
         val argument = savedStateHandle.get<String>("category").orEmpty()
         updateCategory(category = argument)
@@ -52,7 +54,8 @@ class CategoryViewModel @Inject constructor(
             ).collect { result ->
                 when (result) {
                     is Results.Success -> {
-                        _wineList.value = result.value
+                        _wineList.value = result.value.wines
+                        wineMaxPage.value = result.value.total_page
                         _wineListState.value = WineListWithPageAndCategoryUiState.Success(_wineList.value)
                     }
                     is Results.Loading -> {
@@ -68,14 +71,14 @@ class CategoryViewModel @Inject constructor(
         viewModelScope.launch {
             if ((wineListScrollPosition + 1 >= page.value * PAGE_SIZE)) {
                 incrementPage()
-                if (page.value > 1) {
+                if (page.value > 1 && page.value <= wineMaxPage.value) {
                     getWineListWithPageAndCategoryUseCase(
                         category = _category.value,
                         page = page.value
                     ).collect { result ->
                         when (result) {
                             is Results.Success -> {
-                                _wineList.value = _wineList.value + result.value
+                                _wineList.value = _wineList.value + result.value.wines
                                 _wineListState.value = WineListWithPageAndCategoryUiState.Success(_wineList.value)
                             }
                             is Results.Loading -> {

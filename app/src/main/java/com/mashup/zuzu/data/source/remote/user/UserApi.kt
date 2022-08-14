@@ -1,4 +1,4 @@
-package com.mashup.zuzu.data.source.remote
+package com.mashup.zuzu.data.source.remote.user
 
 import com.mashup.zuzu.data.request.UpdateUsersRequest
 import com.mashup.zuzu.data.response.GetUserProfileImagesResponse
@@ -12,7 +12,7 @@ import retrofit2.http.PUT
 /**
  * @Created by 김현국 2022/08/08
  */
-interface UserRemoteDataSource {
+interface UserApi {
 
     // 유저 데이터 가져오기
     @GET("/users")
@@ -26,6 +26,7 @@ interface UserRemoteDataSource {
     @DELETE("/users")
     suspend fun deleteUser(): Response<Nothing>
 
+    // 유저 프로필 이미지 가져오기
     @GET("/users-profile")
     suspend fun getUserProfileImages(): Response<List<GetUserProfileImagesResponse>>
 }

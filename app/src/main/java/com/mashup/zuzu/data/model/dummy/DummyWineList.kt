@@ -14,7 +14,6 @@ val dummyWineList = listOf(
         alc = 0,
         tags = emptyList(),
         description = "",
-        favorite = false,
         category = ""
     ),
     Wine(
@@ -24,7 +23,6 @@ val dummyWineList = listOf(
         alc = 0,
         tags = emptyList(),
         description = "",
-        favorite = false,
         category = ""
     ),
     Wine(
@@ -34,7 +32,6 @@ val dummyWineList = listOf(
         alc = 0,
         tags = emptyList(),
         description = "",
-        favorite = false,
         category = ""
     ),
     Wine(
@@ -44,7 +41,6 @@ val dummyWineList = listOf(
         alc = 0,
         tags = emptyList(),
         description = "",
-        favorite = false,
         category = ""
     ),
     Wine(
@@ -54,7 +50,6 @@ val dummyWineList = listOf(
         alc = 0,
         tags = emptyList(),
         description = "",
-        favorite = false,
         category = ""
     ),
     Wine(
@@ -64,7 +59,6 @@ val dummyWineList = listOf(
         alc = 0,
         tags = emptyList(),
         description = "",
-        favorite = false,
         category = ""
     ),
     Wine(
@@ -74,7 +68,6 @@ val dummyWineList = listOf(
         alc = 0,
         tags = emptyList(),
         description = "",
-        favorite = false,
         category = ""
     ),
     Wine(
@@ -84,7 +77,6 @@ val dummyWineList = listOf(
         alc = 0,
         tags = emptyList(),
         description = "",
-        favorite = false,
         category = ""
     ),
     Wine(
@@ -94,7 +86,6 @@ val dummyWineList = listOf(
         alc = 0,
         tags = emptyList(),
         description = "",
-        favorite = false,
         category = ""
     )
 

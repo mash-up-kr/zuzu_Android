@@ -28,7 +28,22 @@ fun nameToKorean(
         "Wine" -> "와인"
         "Cocktail" -> "칵테일"
         "Traditional" -> "전통주"
-        "Soju" -> "소주"
+        "Soju" ->  "소주"
         else -> "기타"
+    }
+}
+
+fun nameToEnglish(
+    categoryName: String
+): String {
+    return when (categoryName) {
+        "전체" -> "All"
+        "맥주" -> "Beer"
+        "위스키" -> "Whisky"
+        "와인" -> "Wine"
+        "칵테일" -> "Cocktail"
+        "소주" -> "Soju"
+        "전통주" -> "Traditional"
+        else -> "Etc"
     }
 }

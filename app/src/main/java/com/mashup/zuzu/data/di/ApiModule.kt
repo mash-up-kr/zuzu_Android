@@ -1,9 +1,9 @@
 package com.mashup.zuzu.data.di
 
-import com.mashup.zuzu.data.source.remote.CategoryRemoteDataSource
-import com.mashup.zuzu.data.source.remote.UserRemoteDataSource
-import com.mashup.zuzu.data.source.remote.WineRemoteDataSource
-import com.mashup.zuzu.data.source.remote.WorldCupRemoteDataSource
+import com.mashup.zuzu.data.source.remote.worldcup.WorldCupApi
+import com.mashup.zuzu.data.source.remote.wine.WineApi
+import com.mashup.zuzu.data.source.remote.category.CategoryApi
+import com.mashup.zuzu.data.source.remote.user.UserApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,25 +21,25 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideCategoryRemoteDataSource(retrofit: Retrofit): CategoryRemoteDataSource {
-        return retrofit.create(CategoryRemoteDataSource::class.java)
+    fun provideCategoryRemoteApi(retrofit: Retrofit): CategoryApi {
+        return retrofit.create(CategoryApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideUserRemoteDataSource(retrofit: Retrofit): UserRemoteDataSource {
-        return retrofit.create(UserRemoteDataSource::class.java)
+    fun provideUserRemoteApi(retrofit: Retrofit): UserApi {
+        return retrofit.create(UserApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideWineRemoteDataSource(retrofit: Retrofit): WineRemoteDataSource {
-        return retrofit.create(WineRemoteDataSource::class.java)
+    fun provideWineRemoteApi(retrofit: Retrofit): WineApi {
+        return retrofit.create(WineApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideWorldCupRemoteDataSource(retrofit: Retrofit): WorldCupRemoteDataSource {
-        return retrofit.create(WorldCupRemoteDataSource::class.java)
+    fun provideWorldCupRemoteApi(retrofit: Retrofit): WorldCupApi {
+        return retrofit.create(WorldCupApi::class.java)
     }
 }
