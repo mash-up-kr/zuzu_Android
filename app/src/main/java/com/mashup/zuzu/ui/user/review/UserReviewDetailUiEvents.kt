@@ -6,6 +6,7 @@ package com.mashup.zuzu.ui.user.review
 sealed class UserReviewDetailUiEvents {
     object BackButtonClick : UserReviewDetailUiEvents()
 
+    data class EditReviewButtonClick(val wineId: Long) : UserReviewDetailUiEvents()
     data class ShareImageButtonClick(
         val imageCard: Int
     ) : UserReviewDetailUiEvents()
