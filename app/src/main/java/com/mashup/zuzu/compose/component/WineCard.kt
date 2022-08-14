@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.compose.theme.ProofTheme
+import com.mashup.zuzu.data.model.*
 
 /**
  * @Created by 김현국 2022/07/01
@@ -977,28 +977,26 @@ fun WineCellarCard(
     childModifier: Modifier?
 ) {
     if (childModifier != null) {
-        Column {
-            Card() {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f)
-                        .background(color = ProofTheme.color.black)
-                ) {
-                    AsyncImage(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .then(childModifier),
-                        model = wine.imageUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop
-                    )
-                }
+        Column(
+            modifier = modifier
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .aspectRatio(1f)
+                    .background(color = ProofTheme.color.black)
+            ) {
+                AsyncImage(
+                    modifier = Modifier.clip(CircleShape).then(childModifier).background(color = ProofTheme.color.black),
+                    model = wine.imageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
             }
+            Spacer(modifier = Modifier.height(8.dp))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp)
             ) {
                 Box(modifier = Modifier
                     .width(68.29.dp)
@@ -1018,36 +1016,23 @@ fun WineCellarCard(
                 onWineClick(wine)
             }
         ) {
-            Card() {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f)
-                        .background(color = ProofTheme.color.black)
-                ) {
-                    AsyncImage(
-                        modifier = Modifier.clip(CircleShape),
-                        model = wine.imageUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop
-                    )
-                    Box(
-                        modifier = Modifier
-                            .width(22.dp)
-                            .height(22.dp)
-                            .background(color = ProofTheme.color.primary300)
-                    )
-                }
+            Box(
+                modifier = Modifier.width(88.dp).height(88.dp)
+            ) {
+                AsyncImage(
+                    modifier = Modifier.fillMaxSize().clip(CircleShape),
+                    model = wine.imageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
             }
+            Spacer(modifier = Modifier.height(8.dp))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp)
             ) {
-                WineCategoryWithAlc(modifier = Modifier
-                    .width(68.29.dp)
-                    .height(18.dp)
-                    .align(Alignment.Start), wine = wine)
+                WineCategoryWithAlc(modifier = Modifier.width(68.29.dp).height(20.dp).align(Alignment.Start), wine = wine)
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = wine.name,

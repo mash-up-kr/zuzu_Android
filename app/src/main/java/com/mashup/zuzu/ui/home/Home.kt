@@ -25,19 +25,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
 import com.mashup.zuzu.R
+import com.mashup.zuzu.compose.component.*
+import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.data.model.dummy.dummyCategoryList
 import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
-import com.mashup.zuzu.compose.component.*
-import com.mashup.zuzu.compose.theme.ProofTheme
-import timber.log.Timber
+import kotlin.math.roundToInt
 
 /**
  * @Created by 김현국 2022/06/30
@@ -64,6 +66,7 @@ fun HomeRoute(
     )
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -96,23 +99,28 @@ fun HomeScreen(
         )
         when (mainWineState) {
             is MainWineUiState.Success -> {
+                val pagerState = rememberPagerState((mainWineState.mainWines.size / 2).toDouble().roundToInt())
+
                 HorizontalPagerWithOffsetTransition(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
+                        .height(415.dp),
                     onWineBoardClick = { wine ->
                         onClick(HomeUiEvents.WineBoardClick(wine))
                     },
                     wines = mainWineState.mainWines,
+                    pagerState = pagerState,
                     childModifier = null
                 )
             }
             is MainWineUiState.Error -> {}
             is MainWineUiState.Loading -> {
+                val pagerState = rememberPagerState((dummyWineList.size / 2).toDouble().roundToInt())
                 HorizontalPagerWithOffsetTransition(
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                    modifier = Modifier.fillMaxWidth().height(415.dp),
                     onWineBoardClick = {},
                     wines = dummyWineList,
+                    pagerState = pagerState,
                     childModifier = Modifier.placeholder(
                         visible = true,
                         color = ProofTheme.color.gray600,
@@ -204,7 +212,6 @@ fun HomeScreen(
                     )
                 } else {
                     if (blurBitmap != null) {
-                        Timber.tag("blur").d("api <31")
                         RecommendWineCardWithRenderScript(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -318,12 +325,14 @@ fun ZuzuBottomNavigationBar(
                     when (screen) {
                         "home_screen.screen" -> {
                             Icon(
+                                modifier = Modifier.offset(x = 20.dp),
                                 painter = painterResource(id = R.drawable.ic_home_variant),
                                 contentDescription = null
                             )
                         }
                         "user_screen.screen" -> {
                             Icon(
+                                modifier = Modifier.offset(x = (-20).dp),
                                 imageVector = Icons.Filled.AccountCircle,
                                 contentDescription = null
                             )

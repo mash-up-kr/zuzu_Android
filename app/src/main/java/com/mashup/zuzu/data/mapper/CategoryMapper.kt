@@ -28,6 +28,7 @@ fun nameToKorean(
         "Wine" -> "와인"
         "Cocktail" -> "칵테일"
         "Traditional" -> "전통주"
+        "Soju" -> "소주"
         else -> "기타"
     }
 }
