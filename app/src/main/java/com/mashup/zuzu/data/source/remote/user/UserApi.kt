@@ -26,6 +26,7 @@ interface UserApi {
     @DELETE("/users")
     suspend fun deleteUser(): Response<Nothing>
 
+    // 유저 프로필 이미지 가져오기
     @GET("/users-profile")
     suspend fun getUserProfileImages(): Response<List<GetUserProfileImagesResponse>>
 }

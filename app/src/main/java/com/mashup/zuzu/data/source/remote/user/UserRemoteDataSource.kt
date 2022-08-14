@@ -1,20 +1,41 @@
 package com.mashup.zuzu.data.source.remote.user
 
 import com.mashup.zuzu.data.model.*
-import kotlinx.coroutines.flow.Flow
+import com.mashup.zuzu.data.request.UpdateUsersRequest
+import com.mashup.zuzu.data.response.GetUserProfileImagesResponse
+import com.mashup.zuzu.data.response.GetUsersResponse
+import retrofit2.Response
+import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/08/12
  */
-interface UserRemoteDataSource {
+class UserRemoteDataSource @Inject constructor(
+    private val userApi: UserApi
+) {
 
-    fun getUserData(userId: Long): Flow<Results<User>>
+    // 유저 데이터 가져오기
+    suspend fun getUserData(userId: Long): Response<GetUsersResponse> {
+        return userApi.getUser()
+    }
 
-    fun getWineCallerList(userId: Long): Flow<Results<List<Wine>>>
+    // 유저 데이터 업데이트
+    suspend fun updateUser(): Response<Nothing> {
+        return userApi.updateUser(
+            updateUsersReq = UpdateUsersRequest(
+                nickname = "",
+                profile_id = 0
+            )
+        )
+    }
 
-    fun getJoinedWorldCupList(userId: Long): Flow<Results<List<BestWorldCup>>>
+    // 유저 탈퇴
+    suspend fun deleteUser(): Response<Nothing> {
+        return userApi.deleteUser()
+    }
 
-    fun updateUserProfile(): Flow<Results<String>>
-
-    fun leaveMembership(userId: Long): Flow<Results<String>>
+    // 유저 프로필 이미지 가져오기
+    suspend fun getUserProfileImages(): Response<List<GetUserProfileImagesResponse>> {
+        return userApi.getUserProfileImages()
+    }
 }
