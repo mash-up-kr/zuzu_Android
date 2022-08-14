@@ -8,10 +8,9 @@ import com.mashup.zuzu.data.model.Wine
 
 val dummyWineList = listOf(
     Wine(
-        id = 1L,
+        id = 1,
         name = "",
         imageUrl = "",
-        price = 0,
         alc = 0,
         tags = emptyList(),
         description = "",
@@ -19,10 +18,9 @@ val dummyWineList = listOf(
         category = ""
     ),
     Wine(
-        id = 2L,
+        id = 2,
         name = "",
         imageUrl = "",
-        price = 0,
         alc = 0,
         tags = emptyList(),
         description = "",
@@ -30,10 +28,9 @@ val dummyWineList = listOf(
         category = ""
     ),
     Wine(
-        id = 3L,
+        id = 3,
         name = "",
         imageUrl = "",
-        price = 0,
         alc = 0,
         tags = emptyList(),
         description = "",
@@ -41,10 +38,9 @@ val dummyWineList = listOf(
         category = ""
     ),
     Wine(
-        id = 4L,
+        id = 4,
         name = "",
         imageUrl = "",
-        price = 0,
         alc = 0,
         tags = emptyList(),
         description = "",
@@ -52,10 +48,9 @@ val dummyWineList = listOf(
         category = ""
     ),
     Wine(
-        id = 5L,
+        id = 5,
         name = "",
         imageUrl = "",
-        price = 0,
         alc = 0,
         tags = emptyList(),
         description = "",
@@ -63,10 +58,9 @@ val dummyWineList = listOf(
         category = ""
     ),
     Wine(
-        id = 6L,
+        id = 6,
         name = "",
         imageUrl = "",
-        price = 0,
         alc = 0,
         tags = emptyList(),
         description = "",
@@ -74,10 +68,9 @@ val dummyWineList = listOf(
         category = ""
     ),
     Wine(
-        id = 7L,
+        id = 7,
         name = "",
         imageUrl = "",
-        price = 0,
         alc = 0,
         tags = emptyList(),
         description = "",
@@ -85,10 +78,9 @@ val dummyWineList = listOf(
         category = ""
     ),
     Wine(
-        id = 8L,
+        id = 8,
         name = "",
         imageUrl = "",
-        price = 0,
         alc = 0,
         tags = emptyList(),
         description = "",
@@ -96,10 +88,9 @@ val dummyWineList = listOf(
         category = ""
     ),
     Wine(
-        id = 9L,
+        id = 9,
         name = "",
         imageUrl = "",
-        price = 0,
         alc = 0,
         tags = emptyList(),
         description = "",

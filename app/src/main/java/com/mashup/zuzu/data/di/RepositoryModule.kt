@@ -5,6 +5,9 @@ import com.mashup.zuzu.data.repository.HomeRepository
 import com.mashup.zuzu.data.repository.ReviewDetailRepository
 import com.mashup.zuzu.data.repository.ReviewWriteRepository
 import com.mashup.zuzu.data.repository.UserRepository
+import com.mashup.zuzu.data.source.remote.CategoryRemoteDataSource
+import com.mashup.zuzu.data.source.remote.UserRemoteDataSource
+import com.mashup.zuzu.data.source.remote.WineRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,20 +26,20 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideHomeRepository(): HomeRepository {
-        return HomeRepository()
+    fun provideHomeRepository(wineRemoteDataSource: WineRemoteDataSource): HomeRepository {
+        return HomeRepository(wineRemoteDataSource = wineRemoteDataSource)
     }
 
     @Singleton
     @Provides
-    fun provideCategoryRepository(): CategoryRepository {
-        return CategoryRepository()
+    fun provideCategoryRepository(categoryRemoteDataSource: CategoryRemoteDataSource): CategoryRepository {
+        return CategoryRepository(categoryRemoteDataSource = categoryRemoteDataSource)
     }
 
     @Singleton
     @Provides
-    fun provideUserRepository(): UserRepository {
-        return UserRepository()
+    fun provideUserRepository(userRemoteDataSource: UserRemoteDataSource): UserRepository {
+        return UserRepository(userRemoteDataSource = userRemoteDataSource)
     }
 
     @Singleton

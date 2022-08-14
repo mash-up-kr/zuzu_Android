@@ -5,6 +5,9 @@ plugins {
     alias libs.plugins.hilt.plugin
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdk 32
 
@@ -19,6 +22,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField "String", "BASE_URL" , properties['base_url']
     }
 
     buildTypes {
@@ -100,6 +105,10 @@ dependencies {
 
     //retrofit
     implementation(libs.retrofit)
+    implementation(libs.gson.converter)
+
+    //okhttp3
+    implementation(libs.okHttpLog)
 
     //snapper
     implementation(libs.snapper)
