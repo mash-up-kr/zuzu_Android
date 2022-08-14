@@ -110,6 +110,9 @@ dependencies {
     //okhttp3
     implementation(libs.okHttpLog)
 
+    //snapper
+    implementation(libs.snapper)
+
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test)

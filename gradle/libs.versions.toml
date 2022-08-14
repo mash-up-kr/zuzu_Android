@@ -80,6 +80,8 @@ gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", ve
 
 okHttpLog = { group = "com.squareup.okhttp3", name = "logging-interceptor" , version.ref = "okHttp"}
 
+snapper = "dev.chrisbanes.snapper:snapper:0.2.2"
+
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]
 accompanist = ["accompanist-pager", "accompanist-systemuicontroller", "accompanist-navigation-material","accompanist-placeholder-material"]
