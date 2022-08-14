@@ -1,12 +1,11 @@
-package com.mashup.zuzu.data.response
+package com.mashup.zuzu.data.response.model
 
 import com.google.gson.annotations.SerializedName
-import com.mashup.zuzu.data.response.model.Category
 
 /**
- * @Created by 김현국 2022/08/08
+ * @Created by 김현국 2022/08/13
  */
-data class GetDrinksWithIdResponse(
+data class Wine(
 
     @SerializedName("id")
     val id: Long,
@@ -37,5 +36,4 @@ data class GetDrinksWithIdResponse(
 
     @SerializedName("category")
     val category: Category
-
 )
