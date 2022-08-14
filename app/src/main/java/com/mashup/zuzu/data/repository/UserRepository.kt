@@ -1,6 +1,7 @@
 package com.mashup.zuzu.data.repository
 
 import com.mashup.zuzu.data.mapper.userProfileImagesResponseToModel
+import com.mashup.zuzu.data.mapper.userResponseToModel
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.data.source.remote.user.UserRemoteDataSource
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,7 +21,11 @@ class UserRepository @Inject constructor(
     fun getUserData(userId: Long): Flow<Results<User>> {
         return flow {
             emit(Results.Loading)
-            delay(1000)
+            val response = userRemoteDataSource.getUserData(userId = userId)
+            val data = response.body()
+            if (response.isSuccessful && data != null) {
+                emit(Results.Success(userResponseToModel(data)))
+            }
             emit(Results.Success(user))
         }.flowOn(ioDispatcher)
     }

@@ -71,12 +71,12 @@ class WineRepository @Inject constructor(
     fun getDrinksReviewsInUserPage(): Flow<Results<List<Wine>>> {
         return flow {
             emit(Results.Loading)
-//            val response = wineRemoteDataSource.getDrinksReviewsInUserPage()
-//            val body = response.body()
-//            if (response.isSuccessful && body != null) {
-//                val data = wineResponseToModel(getDrinksResponse = body)
-//                emit(Results.Success(data))
-//            }
+            val response = wineRemoteDataSource.getDrinksReviewsInUserPage()
+            val body = response.body()
+            if (response.isSuccessful && body != null) {
+                val data = wineListResponseToModel(getDrinksResponse = body)
+                emit(Results.Success(data))
+            }
             emit(Results.Success(wines))
         }.flowOn(ioDispatcher)
     }

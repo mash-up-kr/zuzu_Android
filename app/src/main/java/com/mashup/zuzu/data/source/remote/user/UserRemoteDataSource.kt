@@ -20,11 +20,14 @@ class UserRemoteDataSource @Inject constructor(
     }
 
     // 유저 데이터 업데이트
-    suspend fun updateUser(): Response<Nothing> {
+    suspend fun updateUser(
+        nickname: String,
+        profileId: Int
+    ): Response<Nothing> {
         return userApi.updateUser(
             updateUsersReq = UpdateUsersRequest(
-                nickname = "",
-                profile_id = 0
+                nickname = nickname,
+                profile_id = profileId
             )
         )
     }
