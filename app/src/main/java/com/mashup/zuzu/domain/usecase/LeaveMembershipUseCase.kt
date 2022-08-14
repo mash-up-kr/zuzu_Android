@@ -14,6 +14,6 @@ class LeaveMembershipUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
     operator fun invoke(userId: Long): Flow<Results<String>> {
-        return repository.leaveMembership(userId = userId)
+        return repository.deleteUser()
     }
 }
