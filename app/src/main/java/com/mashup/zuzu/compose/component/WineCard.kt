@@ -123,7 +123,7 @@ fun WineImageCardForReviewDetail(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
     ) {
         Box() {
             AsyncImage(
@@ -172,6 +172,50 @@ fun WineImageCardForReviewDetail(
     }
 }
 
+@Composable
+fun WineImageCardForReviewWrite(
+    wine: Wine,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(10.dp),
+    ) {
+        Box() {
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
+                model = ImageRequest.Builder(LocalContext.current).data(wine.imageUrl).build(),
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight
+            )
+
+            Box(
+                modifier = Modifier
+                    .background(
+                        brush = Brush.verticalGradient(colors = backgroundGradient),
+                        alpha = 0.6f
+                    )
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.5f)
+                    .align(Alignment.BottomCenter)
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Text(
+                    text = wine.name,
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white,
+                    textAlign = TextAlign.Start
+                )
+            }
+        }
+    }
+}
+
+
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WineBoardCard(
@@ -188,7 +232,7 @@ fun WineBoardCard(
             },
             elevation = 0.8.dp
         ) {
-            Box {
+            Box() {
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -278,6 +322,138 @@ fun WineBoardCard(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun PagerWineCard(
+    modifier: Modifier,
+    wine: Wine,
+    onWineBoardClick: (Wine) -> Unit
+) {
+    val gradient = listOf(ProofTheme.color.gradientPurple, ProofTheme.color.gradientBlack)
+    Column(
+        modifier = modifier.background(brush = Brush.verticalGradient(gradient))
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(modifier = Modifier.clip(RoundedCornerShape(6.dp))) {
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(283.dp),
+                    model = wine.imageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+                Box(
+                    modifier = Modifier
+                        .background(
+                            brush = Brush.verticalGradient(colors = backgroundGradient),
+                            alpha = 0.6f
+                        )
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .align(Alignment.BottomCenter)
+                )
+            }
+
+            WineCategoryWithAlc(
+                modifier = Modifier
+                    .width(78.dp)
+                    .height(20.dp)
+                    .align(Alignment.Start),
+                wine = wine
+            )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(44.dp),
+                text = wine.name,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                style = ProofTheme.typography.buttonL,
+                color = ProofTheme.color.white
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                wine.tags.filterIndexed { index, tag ->
+                    index < 2
+                }.map { tag ->
+                    WineTagCard(
+                        tagDescription = tag,
+                        backgroundColor = ProofTheme.color.gray500,
+                        textColor = ProofTheme.color.gray50
+                    )
+                }
+                if (wine.tags.size >= 3) {
+                    OverflowText(
+                        count = wine.tags.size - 2,
+                        color = ProofTheme.color.gray100
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun WineCellarCard(
+    modifier: Modifier,
+    wine: Wine,
+    onWineClick: (Wine) -> Unit
+) {
+    Column(
+        modifier = modifier.clickable {
+            onWineClick(wine)
+        }
+    ) {
+        Card() {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .aspectRatio(1f)
+                    .background(color = ProofTheme.color.black)
+            ) {
+                AsyncImage(
+                    modifier = Modifier.clip(CircleShape),
+                    model = wine.imageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+                Box(
+                    modifier = Modifier
+                        .width(22.dp)
+                        .height(22.dp)
+                        .background(color = ProofTheme.color.primary300)
+                )
+            }
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+        ) {
+            WineCategoryWithAlc(modifier = Modifier
+                .width(68.29.dp)
+                .height(18.dp)
+                .align(Alignment.Start), wine = wine)
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = wine.name,
+                style = ProofTheme.typography.bodyS600,
+                color = ProofTheme.color.white,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
 @Composable
 fun WineCategoryWithAlc(
     modifier: Modifier,
@@ -357,7 +533,9 @@ fun WineCardInHome(
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
-        WineCategoryWithAlc(modifier = Modifier.width(79.dp).height(19.dp), wine = wine)
+        WineCategoryWithAlc(modifier = Modifier
+            .width(79.dp)
+            .height(19.dp), wine = wine)
         Text(
             modifier = Modifier
                 .fillMaxWidth()
@@ -407,12 +585,16 @@ fun PagerWineCard(
         )
     } else {
         Column(
-            modifier = modifier.background(brush = Brush.verticalGradient(gradient)).clickable {
-                onWineBoardClick(wine)
-            }
+            modifier = modifier
+                .background(brush = Brush.verticalGradient(gradient))
+                .clickable {
+                    onWineBoardClick(wine)
+                }
         ) {
             Column(
-                modifier = Modifier.padding(12.dp).fillMaxSize(),
+                modifier = Modifier
+                    .padding(12.dp)
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Box(modifier = Modifier.clip(RoundedCornerShape(12.dp))) {
@@ -437,7 +619,10 @@ fun PagerWineCard(
                 }
 
                 WineCategoryWithAlc(
-                    modifier = Modifier.width(78.dp).height(20.dp).align(Alignment.Start),
+                    modifier = Modifier
+                        .width(78.dp)
+                        .height(20.dp)
+                        .align(Alignment.Start),
                     wine = wine
                 )
 
@@ -568,7 +753,10 @@ fun RecommendWineCardWithRenderScript(
                             .fillMaxWidth()
                             .weight(0.75f)
                     ) {
-                        WineCategoryWithAlc(wine = recommendWine, modifier = Modifier.width(78.dp).height(20.dp).align(Alignment.Start))
+                        WineCategoryWithAlc(wine = recommendWine, modifier = Modifier
+                            .width(78.dp)
+                            .height(20.dp)
+                            .align(Alignment.Start))
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -671,7 +859,10 @@ fun RecommendWineCard(
                             .fillMaxWidth()
                             .weight(0.75f)
                     ) {
-                        WineCategoryWithAlc(wine = recommendWine, modifier = Modifier.width(78.dp).height(20.dp).align(Alignment.Start))
+                        WineCategoryWithAlc(wine = recommendWine, modifier = Modifier
+                            .width(78.dp)
+                            .height(20.dp)
+                            .align(Alignment.Start))
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -807,9 +998,16 @@ fun WineCellarCard(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Box(modifier = Modifier.width(68.29.dp).height(18.dp).then(childModifier).align(Alignment.Start))
+                Box(modifier = Modifier
+                    .width(68.29.dp)
+                    .height(18.dp)
+                    .then(childModifier)
+                    .align(Alignment.Start))
                 Spacer(modifier = Modifier.height(4.dp))
-                Box(modifier = Modifier.fillMaxWidth().height(40.dp).then(childModifier))
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+                    .then(childModifier))
             }
         }
     } else {
@@ -899,22 +1097,6 @@ fun PreviewWindBoardCard() {
     }
 }
 
-@Preview(
-    showBackground = true,
-    name = "리뷰 디테일 용"
-)
-@Composable
-fun PreviewWindBoardCardForReviewDetail() {
-    ProofTheme() {
-        WineImageCardForReviewDetail(
-            modifier = Modifier
-                .height(260.dp)
-                .width(220.dp),
-            wine = wines[0]
-        )
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewPagerCard() {
@@ -944,5 +1126,30 @@ fun PreviewRecommendWineCard() {
             onRefreshButtonClick = {
             }
         )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "리뷰 디테일 용"
+)
+@Composable
+fun PreviewWindBoardCardForReviewDetail() {
+    ProofTheme() {
+        WineImageCardForReviewDetail(
+            modifier = Modifier
+                .height(260.dp)
+                .width(220.dp),
+            wine = wines[0]
+        )
+    }
+}
+
+
+@Preview
+@Composable
+fun PreviewWineImageCardForReviewWrite() {
+    ProofTheme() {
+        WineImageCardForReviewWrite(wine = wines[0])
     }
 }
