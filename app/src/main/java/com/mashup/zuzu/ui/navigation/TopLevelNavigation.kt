@@ -57,6 +57,7 @@ internal fun NavGraphBuilder.homeGraph(
                             appState.navigateRoute(route = NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/${homeUiEvents.category.title}")
                         }
                         is HomeUiEvents.WineBoardClick -> {
+                            appState.navigateRoute(route = NavigationRoute.ReviewGraph.ReviewDetailScreen.route + "/${homeUiEvents.wine.id}")
                         }
                         is HomeUiEvents.WorldCupItemClick -> {
                         }
@@ -118,6 +119,7 @@ internal fun NavGraphBuilder.categoryGraph(
                 onClick = { categoryUiEvents ->
                     when (categoryUiEvents) {
                         is CategoryUiEvents.WineBoardClick -> {
+                            appState.navigateRoute(route = NavigationRoute.ReviewGraph.ReviewDetailScreen.route + "/${categoryUiEvents.wine.id}")
                         }
                         is CategoryUiEvents.BackButtonClick -> {
                             appState.navigateBackStack()
