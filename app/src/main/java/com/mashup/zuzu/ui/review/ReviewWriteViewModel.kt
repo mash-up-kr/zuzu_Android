@@ -1,11 +1,10 @@
 package com.mashup.zuzu.ui.review
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.model.wines
-import com.mashup.zuzu.data.repository.ReviewWriteRepository
 import com.mashup.zuzu.data.request.ReviewWriteRequest
+import com.mashup.zuzu.domain.usecase.ReviewWriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -13,34 +12,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReviewWriteViewModel @Inject constructor(
-    private val reviewWriteRepository: ReviewWriteRepository
+    private val reviewWriteUseCase: ReviewWriteUseCase,
+    savedStateHandle: SavedStateHandle
+
 ) : ViewModel() {
     private var request = ReviewWriteRequest()
     private val page: MutableStateFlow<Int> = MutableStateFlow(0)
 
-    private val reviewWineState: StateFlow<Wine> =
-        reviewWriteRepository.getReviewWineStream().stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = wines[0]
-        )
+    private val wineId: Long = savedStateHandle[WINE_ID] ?: 0L
+    private val wineImageUrl: String = savedStateHandle[WINE_IMAGE_URL] ?: ""
+    private val wineName: String = savedStateHandle[WINE_NAME] ?: ""
 
     val uiState: StateFlow<ReviewWriteUiState> =
-        combine(
-            reviewWineState,
-            page
-        ) { reviewWineState, page ->
+        page.map {
             ReviewWriteUiState(
-                page = page,
-                wine = reviewWineState
+                page = it,
+                wineImageUrl = wineImageUrl,
+                wineName = wineName
             )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = ReviewWriteUiState(
-                page = 0, wine = wines[0]
+                page = 0,
+                wineImageUrl = "",
+                wineName = ""
             )
         )
+
 
     fun navigatePreviousWritePage() = viewModelScope.launch {
         val currentPage = page.value
@@ -101,7 +100,14 @@ class ReviewWriteViewModel @Inject constructor(
         )
     }
 
-    fun finishReviewWrite() {
+    fun finishReviewWrite() = viewModelScope.launch {
         //request 객체로 Api 요청
+        reviewWriteUseCase(request)
+    }
+
+    companion object {
+        const val WINE_ID = "wineId"
+        const val WINE_IMAGE_URL = "wineImageUrl"
+        const val WINE_NAME = "wineName"
     }
 }

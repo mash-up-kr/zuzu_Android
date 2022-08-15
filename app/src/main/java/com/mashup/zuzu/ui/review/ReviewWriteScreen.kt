@@ -40,9 +40,9 @@ fun ReviewWriteRoute(
         navigateTastePage = viewModel::navigateTastePage,
         navigateSummaryPage = viewModel::navigateSummaryPage,
         navigateSecondarySummaryPage = viewModel::navigateSecondarySummaryPage,
-        navigateReviewShareCard = {
+        navigateReviewShareCard = { place, pairing ->
             navigateReviewShareCard()
-            viewModel.navigateReviewShareCard()
+            viewModel.navigateReviewShareCard(place, pairing)
         }
     )
 }
@@ -56,10 +56,10 @@ fun ReviewWriteScreen(
     navigatePartnerPage: (String) -> Unit,
     navigateGroupPage: (String) -> Unit,
     navigateSoloPage: (String) -> Unit,
-    navigateTastePage: (String) -> Unit,
+    navigateTastePage: (Pair<String, Int?>) -> Unit,
     navigateSummaryPage: (List<Int>) -> Unit,
     navigateSecondarySummaryPage: (String) -> Unit,
-    navigateReviewShareCard: () -> Unit
+    navigateReviewShareCard: (String, List<String>) -> Unit
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -192,7 +192,8 @@ fun ReviewWriteScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 WineImageCardForReviewWrite(
-                    wine = uiState.wine,
+                    wineImageUrl = uiState.wineImageUrl,
+                    wineName = uiState.wineName,
                     modifier = Modifier
                         .fillMaxWidth(0.3f)
                         .height(190.dp)

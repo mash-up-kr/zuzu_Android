@@ -1,6 +1,5 @@
 package com.mashup.zuzu.data.request
 
-//TODO: data Layer로 옮길 것
 data class ReviewWriteRequest(
     val weather: String = "Rainy",
     val time: String = "Noon",

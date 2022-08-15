@@ -174,7 +174,8 @@ fun WineImageCardForReviewDetail(
 
 @Composable
 fun WineImageCardForReviewWrite(
-    wine: Wine,
+    wineImageUrl: String,
+    wineName: String,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -186,7 +187,7 @@ fun WineImageCardForReviewWrite(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(),
-                model = ImageRequest.Builder(LocalContext.current).data(wine.imageUrl).build(),
+                model = ImageRequest.Builder(LocalContext.current).data(wineImageUrl).build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillHeight
             )
@@ -204,7 +205,7 @@ fun WineImageCardForReviewWrite(
                 contentAlignment = Alignment.BottomCenter
             ) {
                 Text(
-                    text = wine.name,
+                    text = wineName,
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white,
                     textAlign = TextAlign.Start
@@ -1163,6 +1164,9 @@ fun PreviewWindBoardCardForReviewDetail() {
 @Composable
 fun PreviewWineImageCardForReviewWrite() {
     ProofTheme() {
-        WineImageCardForReviewWrite(wine = wines[0])
+        WineImageCardForReviewWrite(
+            wineImageUrl = wines[0].imageUrl,
+            wineName = wines[0].name
+        )
     }
 }
