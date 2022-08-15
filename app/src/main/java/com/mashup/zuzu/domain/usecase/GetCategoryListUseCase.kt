@@ -15,6 +15,6 @@ class GetCategoryListUseCase @Inject constructor(
     private val repository: CategoryRepository
 ) {
     operator fun invoke(): Flow<Results<List<Category>>> {
-        return repository.getCategoryList()
+        return repository.getDrinksCategory()
     }
 }

@@ -12,7 +12,6 @@ import com.google.accompanist.pager.*
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.wines
 import kotlin.math.absoluteValue
-import kotlin.math.roundToInt
 
 /**
  * @Created by 김현국 2022/07/26
@@ -58,7 +57,7 @@ fun HorizontalPagerWithOffsetTransitionWithPage(
                         fraction = 1f - pageOffset.coerceIn(0f, 1f)
                     )
                 }
-                .width(262.dp).height(415.dp).clip(RoundedCornerShape(6.dp)),
+                .width(262.dp).fillMaxHeight().clip(RoundedCornerShape(6.dp)),
             wine = wineList[page],
             onWineBoardClick = { onWineBoardClick(it) },
             childModifier = childModifier
@@ -72,9 +71,9 @@ fun HorizontalPagerWithOffsetTransition(
     modifier: Modifier,
     onWineBoardClick: (Wine) -> Unit,
     wines: List<Wine>,
+    pagerState: PagerState,
     childModifier: Modifier?
 ) {
-    val pagerState = rememberPagerState((wines.size / 2).toDouble().roundToInt())
     HorizontalPager(
         count = wines.size,
         state = pagerState,

@@ -33,6 +33,9 @@ import com.mashup.zuzu.ui.user.UserRoute
 import com.mashup.zuzu.ui.user.UserUiEvents
 import com.mashup.zuzu.ui.user.UserViewModel
 import com.mashup.zuzu.ui.user.edit.EditUserProfileRoute
+import com.mashup.zuzu.ui.user.review.UserReviewDetailRoute
+import com.mashup.zuzu.ui.user.review.UserReviewDetailUiEvents
+import com.mashup.zuzu.ui.user.review.UserReviewDetailViewModel
 
 /**
  * @Created by 김현국 2022/07/23
@@ -58,6 +61,7 @@ internal fun NavGraphBuilder.homeGraph(
                             appState.navigateRoute(route = NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/${homeUiEvents.category.title}")
                         }
                         is HomeUiEvents.WineBoardClick -> {
+                            appState.navigateRoute(route = NavigationRoute.ReviewGraph.ReviewDetailScreen.route + "/${homeUiEvents.wine.id}")
                         }
                         is HomeUiEvents.WorldCupItemClick -> {
                         }
@@ -79,7 +83,8 @@ internal fun NavGraphBuilder.homeGraph(
                         is UserUiEvents.WorldCupItemClick -> {
                         }
                         is UserUiEvents.WineItemClick -> {
-                            appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${userUiEvents.wine.id}")
+//                             appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${userUiEvents.wine.id}")
+                            appState.navigateRoute(NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route)
                         }
                         is UserUiEvents.EditButtonClick -> {
                             appState.navigateRoute(NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route)
@@ -119,6 +124,7 @@ internal fun NavGraphBuilder.categoryGraph(
                 onClick = { categoryUiEvents ->
                     when (categoryUiEvents) {
                         is CategoryUiEvents.WineBoardClick -> {
+                            appState.navigateRoute(route = NavigationRoute.ReviewGraph.ReviewDetailScreen.route + "/${categoryUiEvents.wine.id}")
                         }
                         is CategoryUiEvents.BackButtonClick -> {
                             appState.navigateBackStack()
@@ -192,6 +198,23 @@ internal fun NavGraphBuilder.userGraph(
                         }
                         is LeaveUiEvents.LeaveButtonClick -> {
                             viewModel.leaveMembership(userId = 0L)
+                        }
+                    }
+                }
+            )
+        }
+        composable(
+            route = NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route
+        ) {
+            val viewModel: UserReviewDetailViewModel = hiltViewModel()
+            UserReviewDetailRoute(
+                viewModel = viewModel,
+                onClick = { userReviewDetailUiEvents ->
+                    when (userReviewDetailUiEvents) {
+                        is UserReviewDetailUiEvents.ShareImageButtonClick -> {
+                        }
+                        is UserReviewDetailUiEvents.BackButtonClick -> {
+                            appState.navigateBackStack()
                         }
                     }
                 }

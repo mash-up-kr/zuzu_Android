@@ -2,7 +2,7 @@ package com.mashup.zuzu.domain.usecase
 
 import com.mashup.zuzu.data.model.Results
 import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.repository.HomeRepository
+import com.mashup.zuzu.data.repository.WineRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GetRecommendWineUseCase @Inject constructor(
-    private val repository: HomeRepository
+    private val repository: WineRepository
 ) {
     operator fun invoke(): Flow<Results<Wine>> {
         return repository.getRecommendWine()

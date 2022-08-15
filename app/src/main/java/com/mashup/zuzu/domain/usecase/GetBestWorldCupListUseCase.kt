@@ -2,7 +2,8 @@ package com.mashup.zuzu.domain.usecase
 
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.Results
-import com.mashup.zuzu.data.repository.HomeRepository
+import com.mashup.zuzu.data.repository.WineRepository
+import com.mashup.zuzu.data.repository.WorldCupRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class GetBestWorldCupListUseCase @Inject constructor(
-    private val repository: HomeRepository
+    private val repository: WorldCupRepository
 ) {
     operator fun invoke(): Flow<Results<List<BestWorldCup>>> {
         return repository.getBestWorldCupList()
