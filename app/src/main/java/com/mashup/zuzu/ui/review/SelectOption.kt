@@ -59,7 +59,14 @@ fun WeatherSelectOption(
         items(optionContents) { optionContent ->
             Button(
                 onClick = {
-                    navigateDateSelectPage(optionContent.second)
+                    val select = when (optionContent.second) {
+                        "비 오는 날" -> "Rainy"
+                        "눈 오는 날" -> "Snowy"
+                        "맑은 날" -> "Sunny"
+                        else -> "Cloudy"
+                    }
+
+                    navigateDateSelectPage(select)
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -117,7 +124,14 @@ fun DateSelectOption(
         items(optionContents) { optionContent ->
             Button(
                 onClick = {
-                    navigatePartnerPage(optionContent.second)
+                    val select = when (optionContent.second) {
+                        "저녁에" -> "Evening"
+                        "대낮에" -> "Noon"
+                        "새벽에" -> "Midnight"
+                        else -> "Dawn"
+                    }
+
+                    navigatePartnerPage(select)
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -150,7 +164,6 @@ fun PartnerSelectOption(
 ) {
     val optionContents = listOf(
         stringResource(R.string.partner_solo),
-        stringResource(R.string.partner_solo),
         stringResource(R.string.partner_friends),
         stringResource(R.string.partner_couple),
         stringResource(R.string.partner_party)
@@ -167,11 +180,17 @@ fun PartnerSelectOption(
                 onClick = {
                     when (index) {
                         0 -> {
-                            navigateSoloPage(optionContent)
+                            navigateSoloPage("Alone")
                         }
 
                         else -> {
-                            navigateGroupPage(optionContent)
+                            val select = when (optionContent) {
+                                "친구/지인과" -> "Friends"
+                                "연인과" -> "Lover"
+                                else -> "Gather"
+                            }
+
+                            navigateGroupPage(select)
                         }
                     }
                 },
@@ -191,7 +210,7 @@ fun PartnerSelectOption(
 
 @Composable
 fun GroupSelectOption(
-    navigateTastePage: (String) -> Unit,
+    navigateTastePage: (Pair<String, Int>) -> Unit,
     modifier: Modifier
 ) {
     val optionContents = listOf(
@@ -221,6 +240,8 @@ fun GroupSelectOption(
         )
     )
 
+    var selectPair = Pair("", 0)
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -230,7 +251,20 @@ fun GroupSelectOption(
         items(optionContents) { optionContent ->
             Button(
                 onClick = {
-                    navigateTastePage(optionContent.second)
+                    val result = when (optionContent.second) {
+                        "친근한/웃기는" -> "Funny"
+                        "엄격진지한" -> "Serious"
+                        "로맨틱한" -> "Romantic"
+                        "광란의" -> "Crazy"
+                        "우울한" -> "Gloomy"
+                        else -> "Celebratory"
+                    }
+
+                    selectPair = selectPair.copy(first = result)
+
+                    if (selectPair.second != 0) {
+                        navigateTastePage(selectPair)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -269,6 +303,17 @@ fun GroupSelectOption(
         secondOptionContents.forEach { content ->
             Button(
                 onClick = {
+                    val result = when (content) {
+                        "1차" -> 1
+                        "2차" -> 2
+                        else -> 3
+                    }
+
+                    selectPair = selectPair.copy(second = result)
+
+                    if (selectPair.first.isNotEmpty()) {
+                        navigateTastePage(selectPair)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -287,7 +332,7 @@ fun GroupSelectOption(
 
 @Composable
 fun SoloSelectOption(
-    navigateTastePage: (String) -> Unit,
+    navigateTastePage: (Pair<String, Int?>) -> Unit,
     modifier: Modifier
 ) {
     val optionContents = listOf(
@@ -326,7 +371,16 @@ fun SoloSelectOption(
         items(optionContents) { optionContent ->
             Button(
                 onClick = {
-                    navigateTastePage(optionContent.second)
+                    val result = when (optionContent.second) {
+                        "친근한/웃기는" -> "Funny"
+                        "엄격진지한" -> "Serious"
+                        "로맨틱한" -> "Romantic"
+                        "광란의" -> "Crazy"
+                        "우울한" -> "Gloomy"
+                        else -> "Celebratory"
+                    }
+
+                    navigateTastePage(Pair(result, null))
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -529,13 +583,25 @@ fun SummarySelectOption(
         columns = GridCells.Fixed(3),
         verticalArrangement = Arrangement.spacedBy(24.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier.height(360.dp)
+        modifier = modifier.height(360.dp)
     ) {
         items(optionContents) { optionContent ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable {
-                    navigateSecondarySummaryPage("123")
+                    val result = when (optionContent.second) {
+                        "상큼달달한 과일" -> "Fruity"
+                        "묵직한 나무" -> "Woody"
+                        "구수한 누룽지" -> "Noroong"
+                        "부드러운 우유" -> "Creamy"
+                        "쿰쿰한 흙냄새" -> "Earthy"
+                        "향긋한 꽃" -> "Flower"
+                        "씁쓸한 인생" -> "Austere"
+                        "매운 칠리" -> "Chilli"
+                        else -> "Unknown"
+                    }
+
+                    navigateSecondarySummaryPage(result)
                 }
             ) {
                 Image(
@@ -561,7 +627,7 @@ fun SummarySelectOption(
 @Composable
 fun SecondarySummaryPage(
     modifier: Modifier,
-    navigateReviewShareCard: () -> Unit
+    navigateReviewShareCard: (String, List<String>) -> Unit
 ) {
     var content by remember {
         mutableStateOf("")
@@ -673,7 +739,45 @@ fun SecondarySummaryPage(
     }
 
     Button(
-        onClick = { navigateReviewShareCard() },
+        onClick = {
+            val result = mutableListOf<String>()
+
+            isSelectable.forEach { index, isSelectable ->
+                if (isSelectable) {
+                    when (index) {
+                        0 -> {
+                            result.add("Grilled")
+                        }
+                        1 -> {
+                            result.add("Fried")
+                        }
+                        2 -> {
+                            result.add("Cheeze")
+                        }
+                        3 -> {
+                            result.add("Salad")
+                        }
+                        4 -> {
+                            result.add("Fruits")
+                        }
+                        5 -> {
+                            result.add("Soup")
+                        }
+                        6 -> {
+                            result.add("AppetizersSnacks")
+                        }
+                        7 -> {
+                            result.add("Pasta")
+                        }
+                        else -> {
+                            result.add("Pasta")
+                        }
+                    }
+                }
+            }
+
+            navigateReviewShareCard(content, result)
+        },
         colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
         modifier = Modifier
             .fillMaxWidth()

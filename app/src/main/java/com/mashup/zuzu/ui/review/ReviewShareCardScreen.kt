@@ -32,17 +32,6 @@ fun ReviewShareCardScreen() {
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        Box(
-            contentAlignment = Alignment.CenterEnd,
-            modifier = Modifier.fillMaxWidth().padding(24.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_close),
-                contentDescription = "close",
-                tint = Color.Unspecified
-            )
-        }
-
         Text(
             text = "리뷰 등장.",
             style = ProofTheme.typography.headingXL,
