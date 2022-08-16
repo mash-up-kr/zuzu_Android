@@ -1,8 +1,6 @@
 package com.mashup.zuzu.ui.user
 
-import com.mashup.zuzu.data.model.BestWorldCup
-import com.mashup.zuzu.data.model.User
-import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.data.model.*
 
 /**
  * @Created by 김현국 2022/08/01
@@ -31,4 +29,9 @@ sealed class UpdateProfileUiEventState {
     object Error : UpdateProfileUiEventState()
     object Success : UpdateProfileUiEventState()
     object Init : UpdateProfileUiEventState()
+}
+
+sealed class UserProfileImagesUiState {
+    object Loading : UserProfileImagesUiState()
+    data class Success(val userProfileImages: List<UserProfileImages>) : UserProfileImagesUiState()
 }

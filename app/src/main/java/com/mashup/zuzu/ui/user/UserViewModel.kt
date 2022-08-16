@@ -3,10 +3,7 @@ package com.mashup.zuzu.ui.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mashup.zuzu.data.model.Results
-import com.mashup.zuzu.domain.usecase.GetJoinedWorldCupListUseCase
-import com.mashup.zuzu.domain.usecase.GetUserDataUseCase
-import com.mashup.zuzu.domain.usecase.GetWineCallerListUseCase
-import com.mashup.zuzu.domain.usecase.UpdateUserProfileUseCase
+import com.mashup.zuzu.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +19,8 @@ class UserViewModel @Inject constructor(
     private val getUserDataUseCase: GetUserDataUseCase,
     private val getJoinedWorldCupListUseCase: GetJoinedWorldCupListUseCase,
     private val getWineCallerListUseCase: GetWineCallerListUseCase,
-    private val updateUserProfileUseCase: UpdateUserProfileUseCase
+    private val updateUserProfileUseCase: UpdateUserProfileUseCase,
+    private val getUserProfileImagesUseCase: GetUserProfileImagesUseCase
 ) : ViewModel() {
 
     private val _user: MutableStateFlow<UserUiState> = MutableStateFlow(UserUiState.Loading)
@@ -36,6 +34,9 @@ class UserViewModel @Inject constructor(
 
     private val _submit: MutableStateFlow<UpdateProfileUiEventState> = MutableStateFlow(UpdateProfileUiEventState.Init)
     val submit = _submit.asStateFlow()
+
+    private val _userProfileImages: MutableStateFlow<UserProfileImagesUiState> = MutableStateFlow(UserProfileImagesUiState.Loading)
+    val userProfileImages = _userProfileImages.asStateFlow()
 
     init {
         getUserData(userId = 0L) // userId 수정
@@ -104,9 +105,9 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun submitUserProfile(name: String) {
+    fun submitUserProfile(name: String, index: Long) {
         viewModelScope.launch {
-            updateUserProfileUseCase(profileName = name).collect { result ->
+            updateUserProfileUseCase(profileName = name, index = index).collect { result ->
                 when (result) {
                     is Results.Success -> {
                         _submit.value = UpdateProfileUiEventState.Success
@@ -116,6 +117,22 @@ class UserViewModel @Inject constructor(
                     }
                     is Results.Failure -> {
                         _submit.value = UpdateProfileUiEventState.Error
+                    }
+                }
+            }
+        }
+    }
+
+    fun getUserProfileImages() {
+        viewModelScope.launch {
+            getUserProfileImagesUseCase().collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        _userProfileImages.value = UserProfileImagesUiState.Success(result.value)
+                    }
+                    is Results.Loading -> {
+                    }
+                    is Results.Failure -> {
                     }
                 }
             }
