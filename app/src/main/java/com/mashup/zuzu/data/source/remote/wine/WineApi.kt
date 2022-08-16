@@ -19,7 +19,7 @@ interface WineApi {
 
     // 특정 id에 해당하는 주류 디테일 정보 가져오기
     @GET("/drinks/{id}")
-    suspend fun getDrinksWithId(@Path("id") id: Int):
+    suspend fun getDrinksWithId(@Path("id") id: Long):
         Response<GetDrinksWithIdResponse>
 
     // 특정 카테고리에 해당하는 주류 가져오기

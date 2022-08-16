@@ -20,7 +20,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetWorkModule {
 
-    private val URL = BuildConfig.BASE_URL
+    private val URL = "http://server.mashup-proof.click"
 
     @Provides
     @Singleton

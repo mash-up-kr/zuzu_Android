@@ -4,6 +4,7 @@ import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.WineWithCategoryModel
 import com.mashup.zuzu.data.response.GetDrinksResponse
 import com.mashup.zuzu.data.response.GetDrinksWithCategoryResponse
+import com.mashup.zuzu.data.response.GetDrinksWithIdResponse
 import com.mashup.zuzu.data.response.model.Wine as ResponseWine
 /**
  * @Created by 김현국 2022/08/08
@@ -20,7 +21,7 @@ val image_url: String
  * )
  */
 
-fun wineResponseToModel(getDrinksResponse: List<GetDrinksResponse>): List<Wine> {
+fun wineListResponseToModel(getDrinksResponse: List<GetDrinksResponse>): List<Wine> {
     return getDrinksResponse.map { getDrinksResponse ->
         Wine(
             id = getDrinksResponse.id,
@@ -32,6 +33,19 @@ fun wineResponseToModel(getDrinksResponse: List<GetDrinksResponse>): List<Wine> 
             category = nameToKorean(getDrinksResponse.category.name)
         )
     }
+}
+
+fun wineResponseToModel(
+    getDrinksWithIdResponse: GetDrinksWithIdResponse
+): Wine {
+    return Wine(
+        id = getDrinksWithIdResponse.id,
+        name = getDrinksWithIdResponse.name,
+        imageUrl = getDrinksWithIdResponse.image_url,
+        alc = getDrinksWithIdResponse.alc.toInt(),
+        tags = emptyList(),
+        description = getDrinksWithIdResponse.description,
+        category = nameToKorean(getDrinksWithIdResponse.category.name))
 }
 
 fun wineWithCategoryResponseToModel(
