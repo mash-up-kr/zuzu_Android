@@ -13,7 +13,7 @@ import javax.inject.Singleton
 class UpdateUserProfileUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    operator fun invoke(profileName: String): Flow<Results<String>> {
-        return repository.updateUserProfile()
+    operator fun invoke(profileName: String, index: Long): Flow<Results<String>> {
+        return repository.updateUserProfile(userName = profileName, index = index)
     }
 }
