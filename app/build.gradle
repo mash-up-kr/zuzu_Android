@@ -5,9 +5,6 @@ plugins {
     alias libs.plugins.hilt.plugin
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
 android {
     compileSdk 32
 
@@ -22,8 +19,6 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
-
-        buildConfigField "String", "BASE_URL" , properties['base_url']
     }
 
     buildTypes {

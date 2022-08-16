@@ -53,10 +53,11 @@ fun UserReviewDetailScreen(
         }
         UserReviewDetailTopBar(
             modifier = Modifier
-                .padding(start = 33.dp, end = 33.dp,top = 31.5.dp)
+                .padding(start = 33.dp, end = 33.dp, top = 31.5.dp)
                 .fillMaxWidth()
                 .height(52.dp),
-            onBackButtonClick = { onClick(UserReviewDetailUiEvents.BackButtonClick) }
+            onBackButtonClick = { onClick(UserReviewDetailUiEvents.BackButtonClick) },
+            onEditReviewButtonClick = { onClick(UserReviewDetailUiEvents.EditReviewButtonClick(wines[pagerState.currentPage].id)) }
         )
         HorizontalPagerWithOffsetTransition(
             modifier = Modifier
@@ -83,7 +84,8 @@ fun UserReviewDetailScreen(
 @Composable
 fun UserReviewDetailTopBar(
     modifier: Modifier,
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    onEditReviewButtonClick: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -107,7 +109,10 @@ fun UserReviewDetailTopBar(
         Icon(
             modifier = Modifier
                 .width(18.62.dp)
-                .height(18.62.dp),
+                .height(18.62.dp)
+                .clickable {
+                    onEditReviewButtonClick()
+                },
             painter = painterResource(id = R.drawable.ic_edit),
             tint = ProofTheme.color.primary200,
             contentDescription = null
@@ -123,10 +128,10 @@ fun TopBarPreview() {
             modifier = Modifier
                 .padding(start = 33.dp, end = 33.dp)
                 .fillMaxWidth()
-                .height(52.dp)
-        ) {
-//
-        }
+                .height(52.dp),
+            {},
+            {}
+        )
     }
 }
 

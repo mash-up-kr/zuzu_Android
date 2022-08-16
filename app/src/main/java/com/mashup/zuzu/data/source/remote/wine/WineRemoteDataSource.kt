@@ -4,7 +4,6 @@ import com.mashup.zuzu.data.response.GetDrinksResponse
 import com.mashup.zuzu.data.response.GetDrinksWithCategoryResponse
 import com.mashup.zuzu.data.response.GetDrinksWithIdResponse
 import retrofit2.Response
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -19,7 +18,7 @@ class WineRemoteDataSource @Inject constructor(
     }
 
     suspend fun getDrinksWithId(
-        id: Int
+        id: Long
     ): Response<GetDrinksWithIdResponse> {
         return wineApi.getDrinksWithId(id = id)
     }
@@ -30,7 +29,6 @@ class WineRemoteDataSource @Inject constructor(
         page: Int,
         length: Int
     ): Response<GetDrinksWithCategoryResponse> {
-        Timber.tag("threadDataSource").d(Thread.currentThread().toString())
         return wineApi.getDrinksWithCategory(
             name = name,
             page = page,

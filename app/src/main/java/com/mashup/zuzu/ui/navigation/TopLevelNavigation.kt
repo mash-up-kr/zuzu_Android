@@ -215,6 +215,9 @@ internal fun NavGraphBuilder.userGraph(
                         is UserReviewDetailUiEvents.BackButtonClick -> {
                             appState.navigateBackStack()
                         }
+                        is UserReviewDetailUiEvents.EditReviewButtonClick -> {
+                            appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewDetailScreen.route + "/${userReviewDetailUiEvents.wineId}")
+                        }
                     }
                 }
             )
