@@ -98,11 +98,15 @@ class ReviewWriteViewModel @Inject constructor(
             place = place,
             pairing = pairing
         )
+
+        finishReviewWrite()
     }
 
-    fun finishReviewWrite() = viewModelScope.launch {
-        //request 객체로 Api 요청
-        reviewWriteUseCase(request)
+    private fun finishReviewWrite() = viewModelScope.launch {
+        val reviewId = reviewWriteUseCase(
+            wineId = wineId,
+            reviewWriteRequest = request
+        )
     }
 
     companion object {

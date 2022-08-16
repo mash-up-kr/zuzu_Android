@@ -9,7 +9,10 @@ import javax.inject.Singleton
 class ReviewWriteUseCase @Inject constructor(
     private val reviewWriteRepository: ReviewWriteRepository
 ) {
-    suspend operator fun invoke(reviewWriteRequest: ReviewWriteRequest) {
-        reviewWriteRepository.finishReviewWrite(reviewWriteRequest)
+    suspend operator fun invoke(wineId: Long, reviewWriteRequest: ReviewWriteRequest): Long {
+        return reviewWriteRepository.finishReviewWrite(
+            wineId = wineId,
+            reviewWriteRequest = reviewWriteRequest
+        )
     }
 }
