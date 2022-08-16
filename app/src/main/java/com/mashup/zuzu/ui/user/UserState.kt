@@ -7,7 +7,6 @@ import com.mashup.zuzu.data.model.User
  * @Created by 김현국 2022/07/15
  */
 
-val optionList = listOf("술 저장고", "참여한 술드컵")
 
 @Stable
 class UserState constructor(
@@ -24,11 +23,12 @@ class UserState constructor(
 
 @Composable
 fun rememberUserState(
+    initSelectionOption: String,
     initUser: User
 
 ): UserState = remember {
     UserState(
-        initSelectionOption = optionList[0],
+        initSelectionOption = initSelectionOption,
         initUser = initUser
     )
 }
