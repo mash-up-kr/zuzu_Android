@@ -18,9 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.ProofTheme
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
@@ -513,17 +517,20 @@ fun TasteSelectOption(
                             temp[index] = item
                             selectedList = temp
                         }) {
-                            Icon(
-                                painter = painterResource(
-                                    if (state == item) {
-                                        R.drawable.ic_taste_toggle_on
-                                    } else {
-                                        R.drawable.ic_taste_toggle_off
-                                    }
-                                ), contentDescription = "", modifier = Modifier
+                            val painter = if (state == item) {
+                                rememberAsyncImagePainter(ContextCompat.getDrawable(LocalContext.current,
+                                    R.drawable.ic_radio_write_selected))
+                            } else {
+                                rememberAsyncImagePainter(ContextCompat.getDrawable(LocalContext.current,
+                                    R.drawable.ic_radio_write_unselected))
+                            }
+
+                            Image(
+                                painter,
+                                contentDescription = "",
+                                modifier = Modifier
                                     .width(radius.dp)
-                                    .height(radius.dp),
-                                tint = Color.Unspecified
+                                    .height(radius.dp)
                             )
                         }
                     }
