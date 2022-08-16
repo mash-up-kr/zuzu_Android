@@ -47,9 +47,10 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
+accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
-accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist"}
+accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
@@ -78,13 +79,13 @@ renderscript = { group = "com.github.android", name = "renderscript-intrinsics-r
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 
-okHttpLog = { group = "com.squareup.okhttp3", name = "logging-interceptor" , version.ref = "okHttp"}
+okHttpLog = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okHttp" }
 
 snapper = "dev.chrisbanes.snapper:snapper:0.2.2"
 
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]
-accompanist = ["accompanist-pager", "accompanist-systemuicontroller", "accompanist-navigation-material","accompanist-placeholder-material"]
+accompanist = ["accompanist-pager", "accompanist-pager-indicators", "accompanist-systemuicontroller", "accompanist-navigation-material", "accompanist-placeholder-material"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradleplugin" }
