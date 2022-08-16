@@ -229,6 +229,11 @@ internal fun NavGraphBuilder.userGraph(
                 appState.navController.getBackStackEntry(NavigationRoute.UserScreenGraph.UserScreen.route)
             }
             val viewModel: UserViewModel = hiltViewModel(parentEntry) // sharedViewModel
+
+            LaunchedEffect(key1 = true) {
+                viewModel.getUserProfileImages()
+            }
+
             EditUserProfileRoute(
                 viewModel = viewModel,
                 onSubmitState = { updateProfileUiEventState ->

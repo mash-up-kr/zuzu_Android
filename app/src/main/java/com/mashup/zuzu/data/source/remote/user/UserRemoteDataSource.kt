@@ -22,8 +22,8 @@ class UserRemoteDataSource @Inject constructor(
     // 유저 데이터 업데이트
     suspend fun updateUser(
         nickname: String,
-        profileId: Int
-    ): Response<Nothing> {
+        profileId: Long
+    ): Response<Unit> {
         return userApi.updateUser(
             updateUsersReq = UpdateUsersRequest(
                 nickname = nickname,
@@ -33,7 +33,7 @@ class UserRemoteDataSource @Inject constructor(
     }
 
     // 유저 탈퇴
-    suspend fun deleteUser(): Response<Nothing> {
+    suspend fun deleteUser(): Response<Unit> {
         return userApi.deleteUser()
     }
 

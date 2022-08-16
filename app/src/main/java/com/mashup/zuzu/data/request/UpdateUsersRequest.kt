@@ -5,5 +5,5 @@ package com.mashup.zuzu.data.request
  */
 data class UpdateUsersRequest(
     val nickname: String,
-    val profile_id: Int
+    val profile_id: Long
 )

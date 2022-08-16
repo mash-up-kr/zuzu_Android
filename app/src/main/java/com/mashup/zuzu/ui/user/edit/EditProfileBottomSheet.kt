@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.compose.component.ProfileImageItems
-import com.mashup.zuzu.compose.component.profileImages
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.ui.user.UpdateProfileUiEventState
+import com.mashup.zuzu.ui.user.UserProfileImagesUiState
 import com.mashup.zuzu.ui.user.UserUiState
 import com.mashup.zuzu.ui.user.UserViewModel
 
@@ -29,6 +29,7 @@ fun EditUserProfileRoute(
 ) {
     val uiState by viewModel.user.collectAsState() // userData
     val submitState by viewModel.submit.collectAsState()
+    val userProfileImagesUiState by viewModel.userProfileImages.collectAsState()
 
     var userName = when (uiState) {
         is UserUiState.Success -> {
@@ -50,12 +51,10 @@ fun EditUserProfileRoute(
             .wrapContentHeight().navigationBarsPadding()
             .background(color = ProofTheme.color.gray600),
         userName = userName,
-        userNameChange = {
-            userName = it
+        onSubmitButtonClick = { userName, index ->
+            viewModel.submitUserProfile(name = userName, index = index)
         },
-        onSubmitButtonClick = {
-            viewModel.submitUserProfile(userName)
-        }
+        userProfileImagesUiState = userProfileImagesUiState
     )
 }
 
@@ -63,9 +62,10 @@ fun EditUserProfileRoute(
 fun EditProfileBottomSheet(
     modifier: Modifier,
     userName: String,
-    userNameChange: (String) -> Unit,
-    onSubmitButtonClick: () -> Unit
+    onSubmitButtonClick: (String, Long) -> Unit,
+    userProfileImagesUiState: UserProfileImagesUiState
 ) {
+    val editProfileBottomSheetState = rememberEditProffileBottomSheetState(index = 0, userName = userName)
 
     Column(modifier = modifier) {
         Text(
@@ -78,12 +78,20 @@ fun EditProfileBottomSheet(
                 .fillMaxWidth()
                 .height(24.dp)
         )
-        ProfileImageItems(
-            modifier = Modifier.fillMaxWidth(),
-            profileImages = profileImages,
-            onProfileImageClick = {},
-            selectedProfileImage = profileImages[0]
-        )
+        when (userProfileImagesUiState) {
+            is UserProfileImagesUiState.Success -> {
+                ProfileImageItems(
+                    modifier = Modifier.fillMaxWidth(),
+                    profileImages = userProfileImagesUiState.userProfileImages,
+                    onProfileImageClick = { index ->
+                        editProfileBottomSheetState.updateSelectedImageIndex(index)
+                    },
+                    selectedProfileImage = userProfileImagesUiState.userProfileImages[editProfileBottomSheetState.selectedImagesIndex]
+                )
+            }
+            is UserProfileImagesUiState.Loading -> {
+            }
+        }
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -103,9 +111,11 @@ fun EditProfileBottomSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = ProofTheme.color.gray600, shape = RoundedCornerShape(12.dp)),
-            value = userName,
-            onValueChange = userNameChange,
-            textStyle = ProofTheme.typography.bodyM.copy(color = ProofTheme.color.white),
+            value = editProfileBottomSheetState.currentUserName,
+            onValueChange = { name ->
+                editProfileBottomSheetState.updateCurrentUserName(name)
+            },
+            textStyle = ProofTheme.typography.bodyM.copy(color = ProofTheme.color.white)
 
         )
         Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
@@ -115,8 +125,11 @@ fun EditProfileBottomSheet(
                 .height(52.dp)
                 .background(color = ProofTheme.color.primary300)
                 .clickable {
-                    onSubmitButtonClick()
-                },
+                    onSubmitButtonClick(
+                        editProfileBottomSheetState.currentUserName,
+                        (userProfileImagesUiState as UserProfileImagesUiState.Success).userProfileImages[editProfileBottomSheetState.selectedImagesIndex].id
+                    )
+                }
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),

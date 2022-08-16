@@ -1,7 +1,7 @@
 package com.mashup.zuzu.data.mapper
 
 import com.mashup.zuzu.data.model.User
-import com.mashup.zuzu.data.model.UserProfileImagesModel
+import com.mashup.zuzu.data.model.UserProfileImages
 import com.mashup.zuzu.data.response.GetUserProfileImagesResponse
 import com.mashup.zuzu.data.response.GetUsersResponse
 
@@ -11,9 +11,9 @@ import com.mashup.zuzu.data.response.GetUsersResponse
 
 fun userProfileImagesResponseToModel(
     getUserProfileImagesResponse: List<GetUserProfileImagesResponse>
-): List<UserProfileImagesModel> {
+): List<UserProfileImages> {
     return getUserProfileImagesResponse.map { response ->
-        UserProfileImagesModel(
+        UserProfileImages(
             id = response.id,
             image_url = response.image
         )
