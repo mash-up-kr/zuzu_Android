@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -117,7 +118,9 @@ fun HomeScreen(
             is MainWineUiState.Loading -> {
                 val pagerState = rememberPagerState((dummyWineList.size / 2).toDouble().roundToInt())
                 HorizontalPagerWithOffsetTransition(
-                    modifier = Modifier.fillMaxWidth().height(415.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(415.dp),
                     onWineBoardClick = {},
                     wines = dummyWineList,
                     pagerState = pagerState,
@@ -144,7 +147,7 @@ fun HomeScreen(
         )
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 32.dp),
-            boldTitle = "무엇을 마실지 고민이라면?"
+            boldTitle = stringResource(id = R.string.home_sub_title)
         )
         when (categoryListState) {
             is CategoryListUiState.Success -> {
@@ -194,7 +197,7 @@ fun HomeScreen(
         )
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 40.dp),
-            boldTitle = "오늘의 추천 술"
+            boldTitle = stringResource(id = R.string.home_today_recommend_wine)
         )
         when (recommendState) {
             is RecommendWineUiState.Success -> {
@@ -229,7 +232,10 @@ fun HomeScreen(
             }
             is RecommendWineUiState.Loading -> {
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(367.dp).padding(start = 24.dp, end = 24.dp, top = 19.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(367.dp)
+                        .padding(start = 24.dp, end = 24.dp, top = 19.dp)
                         .clip(shape = RoundedCornerShape(16.dp))
                         .placeholder(
                             visible = true,
@@ -267,7 +273,7 @@ fun HomeScreen(
         )
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 32.dp),
-            boldTitle = "지금 가장 인기있는 술드컵"
+            boldTitle = stringResource(id = R.string.home_today_best_worldcup)
         )
         when (bestWorldCupState) {
             is BestWorldCupUiState.Loading -> {
@@ -373,7 +379,7 @@ fun HomeMainTitle(
                 fontWeight = FontWeight.Bold
             ),
             color = ProofTheme.color.white,
-            text = "요즘 사람들은 \n어떤 술을 마실까?",
+            text = stringResource(id = R.string.home_top_title),
             textAlign = TextAlign.Center
         )
     }

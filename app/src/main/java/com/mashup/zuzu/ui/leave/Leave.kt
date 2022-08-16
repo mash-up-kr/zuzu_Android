@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,7 +66,7 @@ fun LeaveScreen(
             Spacer(modifier = Modifier.fillMaxWidth().height(40.dp))
             Button(
                 modifier = Modifier.padding(start = 24.dp, end = 24.dp).fillMaxWidth().height(52.dp),
-                text = "탈퇴하기",
+                text = stringResource(id = R.string.setting_remove_membership),
                 backgroundColor = ProofTheme.color.primary300,
                 textColor = ProofTheme.color.white,
                 onButtonClick = { onClick(LeaveUiEvents.LeaveButtonClick) }
@@ -79,7 +80,7 @@ fun LeaveScreen(
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
-                    text = "계속 사용할래요",
+                    text = stringResource(id = R.string.leave_keep_using),
                     style = ProofTheme.typography.buttonL,
                     color = ProofTheme.color.primary100
                 )
@@ -107,7 +108,7 @@ fun LeaveTopBar(
         )
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = "탈퇴하기",
+            text = stringResource(id = R.string.setting_remove_membership),
             style = ProofTheme.typography.headingXS,
             color = ProofTheme.color.white
         )
@@ -123,13 +124,13 @@ fun LeaveTitle(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "정말로 탈퇴하시겠어요?",
+            text = stringResource(id = R.string.leave_bigtitle),
             style = ProofTheme.typography.headingXL,
             color = ProofTheme.color.white
         )
         Spacer(modifier = Modifier.fillMaxWidth().height(12.dp))
         Text(
-            text = "회원님의 정보, 리뷰 등 기록이 전부 삭제되며\n다시는 되돌릴 수 없어요.",
+            text = stringResource(id = R.string.leave_subtitle),
             style = ProofTheme.typography.bodyL,
             color = ProofTheme.color.gray200,
             textAlign = TextAlign.Center
