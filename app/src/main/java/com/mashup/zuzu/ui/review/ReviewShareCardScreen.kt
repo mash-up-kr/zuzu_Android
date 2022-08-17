@@ -1,31 +1,39 @@
 package com.mashup.zuzu.ui.review
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mashup.zuzu.R
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.mashup.zuzu.compose.theme.ProofTheme
+import com.mashup.zuzu.data.model.ReviewShareCard
 
 @Composable
 fun ReviewShareCardRoute(
     viewModel: ReviewShareCardViewModel
 ) {
-    ReviewShareCardScreen()
+    val reviewShareCard by viewModel.reviewShareCardState.collectAsState()
+
+    ReviewShareCardScreen(reviewShareCard)
 }
 
 @Composable
-fun ReviewShareCardScreen() {
+fun ReviewShareCardScreen(
+    reviewShareCard: ReviewShareCard
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -94,6 +102,58 @@ fun ReviewShareCardScreen() {
                 )
             }
 
+        }
+    }
+}
+
+@Composable
+fun ReviewCard(reviewShareCard: ReviewShareCard) {
+    Box() {
+        Box() {
+            AsyncImage(
+                modifier = Modifier
+                    .width(270.dp)
+                    .height(330.dp),
+                model = ImageRequest.Builder(LocalContext.current).data(reviewShareCard.wine.imageUrl).build(),
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight
+            )
+
+            Text(
+                text = reviewShareCard.wine.id.toString(),
+                style = ProofTheme.typography.buttonS,
+                color = ProofTheme.color.gray500,
+                modifier = Modifier.background(color = ProofTheme.color.primary300)
+            )
+
+            Text(
+                text = reviewShareCard.wine.id.toString(),
+                style = ProofTheme.typography.buttonS,
+                color = ProofTheme.color.gray500,
+                modifier = Modifier.background(color = ProofTheme.color.primary300)
+            )
+        }
+
+        Column() {
+            /**
+             * Drink Description
+             */
+            Text(
+                text = reviewShareCard.wine.name,
+                color = ProofTheme.color.white,
+                st
+
+            )
+
+            /**
+             * Drink Info
+             */
+            Text(text = )
+
+            /**
+             * Review Info
+             */
+            Text(text = )
         }
     }
 }
