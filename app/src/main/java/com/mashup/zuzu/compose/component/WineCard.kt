@@ -507,9 +507,7 @@ fun WineCardInHome(
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(4.dp),
-            backgroundColor = Color.Cyan,
-            elevation = 0.8.dp
+            shape = RoundedCornerShape(4.dp)
         ) {
             Box() {
                 AsyncImage(
@@ -534,41 +532,47 @@ fun WineCardInHome(
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
+
         WineCategoryWithAlc(
             modifier = Modifier
                 .width(79.dp)
                 .height(19.dp),
             wine = wine
         )
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            text = wine.name,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            style = ProofTheme.typography.headingS,
-            color = ProofTheme.color.white
-        )
-        Row(
-            modifier = Modifier.padding(top = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            wine.tags.filterIndexed { index, tag ->
-                index < 2
-            }.map { tag ->
-                WineTagCard(
-                    tagDescription = tag,
-                    backgroundColor = ProofTheme.color.gray500,
-                    textColor = ProofTheme.color.gray50
-                )
-            }
-            if (wine.tags.size >= 3) {
-                OverflowText(
-                    count = wine.tags.size - 2,
-                    color = ProofTheme.color.gray100
-                )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                text = wine.name,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                style = ProofTheme.typography.headingS,
+                color = ProofTheme.color.white
+            )
+            Row(
+                modifier = Modifier.padding(top = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                wine.tags.filterIndexed { index, tag ->
+                    index < 2
+                }.map { tag ->
+                    WineTagCard(
+                        tagDescription = tag,
+                        backgroundColor = ProofTheme.color.gray500,
+                        textColor = ProofTheme.color.gray50
+                    )
+                }
+                if (wine.tags.size >= 3) {
+                    OverflowText(
+                        count = wine.tags.size - 2,
+                        color = ProofTheme.color.gray100
+                    )
+                }
             }
         }
     }
