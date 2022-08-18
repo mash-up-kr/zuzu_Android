@@ -996,8 +996,9 @@ fun WineCellarCard(
         ) {
             Box(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .weight(1f)
-                    .aspectRatio(1f)
+                    .align(Alignment.CenterHorizontally)
                     .background(color = ProofTheme.color.black)
             ) {
                 AsyncImage(
@@ -1034,20 +1035,19 @@ fun WineCellarCard(
                 onWineClick(wine)
             }
         ) {
-            Box(
-                modifier = Modifier.width(88.dp).height(88.dp)
-            ) {
+            Row {
                 AsyncImage(
-                    modifier = Modifier.fillMaxSize().clip(CircleShape),
+                    modifier = Modifier.fillMaxWidth().weight(1f).aspectRatio(1f).clip(CircleShape)
+                        .align(Alignment.Top),
                     model = wine.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
             }
+
             Spacer(modifier = Modifier.height(8.dp))
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 WineCategoryWithAlc(modifier = Modifier.width(68.29.dp).height(20.dp).align(Alignment.Start), wine = wine)
                 Spacer(modifier = Modifier.height(4.dp))

@@ -83,7 +83,7 @@ fun HorizontalPagerWithOffsetTransition(
         count = wines.size,
         state = pagerState,
         // Add 32.dp horizontal padding to 'center' the pages
-        contentPadding = PaddingValues(horizontal = 50.dp), // 양옆 패팅
+        contentPadding = PaddingValues(horizontal = 60.dp), // 양옆 패팅
         modifier = modifier
     ) { page ->
 

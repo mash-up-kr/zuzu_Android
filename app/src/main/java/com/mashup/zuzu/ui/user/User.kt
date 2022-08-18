@@ -305,7 +305,7 @@ fun WineCaller(
 
     Box {
         LazyVerticalGrid(
-            modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 36.dp),
+            modifier = modifier.padding(start = 24.dp, end = 24.dp, top = 36.dp), // .padding(start = 20.dp, end = 20.dp, top = 36.dp),
             columns = GridCells.Fixed(3),
             state = scrollState,
             verticalArrangement = Arrangement.spacedBy(25.dp),
@@ -318,7 +318,7 @@ fun WineCaller(
                 }
             ) { wine ->
                 WineCellarCard(
-                    modifier = Modifier.width(88.dp).height(160.dp),
+                    modifier = Modifier.height(160.dp),
                     wine = wine,
                     onWineClick = onWineClick,
                     childModifier = childModifier
