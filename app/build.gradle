@@ -108,6 +108,9 @@ dependencies {
     //snapper
     implementation(libs.snapper)
 
+    //capturable
+    implementation(libs.capturable)
+
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test)
