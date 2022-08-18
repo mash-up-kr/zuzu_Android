@@ -25,6 +25,7 @@ renderscript = "b6363490c3"
 paging = "1.0.0-alpha15"
 retrofit = "2.9.0"
 okHttp = "4.10.0"
+capture = "1.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
@@ -82,6 +83,8 @@ gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", ve
 okHttpLog = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okHttp" }
 
 snapper = "dev.chrisbanes.snapper:snapper:0.2.2"
+
+capturable = "dev.shreyaspatil:capturable:1.0.3"
 
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]
