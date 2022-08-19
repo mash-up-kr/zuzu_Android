@@ -32,6 +32,9 @@ class HomeViewModel @Inject constructor(
     private val getCategoryListUseCase: GetCategoryListUseCase
 ) : ViewModel() {
 
+    private val _categoryListState = MutableStateFlow<List<Category>>(emptyList())
+    val categoryListState = _categoryListState.asStateFlow()
+
     private val _mainWineList: MutableStateFlow<MainWineUiState> =
         MutableStateFlow(MainWineUiState.Loading)
     val mainWineList = _mainWineList.asStateFlow()
@@ -122,6 +125,7 @@ class HomeViewModel @Inject constructor(
             getCategoryListUseCase().collect { result ->
                 when (result) {
                     is Results.Success -> {
+                        _categoryListState.value = result.value
                         _categoryList.value = CategoryListUiState.Success(result.value)
                     }
                     is Results.Loading -> {
