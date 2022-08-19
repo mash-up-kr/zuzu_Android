@@ -20,7 +20,7 @@ object WebAPIController {
         functionName: String,
         options: JsonObject?,
         transactionId: String,
-        preference: WebPreference
+        preference: ProofPreference
     ) {
         val requestData = JsonObject()
         val extra = JsonObject()

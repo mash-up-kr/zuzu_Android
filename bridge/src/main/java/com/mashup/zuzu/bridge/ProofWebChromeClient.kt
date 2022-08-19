@@ -5,7 +5,7 @@ import android.webkit.ConsoleMessage
 import android.webkit.PermissionRequest
 import android.webkit.WebChromeClient
 
-class ZuzuWebChromeClient : WebChromeClient() {
+class ProofWebChromeClient : WebChromeClient() {
     private val TAG = javaClass.simpleName
 
     /** JavaScript Console Message 가 전달됨 **/

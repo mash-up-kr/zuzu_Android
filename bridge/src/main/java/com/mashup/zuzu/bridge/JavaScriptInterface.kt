@@ -7,8 +7,8 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 
 class JavaScriptInterface(
-    private val webView: ZuzuWebView,
-    private val preference: WebPreference
+    private val webView: ProofWebView,
+    private val preference: ProofPreference
 ) : JavaScriptInterfaceCallback {
 
     private val TAG = javaClass.simpleName
