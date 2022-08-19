@@ -35,15 +35,23 @@ import com.mashup.zuzu.data.model.Wine
 @Composable
 fun CategoryRoute(
     viewModel: CategoryViewModel,
-    index: Int,
     categoryList: List<Category>,
+    onLoadData: () -> Unit,
     onClick: (CategoryUiEvents) -> Unit
 ) {
     val wineListState by viewModel.wineListState.collectAsState()
     val page by viewModel.page
     val pageSize = viewModel.PAGE_SIZE
+    val category by viewModel.category.collectAsState()
+
+    val initLoadData by rememberUpdatedState(onLoadData)
+
+    LaunchedEffect(true) {
+        initLoadData()
+    }
+
     CategoryScreen(
-        index = index,
+        index = categoryList.indexOfFirst { it.title == category },
         categoryList = categoryList,
         wineListState = wineListState,
         onClick = onClick,
