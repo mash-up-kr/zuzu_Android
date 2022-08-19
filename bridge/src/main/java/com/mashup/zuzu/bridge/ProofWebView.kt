@@ -8,7 +8,7 @@ import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView
 
-class ZuzuWebView : WebView {
+class ProofWebView : WebView {
 
     constructor(context: Context) : super(context) {
         init()
@@ -35,7 +35,7 @@ class ZuzuWebView : WebView {
         super.destroy()
     }
 
-    fun setJavaScriptInterface(preference: WebPreference) {
+    fun setJavaScriptInterface(preference: ProofPreference) {
         val javaScriptInterface = JavaScriptInterface(this, preference)
         addJavascriptInterface(javaScriptInterface, "proof_native_api")
         WebAPIController.jsInterface = javaScriptInterface
@@ -45,8 +45,8 @@ class ZuzuWebView : WebView {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun init() {
-        webChromeClient = ZuzuWebChromeClient()
-        webViewClient = ZuzuWebViewClient()
+        webChromeClient = ProofWebChromeClient()
+        webViewClient = ProofWebViewClient()
         setWebContentsDebuggingEnabled(true)
         applySettings()
         setBackgroundColor(Color.argb(1, 0, 0, 0))

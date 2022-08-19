@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         tools:context="com.mashup.zuzu.ui.worldcup.WorldcupActivity">
 
-        <com.mashup.zuzu.bridge.ZuzuWebView
+        <com.mashup.zuzu.bridge.ProofWebView
             android:id="@+id/worldcupWebView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

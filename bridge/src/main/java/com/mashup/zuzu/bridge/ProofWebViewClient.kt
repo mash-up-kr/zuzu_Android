@@ -6,7 +6,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 
-class ZuzuWebViewClient : WebViewClient() {
+class ProofWebViewClient : WebViewClient() {
 
     sealed class Action {
         object RemoveLoadingView : Action()
