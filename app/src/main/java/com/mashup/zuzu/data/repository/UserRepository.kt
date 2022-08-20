@@ -1,8 +1,10 @@
 package com.mashup.zuzu.data.repository
 
+import com.mashup.zuzu.data.mapper.reviewsDrinksResponseToModel
 import com.mashup.zuzu.data.mapper.userProfileImagesResponseToModel
 import com.mashup.zuzu.data.mapper.userResponseToModel
 import com.mashup.zuzu.data.model.*
+import com.mashup.zuzu.data.model.dummy.DummyRepo
 import com.mashup.zuzu.data.source.remote.user.UserRemoteDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -62,10 +64,18 @@ class UserRepository constructor(
         }.flowOn(ioDispatcher)
     }
 
-//    fun getReviewsDrinksWithPage(drinkId : Long, page: Int): Flow<Results<>>{
-//        return flow{
-//            emit(Results.Loading)
-//
-//        }
-//    }
+    fun getReviewsDrinks(drinkId: Long): Flow<Results<ReviewShareCards>> {
+        return flow {
+            emit(Results.Loading)
+            val response = userRemoteDataSource.getReviewsDrinks(
+                drinkId = drinkId
+            )
+            val body = response.body()
+            if (response.isSuccessful && body != null) {
+                val data = reviewsDrinksResponseToModel(body)
+                emit(Results.Success(data))
+            }
+            emit(Results.Success(DummyRepo.getReview(wineId = drinkId)))
+        }.flowOn(ioDispatcher)
+    }
 }

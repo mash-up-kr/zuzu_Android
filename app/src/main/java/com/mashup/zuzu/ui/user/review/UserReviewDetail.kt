@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -18,6 +19,7 @@ import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.Button
 import com.mashup.zuzu.compose.component.HorizontalPagerWithCapture
 import com.mashup.zuzu.compose.theme.ProofTheme
+import com.mashup.zuzu.data.model.ReviewShareCards
 import com.mashup.zuzu.data.model.wines
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
 
@@ -30,15 +32,24 @@ fun UserReviewDetailRoute(
     viewModel: UserReviewDetailViewModel,
     onClick: (UserReviewDetailUiEvents) -> Unit
 ) {
-    UserReviewDetailScreen(
-        onClick = onClick
-    )
+    val userReviewState = viewModel.userReviewList.collectAsState()
+    when (userReviewState.value) {
+        is UserReviewsDetailUiState.Loading -> {
+        }
+        is UserReviewsDetailUiState.Success -> {
+            UserReviewDetailScreen(
+                onClick = onClick,
+                reviews = (userReviewState.value as UserReviewsDetailUiState.Success).reviews
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun UserReviewDetailScreen(
     modifier: Modifier = Modifier.fillMaxSize(),
+    reviews: ReviewShareCards,
     onClick: (UserReviewDetailUiEvents) -> Unit
 ) {
     val pagerState = rememberPagerState()
@@ -59,29 +70,32 @@ fun UserReviewDetailScreen(
         HorizontalPagerWithCapture(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(445.dp),
-            onWineBoardClick = {},
-            wines = wines,
+                .height(530.dp),
+            reviews = reviews,
             pagerState = pagerState,
             childModifier = null,
             captureController = captureController
         )
         HorizontalPagerIndicator(
             pagerState = pagerState,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
                 .padding(16.dp),
             activeColor = ProofTheme.color.gray50,
             inactiveColor = ProofTheme.color.gray400
         )
         Button(
             modifier = Modifier
-                .padding(start = 33.dp, end = 33.dp, bottom = 84.dp)
+                .padding(start = 24.dp, end = 24.dp)
                 .fillMaxWidth()
                 .height(52.dp),
             text = "이미지로 공유하기",
             backgroundColor = ProofTheme.color.primary300,
             textColor = ProofTheme.color.white,
             onButtonClick = { captureController.capture(Bitmap.Config.ARGB_8888) }
+        )
+        Spacer(
+            modifier = Modifier.height(16.dp)
         )
     }
 }
@@ -137,16 +151,5 @@ fun TopBarPreview() {
             {},
             {}
         )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewUserReviewDetailScreen() {
-    ProofTheme {
-        UserReviewDetailScreen(onClick = {
-            when (it) {
-            }
-        })
     }
 }

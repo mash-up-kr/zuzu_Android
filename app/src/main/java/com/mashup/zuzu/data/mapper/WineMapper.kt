@@ -2,6 +2,7 @@ package com.mashup.zuzu.data.mapper
 
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.WineWithCategoryModel
+import com.mashup.zuzu.data.response.Drink
 import com.mashup.zuzu.data.response.GetDrinksResponse
 import com.mashup.zuzu.data.response.GetDrinksWithCategoryResponse
 import com.mashup.zuzu.data.response.GetDrinksWithIdResponse
@@ -45,7 +46,8 @@ fun wineResponseToModel(
         alc = getDrinksWithIdResponse.alc.toInt(),
         tags = emptyList(),
         description = getDrinksWithIdResponse.description,
-        category = nameToKorean(getDrinksWithIdResponse.category.name))
+        category = nameToKorean(getDrinksWithIdResponse.category.name)
+    )
 }
 
 fun wineWithCategoryResponseToModel(
@@ -69,6 +71,20 @@ fun wineResponseModelToDataModel(
         alc = wine.alc.toInt(),
         tags = emptyList(),
         description = wine.description,
-        category = nameToKorean(wine.category.name)
+        category = nameToKorean(wine.category)
+    )
+}
+
+fun drinksResponseToWineModel(
+    drink: Drink
+): Wine {
+    return Wine(
+        id = 0,
+        name = drink.name,
+        imageUrl = drink.image_url,
+        alc = drink.alc.toInt(),
+        tags = emptyList(),
+        description = "",
+        category = drink.category
     )
 }
