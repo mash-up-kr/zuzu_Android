@@ -13,13 +13,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mashup.zuzu.R
+import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.BestWorldCup
 import com.mashup.zuzu.data.model.bestWorldCupList
-import com.mashup.zuzu.compose.theme.ProofTheme
 import java.text.NumberFormat
 import java.util.*
 
@@ -87,21 +88,18 @@ fun WorldCupCard(
                 modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
             ) {
                 Text(
-                    text = worldCupItem.day,
-                    style = ProofTheme.typography.bodyXS,
-                    color = ProofTheme.color.gray300
-                )
-                Text(
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     text = worldCupItem.title,
                     maxLines = 2,
                     style = ProofTheme.typography.buttonL.copy(
                         fontWeight = FontWeight.Normal
                     ),
-                    color = ProofTheme.color.white
+                    color = ProofTheme.color.white,
+                    overflow = TextOverflow.Ellipsis
                 )
+                Spacer(modifier = Modifier.height(4.dp))
                 Row(
-                    modifier = Modifier.padding(top = 8.5.dp),
+                    modifier = Modifier,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -128,6 +126,6 @@ fun WorldCupCard(
 @Composable
 fun PreviewWorldCupCard() {
     ProofTheme() {
-        WorldCupCard(modifier = Modifier.fillMaxWidth(), worldCupItem = bestWorldCupList[0], {}, Modifier)
+        WorldCupCard(modifier = Modifier.fillMaxWidth(), worldCupItem = bestWorldCupList[0], {}, null)
     }
 }
