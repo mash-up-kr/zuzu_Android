@@ -2,6 +2,7 @@ package com.mashup.zuzu.data.di
 
 import com.mashup.zuzu.data.repository.*
 import com.mashup.zuzu.data.source.remote.category.CategoryRemoteDataSource
+import com.mashup.zuzu.data.source.remote.review.ReviewWriteRemoteDataSource
 import com.mashup.zuzu.data.source.remote.user.UserRemoteDataSource
 import com.mashup.zuzu.data.source.remote.wine.WineRemoteDataSource
 import com.mashup.zuzu.data.source.remote.worldcup.WorldCupRemoteDataSource
@@ -18,8 +19,10 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideReviewWriteRepository(): ReviewWriteRepository {
-        return ReviewWriteRepository()
+    fun provideReviewWriteRepository(
+        reviewWriteRemoteDataSource: ReviewWriteRemoteDataSource
+    ): ReviewWriteRepository {
+        return ReviewWriteRepository(reviewWriteRemoteDataSource)
     }
 
     @Singleton

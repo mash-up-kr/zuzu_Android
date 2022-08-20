@@ -1,8 +1,5 @@
 package com.mashup.zuzu.ui.review
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +18,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.WineImageCardForReviewWrite
 import com.mashup.zuzu.compose.theme.ProofTheme
@@ -29,20 +25,28 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ReviewWriteRoute(
-    viewModel: ReviewWriteViewModel = hiltViewModel()
+    viewModel: ReviewWriteViewModel = hiltViewModel(),
+    navigateReviewShareCard: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     ReviewWriteScreen(
         uiState = uiState,
         navigatePreviousWritePage = viewModel::navigatePreviousWritePage,
-        navigateDateSelectPage = viewModel::navigateDateSelectPage,
+//        navigateDateSelectPage = viewModel::navigateDateSelectPage,
+        navigateDateSelectPage = {
+            navigateReviewShareCard()
+        },
         navigatePartnerPage = viewModel::navigatePartnerPage,
         navigateGroupPage = viewModel::navigateGroupPage,
         navigateSoloPage = viewModel::navigateSoloPage,
         navigateTastePage = viewModel::navigateTastePage,
         navigateSummaryPage = viewModel::navigateSummaryPage,
         navigateSecondarySummaryPage = viewModel::navigateSecondarySummaryPage,
+        navigateReviewShareCard = { place, pairing ->
+//            viewModel.navigateReviewShareCard(place, pairing)
+            navigateReviewShareCard()
+        }
     )
 }
 
@@ -55,9 +59,10 @@ fun ReviewWriteScreen(
     navigatePartnerPage: (String) -> Unit,
     navigateGroupPage: (String) -> Unit,
     navigateSoloPage: (String) -> Unit,
-    navigateTastePage: (String) -> Unit,
+    navigateTastePage: (Pair<String, Int?>) -> Unit,
     navigateSummaryPage: (List<Int>) -> Unit,
     navigateSecondarySummaryPage: (String) -> Unit,
+    navigateReviewShareCard: (String, List<String>) -> Unit
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -190,7 +195,8 @@ fun ReviewWriteScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 WineImageCardForReviewWrite(
-                    wine = uiState.wine,
+                    wineImageUrl = uiState.wineImageUrl,
+                    wineName = uiState.wineName,
                     modifier = Modifier
                         .fillMaxWidth(0.3f)
                         .height(190.dp)
@@ -294,7 +300,8 @@ fun ReviewWriteScreen(
                                 end = 24.dp,
                                 top = 40.dp,
                                 bottom = 34.dp
-                            )
+                            ),
+                            navigateReviewShareCard = navigateReviewShareCard
                         )
                     }
                 }

@@ -18,9 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.ProofTheme
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
@@ -37,15 +41,15 @@ fun WeatherSelectOption(
             stringResource(R.string.weather_rain)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_weather_snow),
             stringResource(R.string.weather_snow)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_weather_sunny),
             stringResource(R.string.weather_sunny)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_weather_cloudy),
             stringResource(R.string.weather_cloudy)
         )
     )
@@ -59,7 +63,14 @@ fun WeatherSelectOption(
         items(optionContents) { optionContent ->
             Button(
                 onClick = {
-                    navigateDateSelectPage(optionContent.second)
+                    val select = when (optionContent.second) {
+                        "비 오는 날" -> "Rainy"
+                        "눈 오는 날" -> "Snowy"
+                        "맑은 날" -> "Sunny"
+                        else -> "Cloudy"
+                    }
+
+                    navigateDateSelectPage(select)
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -91,19 +102,19 @@ fun DateSelectOption(
 ) {
     val optionContents = listOf(
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_time_dinner),
             stringResource(R.string.date_dinner)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_time_lunch),
             stringResource(R.string.date_afternoon)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_time_night),
             stringResource(R.string.date_night)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_time_down),
             stringResource(R.string.date_dawn)
         )
     )
@@ -117,7 +128,14 @@ fun DateSelectOption(
         items(optionContents) { optionContent ->
             Button(
                 onClick = {
-                    navigatePartnerPage(optionContent.second)
+                    val select = when (optionContent.second) {
+                        "저녁에" -> "Evening"
+                        "대낮에" -> "Noon"
+                        "새벽에" -> "Midnight"
+                        else -> "Dawn"
+                    }
+
+                    navigatePartnerPage(select)
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -149,22 +167,10 @@ fun PartnerSelectOption(
     modifier: Modifier
 ) {
     val optionContents = listOf(
-        Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
-            stringResource(R.string.partner_solo)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
-            stringResource(R.string.partner_friends)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
-            stringResource(R.string.partner_couple)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
-            stringResource(R.string.partner_party)
-        )
+        stringResource(R.string.partner_solo),
+        stringResource(R.string.partner_friends),
+        stringResource(R.string.partner_couple),
+        stringResource(R.string.partner_party)
     )
 
     LazyVerticalGrid(
@@ -178,11 +184,17 @@ fun PartnerSelectOption(
                 onClick = {
                     when (index) {
                         0 -> {
-                            navigateSoloPage(optionContent.second)
+                            navigateSoloPage("Alone")
                         }
 
                         else -> {
-                            navigateGroupPage(optionContent.second)
+                            val select = when (optionContent) {
+                                "친구/지인과" -> "Friends"
+                                "연인과" -> "Lover"
+                                else -> "Gather"
+                            }
+
+                            navigateGroupPage(select)
                         }
                     }
                 },
@@ -190,17 +202,8 @@ fun PartnerSelectOption(
                 modifier = Modifier
                     .height(52.dp)
             ) {
-                Image(
-                    painter = optionContent.first,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .width(24.dp)
-                        .height(24.dp)
-                )
-
                 Text(
-                    text = optionContent.second,
+                    text = optionContent,
                     style = ProofTheme.typography.headingXS,
                     color = ProofTheme.color.white
                 )
@@ -211,35 +214,37 @@ fun PartnerSelectOption(
 
 @Composable
 fun GroupSelectOption(
-    navigateTastePage: (String) -> Unit,
+    navigateTastePage: (Pair<String, Int>) -> Unit,
     modifier: Modifier
 ) {
     val optionContents = listOf(
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_funny),
             stringResource(R.string.mood_friendly)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_serious),
             stringResource(R.string.mood_serious)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_romantic),
             stringResource(R.string.mood_romantic)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_crazy),
             stringResource(R.string.mood_crazy)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_groomy),
             stringResource(R.string.mood_groomy)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_congratulation),
             stringResource(R.string.mood_congratulations)
         )
     )
+
+    var selectPair = Pair("", 0)
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -250,7 +255,20 @@ fun GroupSelectOption(
         items(optionContents) { optionContent ->
             Button(
                 onClick = {
-                    navigateTastePage(optionContent.second)
+                    val result = when (optionContent.second) {
+                        "친근한/웃기는" -> "Funny"
+                        "엄격진지한" -> "Serious"
+                        "로맨틱한" -> "Romantic"
+                        "광란의" -> "Crazy"
+                        "우울한" -> "Gloomy"
+                        else -> "Celebratory"
+                    }
+
+                    selectPair = selectPair.copy(first = result)
+
+                    if (selectPair.second != 0) {
+                        navigateTastePage(selectPair)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -289,6 +307,17 @@ fun GroupSelectOption(
         secondOptionContents.forEach { content ->
             Button(
                 onClick = {
+                    val result = when (content) {
+                        "1차" -> 1
+                        "2차" -> 2
+                        else -> 3
+                    }
+
+                    selectPair = selectPair.copy(second = result)
+
+                    if (selectPair.first.isNotEmpty()) {
+                        navigateTastePage(selectPair)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -307,32 +336,32 @@ fun GroupSelectOption(
 
 @Composable
 fun SoloSelectOption(
-    navigateTastePage: (String) -> Unit,
+    navigateTastePage: (Pair<String, Int?>) -> Unit,
     modifier: Modifier
 ) {
     val optionContents = listOf(
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_funny),
             stringResource(R.string.mood_happy)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_serious),
             stringResource(R.string.mood_serious)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_groomy),
             stringResource(R.string.mood_groomy)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_crazy),
             stringResource(R.string.mood_crazy)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_taste),
             stringResource(R.string.mood_taste)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_review_write_weather_rain),
+            painterResource(id = R.drawable.ic_review_write_congratulation),
             stringResource(R.string.mood_self_cong)
         )
     )
@@ -346,7 +375,16 @@ fun SoloSelectOption(
         items(optionContents) { optionContent ->
             Button(
                 onClick = {
-                    navigateTastePage(optionContent.second)
+                    val result = when (optionContent.second) {
+                        "친근한/웃기는" -> "Funny"
+                        "엄격진지한" -> "Serious"
+                        "로맨틱한" -> "Romantic"
+                        "광란의" -> "Crazy"
+                        "우울한" -> "Gloomy"
+                        else -> "Celebratory"
+                    }
+
+                    navigateTastePage(Pair(result, null))
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
@@ -479,17 +517,20 @@ fun TasteSelectOption(
                             temp[index] = item
                             selectedList = temp
                         }) {
-                            Icon(
-                                painter = painterResource(
-                                    if (state == item) {
-                                        R.drawable.ic_taste_toggle_on
-                                    } else {
-                                        R.drawable.ic_taste_toggle_off
-                                    }
-                                ), contentDescription = "", modifier = Modifier
+                            val painter = if (state == item) {
+                                rememberAsyncImagePainter(ContextCompat.getDrawable(LocalContext.current,
+                                    R.drawable.ic_radio_write_selected))
+                            } else {
+                                rememberAsyncImagePainter(ContextCompat.getDrawable(LocalContext.current,
+                                    R.drawable.ic_radio_write_unselected))
+                            }
+
+                            Image(
+                                painter,
+                                contentDescription = "",
+                                modifier = Modifier
                                     .width(radius.dp)
-                                    .height(radius.dp),
-                                tint = Color.Unspecified
+                                    .height(radius.dp)
                             )
                         }
                     }
@@ -512,35 +553,35 @@ fun SummarySelectOption(
             stringResource(R.string.feeling_fruits)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_feeling_fruits),
+            painterResource(id = R.drawable.ic_feeling_tree),
             stringResource(R.string.feeling_wood)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_feeling_fruits),
+            painterResource(id = R.drawable.ic_feeling_nooroongji),
             stringResource(R.string.feeling_nooroongji)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_feeling_fruits),
+            painterResource(id = R.drawable.ic_feeling_milk),
             stringResource(R.string.feeling_milk)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_feeling_fruits),
+            painterResource(id = R.drawable.ic_feeling_earth),
             stringResource(R.string.feeling_earth)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_feeling_fruits),
+            painterResource(id = R.drawable.ic_feeling_flower),
             stringResource(R.string.feeling_flower)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_feeling_fruits),
+            painterResource(id = R.drawable.ic_feeling_sad),
             stringResource(R.string.feeling_groomy)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_feeling_fruits),
+            painterResource(id = R.drawable.ic_feeling_chili),
             stringResource(R.string.feeling_chili)
         ),
         Pair(
-            painterResource(id = R.drawable.ic_feeling_fruits),
+            painterResource(id = R.drawable.ic_feeling_unknown),
             stringResource(R.string.feeling_unknown)
         )
     )
@@ -549,13 +590,25 @@ fun SummarySelectOption(
         columns = GridCells.Fixed(3),
         verticalArrangement = Arrangement.spacedBy(24.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier.height(240.dp)
+        modifier = modifier.height(360.dp)
     ) {
         items(optionContents) { optionContent ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable {
-                    navigateSecondarySummaryPage("123")
+                    val result = when (optionContent.second) {
+                        "상큼달달한 과일" -> "Fruity"
+                        "묵직한 나무" -> "Woody"
+                        "구수한 누룽지" -> "Noroong"
+                        "부드러운 우유" -> "Creamy"
+                        "쿰쿰한 흙냄새" -> "Earthy"
+                        "향긋한 꽃" -> "Flower"
+                        "씁쓸한 인생" -> "Austere"
+                        "매운 칠리" -> "Chilli"
+                        else -> "Unknown"
+                    }
+
+                    navigateSecondarySummaryPage(result)
                 }
             ) {
                 Image(
@@ -580,10 +633,15 @@ fun SummarySelectOption(
 
 @Composable
 fun SecondarySummaryPage(
-    modifier: Modifier
+    modifier: Modifier,
+    navigateReviewShareCard: (String, List<String>) -> Unit
 ) {
     var content by remember {
         mutableStateOf("")
+    }
+
+    var isSelectable by remember {
+        mutableStateOf(mapOf<Int, Boolean>())
     }
 
     Column(
@@ -639,42 +697,15 @@ fun SecondarySummaryPage(
     }
 
     val optionContents = listOf(
-        Pair(
-            painterResource(id = R.drawable.ic_menu_category),
-            stringResource(R.string.summary_roast)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_menu_category),
-            stringResource(R.string.summary_roast)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_menu_category),
-            stringResource(R.string.summary_fry)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_menu_category),
-            stringResource(R.string.summary_cheese)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_menu_category),
-            stringResource(R.string.summary_salad)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_menu_category),
-            stringResource(R.string.summary_fruits)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_menu_category),
-            stringResource(R.string.summary_soup)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_menu_category),
-            stringResource(R.string.summary_desert)
-        ),
-        Pair(
-            painterResource(id = R.drawable.ic_menu_category),
-            stringResource(R.string.summary_noodle)
-        )
+        stringResource(R.string.summary_roast),
+        stringResource(R.string.summary_roast),
+        stringResource(R.string.summary_fry),
+        stringResource(R.string.summary_cheese),
+        stringResource(R.string.summary_salad),
+        stringResource(R.string.summary_fruits),
+        stringResource(R.string.summary_desert),
+        stringResource(R.string.summary_noodle),
+        stringResource(R.string.summary_roast)
     )
 
     LazyVerticalGrid(
@@ -682,24 +713,31 @@ fun SecondarySummaryPage(
         verticalArrangement = Arrangement.spacedBy(18.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
-            .padding(top = 24.dp)
-            .height(240.dp)
+            .height(280.dp)
     ) {
-        items(optionContents) { optionContent ->
+        itemsIndexed(optionContents) { index, optionContent ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = optionContent.first,
+                    painter = if (isSelectable[index] == true) painterResource(id = R.drawable.ic_menu_category_select)
+                    else painterResource(id = R.drawable.ic_menu_category),
                     contentDescription = "",
                     modifier = Modifier
-                        .width(84.dp)
-                        .height(84.dp)
+                        .width(52.dp)
+                        .height(52.dp)
                         .padding(bottom = 12.dp)
+                        .clickable {
+                            isSelectable = if (isSelectable[index] == true) {
+                                mapOf(Pair(index, false))
+                            } else {
+                                mapOf(Pair(index, true))
+                            }
+                        }
                 )
 
                 Text(
-                    text = optionContent.second,
+                    text = optionContent,
                     style = ProofTheme.typography.buttonS,
                     color = ProofTheme.color.white
                 )
@@ -708,15 +746,54 @@ fun SecondarySummaryPage(
     }
 
     Button(
-        onClick = { },
+        onClick = {
+            val result = mutableListOf<String>()
+
+            isSelectable.forEach { index, isSelectable ->
+                if (isSelectable) {
+                    when (index) {
+                        0 -> {
+                            result.add("Grilled")
+                        }
+                        1 -> {
+                            result.add("Fried")
+                        }
+                        2 -> {
+                            result.add("Cheeze")
+                        }
+                        3 -> {
+                            result.add("Salad")
+                        }
+                        4 -> {
+                            result.add("Fruits")
+                        }
+                        5 -> {
+                            result.add("Soup")
+                        }
+                        6 -> {
+                            result.add("AppetizersSnacks")
+                        }
+                        7 -> {
+                            result.add("Pasta")
+                        }
+                        else -> {
+                            result.add("Pasta")
+                        }
+                    }
+                }
+            }
+
+            navigateReviewShareCard(content, result)
+        },
+        colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
         modifier = Modifier
             .fillMaxWidth()
             .height(52.dp)
-            .background(color = ProofTheme.color.primary300)
     ) {
         Text(
             text = "작성 완료",
-            style = ProofTheme.typography.buttonL
+            style = ProofTheme.typography.buttonL,
+            color = ProofTheme.color.white
         )
     }
 }
