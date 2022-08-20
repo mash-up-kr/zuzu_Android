@@ -957,14 +957,14 @@ fun RenderBlurImage(content: @Composable () -> Unit, blurImage: @Composable () -
 }
 
 @Composable
-fun NewBlurImage(blurHeight: Float, content: @Composable () -> Unit) {
+fun BlurWithOuterHeightImage(blurOuterHeight: Float, content: @Composable () -> Unit) {
     // blurHeight = with(LocalDensity.current) { 170.dp.toPx() } 이런식으로 사용
     Box {
         content()
         Box(
             modifier = Modifier.fillMaxWidth().fillMaxHeight().align(Alignment.BottomCenter)
                 .drawWithContent {
-                    clipRect(top = blurHeight) {
+                    clipRect(top = blurOuterHeight) {
                         val colors = listOf(Color.Transparent, Color.White)
                         this@drawWithContent.drawContent()
                         drawRect(
@@ -1203,7 +1203,7 @@ fun PreviewNewBlurImage() {
         Box(
             modifier = Modifier.width(278.dp).height(330.dp)
         ) {
-            NewBlurImage(blurHeight = with(LocalDensity.current) { 170.dp.toPx() }) {
+            BlurWithOuterHeightImage(blurOuterHeight = with(LocalDensity.current) { 170.dp.toPx() }) {
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
