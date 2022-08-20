@@ -1,6 +1,6 @@
 package com.mashup.zuzu.ui.home
 
-import com.mashup.zuzu.data.model.BestWorldCup
+import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.data.model.Wine
 

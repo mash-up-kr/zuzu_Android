@@ -11,7 +11,6 @@ import androidx.navigation.navigation
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 import com.mashup.zuzu.ZuzuAppState
-import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.ui.category.CategoryRoute
 import com.mashup.zuzu.ui.category.CategoryUiEvents
 import com.mashup.zuzu.ui.category.CategoryViewModel
@@ -66,7 +65,7 @@ internal fun NavGraphBuilder.homeGraph(
                         is HomeUiEvents.WorldCupItemClick -> {
                         }
                         is HomeUiEvents.RefreshButtonClick -> {
-                            viewModel.getRecommendWine(context = homeUiEvents.context)
+                            viewModel.getRandomWine(context = homeUiEvents.context)
                         }
                     }
                 }
@@ -84,7 +83,7 @@ internal fun NavGraphBuilder.homeGraph(
                         }
                         is UserUiEvents.WineItemClick -> {
 //                             appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${userUiEvents.wine.id}")
-                            appState.navigateRoute(NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route)
+                            appState.navigateRoute(NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route + "/${userUiEvents.wine.id}")
                         }
                         is UserUiEvents.EditButtonClick -> {
                             appState.navigateRoute(NavigationRoute.UserScreenGraph.EditUserProfileBottomSheet.route)
@@ -206,7 +205,7 @@ internal fun NavGraphBuilder.userGraph(
             )
         }
         composable(
-            route = NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route
+            route = NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route + "/{wineId}"
         ) {
             val viewModel: UserReviewDetailViewModel = hiltViewModel()
             UserReviewDetailRoute(
@@ -295,6 +294,5 @@ internal fun NavGraphBuilder.reviewGraph(
                 viewModel = hiltViewModel()
             )
         }
-
     }
 }

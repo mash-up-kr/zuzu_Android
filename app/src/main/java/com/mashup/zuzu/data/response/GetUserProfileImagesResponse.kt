@@ -10,6 +10,6 @@ data class GetUserProfileImagesResponse(
     @SerializedName("id")
     val id: Long,
 
-    @SerializedName("image_url")
+    @SerializedName("imageUrl")
     val image: String
 )

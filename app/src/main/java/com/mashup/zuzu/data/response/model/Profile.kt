@@ -11,6 +11,6 @@ data class Profile(
     @SerializedName("id")
     val id: Long,
 
-    @SerializedName("image_url")
+    @SerializedName("imageUrl")
     val image_url: String
 )

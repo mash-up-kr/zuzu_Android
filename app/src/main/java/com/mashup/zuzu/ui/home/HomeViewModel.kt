@@ -10,11 +10,9 @@ import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.google.android.renderscript.Toolkit
+import com.mashup.zuzu.data.mapper.worldCupResponseToUiModel
 import com.mashup.zuzu.data.model.*
-import com.mashup.zuzu.domain.usecase.GetBestWorldCupListUseCase
-import com.mashup.zuzu.domain.usecase.GetCategoryListUseCase
-import com.mashup.zuzu.domain.usecase.GetMainWineListUseCase
-import com.mashup.zuzu.domain.usecase.GetRecommendWineUseCase
+import com.mashup.zuzu.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -26,9 +24,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getMainWineListUseCase: GetMainWineListUseCase,
+    private val getRandomDrinksUseCase: GetRandomDrinksUseCase,
     private val getBestWorldCupListUseCase: GetBestWorldCupListUseCase,
-    private val getRecommendWineUseCase: GetRecommendWineUseCase,
+    private val getRecommendDrinksUseCase: GetRecommendDrinksUseCase,
     private val getCategoryListUseCase: GetCategoryListUseCase
 ) : ViewModel() {
 
@@ -59,7 +57,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getMainWineList() {
         viewModelScope.launch {
-            getMainWineListUseCase().collect { result ->
+            getRecommendDrinksUseCase().collect { result ->
                 when (result) {
                     is Results.Success -> {
                         _mainWineList.value = MainWineUiState.Success(result.value)
@@ -80,7 +78,9 @@ class HomeViewModel @Inject constructor(
             getBestWorldCupListUseCase().collect { result ->
                 when (result) {
                     is Results.Success -> {
-                        _bestWorldCupList.value = BestWorldCupUiState.Success(result.value)
+                        _bestWorldCupList.value = BestWorldCupUiState.Success(
+                            worldCupResponseToUiModel(result.value)
+                        )
                     }
                     is Results.Loading -> {
                         _bestWorldCupList.value = BestWorldCupUiState.Loading
@@ -93,11 +93,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getRecommendWine(
+    fun getRandomWine(
         context: Context
     ) {
         viewModelScope.launch {
-            getRecommendWineUseCase().collect { result ->
+            getRandomDrinksUseCase().collect { result ->
                 when (result) {
                     is Results.Success -> {
                         _recommendWine.value = RecommendWineUiState.Success(result.value)

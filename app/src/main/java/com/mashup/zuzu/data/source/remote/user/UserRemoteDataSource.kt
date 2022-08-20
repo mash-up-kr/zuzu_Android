@@ -1,6 +1,7 @@
 package com.mashup.zuzu.data.source.remote.user
 
 import com.mashup.zuzu.data.model.*
+import com.mashup.zuzu.data.request.RequestProfile
 import com.mashup.zuzu.data.request.UpdateUsersRequest
 import com.mashup.zuzu.data.response.GetReviewsDrinksResponse
 import com.mashup.zuzu.data.response.GetUserProfileImagesResponse
@@ -30,7 +31,7 @@ class UserRemoteDataSource @Inject constructor(
         return userApi.updateUser(
             updateUsersReq = UpdateUsersRequest(
                 nickname = nickname,
-                profile_id = profileId
+                profile = RequestProfile(id = profileId)
             )
         )
     }

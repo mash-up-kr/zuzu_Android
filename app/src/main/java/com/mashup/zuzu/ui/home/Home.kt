@@ -34,7 +34,7 @@ import com.google.accompanist.placeholder.shimmer
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.*
 import com.mashup.zuzu.compose.theme.ProofTheme
-import com.mashup.zuzu.data.model.BestWorldCup
+import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.data.model.dummy.dummyCategoryList
@@ -197,7 +197,7 @@ fun HomeScreen(
         )
         HomeSubTitle(
             modifier = Modifier.padding(start = 24.dp, top = 40.dp),
-            boldTitle = stringResource(id = R.string.home_today_recommend_wine)
+            boldTitle = stringResource(id = R.string.home_today_random_wine)
         )
         when (recommendState) {
             is RecommendWineUiState.Success -> {
@@ -464,7 +464,7 @@ fun RecommendImage(
                 .align(Alignment.BottomCenter),
             backgroundColor = ProofTheme.color.primary300,
             textColor = ProofTheme.color.white,
-            text = "추천술 보기",
+            text = stringResource(id = R.string.home_see_random_drink),
             onButtonClick = onButtonClick
         )
     }

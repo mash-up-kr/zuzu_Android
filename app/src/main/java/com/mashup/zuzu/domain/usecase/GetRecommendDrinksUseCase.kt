@@ -11,10 +11,10 @@ import javax.inject.Singleton
  * @Created by 김현국 2022/07/24
  */
 @Singleton
-class GetMainWineListUseCase @Inject constructor(
+class GetRecommendDrinksUseCase @Inject constructor(
     private val repository: WineRepository
 ) {
     operator fun invoke(): Flow<Results<List<Wine>>> {
-        return repository.getDrinks()
+        return repository.getRecommendDrinks()
     }
 }

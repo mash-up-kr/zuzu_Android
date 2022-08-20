@@ -5,5 +5,9 @@ package com.mashup.zuzu.data.request
  */
 data class UpdateUsersRequest(
     val nickname: String,
-    val profile_id: Long
+    val profile: RequestProfile
+)
+
+data class RequestProfile(
+    val id: Long
 )

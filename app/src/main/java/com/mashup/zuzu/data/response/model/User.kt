@@ -28,7 +28,7 @@ data class User(
     @SerializedName("profile")
     val profile: Profile,
 
-    @SerializedName("social_id")
+    @SerializedName("socialId")
     val social_id: String,
 
     @SerializedName("type")

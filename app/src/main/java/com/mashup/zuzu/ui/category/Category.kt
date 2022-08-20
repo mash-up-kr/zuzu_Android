@@ -157,7 +157,11 @@ fun CategoryScreen(
                             onClick(CategoryUiEvents.WineBoardClick(wine = wine))
                         },
                         wineList = wineListState.wineList,
-                        null
+                        null,
+                        onLoadData = onLoadNextPage,
+                        onScrollPositionChange = onScrollPositionChange,
+                        pageSize = pageSize,
+                        currentPage = page
                     )
                 }
             }

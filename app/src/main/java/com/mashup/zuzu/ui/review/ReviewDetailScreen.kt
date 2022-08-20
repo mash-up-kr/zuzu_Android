@@ -34,7 +34,7 @@ fun ReviewDetailRoute(
 
     when (uiState) {
         is ReviewDetailUiState.Loading -> {
-            //TODO : 로딩 화면 처리
+            // TODO : 로딩 화면 처리
         }
 
         is ReviewDetailUiState.Normal -> {
@@ -63,8 +63,10 @@ fun ReviewDetailScreen(
     ) {
         WineImageCardForReviewDetail(wine = reviewDetailUiState.wine)
 
-        //TODO: 왜 description이 리스트지?
-        WineInformation(content = reviewDetailUiState.wine.description)
+        // TODO: 왜 description이 리스트지?
+        if (reviewDetailUiState.wine.description != null) {
+            WineInformation(content = reviewDetailUiState.wine.description)
+        }
 
         WorldCupInfo(reviewDetailUiState.dummyWorldCupData)
 
@@ -143,7 +145,8 @@ fun WorldCupInfo(
             )
 
             Image(
-                painter = painterResource(id = R.drawable.ic_result_help), contentDescription = ""
+                painter = painterResource(id = R.drawable.ic_result_help),
+                contentDescription = ""
             )
         }
 
@@ -362,7 +365,6 @@ fun GreenHorizontalProgress(
                     color = ProofTheme.color.white
                 )
             }
-
         }
     }
 }
@@ -434,9 +436,7 @@ fun PurpleHorizontalProgress(
                     color = ProofTheme.color.white
                 )
             }
-
         }
-
     }
 }
 
@@ -468,7 +468,6 @@ fun PieChart1(
         Canvas(
             modifier = Modifier.size(size)
         ) {
-
             var startAngle = -90f
 
             drawArc(
@@ -492,7 +491,6 @@ fun PieChart1(
                 color = background,
                 radius = 100f
             )
-
         }
 
         Column() {
@@ -515,5 +513,4 @@ fun PieChart1(
             }
         }
     }
-
 }

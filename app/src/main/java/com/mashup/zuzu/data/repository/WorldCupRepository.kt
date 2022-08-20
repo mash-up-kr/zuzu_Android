@@ -1,8 +1,9 @@
 package com.mashup.zuzu.data.repository
 
-import com.mashup.zuzu.data.model.BestWorldCup
+import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.data.model.Results
-import com.mashup.zuzu.data.model.bestWorldCupList
+import com.mashup.zuzu.ui.model.bestWorldCupList
+import com.mashup.zuzu.data.response.GetWorldCupPopularResponse
 import com.mashup.zuzu.data.source.remote.worldcup.WorldCupRemoteDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
@@ -19,11 +20,15 @@ class WorldCupRepository constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    fun getBestWorldCupList(): Flow<Results<List<BestWorldCup>>> {
+    fun getBestWorldCupList(): Flow<Results<List<GetWorldCupPopularResponse>>> {
         return flow {
             emit(Results.Loading)
-            delay(500)
-            emit(Results.Success(bestWorldCupList.filterIndexed { index, bestWorldCup -> index < 3 }))
+            val response = worldCupRemoteDataSource.getPopularWorldCup()
+            val body = response.body()
+
+            if (response.isSuccessful && body != null) {
+                emit(Results.Success(body))
+            }
         }.flowOn(ioDispatcher)
     }
 

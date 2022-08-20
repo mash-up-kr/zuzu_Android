@@ -10,17 +10,11 @@ data class Wine(
     @SerializedName("id")
     val id: Long,
 
-    @SerializedName("createdAt")
-    val createdAt: String,
-
-    @SerializedName("updatedAt")
-    val updatedAt: String,
-
-    @SerializedName("deletedAt")
-    val deletedAt: String?,
-
     @SerializedName("name")
     val name: String,
+
+    @SerializedName("imageUrl")
+    val image_url: String,
 
     @SerializedName("abv")
     val alc: Float,
@@ -29,11 +23,15 @@ data class Wine(
     val origin: String,
 
     @SerializedName("description")
-    val description: String,
-
-    @SerializedName("image_url")
-    val image_url: String,
+    val description: String?,
 
     @SerializedName("category")
-    val category: Category
+    val category: String,
+
+    @SerializedName("worldcupWinCount")
+    val worldcupWinCount: Int?,
+
+    @SerializedName("worldcupSemiFinalCount")
+    val worldcupSemiFinalCount: Int?
+
 )

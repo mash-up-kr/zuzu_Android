@@ -17,8 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mashup.zuzu.R
-import com.mashup.zuzu.data.model.BestWorldCup
-import com.mashup.zuzu.data.model.bestWorldCupList
+import com.mashup.zuzu.ui.model.BestWorldCup
+import com.mashup.zuzu.ui.model.bestWorldCupList
 import com.mashup.zuzu.compose.theme.ProofTheme
 import java.text.NumberFormat
 import java.util.*
@@ -86,11 +86,6 @@ fun WorldCupCard(
             Column(
                 modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
             ) {
-                Text(
-                    text = worldCupItem.day,
-                    style = ProofTheme.typography.bodyXS,
-                    color = ProofTheme.color.gray300
-                )
                 Text(
                     modifier = Modifier.padding(top = 4.dp),
                     text = worldCupItem.title,
