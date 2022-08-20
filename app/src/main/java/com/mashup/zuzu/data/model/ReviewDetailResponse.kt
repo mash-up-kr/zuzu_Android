@@ -3,28 +3,29 @@ package com.mashup.zuzu.data.model
 import com.google.gson.annotations.SerializedName
 
 data class ReviewDetailResponse(
-    @SerializedName("weather")
-    val weather: String = "Snowys",
-    @SerializedName("time")
-    val time: String = "Midnight",
-    @SerializedName("companion")
-    val companion: String = "Friends",
-    @SerializedName("mood")
-    val mood: String = "Crazy",
-    @SerializedName("spot")
-    val spot: String = "1",
+    @SerializedName("situation")
+    val situation: List<String> = listOf(
+        "Rainy",
+        "Noon",
+        "Alone",
+        "Funny",
+        "1"
+    ),
     @SerializedName("is_heavy")
     val isHeavy: IsHeavy = IsHeavy(light = 6, heavy = 1),
     @SerializedName("is_bitter")
-    val isBitter: IsBitter = IsBitter(sweet =  0, bitter = 7),
+    val isBitter: IsBitter = IsBitter(sweet = 2, bitter = 7),
     @SerializedName("is_strong")
-    val isStrong: IsStrong = IsStrong(mild = 0, strong = 7),
+    val isStrong: IsStrong = IsStrong(mild = 3, strong = 7),
     @SerializedName("is_burning")
     val isBurning: IsBurning = IsBurning(smooth = 0, burning = 7),
     @SerializedName("taste")
-    val taste: List<Taste> = listOf(Taste(tasteName = "Creamy", percent = "42%")),
+    val taste: List<Taste> = listOf(
+        Taste(tasteName = "Creamy", percent = "42%"),
+        Taste(tasteName = "Creamy!!!!", percent = "62%")
+    ),
     @SerializedName("pairing")
-    val pairing: List<String> = listOf("Fried")
+    val pairing: List<String> = listOf("Fried", "Fried", "Fried")
 )
 
 data class IsHeavy(
