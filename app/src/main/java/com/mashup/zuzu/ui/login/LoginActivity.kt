@@ -2,6 +2,7 @@ package com.mashup.zuzu.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -33,22 +34,25 @@ class LoginActivity : AppCompatActivity() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.actionFlow.collect { action ->
                     when (action) {
-                        LoginViewModel.Action.ClickKakaoLogin -> doKakaoLogin()
+                        LoginViewModel.Action.ClickKakaoLogin -> getKakaoAccessToken()
                         LoginViewModel.Action.ClickSkip -> startMainActivity()
+                        LoginViewModel.Action.ProofAuthSuccess -> startMainActivity()
+                        LoginViewModel.Action.ProofAuthFailed ->
+                            Toast.makeText(this@LoginActivity, "로그인에 실패했습니다.", Toast.LENGTH_SHORT)
+                                .show()
                     }
                 }
             }
         }
     }
 
-    private fun doKakaoLogin() {
+    private fun getKakaoAccessToken() {
         UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
             if (error != null) {
-                Timber.e("Login Failed", error)
+                Timber.e("getKakaoAccessToken: Failed / error: ", error)
             } else if (token != null) {
-                Timber.d("Success Login ${token.accessToken}")
-                viewModel.saveKakaoSessionToken(token.accessToken)
-                startMainActivity()
+                Timber.d("getKakaoAccessToken: Success / accessToken: ${token.accessToken}")
+                viewModel.getProofAuthData(token.accessToken)
             }
         }
     }
