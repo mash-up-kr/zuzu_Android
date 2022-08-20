@@ -13,14 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mashup.zuzu.R
+import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.User
 import com.mashup.zuzu.data.model.dummyUser
 import com.mashup.zuzu.data.model.user
-import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.ui.user.UserUiState
 
 /**
@@ -108,7 +109,7 @@ fun SettingTopBar(
         )
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = "설정",
+            text = stringResource(id = R.string.setting),
             style = ProofTheme.typography.headingXS,
             color = ProofTheme.color.white
         )
@@ -173,20 +174,20 @@ fun SettingBody(
         Box(modifier = Modifier.height(30.dp)) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
-                text = "서비스 이용",
+                text = stringResource(id = R.string.setting_service),
                 style = ProofTheme.typography.bodyXS,
                 color = ProofTheme.color.gray200
             )
         }
         Text(
             modifier = Modifier.padding(top = 20.dp),
-            text = "이용 안내",
+            text = stringResource(id = R.string.setting_information_to_use),
             style = ProofTheme.typography.headingS,
             color = ProofTheme.color.white
         )
         Text(
             modifier = Modifier.padding(top = 24.dp),
-            text = "문의 하기",
+            text = stringResource(id = R.string.setting_contact_us),
             style = ProofTheme.typography.headingS,
             color = ProofTheme.color.white
         )
@@ -196,13 +197,13 @@ fun SettingBody(
                 .height(56.dp)
         )
         Text(
-            text = "계정",
+            text = stringResource(id = R.string.setting_auth),
             style = ProofTheme.typography.bodyXS,
             color = ProofTheme.color.gray200
         )
         Text(
             modifier = Modifier.padding(top = 20.dp),
-            text = "로그아웃",
+            text = stringResource(id = R.string.setting_logout),
             style = ProofTheme.typography.headingS,
             color = ProofTheme.color.gray200
         )
@@ -212,7 +213,7 @@ fun SettingBody(
                 .clickable {
                     onLeaveButtonClick()
                 },
-            text = "탈퇴하기",
+            text = stringResource(id = R.string.setting_remove_membership),
             style = ProofTheme.typography.headingS,
             color = ProofTheme.color.gray200
         )

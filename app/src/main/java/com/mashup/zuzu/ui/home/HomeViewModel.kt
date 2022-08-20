@@ -16,10 +16,8 @@ import com.mashup.zuzu.domain.usecase.GetCategoryListUseCase
 import com.mashup.zuzu.domain.usecase.GetMainWineListUseCase
 import com.mashup.zuzu.domain.usecase.GetRecommendWineUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -34,16 +32,20 @@ class HomeViewModel @Inject constructor(
     private val getCategoryListUseCase: GetCategoryListUseCase
 ) : ViewModel() {
 
-    private val _mainWineList: MutableStateFlow<MainWineUiState> = MutableStateFlow(MainWineUiState.Loading)
+    private val _mainWineList: MutableStateFlow<MainWineUiState> =
+        MutableStateFlow(MainWineUiState.Loading)
     val mainWineList = _mainWineList.asStateFlow()
 
-    private val _bestWorldCupList: MutableStateFlow<BestWorldCupUiState> = MutableStateFlow(BestWorldCupUiState.Loading)
+    private val _bestWorldCupList: MutableStateFlow<BestWorldCupUiState> =
+        MutableStateFlow(BestWorldCupUiState.Loading)
     val bestWorldCupList = _bestWorldCupList.asStateFlow()
 
-    private val _recommendWine: MutableStateFlow<RecommendWineUiState> = MutableStateFlow(RecommendWineUiState.Init)
+    private val _recommendWine: MutableStateFlow<RecommendWineUiState> =
+        MutableStateFlow(RecommendWineUiState.Init)
     val recommendWine = _recommendWine.asStateFlow()
 
-    private val _categoryList: MutableStateFlow<CategoryListUiState> = MutableStateFlow(CategoryListUiState.Loading)
+    private val _categoryList: MutableStateFlow<CategoryListUiState> =
+        MutableStateFlow(CategoryListUiState.Loading)
     val categoryList = _categoryList.asStateFlow()
 
     private val _bitmap: MutableStateFlow<Bitmap?> = MutableStateFlow(null)
@@ -100,7 +102,6 @@ class HomeViewModel @Inject constructor(
                     is Results.Success -> {
                         _recommendWine.value = RecommendWineUiState.Success(result.value)
                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-                            Timber.tag("blur").d("transBitmap")
                             transBitmap(context, result.value.imageUrl)
                         }
                     }

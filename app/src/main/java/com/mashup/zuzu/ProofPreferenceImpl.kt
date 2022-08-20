@@ -1,14 +1,14 @@
-package com.mashup.zuzu.ui.worldcup
+package com.mashup.zuzu
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import com.mashup.zuzu.bridge.WebPreference
+import com.mashup.zuzu.bridge.ProofPreference
 
-class WebPreferenceImpl constructor(
+class ProofPreferenceImpl constructor(
     private val applicationContext: Context,
     private val applicationId: String
-) : WebPreference {
+) : ProofPreference {
 
     override val preference: SharedPreferences
         get() = applicationContext.getSharedPreferences("$applicationId.pref", Context.MODE_PRIVATE)

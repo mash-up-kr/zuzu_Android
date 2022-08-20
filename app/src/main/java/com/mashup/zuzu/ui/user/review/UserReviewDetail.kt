@@ -1,24 +1,25 @@
 package com.mashup.zuzu.ui.user.review
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.Button
-import com.mashup.zuzu.compose.component.HorizontalPagerWithOffsetTransition
+import com.mashup.zuzu.compose.component.HorizontalPagerWithCapture
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.wines
-import timber.log.Timber
+import dev.shreyaspatil.capturable.controller.rememberCaptureController
 
 /**
  * @Created by 김현국 2022/08/11
@@ -40,17 +41,13 @@ fun UserReviewDetailScreen(
     modifier: Modifier = Modifier.fillMaxSize(),
     onClick: (UserReviewDetailUiEvents) -> Unit
 ) {
+    val pagerState = rememberPagerState()
+    val captureController = rememberCaptureController()
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-//        val pagerState = rememberPagerState((wines.size / 2).toDouble().roundToInt())
-        val pagerState = rememberPagerState()
-
-        LaunchedEffect(pagerState.currentPage) {
-            Timber.tag("page").d(pagerState.currentPage.toString())
-            // index 는 0부터 시작함
-        }
         UserReviewDetailTopBar(
             modifier = Modifier
                 .padding(start = 33.dp, end = 33.dp, top = 31.5.dp)
@@ -59,14 +56,22 @@ fun UserReviewDetailScreen(
             onBackButtonClick = { onClick(UserReviewDetailUiEvents.BackButtonClick) },
             onEditReviewButtonClick = { onClick(UserReviewDetailUiEvents.EditReviewButtonClick(wines[pagerState.currentPage].id)) }
         )
-        HorizontalPagerWithOffsetTransition(
+        HorizontalPagerWithCapture(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(445.dp),
             onWineBoardClick = {},
             wines = wines,
             pagerState = pagerState,
-            childModifier = null
+            childModifier = null,
+            captureController = captureController
+        )
+        HorizontalPagerIndicator(
+            pagerState = pagerState,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+                .padding(16.dp),
+            activeColor = ProofTheme.color.gray50,
+            inactiveColor = ProofTheme.color.gray400
         )
         Button(
             modifier = Modifier
@@ -76,7 +81,7 @@ fun UserReviewDetailScreen(
             text = "이미지로 공유하기",
             backgroundColor = ProofTheme.color.primary300,
             textColor = ProofTheme.color.white,
-            onButtonClick = { onClick(UserReviewDetailUiEvents.ShareImageButtonClick(pagerState.currentPage)) }
+            onButtonClick = { captureController.capture(Bitmap.Config.ARGB_8888) }
         )
     }
 }

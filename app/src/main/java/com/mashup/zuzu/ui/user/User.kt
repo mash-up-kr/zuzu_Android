@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
@@ -74,7 +75,8 @@ fun UserScreen(
     joinedWorldCupState: JoinedWorldCupUiState,
     onClick: (UserUiEvents) -> Unit
 ) {
-    val userState = rememberUserState(user)
+    val optionList = listOf(stringResource(id = R.string.user_wine_caller), stringResource(id = R.string.user_join_world_cup))
+    val userState = rememberUserState(initSelectionOption = optionList[0], initUser = user)
 
     Column(
         modifier = modifier
@@ -303,7 +305,7 @@ fun WineCaller(
 
     Box {
         LazyVerticalGrid(
-            modifier = modifier.padding(start = 20.dp, end = 20.dp, top = 36.dp),
+            modifier = modifier.padding(start = 24.dp, end = 24.dp, top = 36.dp), // .padding(start = 20.dp, end = 20.dp, top = 36.dp),
             columns = GridCells.Fixed(3),
             state = scrollState,
             verticalArrangement = Arrangement.spacedBy(25.dp),
@@ -316,7 +318,7 @@ fun WineCaller(
                 }
             ) { wine ->
                 WineCellarCard(
-                    modifier = Modifier.width(88.dp).height(160.dp),
+                    modifier = Modifier.height(160.dp),
                     wine = wine,
                     onWineClick = onWineClick,
                     childModifier = childModifier

@@ -7,6 +7,9 @@
     <string name="do_review">나도 리뷰하기</string>
     <string name="review_write">리뷰 쓰기</string>
 
+    <!-- 스플래시 -->
+    <string name="splash_title">나랑 제일 맞는 술을\n즐겁게 찾고 기록하는 방법.</string>
+
     <!-- 리뷰 작성 날씨 -->
     <string name="topic_weather">이 술을 마셨던 날의\n날씨는...</string>
     <string name="weather_rain">비 오는 날</string>
@@ -65,4 +68,32 @@
     <string name="summary_soup">국물/스프류</string>
     <string name="summary_desert">디저트</string>
     <string name="summary_noodle">면류</string>
+
+
+    <!-- 홈 -->
+    <string name="home_top_title">요즘 사람들은 \n어떤 술을 마실까?</string>
+    <string name="home_sub_title">무엇을 마실지 고민이라면?</string>
+    <string name="home_today_recommend_wine">오늘의 추천 술</string>
+    <string name="home_today_best_worldcup">지금 가장 인기잇는 술드컵</string>
+
+    <!-- 유저 -->
+    <string name="user_wine_caller">술 저장고</string>
+    <string name="user_join_world_cup">참여한 술드컵</string>
+
+    <!-- 설정 -->
+    <string name="setting">설정</string>
+    <string name="setting_service">서비스 이용</string>
+    <string name="setting_information_to_use">이용 안내</string>
+    <string name="setting_contact_us">문의 하기</string>
+    <string name="setting_auth">계정</string>
+    <string name="setting_logout">로그아웃</string>
+    <string name="setting_remove_membership">탈퇴하기</string>
+
+    <!-- 탈퇴 -->
+    <string name="leave_bigtitle">정말로 탈퇴하시겠어요?</string>
+    <string name="leave_subtitle">회원님의 정보, 리뷰 등 기록이 전부 삭제되며\n다시는 되돌릴 수 없어요.</string>
+    <string name="leave_keep_using">계속 사용할래요</string>
+
+
+
 </resources>

@@ -1,5 +1,9 @@
 package com.mashup.zuzu.data.di
 
+import android.content.Context
+import com.mashup.zuzu.BuildConfig
+import com.mashup.zuzu.ProofPreferenceImpl
+import com.mashup.zuzu.bridge.ProofPreference
 import com.mashup.zuzu.data.source.remote.worldcup.WorldCupApi
 import com.mashup.zuzu.data.source.remote.wine.WineApi
 import com.mashup.zuzu.data.source.remote.category.CategoryApi
@@ -8,6 +12,7 @@ import com.mashup.zuzu.data.source.remote.user.UserApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -50,4 +55,10 @@ class ApiModule {
         return retrofit.create(ReviewApi::class.java)
     }
 
+
+    @Singleton
+    @Provides
+    fun provideWebPreference(@ApplicationContext context: Context): ProofPreference {
+        return ProofPreferenceImpl(context, BuildConfig.APPLICATION_ID)
+    }
 }

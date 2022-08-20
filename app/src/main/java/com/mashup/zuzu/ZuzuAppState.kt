@@ -21,7 +21,7 @@ import com.mashup.zuzu.ui.navigation.shouldShowNavigationItems
 @OptIn(ExperimentalMaterialNavigationApi::class)
 class ZuzuAppState constructor(
     bottomSheetNavigator: BottomSheetNavigator,
-    val navController: NavHostController,
+    val navController: NavHostController
 ) {
     var categoryList = mutableStateListOf<Category>()
     var shouldShowProgressBar: Boolean by mutableStateOf(false)
@@ -81,7 +81,7 @@ private tailrec fun findStartDestination(graph: NavDestination): NavDestination 
 @Composable
 fun rememberAppState(
     bottomSheetNavigator: BottomSheetNavigator = rememberBottomSheetNavigator(),
-    navController: NavHostController = rememberNavController(bottomSheetNavigator),
+    navController: NavHostController = rememberNavController(bottomSheetNavigator)
 ) = remember(navController) {
     ZuzuAppState(
         bottomSheetNavigator = bottomSheetNavigator,

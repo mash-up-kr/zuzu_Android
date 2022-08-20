@@ -107,13 +107,15 @@ internal fun NavGraphBuilder.categoryGraph(
     ) {
         composable(
             route = NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/{category}"
-        ) {
+        ) { navBackStackEntry ->
             val viewModel: CategoryViewModel = hiltViewModel()
-            val category = it.arguments?.getString("category")!!
-            val index = appState.categoryList.withIndex().filter { it.value.title == category }.map { it.index }[0]
+            val category = navBackStackEntry.arguments?.getString("category")
+            val index = appState.categoryList.withIndex().filter { text -> text.value.title == category }.map { it.index }[0]
 
             LaunchedEffect(true) {
-                viewModel.updateCategory(category = category)
+                if (category != null) {
+                    viewModel.updateCategory(category = category)
+                }
                 viewModel.getWineListWithPageAndCategory()
             }
 
@@ -230,6 +232,11 @@ internal fun NavGraphBuilder.userGraph(
                 appState.navController.getBackStackEntry(NavigationRoute.UserScreenGraph.UserScreen.route)
             }
             val viewModel: UserViewModel = hiltViewModel(parentEntry) // sharedViewModel
+
+            LaunchedEffect(key1 = true) {
+                viewModel.getUserProfileImages()
+            }
+
             EditUserProfileRoute(
                 viewModel = viewModel,
                 onSubmitState = { updateProfileUiEventState ->

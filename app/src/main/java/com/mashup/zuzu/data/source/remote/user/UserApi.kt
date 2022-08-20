@@ -20,11 +20,11 @@ interface UserApi {
 
     // 유저 데이터 업데이트
     @PUT("/users")
-    suspend fun updateUser(@Body updateUsersReq: UpdateUsersRequest): Response<Nothing>
+    suspend fun updateUser(@Body updateUsersReq: UpdateUsersRequest): Response<Unit>
 
     // 유저 탈퇴
     @DELETE("/users")
-    suspend fun deleteUser(): Response<Nothing>
+    suspend fun deleteUser(): Response<Unit>
 
     // 유저 프로필 이미지 가져오기
     @GET("/users-profile")

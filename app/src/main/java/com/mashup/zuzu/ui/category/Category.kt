@@ -256,7 +256,7 @@ fun CategoryWineItems(
     LazyVerticalGrid(
         modifier = modifier.padding(start = 20.dp, end = 20.dp),
         columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(32.dp),
+        verticalArrangement = Arrangement.spacedBy(25.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         itemsIndexed(wines) { index, wine ->
@@ -270,7 +270,7 @@ fun CategoryWineItems(
                 }
 
                 WineCardInHome(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().height(340.dp),
                     height = 210.dp,
                     wine = wine,
                     onWineBoardClick = onWineBoardClick

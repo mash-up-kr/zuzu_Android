@@ -3,9 +3,9 @@ package com.mashup.zuzu.data.repository
 import com.mashup.zuzu.data.mapper.userProfileImagesResponseToModel
 import com.mashup.zuzu.data.mapper.userResponseToModel
 import com.mashup.zuzu.data.model.*
+import com.mashup.zuzu.data.model.dummy.dummyProfileImages
 import com.mashup.zuzu.data.source.remote.user.UserRemoteDataSource
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -30,15 +30,18 @@ class UserRepository @Inject constructor(
         }.flowOn(ioDispatcher)
     }
 
-    fun updateUserProfile(): Flow<Results<String>> {
+    fun updateUserProfile(userName: String, index: Long): Flow<Results<String>> {
         return flow {
             emit(Results.Loading)
-            delay(1000)
+            val response = userRemoteDataSource.updateUser(nickname = userName, profileId = index)
+            if (response.isSuccessful) {
+                emit(Results.Success("완료헀습니다"))
+            }
             emit(Results.Success("완료했습니다"))
         }.flowOn(ioDispatcher)
     }
 
-    fun getUserProfileImages(): Flow<Results<List<UserProfileImagesModel>>> {
+    fun getUserProfileImages(): Flow<Results<List<UserProfileImages>>> {
         return flow {
             emit(Results.Loading)
             val response = userRemoteDataSource.getUserProfileImages()
@@ -47,6 +50,7 @@ class UserRepository @Inject constructor(
                 val data = userProfileImagesResponseToModel(body)
                 emit(Results.Success(data))
             }
+            emit(Results.Success(dummyProfileImages))
         }
     }
 
