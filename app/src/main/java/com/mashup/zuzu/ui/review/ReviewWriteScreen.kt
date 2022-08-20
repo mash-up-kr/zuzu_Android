@@ -33,7 +33,10 @@ fun ReviewWriteRoute(
     ReviewWriteScreen(
         uiState = uiState,
         navigatePreviousWritePage = viewModel::navigatePreviousWritePage,
-        navigateDateSelectPage = viewModel::navigateDateSelectPage,
+//        navigateDateSelectPage = viewModel::navigateDateSelectPage,
+        navigateDateSelectPage = {
+            navigateReviewShareCard()
+        },
         navigatePartnerPage = viewModel::navigatePartnerPage,
         navigateGroupPage = viewModel::navigateGroupPage,
         navigateSoloPage = viewModel::navigateSoloPage,
@@ -41,7 +44,7 @@ fun ReviewWriteRoute(
         navigateSummaryPage = viewModel::navigateSummaryPage,
         navigateSecondarySummaryPage = viewModel::navigateSecondarySummaryPage,
         navigateReviewShareCard = { place, pairing ->
-            viewModel.navigateReviewShareCard(place, pairing)
+//            viewModel.navigateReviewShareCard(place, pairing)
             navigateReviewShareCard()
         }
     )
