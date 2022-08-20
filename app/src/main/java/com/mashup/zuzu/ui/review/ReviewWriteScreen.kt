@@ -42,7 +42,7 @@ fun ReviewWriteRoute(
         navigateSummaryPage = viewModel::navigateSummaryPage,
         navigateSecondarySummaryPage = viewModel::navigateSecondarySummaryPage,
         navigateReviewShareCard = { place, pairing ->
-            viewModel.navigateReviewShareCard(place, pairing)
+//            viewModel.navigateReviewShareCard(place, pairing)
             navigateReviewShareCard()
         }
     )

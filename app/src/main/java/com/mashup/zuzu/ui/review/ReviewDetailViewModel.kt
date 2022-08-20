@@ -3,6 +3,7 @@ package com.mashup.zuzu.ui.review
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mashup.zuzu.data.model.ReviewDetailResponse
 import com.mashup.zuzu.data.repository.ReviewDetailRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -22,8 +23,8 @@ class ReviewDetailViewModel @Inject constructor(
                     emit(
                         ReviewDetailUiState.Normal(
                             wine = it,
-                            dummyWorldCupData = DummyWorldCupData(),
-                            dummyWineReview = DummyWineReview()
+                            reviewDetailResponse = ReviewDetailResponse(),
+                            dummyWorldCupData = DummyWorldCupData()
                         )
                     )
                 }

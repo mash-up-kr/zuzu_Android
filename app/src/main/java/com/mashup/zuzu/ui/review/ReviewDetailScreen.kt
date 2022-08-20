@@ -83,7 +83,7 @@ fun ReviewDetailScreen(
             modifier = Modifier.padding(horizontal = 24.dp)
         )
 
-        when (reviewDetailUiState.dummyWineReview) {
+        when (reviewDetailUiState.reviewDetailResponse) {
             else -> {
                 EmptyReviewScreen(modifier = Modifier.padding(horizontal = 24.dp))
             }
