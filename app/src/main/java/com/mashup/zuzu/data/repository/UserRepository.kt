@@ -50,7 +50,6 @@ class UserRepository @Inject constructor(
                 val data = userProfileImagesResponseToModel(body)
                 emit(Results.Success(data))
             }
-            emit(Results.Success(dummyProfileImages))
         }
     }
 
