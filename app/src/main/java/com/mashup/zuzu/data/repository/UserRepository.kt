@@ -3,7 +3,6 @@ package com.mashup.zuzu.data.repository
 import com.mashup.zuzu.data.mapper.userProfileImagesResponseToModel
 import com.mashup.zuzu.data.mapper.userResponseToModel
 import com.mashup.zuzu.data.model.*
-import com.mashup.zuzu.data.model.dummy.dummyProfileImages
 import com.mashup.zuzu.data.source.remote.user.UserRemoteDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -62,4 +61,11 @@ class UserRepository constructor(
             }
         }.flowOn(ioDispatcher)
     }
+
+//    fun getReviewsDrinksWithPage(drinkId : Long, page: Int): Flow<Results<>>{
+//        return flow{
+//            emit(Results.Loading)
+//
+//        }
+//    }
 }

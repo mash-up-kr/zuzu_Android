@@ -119,7 +119,7 @@ fun UserReviewDetailTopBar(
                     onEditReviewButtonClick()
                 },
             painter = painterResource(id = R.drawable.ic_edit),
-            tint = ProofTheme.color.primary200,
+            tint = ProofTheme.color.primary50,
             contentDescription = null
         )
     }
