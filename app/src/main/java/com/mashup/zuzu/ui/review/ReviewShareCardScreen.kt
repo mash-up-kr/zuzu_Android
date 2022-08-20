@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.review
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,13 +17,16 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.mashup.zuzu.compose.component.BlurImage
+import com.mashup.zuzu.R
+import com.mashup.zuzu.compose.component.BlurWithOuterHeightImage
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.ReviewShareCard
+
 
 @Composable
 fun ReviewShareCardRoute(
@@ -61,11 +65,13 @@ fun ReviewShareCardScreen(
 
         Box(
             modifier = Modifier
-                .width(296.dp)
-                .height(460.dp)
-                .padding(top = 24.dp, bottom = 16.dp)
+                .fillMaxWidth()
+                .fillMaxHeight(0.8f)
         ) {
-            ReviewCard(reviewShareCard = reviewShareCard)
+            ReviewCard(
+                reviewShareCard = reviewShareCard,
+                modifier = Modifier.padding(top = 24.dp, bottom = 16.dp, start = 24.dp, end = 24.dp)
+            )
         }
 
         Row(
@@ -110,11 +116,14 @@ fun ReviewShareCardScreen(
 }
 
 @Composable
-fun ReviewCard(reviewShareCard: ReviewShareCard) {
+fun ReviewCard(
+    reviewShareCard: ReviewShareCard,
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(560.dp)
+            .fillMaxHeight()
     ) {
         Box(
             modifier = Modifier
@@ -134,15 +143,17 @@ fun ReviewCard(reviewShareCard: ReviewShareCard) {
         )
 
         Box(
-            modifier = Modifier.align(Alignment.TopCenter)
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .align(Alignment.TopCenter)
         ) {
             Card(
                 modifier = Modifier
-                    .width(270.dp)
+                    .fillMaxWidth()
                     .height(330.dp),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                BlurImage {
+                BlurWithOuterHeightImage(blurOuterHeight = 740.dp.value) {
                     AsyncImage(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -154,18 +165,23 @@ fun ReviewCard(reviewShareCard: ReviewShareCard) {
                     )
                 }
             }
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_share_logo), contentDescription = "",
+                modifier = Modifier
+                    .padding(12.dp)
+                    .size(70.dp, 24.dp)
+            )
         }
 
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(end = 12.dp)
-            ,
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 12.dp),
+                    .padding(end = 30.dp),
                 horizontalAlignment = Alignment.End
             ) {
                 val categoryColor = getDrinkCategoryColor(reviewShareCard.wine.category)
