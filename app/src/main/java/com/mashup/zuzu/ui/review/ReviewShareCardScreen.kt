@@ -105,7 +105,6 @@ fun ReviewShareCardScreen(
                     color = ProofTheme.color.white
                 )
             }
-
         }
     }
 }
@@ -155,11 +154,19 @@ fun ReviewCard(reviewShareCard: ReviewShareCard) {
                     )
                 }
             }
+        }
 
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(end = 12.dp)
+            ,
+        ) {
             Column(
                 modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 12.dp, bottom = 86.dp)
+                    .fillMaxWidth()
+                    .padding(end = 12.dp),
+                horizontalAlignment = Alignment.End
             ) {
                 val categoryColor = getDrinkCategoryColor(reviewShareCard.wine.category)
 
@@ -183,6 +190,7 @@ fun ReviewCard(reviewShareCard: ReviewShareCard) {
                     color = Color(categoryColor),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
+                        .padding(bottom = 16.dp)
                         .background(
                             color = ProofTheme.color.gray500,
                             shape = RoundedCornerShape(4.dp)
@@ -190,80 +198,80 @@ fun ReviewCard(reviewShareCard: ReviewShareCard) {
                         .padding(6.dp)
                 )
             }
-        }
 
-        Column(
-            modifier = Modifier
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            ProofTheme.color.gray500,
-                            ProofTheme.color.gray500
-                        )
+            Column(
+                modifier = Modifier
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                ProofTheme.color.gray500,
+                                ProofTheme.color.gray500
+                            )
+                        ),
+                        alpha = 0.6f,
+                        shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
                     ),
-                    alpha = 0.6f,
-                    shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
+//                    .align(Alignment.BottomCenter),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                /**
+                 * Drink Description
+                 */
+                Text(
+                    text = reviewShareCard.wine.name,
+                    color = ProofTheme.color.white,
+                    style = ProofTheme.typography.headingS,
+                    maxLines = 2,
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 12.dp)
                 )
-                .align(Alignment.BottomCenter),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            /**
-             * Drink Description
-             */
-            Text(
-                text = reviewShareCard.wine.name,
-                color = ProofTheme.color.white,
-                style = ProofTheme.typography.headingS,
-                maxLines = 2,
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 12.dp)
-            )
 
-            Spacer(
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(color = ProofTheme.color.black)
-            )
+                Spacer(
+                    modifier = Modifier
+                        .padding(vertical = 12.dp)
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(color = ProofTheme.color.black)
+                )
 
-            /**
-             * Drink Info
-             */
-            Text(
-                text = reviewShareCard.wine.category,
-                color = ProofTheme.color.white,
-                style = ProofTheme.typography.headingXS,
-                modifier = Modifier.padding(horizontal = 8.dp)
-            )
+                /**
+                 * Drink Info
+                 */
+                Text(
+                    text = reviewShareCard.wine.category,
+                    color = ProofTheme.color.white,
+                    style = ProofTheme.typography.headingXS,
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
 
-            Text(
-                text = "ALC ${reviewShareCard.wine.alc}% . FROM reviewShareCard.wine.origin",
-                color = ProofTheme.color.white,
-                style = ProofTheme.typography.buttonM,
-                modifier = Modifier.padding(horizontal = 8.dp)
-            )
+                Text(
+                    text = "ALC ${reviewShareCard.wine.alc}% . FROM reviewShareCard.wine.origin",
+                    color = ProofTheme.color.white,
+                    style = ProofTheme.typography.buttonM,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                )
 
-            Spacer(
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(color = ProofTheme.color.black)
-            )
+                Spacer(
+                    modifier = Modifier
+                        .padding(vertical = 12.dp)
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(color = ProofTheme.color.black)
+                )
 
-            /**
-             * Review Info
-             */
-            Text(
-                text = "${reviewShareCard.userReview.mood} ${reviewShareCard.userReview.weather},${reviewShareCard.userReview.time}" +
-                        "\n${reviewShareCard.userReview.isHeavy}|${reviewShareCard.userReview.isBitter}|${reviewShareCard.userReview.isBurning}|${reviewShareCard.userReview.isStrong}",
-                color = ProofTheme.color.white,
-                style = ProofTheme.typography.bodyS,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
+                /**
+                 * Review Info
+                 */
+                Text(
+                    text = "${reviewShareCard.userReview.mood} ${reviewShareCard.userReview.weather},${reviewShareCard.userReview.time}" +
+                            "\n${reviewShareCard.userReview.isHeavy}|${reviewShareCard.userReview.isBitter}|${reviewShareCard.userReview.isBurning}|${reviewShareCard.userReview.isStrong}",
+                    color = ProofTheme.color.white,
+                    style = ProofTheme.typography.bodyS,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+            }
         }
-
     }
 }
 
