@@ -12,7 +12,6 @@ data class BestWorldCup(
 )
 
 val bestWorldCupList = listOf(
-    BestWorldCup(day ="2022.08.15", title = "하루를 마무리하는 저녁에 모여서\n 마시고 싶은 술은?", 14444,"https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500"),
     BestWorldCup(day = "2022.08.15", title = "비오는 날 \n마시고 싶은 술은?", 14444, "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500"),
     BestWorldCup(day = "2022.08.15", title = "더운 날 \n마시고 싶은 술은?", 14444, "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500"),
     BestWorldCup(day = "2022.08.15", title = "밤에 \n마시고 싶은 술은?", 14444, "https://images.absolutdrinks.com/ingredient-images/Raw/Absolut/65d43459-c926-4b12-a15b-afa7a71c2071.jpg?imwidth=500"),
