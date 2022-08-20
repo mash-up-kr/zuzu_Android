@@ -8,11 +8,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.kakao.sdk.user.UserApiClient
 import com.mashup.zuzu.MainActivity
 import com.mashup.zuzu.R
 import com.mashup.zuzu.databinding.ActivityLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -28,11 +30,11 @@ class LoginActivity : AppCompatActivity() {
         window.statusBarColor = getColor(R.color.black)
 
         lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.actionFlow.collect { action ->
                     when (action) {
                         LoginViewModel.Action.ClickKakaoLogin -> doKakaoLogin()
-                        LoginViewModel.Action.ClickSkip -> skipLogin()
+                        LoginViewModel.Action.ClickSkip -> startMainActivity()
                     }
                 }
             }
@@ -40,14 +42,18 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun doKakaoLogin() {
-        // TODO: 카카오 로그인 페이지로 이동해야 함
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        overridePendingTransition(0, 0);
-        finish()
+        UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+            if (error != null) {
+                Timber.e("Login Failed", error)
+            } else if (token != null) {
+                Timber.d("Success Login ${token.accessToken}")
+                viewModel.saveKakaoSessionToken(token.accessToken)
+                startMainActivity()
+            }
+        }
     }
 
-    private fun skipLogin() {
+    private fun startMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         overridePendingTransition(0, 0);

@@ -22,6 +22,10 @@ class LoginViewModel @Inject constructor(
     val actionFlow: Flow<Action>
         get() = channel.receiveAsFlow()
 
+    fun saveKakaoSessionToken(sessionToken: String) {
+        proofPreference.apply("kakaoSessionToken", sessionToken)
+    }
+
     fun onClickKakaoLogin() {
         channel.trySend(Action.ClickKakaoLogin)
     }
