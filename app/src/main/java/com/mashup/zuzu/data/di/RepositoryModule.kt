@@ -1,6 +1,7 @@
 package com.mashup.zuzu.data.di
 
 import com.mashup.zuzu.data.repository.*
+import com.mashup.zuzu.data.source.remote.auth.AuthRemoteDataSource
 import com.mashup.zuzu.data.source.remote.category.CategoryRemoteDataSource
 import com.mashup.zuzu.data.source.remote.review.ReviewWriteRemoteDataSource
 import com.mashup.zuzu.data.source.remote.user.UserRemoteDataSource
@@ -16,6 +17,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class RepositoryModule {
+
+    @Singleton
+    @Provides
+    fun provideProofAuthRepository(
+        proofAuthRemoteDataSource: AuthRemoteDataSource,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): AuthRepository {
+        return AuthRepository(proofAuthRemoteDataSource, ioDispatcher = ioDispatcher)
+    }
 
     @Singleton
     @Provides

@@ -16,7 +16,7 @@ import javax.inject.Inject
 /**
  * @Created by 김현국 2022/07/24
  */
-class WineRepository @Inject constructor(
+class WineRepository constructor(
     private val wineRemoteDataSource: WineRemoteDataSource,
     private val ioDispatcher: CoroutineDispatcher
 ) {

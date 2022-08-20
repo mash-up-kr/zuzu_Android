@@ -11,6 +11,7 @@ import com.mashup.zuzu.MainActivity
 import com.mashup.zuzu.R
 import com.mashup.zuzu.ui.launch.LaunchViewModel.Action.StartLogin
 import com.mashup.zuzu.ui.launch.LaunchViewModel.Action.StartMain
+import com.mashup.zuzu.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -37,8 +38,7 @@ class LaunchActivity : AppCompatActivity() {
     }
 
     private fun startLoginActivity() {
-        // TODO: LoginActivity 로 이동하도록 변경해야 함
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         overridePendingTransition(0, 0);
         finish()
