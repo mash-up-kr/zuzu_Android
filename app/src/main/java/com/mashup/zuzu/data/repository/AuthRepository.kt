@@ -27,7 +27,7 @@ class AuthRepository @Inject constructor(
         }.flowOn(ioDispatcher)
     }
 
-    fun getKakaoAccessTokenData(refreshToken: String): Flow<Results<String>> {
+    fun getKakaoAccessToken(refreshToken: String): Flow<Results<String>> {
         return flow {
             emit(Results.Loading)
             val response = authRemoteDataSource.getKakaoAccessToken(refreshToken)

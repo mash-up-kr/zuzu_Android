@@ -1,5 +1,6 @@
 package com.mashup.zuzu.data.source.remote.auth
 
+import com.mashup.zuzu.data.request.KakaoAccessTokenRequest
 import com.mashup.zuzu.data.request.ProofAuthRequest
 import com.mashup.zuzu.data.response.GetKakaoAccessTokenResponse
 import com.mashup.zuzu.data.response.GetProofAuthResponse
@@ -14,7 +15,7 @@ class AuthRemoteDataSource @Inject constructor(
     }
 
     suspend fun getKakaoAccessToken(refreshToken: String): Response<GetKakaoAccessTokenResponse> {
-        return authApi.getKakaoAccessToken(refreshToken)
+        return authApi.getKakaoAccessToken(KakaoAccessTokenRequest(refreshToken))
     }
 
     suspend fun logoutProof() {

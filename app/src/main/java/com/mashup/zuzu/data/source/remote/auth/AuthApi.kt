@@ -1,5 +1,6 @@
 package com.mashup.zuzu.data.source.remote.auth
 
+import com.mashup.zuzu.data.request.KakaoAccessTokenRequest
 import com.mashup.zuzu.data.request.ProofAuthRequest
 import com.mashup.zuzu.data.response.GetKakaoAccessTokenResponse
 import com.mashup.zuzu.data.response.GetProofAuthResponse
@@ -15,7 +16,7 @@ interface AuthApi {
 
     // 로그인 토큰 갱신
     @POST("/auth/token-refresh")
-    suspend fun getKakaoAccessToken(@Body refreshToken: String): Response<GetKakaoAccessTokenResponse>
+    suspend fun getKakaoAccessToken(@Body kakaoAccessTokenRequest: KakaoAccessTokenRequest): Response<GetKakaoAccessTokenResponse>
 
     // 사용자 로그아웃
     @POST("/auth/logout")

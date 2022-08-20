@@ -35,6 +35,10 @@ class LoginViewModel @Inject constructor(
             getProofAuthDataUseCase(kakaoAccessToken = kakaoAccessToken).collect { result ->
                 when (result) {
                     is Results.Success -> {
+                        with(proofPreference) {
+                            commit("accessToken", result.value.accessToken)
+                            commit("refreshToken", result.value.refreshToken)
+                        }
                         channel.trySend(Action.ProofAuthSuccess)
                     }
                     is Results.Failure -> {
