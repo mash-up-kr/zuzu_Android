@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.mashup.zuzu.bridge.ProofPreference
 import com.mashup.zuzu.data.model.Results
 import com.mashup.zuzu.domain.usecase.GetProofAuthDataUseCase
+import com.mashup.zuzu.util.Key
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,17 +36,15 @@ class LoginViewModel @Inject constructor(
                 when (result) {
                     is Results.Success -> {
                         with(proofPreference) {
-                            commit("accessToken", result.value.accessToken)
-                            commit("refreshToken", result.value.refreshToken)
+                            commit(Key.Preference.ACCESS_TOKEN, result.value.accessToken)
+                            commit(Key.Preference.REFRESH_TOKEN, result.value.refreshToken)
                         }
                         channel.trySend(Action.ProofAuthSuccess)
                     }
                     is Results.Failure -> {
                         channel.trySend(Action.ProofAuthFailed)
                     }
-                    is Results.Loading -> {
-
-                    }
+                    is Results.Loading -> {}
                 }
             }
         }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mashup.zuzu.bridge.ProofPreference
 import com.mashup.zuzu.data.model.Results
 import com.mashup.zuzu.data.repository.AuthRepository
+import com.mashup.zuzu.util.Key
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -49,19 +50,17 @@ class LaunchViewModel @Inject constructor(
             repository.getKakaoAccessToken(refreshToken = refreshToken).collect { result ->
                 when (result) {
                     is Results.Success -> {
-                        proofPreference.commit("accessToken", result.value)
+                        proofPreference.commit(Key.Preference.ACCESS_TOKEN, result.value)
                         action.trySend(Action.StartMain)
                     }
                     is Results.Failure -> {
                         with(proofPreference) {
-                            commit("accessToken", null)
-                            commit("refreshToken", null)
+                            commit(Key.Preference.ACCESS_TOKEN, null)
+                            commit(Key.Preference.REFRESH_TOKEN, null)
                         }
                         action.trySend(Action.StartLogin)
                     }
-                    is Results.Loading -> {
-
-                    }
+                    is Results.Loading -> {}
                 }
             }
         }
