@@ -1,6 +1,7 @@
 package com.mashup.zuzu.ui.navigation
 
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
@@ -11,7 +12,6 @@ import androidx.navigation.navigation
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 import com.mashup.zuzu.ZuzuAppState
-import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.ui.category.CategoryRoute
 import com.mashup.zuzu.ui.category.CategoryUiEvents
 import com.mashup.zuzu.ui.category.CategoryViewModel
@@ -57,7 +57,6 @@ internal fun NavGraphBuilder.homeGraph(
                 onClick = { homeUiEvents ->
                     when (homeUiEvents) {
                         is HomeUiEvents.CategoryClick -> {
-                            appState.putCategoryList(category = homeUiEvents.categoryList)
                             appState.navigateRoute(route = NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/${homeUiEvents.category.title}")
                         }
                         is HomeUiEvents.WineBoardClick -> {
@@ -83,7 +82,6 @@ internal fun NavGraphBuilder.homeGraph(
                         is UserUiEvents.WorldCupItemClick -> {
                         }
                         is UserUiEvents.WineItemClick -> {
-//                             appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${userUiEvents.wine.id}")
                             appState.navigateRoute(NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route)
                         }
                         is UserUiEvents.EditButtonClick -> {
@@ -108,21 +106,20 @@ internal fun NavGraphBuilder.categoryGraph(
         composable(
             route = NavigationRoute.CategoryScreenGraph.CategoryScreen.route + "/{category}"
         ) { navBackStackEntry ->
-            val viewModel: CategoryViewModel = hiltViewModel()
-            val category = navBackStackEntry.arguments?.getString("category")
-            val index = appState.categoryList.withIndex().filter { text -> text.value.title == category }.map { it.index }[0]
-
-            LaunchedEffect(true) {
-                if (category != null) {
-                    viewModel.updateCategory(category = category)
-                }
-                viewModel.getWineListWithPageAndCategory()
+            val parentEntry = remember(navBackStackEntry) {
+                appState.navController.getBackStackEntry(NavigationRoute.HomeScreenGraph.HomeScreen.route)
             }
+            val viewModel: CategoryViewModel = hiltViewModel()
+            val sharedViewModel: HomeViewModel = hiltViewModel(parentEntry)
+            val categoryList = sharedViewModel.categoryListState.collectAsState()
 
             CategoryRoute(
                 viewModel = viewModel,
-                index = index,
-                categoryList = appState.categoryList,
+                categoryList = categoryList.value,
+                onLoadData = {
+                    viewModel.getWineListWithPageAndCategory()
+                    viewModel.saveCategoryList(categoryList.value)
+                },
                 onClick = { categoryUiEvents ->
                     when (categoryUiEvents) {
                         is CategoryUiEvents.WineBoardClick -> {

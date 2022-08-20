@@ -9,9 +9,9 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
-import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.ui.navigation.shouldShowFloatingButtonInScreen
 import com.mashup.zuzu.ui.navigation.shouldShowNavigationItems
+import java.util.*
 
 /**
  * @Created by 김현국 2022/06/30
@@ -23,7 +23,7 @@ class ZuzuAppState constructor(
     bottomSheetNavigator: BottomSheetNavigator,
     val navController: NavHostController
 ) {
-    var categoryList = mutableStateListOf<Category>()
+
     var shouldShowProgressBar: Boolean by mutableStateOf(false)
 
     var bottomSheetNavigator by mutableStateOf(bottomSheetNavigator)
@@ -63,10 +63,6 @@ class ZuzuAppState constructor(
 
     fun showProgressBar() {
         shouldShowProgressBar = !shouldShowProgressBar
-    }
-
-    fun putCategoryList(category: List<Category>) {
-        categoryList = category.toMutableStateList()
     }
 }
 
