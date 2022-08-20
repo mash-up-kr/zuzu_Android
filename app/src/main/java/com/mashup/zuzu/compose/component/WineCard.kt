@@ -35,7 +35,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.mashup.zuzu.compose.theme.ProofTheme
-import com.mashup.zuzu.data.model.*
+import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.data.model.WineRepo
+import com.mashup.zuzu.data.model.wines
 
 /**
  * @Created by 김현국 2022/07/01

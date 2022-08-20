@@ -3,6 +3,7 @@ package com.mashup.zuzu.ui.review
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.data.request.ReviewWriteRequest
 import com.mashup.zuzu.domain.usecase.ReviewWriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +21,8 @@ class ReviewWriteViewModel @Inject constructor(
     private val page: MutableStateFlow<Int> = MutableStateFlow(0)
 
     private val wineId: Long = savedStateHandle[WINE_ID] ?: 0L
-    private val wineImageUrl: String = savedStateHandle[WINE_IMAGE_URL] ?: ""
-    private val wineName: String = savedStateHandle[WINE_NAME] ?: ""
+    private val wineImageUrl: String = savedStateHandle[WINE_IMAGE_URL] ?: wines[0].imageUrl
+    private val wineName: String = savedStateHandle[WINE_NAME] ?: wines[0].name
 
     val uiState: StateFlow<ReviewWriteUiState> =
         page.map {
@@ -35,8 +36,8 @@ class ReviewWriteViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = ReviewWriteUiState(
                 page = 0,
-                wineImageUrl = "",
-                wineName = ""
+                wineImageUrl = wines[0].imageUrl,
+                wineName = wines[0].name
             )
         )
 

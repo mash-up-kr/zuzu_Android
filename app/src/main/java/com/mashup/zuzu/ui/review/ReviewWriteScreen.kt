@@ -22,6 +22,7 @@ import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.WineImageCardForReviewWrite
 import com.mashup.zuzu.compose.theme.ProofTheme
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun ReviewWriteRoute(
@@ -33,10 +34,7 @@ fun ReviewWriteRoute(
     ReviewWriteScreen(
         uiState = uiState,
         navigatePreviousWritePage = viewModel::navigatePreviousWritePage,
-//        navigateDateSelectPage = viewModel::navigateDateSelectPage,
-        navigateDateSelectPage = {
-            navigateReviewShareCard()
-        },
+        navigateDateSelectPage = viewModel::navigateDateSelectPage,
         navigatePartnerPage = viewModel::navigatePartnerPage,
         navigateGroupPage = viewModel::navigateGroupPage,
         navigateSoloPage = viewModel::navigateSoloPage,
@@ -44,7 +42,7 @@ fun ReviewWriteRoute(
         navigateSummaryPage = viewModel::navigateSummaryPage,
         navigateSecondarySummaryPage = viewModel::navigateSecondarySummaryPage,
         navigateReviewShareCard = { place, pairing ->
-//            viewModel.navigateReviewShareCard(place, pairing)
+            viewModel.navigateReviewShareCard(place, pairing)
             navigateReviewShareCard()
         }
     )
