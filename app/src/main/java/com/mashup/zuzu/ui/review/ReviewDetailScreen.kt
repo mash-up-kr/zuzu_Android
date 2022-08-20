@@ -76,7 +76,19 @@ fun ReviewDetailScreen(
                 .background(color = ProofTheme.color.gray600)
         )
 
-        WineByReview(reviewDetailUiState.dummyWineReview)
+        Text(
+            text = "마셔본 사람들은 이 술을",
+            style = ProofTheme.typography.headingL,
+            color = ProofTheme.color.white,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
+
+        when (reviewDetailUiState.dummyWineReview) {
+            else -> {
+                EmptyReviewScreen(modifier = Modifier.padding(horizontal = 24.dp))
+            }
+//            WineByReview(reviewDetailUiState.dummyWineReview)
+        }
 
         Button(
             onClick = navigateToReviewWrite,
@@ -167,18 +179,42 @@ fun WorldCupInfo(
 }
 
 @Composable
+fun EmptyReviewScreen(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .padding(20.dp)
+            .fillMaxWidth()
+            .height(238.dp)
+            .background(
+                color = ProofTheme.color.gray600,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(painter = painterResource(id = R.drawable.ic_review_empty), contentDescription = "")
+
+        Text(
+            text = "아직 리뷰가 없어요 :(",
+            style = ProofTheme.typography.headingM,
+            color = ProofTheme.color.white
+        )
+
+        Text(
+            text = "이 술의 첫번째 리뷰어가 되어보세요!",
+            style = ProofTheme.typography.bodyM,
+            color = ProofTheme.color.gray200
+        )
+    }
+}
+
+@Composable
 fun WineByReview(
     dummyWineReview: DummyWineReview
 ) {
     Column(
-        modifier = Modifier.padding(top = 40.dp, start = 24.dp, end = 24.dp)
+        modifier = Modifier.padding(start = 24.dp, end = 24.dp)
     ) {
-        Text(
-            text = "마셔본 사람들은 이 술을",
-            style = ProofTheme.typography.headingL,
-            color = ProofTheme.color.white
-        )
-
         Text(
             text = "이럴 때 마셨어요",
             style = ProofTheme.typography.headingS,
