@@ -1,7 +1,6 @@
 package com.mashup.zuzu.data.repository
 
 import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.ui.review.ReviewDetailUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -16,7 +15,7 @@ class ReviewDetailRepository {
                     alc = 17,
                     description = "뜨는 술",
                     category = "와인",
-                    tags = listOf("뜨는 술", "맛있는 술"),
+                    tags = listOf("뜨는 술", "맛있는 술")
                 )
             )
         }

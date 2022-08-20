@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -957,6 +958,30 @@ fun RenderBlurImage(content: @Composable () -> Unit, blurImage: @Composable () -
 }
 
 @Composable
+fun BlurWithOuterHeightImage(blurOuterHeight: Float, content: @Composable () -> Unit) {
+    // blurHeight = with(LocalDensity.current) { 170.dp.toPx() } 이런식으로 사용
+    Box {
+        content()
+        Box(
+            modifier = Modifier.fillMaxWidth().fillMaxHeight().align(Alignment.BottomCenter)
+                .drawWithContent {
+                    clipRect(top = blurOuterHeight) {
+                        val colors = listOf(Color.Transparent, Color.White)
+                        this@drawWithContent.drawContent()
+                        drawRect(
+                            brush = Brush.verticalGradient(colors),
+                            blendMode = BlendMode.DstIn
+                        )
+                    }
+                }
+                .blur(10.dp, 10.dp)
+        ) {
+            content()
+        }
+    }
+}
+
+@Composable
 fun BlurImage(content: @Composable () -> Unit) {
     Box {
         content()
@@ -1172,5 +1197,26 @@ fun PreviewWineImageCardForReviewWrite() {
             wineImageUrl = wines[0].imageUrl,
             wineName = wines[0].name
         )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewNewBlurImage() {
+    ProofTheme {
+        Box(
+            modifier = Modifier.width(278.dp).height(330.dp)
+        ) {
+            BlurWithOuterHeightImage(blurOuterHeight = with(LocalDensity.current) { 170.dp.toPx() }) {
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    model = "http://img.segye.com/content/image/2016/02/16/20160216001090.jpg",
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
     }
 }

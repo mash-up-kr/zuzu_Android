@@ -87,7 +87,7 @@ fun HomeScreen(
             .fillMaxHeight()
             .verticalScroll(scrollState)
     ) {
-        HomeLogo(modifier = Modifier.padding(top = 24.dp, start = 24.dp))
+        HomeLogo(modifier = Modifier.padding(top = 24.dp, start = 24.dp).width(80.dp).height(32.dp))
         HomeMainTitle(
             modifier = Modifier
                 .fillMaxWidth()
