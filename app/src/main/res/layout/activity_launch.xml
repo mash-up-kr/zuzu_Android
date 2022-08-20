@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
+        android:fontFamily="@font/pretendard_light"
         android:gravity="center"
         android:letterSpacing="-0.02"
         android:lineHeight="26sp"
