@@ -14,7 +14,7 @@ import javax.inject.Inject
 /**
  * @Created by 김현국 2022/08/13
  */
-class WorldCupRepository @Inject constructor(
+class WorldCupRepository constructor(
     private val worldCupRemoteDataSource: WorldCupRemoteDataSource,
     private val ioDispatcher: CoroutineDispatcher
 ) {

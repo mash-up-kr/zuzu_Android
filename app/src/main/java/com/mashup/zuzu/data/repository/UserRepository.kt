@@ -14,7 +14,7 @@ import javax.inject.Inject
 /**
  * @Created by 김현국 2022/07/24
  */
-class UserRepository @Inject constructor(
+class UserRepository constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
     private val ioDispatcher: CoroutineDispatcher
 ) {
