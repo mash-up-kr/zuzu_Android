@@ -13,6 +13,9 @@ import com.kakao.sdk.user.UserApiClient
 import com.mashup.zuzu.MainActivity
 import com.mashup.zuzu.R
 import com.mashup.zuzu.databinding.ActivityLoginBinding
+import com.mashup.zuzu.ui.worldcup.WorldcupActivity
+import com.mashup.zuzu.util.Constants
+import com.mashup.zuzu.util.Key
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -35,15 +38,34 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.actionFlow.collect { action ->
                     when (action) {
                         LoginViewModel.Action.ClickKakaoLogin -> getKakaoAccessToken()
-                        LoginViewModel.Action.ClickSkip -> startMainActivity()
-                        LoginViewModel.Action.ProofAuthSuccess -> startMainActivity()
                         LoginViewModel.Action.ProofAuthFailed ->
-                            Toast.makeText(this@LoginActivity, "로그인에 실패했습니다.", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "로그인에 실패했습니다.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        LoginViewModel.Action.StartMain -> startProof(Constants.MAIN_ACTIVITY)
+                        LoginViewModel.Action.StartWorldcup -> startProof(Constants.WORLDCUP_ACTIVITY)
                     }
                 }
             }
         }
+    }
+
+    private fun startProof(targetActivity: String?) {
+        val intent: Intent
+        when (targetActivity) {
+            Constants.MAIN_ACTIVITY -> {
+                intent = Intent(this@LoginActivity, MainActivity::class.java)
+            }
+            else -> {
+                intent = Intent(this@LoginActivity, WorldcupActivity::class.java)
+                intent.putExtra(Key.NEXT_ACTIVITY, Constants.MAIN_ACTIVITY)
+            }
+        }
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+        finish()
     }
 
     private fun getKakaoAccessToken() {
@@ -55,12 +77,5 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.getProofAuthData(token.accessToken)
             }
         }
-    }
-
-    private fun startMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        overridePendingTransition(0, 0);
-        finish()
     }
 }

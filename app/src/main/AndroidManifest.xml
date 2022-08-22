@@ -37,15 +37,21 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="oauth"
                     android:scheme="kakaofae8c16c354a469723b8e15018fb46d9" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.worldcup.WorldcupActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:exported="true">
+        </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".ui.worldcup.WorldcupActivity" />
     </application>
 
 </manifest>

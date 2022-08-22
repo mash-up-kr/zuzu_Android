@@ -21,8 +21,8 @@ class LoginViewModel @Inject constructor(
 
     sealed class Action {
         object ClickKakaoLogin : Action()
-        object ClickSkip : Action()
-        object ProofAuthSuccess : Action()
+        object StartMain : Action()
+        object StartWorldcup : Action()
         object ProofAuthFailed : Action()
     }
 
@@ -39,7 +39,7 @@ class LoginViewModel @Inject constructor(
                             commit(Key.Preference.ACCESS_TOKEN, result.value.accessToken)
                             commit(Key.Preference.REFRESH_TOKEN, result.value.refreshToken)
                         }
-                        channel.trySend(Action.ProofAuthSuccess)
+                        startActivity()
                     }
                     is Results.Failure -> {
                         channel.trySend(Action.ProofAuthFailed)
@@ -55,6 +55,16 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onClickSkip() {
-        channel.trySend(Action.ClickSkip)
+        startActivity()
+    }
+
+    private fun startActivity() {
+        val isFirstRun = proofPreference.get(Key.Preference.IS_FIRST_RUN, true)
+        if (!isFirstRun) {
+            channel.trySend(Action.StartMain)
+        } else {
+            channel.trySend(Action.StartWorldcup)
+            proofPreference.commit(Key.Preference.IS_FIRST_RUN, false)
+        }
     }
 }
