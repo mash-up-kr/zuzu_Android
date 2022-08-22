@@ -82,7 +82,6 @@ internal fun NavGraphBuilder.homeGraph(
                         is UserUiEvents.WorldCupItemClick -> {
                         }
                         is UserUiEvents.WineItemClick -> {
-//                             appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${userUiEvents.wine.id}")
                             appState.navigateRoute(NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route + "/${userUiEvents.wine.id}")
                         }
                         is UserUiEvents.EditButtonClick -> {
@@ -273,7 +272,7 @@ internal fun NavGraphBuilder.reviewGraph(
         ) {
             ReviewDetailRoute(
                 viewModel = hiltViewModel(),
-                navigateBack = {},
+                navigateBack = { appState.navigateBackStack() },
                 navigateToReviewWrite = { appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewWriteScreen.route) }
             )
         }

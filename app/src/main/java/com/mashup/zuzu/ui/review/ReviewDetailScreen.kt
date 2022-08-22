@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.review
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -104,6 +105,10 @@ fun ReviewDetailScreen(
                 color = ProofTheme.color.white
             )
         }
+    }
+
+    BackHandler {
+        navigateBack()
     }
 }
 
