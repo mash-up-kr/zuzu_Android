@@ -73,7 +73,7 @@ class ZuzuAppState constructor(
 private val NavGraph.startDestination: NavDestination?
     get() = findNode(startDestinationId)
 
-private tailrec fun findStartDestination(graph: NavDestination): NavDestination {
+tailrec fun findStartDestination(graph: NavDestination): NavDestination {
     return if (graph is NavGraph) findStartDestination(graph = graph.startDestination!!) else graph
 }
 

@@ -23,11 +23,11 @@ class SettingViewModel @Inject constructor(
     val user = _user.asStateFlow()
 
     init {
-        getUserData(0L)
+        getUserData()
     }
-    fun getUserData(userId: Long) {
+    fun getUserData() {
         viewModelScope.launch {
-            getUserDataUseCase(userId = userId).collect { result ->
+            getUserDataUseCase().collect { result ->
                 when (result) {
                     is Results.Loading -> {
                         _user.value = UserUiState.Loading
