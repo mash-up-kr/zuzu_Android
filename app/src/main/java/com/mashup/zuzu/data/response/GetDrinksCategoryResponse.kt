@@ -21,6 +21,6 @@ data class GetDrinksCategoryResponse(
     @SerializedName("name")
     val name: String,
 
-    @SerializedName("image_url")
+    @SerializedName("imageUrl")
     val image_url: String
 )

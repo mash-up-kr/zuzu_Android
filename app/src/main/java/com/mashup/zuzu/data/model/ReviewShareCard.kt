@@ -5,6 +5,11 @@ data class ReviewShareCard(
     val userReview: UserReview = UserReview()
 )
 
+data class ReviewShareCards(
+    val wine: Wine,
+    val userReviews: List<UserReview>
+)
+
 data class UserReview(
     val id: Long = 2,
     val createdAt: String = "2022-08-12T23:21:49.246Z",

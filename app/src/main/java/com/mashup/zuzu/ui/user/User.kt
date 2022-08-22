@@ -30,6 +30,8 @@ import com.mashup.zuzu.compose.component.*
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.data.model.dummy.dummyWineList
+import com.mashup.zuzu.ui.model.BestWorldCup
+import com.mashup.zuzu.ui.model.bestWorldCupList
 import com.mashup.zuzu.util.rememberScrollContext
 
 /**

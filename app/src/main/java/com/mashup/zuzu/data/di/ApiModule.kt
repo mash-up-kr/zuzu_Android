@@ -62,7 +62,6 @@ class ApiModule {
         return retrofit.create(ReviewApi::class.java)
     }
 
-
     @Singleton
     @Provides
     fun provideWebPreference(@ApplicationContext context: Context): ProofPreference {
