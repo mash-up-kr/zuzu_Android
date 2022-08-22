@@ -278,7 +278,10 @@ fun GroupSelectOption(
         )
     )
 
-    var selectPair = Pair("", 0)
+    var selectPair by remember {
+        mutableStateOf(Pair("", 0))
+    }
+
     var selectIndexPair by remember {
         mutableStateOf(Pair<Int?, Int?>(null, null))
     }
