@@ -1,11 +1,10 @@
 package com.mashup.zuzu.data.source.remote.user
 
-import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.data.request.RequestProfile
 import com.mashup.zuzu.data.request.UpdateUsersRequest
 import com.mashup.zuzu.data.response.GetReviewsDrinksResponse
 import com.mashup.zuzu.data.response.GetUserProfileImagesResponse
-import com.mashup.zuzu.data.response.GetUsersResponse
+import com.mashup.zuzu.data.response.model.User
 import com.mashup.zuzu.data.source.remote.review.ReviewApi
 import retrofit2.Response
 import javax.inject.Inject
@@ -19,7 +18,7 @@ class UserRemoteDataSource @Inject constructor(
 ) {
 
     // 유저 데이터 가져오기
-    suspend fun getUserData(userId: Long): Response<GetUsersResponse> {
+    suspend fun getUserData(): Response<User> {
         return userApi.getUser()
     }
 

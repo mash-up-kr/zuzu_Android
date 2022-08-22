@@ -3,7 +3,7 @@ package com.mashup.zuzu.data.mapper
 import com.mashup.zuzu.data.model.User
 import com.mashup.zuzu.data.model.UserProfileImages
 import com.mashup.zuzu.data.response.GetUserProfileImagesResponse
-import com.mashup.zuzu.data.response.GetUsersResponse
+import com.mashup.zuzu.data.response.model.User as UserResponse
 
 /**
  * @Created by 김현국 2022/08/13
@@ -21,12 +21,12 @@ fun userProfileImagesResponseToModel(
 }
 
 fun userResponseToModel(
-    getUsersResponse: GetUsersResponse
+    user: UserResponse
 ): User {
     return User(
-        id = getUsersResponse.user.id,
-        name = getUsersResponse.user.nickname,
-        email = getUsersResponse.user.social_id,
-        image = getUsersResponse.user.profile.image_url
+        id = user.id,
+        name = user.nickname,
+        email = user.email,
+        image = user.profile.image_url
     )
 }

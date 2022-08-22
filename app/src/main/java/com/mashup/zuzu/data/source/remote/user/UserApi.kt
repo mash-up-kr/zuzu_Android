@@ -2,7 +2,7 @@ package com.mashup.zuzu.data.source.remote.user
 
 import com.mashup.zuzu.data.request.UpdateUsersRequest
 import com.mashup.zuzu.data.response.GetUserProfileImagesResponse
-import com.mashup.zuzu.data.response.GetUsersResponse
+import com.mashup.zuzu.data.response.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -16,7 +16,7 @@ interface UserApi {
 
     // 유저 데이터 가져오기
     @GET("/users")
-    suspend fun getUser(): Response<GetUsersResponse>
+    suspend fun getUser(): Response<User>
 
     // 유저 데이터 업데이트
     @PUT("/users")

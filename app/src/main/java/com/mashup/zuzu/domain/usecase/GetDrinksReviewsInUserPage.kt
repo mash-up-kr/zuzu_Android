@@ -14,7 +14,7 @@ import javax.inject.Singleton
 class GetDrinksReviewsInUserPage @Inject constructor(
     private val repository: WineRepository
 ) {
-    operator fun invoke(userId: Long): Flow<Results<List<Wine>>> {
+    operator fun invoke(): Flow<Results<List<Wine>>> {
         return repository.getDrinksReviewsInUserPage()
     }
 }
