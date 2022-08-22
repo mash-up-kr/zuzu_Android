@@ -11,6 +11,7 @@ import androidx.navigation.navigation
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 import com.mashup.zuzu.ZuzuAppState
+import com.mashup.zuzu.findStartDestination
 import com.mashup.zuzu.ui.category.CategoryRoute
 import com.mashup.zuzu.ui.category.CategoryUiEvents
 import com.mashup.zuzu.ui.category.CategoryViewModel
@@ -82,7 +83,6 @@ internal fun NavGraphBuilder.homeGraph(
                         is UserUiEvents.WorldCupItemClick -> {
                         }
                         is UserUiEvents.WineItemClick -> {
-//                             appState.navigateRoute("${NavigationRoute.ReviewGraph.ReviewDetailScreen.route}/${userUiEvents.wine.id}")
                             appState.navigateRoute(NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route + "/${userUiEvents.wine.id}")
                         }
                         is UserUiEvents.EditButtonClick -> {
@@ -241,11 +241,13 @@ internal fun NavGraphBuilder.userGraph(
                 onSubmitState = { updateProfileUiEventState ->
                     when (updateProfileUiEventState) {
                         is UpdateProfileUiEventState.Success -> {
-                            appState.showProgressBar()
-                            appState.navigateBackStack()
+                            viewModel.getUserData()
+                            appState.navController.navigate(NavigationRoute.UserScreenGraph.UserScreen.route) {
+                                popUpTo(findStartDestination(graph = appState.navController.graph).id)
+                                launchSingleTop = true
+                            }
                         }
                         is UpdateProfileUiEventState.Loading -> {
-                            appState.showProgressBar()
                         }
                         is UpdateProfileUiEventState.Error -> {}
                         is UpdateProfileUiEventState.Init -> {}
