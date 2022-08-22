@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
@@ -702,7 +703,8 @@ fun SummarySelectOption(
                 Text(
                     text = optionContent.second,
                     style = ProofTheme.typography.buttonS,
-                    color = ProofTheme.color.white
+                    color = ProofTheme.color.white,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -724,7 +726,7 @@ fun SecondarySummaryPage(
     }
 
     Column(
-        modifier = modifier,
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

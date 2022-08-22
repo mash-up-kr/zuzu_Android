@@ -184,12 +184,6 @@ fun ReviewWriteScreen(
                 .verticalScroll(scrollState)
         ) {
             Column(
-                modifier = Modifier.padding(
-                    start = 24.dp,
-                    end = 24.dp,
-                    top = 40.dp,
-                    bottom = 34.dp
-                ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 WineImageCardForReviewWrite(
@@ -321,7 +315,7 @@ fun Topic(
         if (pageNum > 0) {
             IconButton(
                 onClick = onClickBackButton,
-                modifier = Modifier.padding(start = 24.dp)
+                modifier = Modifier.padding(end = 40.dp)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_pre_arrow_white),
@@ -332,7 +326,7 @@ fun Topic(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().fillMaxHeight().align(Alignment.Center),
             horizontalArrangement = Arrangement.Center
         ) {
             val topic = when (pageNum) {
