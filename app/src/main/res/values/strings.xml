@@ -1,5 +1,8 @@
 <resources>
+    <!--  Default Setting  -->
     <string name="app_name">Proof</string>
+    <string name="kakao_app_key">fae8c16c354a469723b8e15018fb46d9</string>
+
     <string name="review_cancel_title">작성을 그만두시겠어요?</string>
     <string name="review_cancel_content">지금 그만두면 작성한 내용이 사라져요.</string>
     <string name="cancel">취소</string>
@@ -9,6 +12,11 @@
 
     <!-- 스플래시 -->
     <string name="splash_title">나랑 제일 맞는 술을\n즐겁게 찾고 기록하는 방법.</string>
+
+    <!-- 로그인 -->
+    <string name="login_title">지금 로그인하고\n나의 술 취향을 증명해보세요</string>
+    <string name="kakao_login_button">카카오 로그인</string>
+    <string name="skip_login_button">앱 둘러보기</string>
 
     <!-- 리뷰 작성 날씨 -->
     <string name="topic_weather">이 술을 마셨던 날의\n날씨는...</string>
@@ -72,9 +80,10 @@
 
     <!-- 홈 -->
     <string name="home_top_title">요즘 사람들은 \n어떤 술을 마실까?</string>
+    <string name="home_see_random_drink">랜덤 술 보기 </string>
     <string name="home_sub_title">무엇을 마실지 고민이라면?</string>
-    <string name="home_today_recommend_wine">오늘의 추천 술</string>
-    <string name="home_today_best_worldcup">지금 가장 인기잇는 술드컵</string>
+    <string name="home_today_random_wine">오늘의 랜덤 술</string>
+    <string name="home_today_best_worldcup">지금 가장 인기있는 술드컵</string>
 
     <!-- 유저 -->
     <string name="user_wine_caller">술 저장고</string>
@@ -93,7 +102,6 @@
     <string name="leave_bigtitle">정말로 탈퇴하시겠어요?</string>
     <string name="leave_subtitle">회원님의 정보, 리뷰 등 기록이 전부 삭제되며\n다시는 되돌릴 수 없어요.</string>
     <string name="leave_keep_using">계속 사용할래요</string>
-
 
 
 </resources>

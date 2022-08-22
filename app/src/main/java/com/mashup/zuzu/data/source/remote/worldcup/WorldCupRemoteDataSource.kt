@@ -1,5 +1,7 @@
 package com.mashup.zuzu.data.source.remote.worldcup
 
+import com.mashup.zuzu.data.response.GetWorldCupPopularResponse
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -7,4 +9,9 @@ import javax.inject.Inject
  */
 class WorldCupRemoteDataSource @Inject constructor(
     private val worldCupApi: WorldCupApi
-)
+) {
+
+    suspend fun getPopularWorldCup(): Response<List<GetWorldCupPopularResponse>> {
+        return worldCupApi.getPopularWorldCup()
+    }
+}

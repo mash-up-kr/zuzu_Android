@@ -18,7 +18,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val getUserDataUseCase: GetUserDataUseCase,
     private val getJoinedWorldCupListUseCase: GetJoinedWorldCupListUseCase,
-    private val getWineCallerListUseCase: GetWineCallerListUseCase,
+    private val getWineCallerListUseCase: GetDrinksReviewsInUserPage,
     private val updateUserProfileUseCase: UpdateUserProfileUseCase,
     private val getUserProfileImagesUseCase: GetUserProfileImagesUseCase
 ) : ViewModel() {

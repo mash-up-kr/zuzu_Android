@@ -4,6 +4,7 @@ import android.content.Context
 import com.mashup.zuzu.BuildConfig
 import com.mashup.zuzu.ProofPreferenceImpl
 import com.mashup.zuzu.bridge.ProofPreference
+import com.mashup.zuzu.data.source.remote.auth.AuthApi
 import com.mashup.zuzu.data.source.remote.category.CategoryApi
 import com.mashup.zuzu.data.source.remote.review.ReviewApi
 import com.mashup.zuzu.data.source.remote.user.UserApi
@@ -24,6 +25,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class ApiModule {
+
+    @Provides
+    @Singleton
+    fun provideProofAuthRemoteApi(retrofit: Retrofit): AuthApi {
+        return retrofit.create(AuthApi::class.java)
+    }
 
     @Provides
     @Singleton
@@ -54,7 +61,6 @@ class ApiModule {
     fun provideReviewRemoteApi(retrofit: Retrofit): ReviewApi {
         return retrofit.create(ReviewApi::class.java)
     }
-
 
     @Singleton
     @Provides

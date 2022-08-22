@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.mashup.zuzu.ui.login.LoginViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".ui.login.LoginActivity">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/ic_logo"
+            app:layout_constraintBottom_toTopOf="@+id/authTitleTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/authTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/pretendard_extrabold"
+            android:gravity="center"
+            android:lineHeight="35sp"
+            android:text="@string/login_title"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/authImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/authImageView"
+            android:layout_width="230dp"
+            android:layout_height="324dp"
+            android:src="@drawable/img_authentication"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/kakaoLoginTextView"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/bg_yellow_round_8"
+            android:gravity="center"
+            android:onClick="@{() -> viewModel.onClickKakaoLogin()}"
+            app:layout_constraintTop_toBottomOf="@+id/authImageView" />
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:onClick="@{() -> viewModel.onClickKakaoLogin()}"
+            android:src="@drawable/ic_kakao"
+            app:layout_constraintBottom_toBottomOf="@id/kakaoLoginTextView"
+            app:layout_constraintRight_toLeftOf="@+id/loginTitleTextView"
+            app:layout_constraintRight_toRightOf="@+id/kakaoLoginTextView"
+            app:layout_constraintTop_toTopOf="@id/kakaoLoginTextView" />
+
+
+        <TextView
+            android:id="@+id/loginTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:gravity="center"
+            android:onClick="@{() -> viewModel.onClickKakaoLogin()}"
+            android:text="@string/kakao_login_button"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/kakaoLoginTextView"
+            app:layout_constraintEnd_toEndOf="@+id/kakaoLoginTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintLeft_toLeftOf="@+id/kakaoLoginTextView"
+            app:layout_constraintLeft_toRightOf="@id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/kakaoLoginTextView"
+            app:layout_constraintTop_toTopOf="@id/kakaoLoginTextView" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/showMainTextView"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:onClick="@{() -> viewModel.onClickSkip()}"
+            android:background="@drawable/bg_gray_400_round_8"
+            android:fontFamily="@font/pretendard_bold"
+            android:gravity="center"
+            android:text="@string/skip_login_button"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/kakaoLoginTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

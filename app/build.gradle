@@ -105,6 +105,9 @@ dependencies {
     //okhttp3
     implementation(libs.okHttpLog)
 
+    // kakao
+    implementation(libs.kakao)
+
     //snapper
     implementation(libs.snapper)
 

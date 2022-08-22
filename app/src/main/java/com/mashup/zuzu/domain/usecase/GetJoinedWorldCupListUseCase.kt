@@ -1,8 +1,7 @@
 package com.mashup.zuzu.domain.usecase
 
-import com.mashup.zuzu.data.model.BestWorldCup
+import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.data.model.Results
-import com.mashup.zuzu.data.repository.UserRepository
 import com.mashup.zuzu.data.repository.WorldCupRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

@@ -1,8 +1,7 @@
 package com.mashup.zuzu.data.source.remote.wine
 
-import com.mashup.zuzu.data.response.GetDrinksResponse
 import com.mashup.zuzu.data.response.GetDrinksWithCategoryResponse
-import com.mashup.zuzu.data.response.GetDrinksWithIdResponse
+import com.mashup.zuzu.data.response.model.Wine
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -13,13 +12,15 @@ class WineRemoteDataSource @Inject constructor(
     private val wineApi: WineApi
 ) {
 
-    suspend fun getDrinks(): Response<List<GetDrinksResponse>> {
-        return wineApi.getDrinks()
+    // 요즘 사람들은 무슨 술을 마실까?
+    suspend fun getRecommendDrinks(): Response<List<Wine>> {
+        return wineApi.getRecommendDrinks()
     }
 
+    // 특정 id에 해당하는 주류 디테일 정보 가져오기
     suspend fun getDrinksWithId(
         id: Long
-    ): Response<GetDrinksWithIdResponse> {
+    ): Response<Wine> {
         return wineApi.getDrinksWithId(id = id)
     }
 
@@ -37,7 +38,12 @@ class WineRemoteDataSource @Inject constructor(
     }
 
     // 유저페이지 술 저장고 내부 술 리스트 가져오기
-    suspend fun getDrinksReviewsInUserPage(): Response<List<GetDrinksResponse>> {
+    suspend fun getDrinksReviewsInUserPage(): Response<List<Wine>> {
         return wineApi.getDrinksReviewsInUserPage()
+    }
+
+    // 랜덤 술 가져오기
+    suspend fun getRandomDrinks(): Response<Wine> {
+        return wineApi.getRandomDrinks()
     }
 }

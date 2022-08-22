@@ -33,7 +33,6 @@ import kotlinx.coroutines.launch
  * @Created by 김현국 2022/07/27
  */
 
-
 @Composable
 @UiComposable
 fun CustomScrollableTabRow(

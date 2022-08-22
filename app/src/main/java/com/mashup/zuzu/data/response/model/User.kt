@@ -7,6 +7,12 @@ import com.google.gson.annotations.SerializedName
  */
 data class User(
 
+    @SerializedName("accessToken")
+    val accessToken: String?,
+
+    @SerializedName("refreshToken")
+    val refreshToken: String?,
+
     @SerializedName("email")
     val email: String,
 
@@ -22,7 +28,7 @@ data class User(
     @SerializedName("profile")
     val profile: Profile,
 
-    @SerializedName("social_id")
+    @SerializedName("socialId")
     val social_id: String,
 
     @SerializedName("type")

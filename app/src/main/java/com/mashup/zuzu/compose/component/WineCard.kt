@@ -1092,133 +1092,133 @@ fun WineCellarCard(
     }
 }
 
-@Preview
-@Composable
-fun PreviewWineCellarCard() {
-    ProofTheme {
-        WineCellarCard(
-            modifier = Modifier
-                .width(88.dp)
-                .height(156.dp)
-                .background(color = ProofTheme.color.black),
-            wine = WineRepo.getWineData()[0],
-            onWineClick = {},
-            null
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewWindImageCard() {
-    ProofTheme() {
-        WineImageCard(
-            modifier = Modifier
-                .height(412.dp)
-                .width(309.dp),
-            wine = wines[0]
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewWineTagCard() {
-    ProofTheme() {
-        WineTagCard(tagDescription = "비오는 날", backgroundColor = ProofTheme.color.black, textColor = ProofTheme.color.white)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewWindBoardCard() {
-    ProofTheme() {
-        WineBoardCard(
-            modifier = Modifier
-                .height(260.dp)
-                .width(220.dp),
-            wine = wines[0],
-            onWineBoardClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewPagerCard() {
-    ProofTheme() {
-        PagerWineCard(
-            modifier = Modifier
-                .width(282.dp)
-                .height(448.dp),
-            wine = wines[0],
-            onWineBoardClick = {},
-            null
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewRecommendWineCard() {
-    ProofTheme() {
-        RecommendWineCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(367.dp)
-                .padding(start = 24.dp, end = 24.dp, top = 19.dp)
-                .clip(RoundedCornerShape(16.dp)),
-            recommendWine = WineRepo.getRecommendWine(),
-            onRefreshButtonClick = {
-            }
-        )
-    }
-}
-
-@Preview(
-    showBackground = true,
-    name = "리뷰 디테일 용"
-)
-@Composable
-fun PreviewWindBoardCardForReviewDetail() {
-    ProofTheme() {
-        WineImageCardForReviewDetail(
-            modifier = Modifier
-                .height(260.dp)
-                .width(220.dp),
-            wine = wines[0]
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewWineImageCardForReviewWrite() {
-    ProofTheme() {
-        WineImageCardForReviewWrite(
-            wineImageUrl = wines[0].imageUrl,
-            wineName = wines[0].name
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewNewBlurImage() {
-    ProofTheme {
-        Box(
-            modifier = Modifier.width(278.dp).height(330.dp)
-        ) {
-            BlurWithOuterHeightImage(blurOuterHeight = with(LocalDensity.current) { 170.dp.toPx() }) {
-                AsyncImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(),
-                    model = "http://img.segye.com/content/image/2016/02/16/20160216001090.jpg",
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
-                )
-            }
-        }
-    }
-}
+//@Preview
+//@Composable
+//fun PreviewWineCellarCard() {
+//    ProofTheme {
+//        WineCellarCard(
+//            modifier = Modifier
+//                .width(88.dp)
+//                .height(156.dp)
+//                .background(color = ProofTheme.color.black),
+//            wine = WineRepo.getWineData()[0],
+//            onWineClick = {},
+//            null
+//        )
+//    }
+//}
+//
+//@Preview
+//@Composable
+//fun PreviewWindImageCard() {
+//    ProofTheme() {
+//        WineImageCard(
+//            modifier = Modifier
+//                .height(412.dp)
+//                .width(309.dp),
+//            wine = wines[0]
+//        )
+//    }
+//}
+//
+//@Preview
+//@Composable
+//fun PreviewWineTagCard() {
+//    ProofTheme() {
+//        WineTagCard(tagDescription = "비오는 날", backgroundColor = ProofTheme.color.black, textColor = ProofTheme.color.white)
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewWindBoardCard() {
+//    ProofTheme() {
+//        WineBoardCard(
+//            modifier = Modifier
+//                .height(260.dp)
+//                .width(220.dp),
+//            wine = wines[0],
+//            onWineBoardClick = {}
+//        )
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewPagerCard() {
+//    ProofTheme() {
+//        PagerWineCard(
+//            modifier = Modifier
+//                .width(282.dp)
+//                .height(448.dp),
+//            wine = wines[0],
+//            onWineBoardClick = {},
+//            null
+//        )
+//    }
+//}
+//
+//@Preview
+//@Composable
+//fun PreviewRecommendWineCard() {
+//    ProofTheme() {
+//        RecommendWineCard(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(367.dp)
+//                .padding(start = 24.dp, end = 24.dp, top = 19.dp)
+//                .clip(RoundedCornerShape(16.dp)),
+//            recommendWine = WineRepo.getRecommendWine(),
+//            onRefreshButtonClick = {
+//            }
+//        )
+//    }
+//}
+//
+//@Preview(
+//    showBackground = true,
+//    name = "리뷰 디테일 용"
+//)
+//@Composable
+//fun PreviewWindBoardCardForReviewDetail() {
+//    ProofTheme() {
+//        WineImageCardForReviewDetail(
+//            modifier = Modifier
+//                .height(260.dp)
+//                .width(220.dp),
+//            wine = wines[0]
+//        )
+//    }
+//}
+//
+//@Preview
+//@Composable
+//fun PreviewWineImageCardForReviewWrite() {
+//    ProofTheme() {
+//        WineImageCardForReviewWrite(
+//            wineImageUrl = wines[0].imageUrl,
+//            wineName = wines[0].name
+//        )
+//    }
+//}
+//
+//@Preview
+//@Composable
+//fun PreviewNewBlurImage() {
+//    ProofTheme {
+//        Box(
+//            modifier = Modifier.width(278.dp).height(330.dp)
+//        ) {
+//            BlurWithOuterHeightImage(blurOuterHeight = with(LocalDensity.current) { 170.dp.toPx() }) {
+//                AsyncImage(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .fillMaxHeight(),
+//                    model = "http://img.segye.com/content/image/2016/02/16/20160216001090.jpg",
+//                    contentDescription = null,
+//                    contentScale = ContentScale.Crop
+//                )
+//            }
+//        }
+//    }
+//}

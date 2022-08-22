@@ -13,7 +13,7 @@ import javax.inject.Inject
 /**
  * @Created by 김현국 2022/07/24
  */
-class CategoryRepository @Inject constructor(
+class CategoryRepository constructor(
     private val categoryRemoteDataSource: CategoryRemoteDataSource,
     private val ioDispatcher: CoroutineDispatcher
 ) {
