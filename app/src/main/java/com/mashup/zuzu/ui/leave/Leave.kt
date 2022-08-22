@@ -1,6 +1,6 @@
 package com.mashup.zuzu.ui.leave
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -142,7 +142,12 @@ fun LeaveTitle(
 fun LeaveIllus(
     modifier: Modifier
 ) {
-    Box(modifier = modifier.background(color = ProofTheme.color.gray200)) {
+    Box(modifier = modifier) {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = R.drawable.ic_no_item),
+            contentDescription = null
+        )
     }
 }
 
