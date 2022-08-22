@@ -318,7 +318,7 @@ fun ReviewCard(
 }
 
 //TODO: 서버에서 내려주는 Category 상수가 확정되는대로 분기를 추가해줄 것
-private fun getDrinkCategoryColor(category: String): Long {
+fun getDrinkCategoryColor(category: String): Long {
     val color = when (category) {
         "Beer" -> 0xFFFFD9BE
         else -> 0xFFDFF8A2

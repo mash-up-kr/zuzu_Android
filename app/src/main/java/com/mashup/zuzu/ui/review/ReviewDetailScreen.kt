@@ -65,7 +65,7 @@ fun ReviewDetailScreen(
     ) {
         WineImageCardForReviewDetail(wine = reviewDetailUiState.wine)
 
-        WineInformation(content = reviewDetailUiState.wine.description)
+        WineInformation(content = reviewDetailUiState.wine.description ?: "")
 
         WorldCupInfo(reviewDetailUiState.dummyWorldCupData)
 
