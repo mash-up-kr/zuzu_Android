@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
 import com.mashup.zuzu.ui.navigation.*
-import com.mashup.zuzu.compose.theme.ProofTheme
 
 /**
  * @Created by 김현국 2022/06/30
@@ -59,7 +59,7 @@ fun ZuzuApp(
                             modifier = Modifier
                                 .width(40.dp)
                                 .height(40.dp),
-                            painter = painterResource(id = R.drawable.img_wine_logo),
+                            painter = painterResource(id = R.drawable.ic_worldcup),
                             contentDescription = null
                         )
                     }

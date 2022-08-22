@@ -2,6 +2,7 @@ package com.mashup.zuzu.ui.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mashup.zuzu.data.mapper.joinWorldListResponseToUiModel
 import com.mashup.zuzu.data.model.Results
 import com.mashup.zuzu.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,17 +39,20 @@ class UserViewModel @Inject constructor(
     private val _userProfileImages: MutableStateFlow<UserProfileImagesUiState> = MutableStateFlow(UserProfileImagesUiState.Loading)
     val userProfileImages = _userProfileImages.asStateFlow()
 
+    private val _userImageUrl = MutableStateFlow("")
+
     init {
-        getUserData(userId = 0L) // userId 수정
-        getWineCallerData(userId = 0L)
-        getJoinWorldCupData(userId = 0L)
+        getUserData()
+        getWineCallerData()
+        getJoinWorldCupData()
     }
 
-    private fun getUserData(userId: Long) {
+    fun getUserData() {
         viewModelScope.launch {
-            getUserDataUseCase(userId = userId).collect { result ->
+            getUserDataUseCase().collect { result ->
                 when (result) {
                     is Results.Success -> {
+                        _userImageUrl.value = result.value.image
                         _user.value = UserUiState.Success(result.value)
                     }
                     is Results.Failure -> {
@@ -61,9 +65,9 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getWineCallerData(userId: Long) {
+    fun getWineCallerData() {
         viewModelScope.launch {
-            getWineCallerListUseCase(userId = userId).collect { result ->
+            getWineCallerListUseCase().collect { result ->
                 when (result) {
                     is Results.Success -> {
                         if (result.value.isEmpty()) {
@@ -83,15 +87,16 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getJoinWorldCupData(userId: Long) {
+    fun getJoinWorldCupData() {
         viewModelScope.launch {
-            getJoinedWorldCupListUseCase(userId = userId).collect { result ->
+            getJoinedWorldCupListUseCase().collect { result ->
                 when (result) {
                     is Results.Success -> {
                         if (result.value.isEmpty()) {
                             _joinedWorldCup.value = JoinedWorldCupUiState.NoItem
                         } else {
-                            _joinedWorldCup.value = JoinedWorldCupUiState.Success(result.value)
+                            val data = joinWorldListResponseToUiModel(result.value)
+                            _joinedWorldCup.value = JoinedWorldCupUiState.Success(data)
                         }
                     }
                     is Results.Loading -> {
@@ -128,7 +133,16 @@ class UserViewModel @Inject constructor(
             getUserProfileImagesUseCase().collect { result ->
                 when (result) {
                     is Results.Success -> {
-                        _userProfileImages.value = UserProfileImagesUiState.Success(result.value)
+                        val idx = result.value.withIndex().filter {
+                            it.value.image_url == _userImageUrl.value
+                        }.map {
+                            it.index
+                        }
+                        val currentProfile = result.value[idx[0]] // 현재의 유저의 이미지
+                        val newResult = result.value.toMutableList()
+                        newResult.removeAt(idx[0])
+                        newResult.add(0, currentProfile)
+                        _userProfileImages.value = UserProfileImagesUiState.Success(newResult)
                     }
                     is Results.Loading -> {
                     }

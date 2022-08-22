@@ -15,7 +15,7 @@ import javax.inject.Singleton
 class GetUserDataUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    operator fun invoke(userId: Long): Flow<Results<User>> {
-        return repository.getUserData(userId = userId)
+    operator fun invoke(): Flow<Results<User>> {
+        return repository.getUserData()
     }
 }

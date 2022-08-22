@@ -7,7 +7,6 @@ import com.mashup.zuzu.data.model.User
  * @Created by 김현국 2022/07/15
  */
 
-
 @Stable
 class UserState constructor(
     initSelectionOption: String,

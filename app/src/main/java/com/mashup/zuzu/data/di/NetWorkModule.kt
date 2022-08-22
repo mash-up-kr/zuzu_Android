@@ -1,6 +1,7 @@
 package com.mashup.zuzu.data.di
 
 import com.mashup.zuzu.BuildConfig
+import com.mashup.zuzu.bridge.ProofPreference
 import com.mashup.zuzu.data.network.NetworkInterceptor
 import dagger.Module
 import dagger.Provides
@@ -24,8 +25,8 @@ class NetWorkModule {
 
     @Provides
     @Singleton
-    fun provideNetworkInterceptor(): NetworkInterceptor {
-        return NetworkInterceptor()
+    fun provideNetworkInterceptor(proofPreference: ProofPreference): NetworkInterceptor {
+        return NetworkInterceptor(proofPreference = proofPreference)
     }
 
     @Provides

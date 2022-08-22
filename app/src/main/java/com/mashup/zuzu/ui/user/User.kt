@@ -11,17 +11,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
@@ -248,12 +248,11 @@ fun UserTopBar(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Start
         ) {
-            Image( // ProfileImage
+            AsyncImage( // ProfileImage
                 modifier = Modifier
                     .width(36.dp)
                     .height(36.dp),
-                imageVector = Icons.Filled.Person,
-                colorFilter = ColorFilter.tint(ProofTheme.color.gray300),
+                model = user.image,
                 contentDescription = null
             )
         }
@@ -371,29 +370,16 @@ fun NoItemWineOrWorldCup(
         }
         Box(
             modifier = Modifier
-                .background(
-                    color = ProofTheme.color.primary200,
-                    shape = RoundedCornerShape(8.dp)
-                )
+                .clip(RoundedCornerShape(8.dp))
                 .width(280.dp)
                 .height(280.dp)
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewUserScreen() {
-    ProofTheme {
-        UserScreen(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
-            user = user,
-            wineCallerState = WineCallerUiState.Loading,
-            joinedWorldCupState = JoinedWorldCupUiState.Loading,
-            onClick = {}
-        )
+        ) {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                painter = painterResource(id = R.drawable.ic_no_item),
+                contentDescription = null
+            )
+        }
     }
 }
 

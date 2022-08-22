@@ -10,7 +10,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/24
@@ -19,15 +18,14 @@ class UserRepository constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    fun getUserData(userId: Long): Flow<Results<User>> {
+    fun getUserData(): Flow<Results<User>> {
         return flow {
             emit(Results.Loading)
-            val response = userRemoteDataSource.getUserData(userId = userId)
+            val response = userRemoteDataSource.getUserData()
             val data = response.body()
             if (response.isSuccessful && data != null) {
                 emit(Results.Success(userResponseToModel(data)))
             }
-            emit(Results.Success(user))
         }.flowOn(ioDispatcher)
     }
 
@@ -75,7 +73,7 @@ class UserRepository constructor(
                 val data = reviewsDrinksResponseToModel(body)
                 emit(Results.Success(data))
             }
-            emit(Results.Success(DummyRepo.getReview(wineId = drinkId)))
+
         }.flowOn(ioDispatcher)
     }
 }
