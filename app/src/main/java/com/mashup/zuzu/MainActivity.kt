@@ -1,5 +1,6 @@
 package com.mashup.zuzu
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mashup.zuzu.compose.theme.ProofTheme
+import com.mashup.zuzu.ui.login.LoginActivity
+import com.mashup.zuzu.ui.worldcup.WorldcupActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,7 +32,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     ZuzuApp(
-                        onWorldCupButtonClick = {}
+                        onWorldCupButtonClick = {
+                            startActivity(Intent(this, WorldcupActivity::class.java))
+                        }
                     )
                 }
             }
