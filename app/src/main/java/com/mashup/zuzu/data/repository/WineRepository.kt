@@ -8,7 +8,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 /**
  * @Created by 김현국 2022/07/24
@@ -84,8 +83,9 @@ class WineRepository constructor(
             if (response.isSuccessful && body != null) {
                 val data = responseWineListModelToListDataModel(wineList = body)
                 emit(Results.Success(data))
+            } else {
+                emit(Results.Success(emptyList()))
             }
-            emit(Results.Success(wines))
         }.flowOn(ioDispatcher)
     }
 }
