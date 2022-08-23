@@ -167,7 +167,12 @@ internal fun NavGraphBuilder.userGraph(
                             viewModel.logout()
                         }
                         is SettingUiEvents.MoveToHome -> {
-                            appState.navigateRoute(NavigationRoute.HomeScreenGraph.HomeScreen.route)
+                            appState.navController.navigate(NavigationRoute.HomeScreenGraph.HomeScreen.route) {
+                                popUpTo(findStartDestination(graph = appState.navController.graph).id) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
                         }
                         is SettingUiEvents.BackButtonClick -> {
                             appState.navigateBackStack()
