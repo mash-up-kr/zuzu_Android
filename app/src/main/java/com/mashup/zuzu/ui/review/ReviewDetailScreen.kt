@@ -17,12 +17,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.WineImageCardForReviewDetail
 import com.mashup.zuzu.compose.theme.ProofTheme
+import com.mashup.zuzu.data.model.ReviewDetailResponse
+import com.mashup.zuzu.data.model.Taste
 
 @Composable
 fun ReviewDetailRoute(
@@ -34,7 +37,7 @@ fun ReviewDetailRoute(
 
     when (uiState) {
         is ReviewDetailUiState.Loading -> {
-            // TODO : 로딩 화면 처리
+            //TODO : 로딩 화면 처리
         }
 
         is ReviewDetailUiState.Normal -> {
@@ -63,10 +66,7 @@ fun ReviewDetailScreen(
     ) {
         WineImageCardForReviewDetail(wine = reviewDetailUiState.wine)
 
-        // TODO: 왜 description이 리스트지?
-        if (reviewDetailUiState.wine.description != null) {
-            WineInformation(content = reviewDetailUiState.wine.description)
-        }
+        WineInformation(content = reviewDetailUiState.wine.description ?: "")
 
         WorldCupInfo(reviewDetailUiState.dummyWorldCupData)
 
@@ -78,12 +78,24 @@ fun ReviewDetailScreen(
                 .background(color = ProofTheme.color.gray600)
         )
 
-        WineByReview(reviewDetailUiState.dummyWineReview)
+        Text(
+            text = "마셔본 사람들은 이 술을",
+            style = ProofTheme.typography.headingL,
+            color = ProofTheme.color.white,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
+
+        if (reviewDetailUiState.reviewDetailResponse == null) {
+            EmptyReviewScreen(modifier = Modifier.padding(horizontal = 24.dp))
+        } else {
+            WineByReview(reviewDetailUiState.reviewDetailResponse)
+        }
 
         Button(
             onClick = navigateToReviewWrite,
             colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
             modifier = Modifier
+                .padding(top = 50.dp)
                 .fillMaxWidth()
                 .height(52.dp)
         ) {
@@ -145,8 +157,7 @@ fun WorldCupInfo(
             )
 
             Image(
-                painter = painterResource(id = R.drawable.ic_result_help),
-                contentDescription = ""
+                painter = painterResource(id = R.drawable.ic_result_help), contentDescription = ""
             )
         }
 
@@ -170,18 +181,43 @@ fun WorldCupInfo(
 }
 
 @Composable
-fun WineByReview(
-    dummyWineReview: DummyWineReview
-) {
+fun EmptyReviewScreen(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier.padding(top = 40.dp, start = 24.dp, end = 24.dp)
+        modifier = modifier
+            .padding(20.dp)
+            .fillMaxWidth()
+            .height(238.dp)
+            .background(
+                color = ProofTheme.color.gray600,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
+        Image(painter = painterResource(id = R.drawable.ic_review_empty), contentDescription = "")
+
         Text(
-            text = "마셔본 사람들은 이 술을",
-            style = ProofTheme.typography.headingL,
+            text = "아직 리뷰가 없어요 :(",
+            style = ProofTheme.typography.headingM,
             color = ProofTheme.color.white
         )
 
+        Text(
+            text = "이 술의 첫번째 리뷰어가 되어보세요!",
+            style = ProofTheme.typography.bodyM,
+            color = ProofTheme.color.gray200
+        )
+    }
+}
+
+@Composable
+fun WineByReview(
+    reviewDetailResponse: ReviewDetailResponse,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = Modifier.padding(start = 24.dp, end = 24.dp)
+    ) {
         Text(
             text = "이럴 때 마셨어요",
             style = ProofTheme.typography.headingS,
@@ -200,26 +236,23 @@ fun WineByReview(
             columns = GridCells.Adaptive(50.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp)
+                .height(100.dp)
                 .padding(top = 12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(dummyWineReview.emoji) {
-                Box(
+            items(reviewDetailResponse.situation) {
+                Text(
+                    text = it,
+                    style = ProofTheme.typography.bodyS600,
+                    color = ProofTheme.color.white,
                     modifier = Modifier
                         .background(
                             color = ProofTheme.color.gray500,
                             shape = RoundedCornerShape(8.dp)
                         )
                         .padding(10.dp)
-                ) {
-                    Text(
-                        text = it,
-                        style = ProofTheme.typography.bodyS600,
-                        color = ProofTheme.color.white
-                    )
-                }
+                )
             }
         }
 
@@ -231,20 +264,38 @@ fun WineByReview(
         )
 
         Column(
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.padding(top = 16.dp),
         ) {
-            GreenHorizontalProgress(
-                left = dummyWineReview.lightOrHeavy.first,
-                right = dummyWineReview.lightOrHeavy.second,
+            GradientHorizontalProgress(
+                left = reviewDetailResponse.isBitter.sweet,
+                right = reviewDetailResponse.isBitter.bitter,
                 leftKeyword = "달아요",
-                rightKeyword = "써요"
+                rightKeyword = "써요",
+                modifier = Modifier.padding(bottom = 12.dp)
             )
 
-            PurpleHorizontalProgress(
-                left = dummyWineReview.softOrDeep.first,
-                right = dummyWineReview.softOrDeep.second,
+            GradientHorizontalProgress(
+                left = reviewDetailResponse.isHeavy.light,
+                right = reviewDetailResponse.isHeavy.heavy,
                 leftKeyword = "달아요",
-                rightKeyword = "써요"
+                rightKeyword = "써요",
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+
+            GradientHorizontalProgress(
+                left = reviewDetailResponse.isStrong.mild,
+                right = reviewDetailResponse.isStrong.strong,
+                leftKeyword = "달아요",
+                rightKeyword = "써요",
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+
+            GradientHorizontalProgress(
+                left = reviewDetailResponse.isBurning.smooth,
+                right = reviewDetailResponse.isBurning.burning,
+                leftKeyword = "달아요",
+                rightKeyword = "써요",
+                modifier = Modifier.padding(bottom = 12.dp)
             )
         }
 
@@ -255,7 +306,10 @@ fun WineByReview(
             modifier = Modifier.padding(top = 40.dp)
         )
 
-        PieChart1()
+        SummaryPieChart(
+            size = LocalConfiguration.current.screenWidthDp.dp / 3,
+            tastes = reviewDetailResponse.taste
+        )
 
         Spacer(
             modifier = Modifier
@@ -275,9 +329,10 @@ fun WineByReview(
             modifier = Modifier
                 .padding(top = 20.dp)
         ) {
-            dummyWineReview.foods.forEach {
+            reviewDetailResponse.pairing.forEach {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(end = 20.dp)
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_menu_category),
@@ -299,108 +354,105 @@ fun WineByReview(
 }
 
 @Composable
-fun GreenHorizontalProgress(
+fun GradientHorizontalProgress(
     left: Int,
     right: Int,
     leftKeyword: String,
-    rightKeyword: String
+    rightKeyword: String,
+    modifier: Modifier = Modifier
 ) {
-    val percent = (left.toFloat() / (left + right))
-
     Box(
-        modifier = Modifier
-            .background(
-                color = ProofTheme.color.gray500,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .fillMaxWidth()
-            .height(50.dp)
+        modifier = modifier
     ) {
-        Box(
-            modifier = Modifier
-                .background(
-                    brush = Brush.horizontalGradient(
-                        listOf(
-                            ProofTheme.color.gray500,
-                            ProofTheme.color.green300
-                        )
-                    ),
-                    shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
-                )
-                .fillMaxWidth(percent)
-                .height(50.dp)
-        ) {}
+        val leftPercent = (left.toFloat() / (left + right))
+        val rightPercent = (right.toFloat() / (left + right))
+        val percent: Float
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        ) {
-            Column() {
-                Text(
-                    text = leftKeyword,
-                    style = ProofTheme.typography.bodyS600,
-                    color = ProofTheme.color.white
-                )
+        val shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
 
-                Text(
-                    text = left.toString(),
-                    style = ProofTheme.typography.body3XS,
-                    color = ProofTheme.color.white
-                )
-            }
+        val greenBrush = Brush.horizontalGradient(
+            listOf(
+                ProofTheme.color.gray500,
+                ProofTheme.color.green300
+            )
+        )
 
-            Column() {
-                Text(
-                    text = rightKeyword,
-                    style = ProofTheme.typography.bodyS600,
-                    color = ProofTheme.color.white
-                )
+        val purpleBrush = Brush.horizontalGradient(
+            listOf(
+                ProofTheme.color.primary300,
+                ProofTheme.color.gray500
+            )
+        )
 
-                Text(
-                    text = right.toString(),
-                    style = ProofTheme.typography.body3XS,
-                    color = ProofTheme.color.white
-                )
-            }
-        }
-    }
-}
+        if (leftPercent > rightPercent) {
+            percent = leftPercent
 
-@Composable
-fun PurpleHorizontalProgress(
-    left: Int,
-    right: Int,
-    leftKeyword: String,
-    rightKeyword: String
-) {
-    val percent = (left.toFloat() / (left + right))
-
-    Box(
-        modifier = Modifier
-            .background(
-                brush = Brush.horizontalGradient(
-                    listOf(
-                        ProofTheme.color.primary300,
-                        ProofTheme.color.gray500
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = ProofTheme.color.gray500,
+                        shape = RoundedCornerShape(8.dp)
                     )
-                ),
-                shape = RoundedCornerShape(8.dp)
-            )
-            .fillMaxWidth()
-            .height(50.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .background(
-                    color = ProofTheme.color.gray500,
-                    shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp)
-                )
-                .fillMaxWidth(percent)
-                .height(50.dp)
-        ) {}
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {}
+
+            Box(
+                modifier = Modifier
+                    .background(
+                        brush = greenBrush,
+                        shape = shape
+                    )
+                    .fillMaxWidth(percent)
+                    .height(50.dp)
+            ) {}
+
+        } else if (leftPercent < rightPercent) {
+            percent = leftPercent
+
+            Box(
+                modifier = Modifier
+                    .background(
+                        brush = purpleBrush,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {}
+
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = ProofTheme.color.gray500,
+                        shape = shape
+                    )
+                    .fillMaxWidth(percent)
+                    .height(50.dp)
+            ) {}
+        } else {
+            percent = leftPercent
+
+            Box(
+                modifier = Modifier
+                    .background(
+                        brush = purpleBrush,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {}
+
+            Box(
+                modifier = Modifier
+                    .background(
+                        brush = greenBrush,
+                        shape = shape
+                    )
+                    .fillMaxWidth(percent)
+                    .height(50.dp)
+            ) {}
+
+        }
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -441,76 +493,81 @@ fun PurpleHorizontalProgress(
 }
 
 @Composable
-fun PieChart1(
-    values: List<Float> = listOf(15f, 35f, 15f),
+fun SummaryPieChart(
+    values: List<Float> = listOf(15f, 35f, 15f, 15f),
     colors: List<Color> = listOf(
         Color(0xFF4F17C5),
         Color(0xFF6748E3),
         Color(0xFF9685FF),
         Color(0xFF2A2C3C)
     ),
-    legend: List<String> = listOf("상큼달달한 과일", "우유의 부드러움", "묵직한 나무"),
-    size: Dp = 200.dp
+    tastes: List<Taste>,
+    size: Dp
 ) {
-    // Calculate each proportion value
-    val proportions = values.map {
-        it * 100 / 100
-    }
-
     // Convert each proportions to angle
-    val sweepAngles = proportions.map {
-        360 * it / 100
+    val sweepAngles = values.map {
+        360 * (it / 100)
     }
 
+    val gray = ProofTheme.color.gray600
     val background = ProofTheme.color.black
 
     Row() {
         Canvas(
             modifier = Modifier.size(size)
         ) {
-            var startAngle = -90f
-
-            drawArc(
-                color = colors[3],
-                startAngle = startAngle,
-                sweepAngle = 360f,
-                useCenter = true
-            )
+            var preAngle = 0f
 
             for (i in sweepAngles.indices) {
                 drawArc(
                     color = colors[i],
-                    startAngle = startAngle,
-                    sweepAngle = sweepAngles[i],
-                    useCenter = true
+                    startAngle = preAngle,
+                    sweepAngle = preAngle + sweepAngles[i],
+                    useCenter = true,
                 )
-                startAngle += sweepAngles[i]
+
+                preAngle += sweepAngles[i]
             }
 
             drawCircle(
                 color = background,
-                radius = 100f
+                radius = (size / 5).toPx()
             )
+
         }
 
-        Column() {
-            legend.forEach { it ->
-                Box(
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp)
+        ) {
+            tastes.forEach { it ->
+                Row(
                     modifier = Modifier
-                        .padding(bottom = 12.dp)
+                        .padding(bottom = 10.dp)
+                        .fillMaxWidth()
                         .background(
                             color = ProofTheme.color.gray600,
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(4.dp)
                         )
-                        .padding(bottom = 8.dp)
+                        .padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     Text(
-                        text = it,
+                        text = it.tasteName,
                         style = ProofTheme.typography.bodyXS600,
+                        color = ProofTheme.color.white
+                    )
+
+                    Text(
+                        text = it.percent,
+                        style = ProofTheme.typography.bodyXS,
                         color = ProofTheme.color.white
                     )
                 }
             }
         }
     }
+
 }

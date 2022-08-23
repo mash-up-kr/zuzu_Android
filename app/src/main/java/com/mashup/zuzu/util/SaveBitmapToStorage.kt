@@ -18,7 +18,7 @@ import java.io.OutputStream
 
 fun saveBitmapToStorage(context: Context, bitmap: Bitmap) {
     // Generating a file name
-    val filename = "${System.currentTimeMillis()}.jpg"
+    val filename = "${System.currentTimeMillis()}"
 
     // Output stream
     var fos: OutputStream? = null
@@ -33,7 +33,7 @@ fun saveBitmapToStorage(context: Context, bitmap: Bitmap) {
             val contentValues = ContentValues().apply {
                 // putting file information in content values
                 put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
                 put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
             }
 
@@ -56,7 +56,7 @@ fun saveBitmapToStorage(context: Context, bitmap: Bitmap) {
 
     fos?.use { outputStream ->
         // Finally writing the bitmap to the output stream that we opened
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         uri?.let { shareBitmapImage(context = context, uri = it) }
     }
 }

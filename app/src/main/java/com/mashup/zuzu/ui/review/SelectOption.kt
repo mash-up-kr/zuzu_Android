@@ -3,6 +3,8 @@ package com.mashup.zuzu.ui.review
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -13,6 +15,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
@@ -61,6 +65,8 @@ fun WeatherSelectOption(
         modifier = modifier.height(130.dp)
     ) {
         items(optionContents) { optionContent ->
+            val interactionSource = remember { MutableInteractionSource() }
+
             Button(
                 onClick = {
                     val select = when (optionContent.second) {
@@ -75,21 +81,36 @@ fun WeatherSelectOption(
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
                     .height(52.dp)
-            ) {
-                Image(
-                    painter = optionContent.first,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .width(24.dp)
-                        .height(24.dp)
-                )
+                    .indication(
+                        indication = rememberRipple(color = ProofTheme.color.primary300),
+                        interactionSource = interactionSource
+                    ),
+                interactionSource = interactionSource
 
-                Text(
-                    text = optionContent.second,
-                    style = ProofTheme.typography.headingXS,
-                    color = ProofTheme.color.white
-                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        painter = optionContent.first,
+                        contentDescription = "",
+                        modifier = Modifier
+                            .padding(end = 4.dp)
+                            .width(24.dp)
+                            .height(24.dp)
+                    )
+
+                    Text(
+                        text = optionContent.second,
+                        style = ProofTheme.typography.headingXS,
+                        color = ProofTheme.color.white
+                    )
+                }
+
             }
         }
     }
@@ -126,6 +147,8 @@ fun DateSelectOption(
         modifier = modifier.height(130.dp)
     ) {
         items(optionContents) { optionContent ->
+            val interactionSource = remember { MutableInteractionSource() }
+
             Button(
                 onClick = {
                     val select = when (optionContent.second) {
@@ -140,6 +163,11 @@ fun DateSelectOption(
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
                     .height(52.dp)
+                    .indication(
+                        indication = rememberRipple(color = ProofTheme.color.primary300),
+                        interactionSource = interactionSource
+                    ),
+                interactionSource = interactionSource
             ) {
                 Image(
                     painter = optionContent.first,
@@ -180,6 +208,8 @@ fun PartnerSelectOption(
         modifier = modifier.height(130.dp)
     ) {
         itemsIndexed(optionContents) { index, optionContent ->
+            val interactionSource = remember { MutableInteractionSource() }
+
             Button(
                 onClick = {
                     when (index) {
@@ -201,6 +231,11 @@ fun PartnerSelectOption(
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
                     .height(52.dp)
+                    .indication(
+                        indication = rememberRipple(color = ProofTheme.color.primary300),
+                        interactionSource = interactionSource
+                    ),
+                interactionSource = interactionSource
             ) {
                 Text(
                     text = optionContent,
@@ -244,7 +279,13 @@ fun GroupSelectOption(
         )
     )
 
-    var selectPair = Pair("", 0)
+    var selectPair by remember {
+        mutableStateOf(Pair("", 0))
+    }
+
+    var selectIndexPair by remember {
+        mutableStateOf(Pair<Int?, Int?>(null, null))
+    }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -252,7 +293,9 @@ fun GroupSelectOption(
         horizontalArrangement = Arrangement.spacedBy(14.dp),
         modifier = modifier.height(180.dp)
     ) {
-        items(optionContents) { optionContent ->
+        itemsIndexed(optionContents) { index, optionContent ->
+            val interactionSource = remember { MutableInteractionSource() }
+
             Button(
                 onClick = {
                     val result = when (optionContent.second) {
@@ -265,14 +308,24 @@ fun GroupSelectOption(
                     }
 
                     selectPair = selectPair.copy(first = result)
+                    selectIndexPair = selectIndexPair.copy(first = index)
 
                     if (selectPair.second != 0) {
                         navigateTastePage(selectPair)
                     }
                 },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor =
+                    if (selectIndexPair.first == index) ProofTheme.color.primary300
+                    else ProofTheme.color.gray600
+                ),
                 modifier = Modifier
                     .height(52.dp)
+                    .indication(
+                        indication = rememberRipple(color = ProofTheme.color.primary300),
+                        interactionSource = interactionSource
+                    ),
+                interactionSource = interactionSource
             ) {
                 Image(
                     painter = optionContent.first,
@@ -304,7 +357,9 @@ fun GroupSelectOption(
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        secondOptionContents.forEach { content ->
+        secondOptionContents.forEachIndexed { index, content ->
+            val interactionSource = remember { MutableInteractionSource() }
+
             Button(
                 onClick = {
                     val result = when (content) {
@@ -314,15 +369,25 @@ fun GroupSelectOption(
                     }
 
                     selectPair = selectPair.copy(second = result)
+                    selectIndexPair = selectIndexPair.copy(second = index)
 
                     if (selectPair.first.isNotEmpty()) {
                         navigateTastePage(selectPair)
                     }
                 },
-                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor =
+                    if (selectIndexPair.second == index) ProofTheme.color.primary300
+                    else ProofTheme.color.gray600
+                ),
                 modifier = Modifier
                     .weight(1f)
                     .height(52.dp)
+                    .indication(
+                        indication = rememberRipple(color = ProofTheme.color.primary300),
+                        interactionSource = interactionSource
+                    ),
+                interactionSource = interactionSource
             ) {
                 Text(
                     text = content,
@@ -373,6 +438,8 @@ fun SoloSelectOption(
         modifier = modifier.height(150.dp)
     ) {
         items(optionContents) { optionContent ->
+            val interactionSource = remember { MutableInteractionSource() }
+
             Button(
                 onClick = {
                     val result = when (optionContent.second) {
@@ -389,6 +456,11 @@ fun SoloSelectOption(
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
                     .height(52.dp)
+                    .indication(
+                        indication = rememberRipple(color = ProofTheme.color.primary300),
+                        interactionSource = interactionSource
+                    ),
+                interactionSource = interactionSource
             ) {
                 Image(
                     painter = optionContent.first,
@@ -518,11 +590,19 @@ fun TasteSelectOption(
                             selectedList = temp
                         }) {
                             val painter = if (state == item) {
-                                rememberAsyncImagePainter(ContextCompat.getDrawable(LocalContext.current,
-                                    R.drawable.ic_radio_write_selected))
+                                rememberAsyncImagePainter(
+                                    ContextCompat.getDrawable(
+                                        LocalContext.current,
+                                        R.drawable.ic_radio_write_selected
+                                    )
+                                )
                             } else {
-                                rememberAsyncImagePainter(ContextCompat.getDrawable(LocalContext.current,
-                                    R.drawable.ic_radio_write_unselected))
+                                rememberAsyncImagePainter(
+                                    ContextCompat.getDrawable(
+                                        LocalContext.current,
+                                        R.drawable.ic_radio_write_unselected
+                                    )
+                                )
                             }
 
                             Image(
@@ -623,7 +703,8 @@ fun SummarySelectOption(
                 Text(
                     text = optionContent.second,
                     style = ProofTheme.typography.buttonS,
-                    color = ProofTheme.color.white
+                    color = ProofTheme.color.white,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -645,7 +726,7 @@ fun SecondarySummaryPage(
     }
 
     Column(
-        modifier = modifier,
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -707,6 +788,8 @@ fun SecondarySummaryPage(
         stringResource(R.string.summary_noodle),
         stringResource(R.string.summary_roast)
     )
+
+    val interactionSource = remember { MutableInteractionSource() }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -789,6 +872,11 @@ fun SecondarySummaryPage(
         modifier = Modifier
             .fillMaxWidth()
             .height(52.dp)
+            .indication(
+                indication = rememberRipple(color = ProofTheme.color.primary300),
+                interactionSource = interactionSource
+            ),
+        interactionSource = interactionSource
     ) {
         Text(
             text = "작성 완료",

@@ -275,7 +275,7 @@ internal fun NavGraphBuilder.reviewGraph(
         ) {
             ReviewDetailRoute(
                 viewModel = hiltViewModel(),
-                navigateBack = {},
+                navigateBack = { appState.navigateBackStack() },
                 navigateToReviewWrite = { appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewWriteScreen.route) }
             )
         }

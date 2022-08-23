@@ -125,8 +125,7 @@ fun WineImageCardForReviewDetail(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(10.dp)
+        modifier = modifier
     ) {
         Box() {
             AsyncImage(
@@ -157,16 +156,17 @@ fun WineImageCardForReviewDetail(
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "${wine.category} Alc ${wine.alc}%",
+                            text = "${wine.category} | Alc ${wine.alc}%",
                             style = ProofTheme.typography.bodyS600
                         )
 
                         Text(
                             text = wine.name,
                             maxLines = 4,
-                            fontWeight = FontWeight.W400,
-                            fontSize = 24.sp,
-                            overflow = TextOverflow.Ellipsis
+                            style = ProofTheme.typography.headingXL,
+                            color = ProofTheme.color.white,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(top = 12.dp)
                         )
                     }
                 }

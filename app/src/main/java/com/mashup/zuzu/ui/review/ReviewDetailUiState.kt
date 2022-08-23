@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.review
 
+import com.mashup.zuzu.data.model.ReviewDetailResponse
 import com.mashup.zuzu.data.model.Wine
 
 sealed interface ReviewDetailUiState {
@@ -8,6 +9,6 @@ sealed interface ReviewDetailUiState {
     data class Normal(
         val wine: Wine,
         val dummyWorldCupData: DummyWorldCupData,
-        val dummyWineReview: DummyWineReview
+        val reviewDetailResponse: ReviewDetailResponse?
     ) : ReviewDetailUiState
 }
