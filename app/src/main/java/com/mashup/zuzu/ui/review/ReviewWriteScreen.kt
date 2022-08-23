@@ -27,7 +27,8 @@ import timber.log.Timber
 @Composable
 fun ReviewWriteRoute(
     viewModel: ReviewWriteViewModel = hiltViewModel(),
-    navigateReviewShareCard: () -> Unit
+    navigateReviewShareCard: () -> Unit,
+    navigateBack: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -44,7 +45,8 @@ fun ReviewWriteRoute(
         navigateReviewShareCard = { place, pairing ->
 //            viewModel.navigateReviewShareCard(place, pairing)
             navigateReviewShareCard()
-        }
+        },
+        navigateBack = navigateBack
     )
 }
 
@@ -60,7 +62,8 @@ fun ReviewWriteScreen(
     navigateTastePage: (Pair<String, Int?>) -> Unit,
     navigateSummaryPage: (List<Int>) -> Unit,
     navigateSecondarySummaryPage: (String) -> Unit,
-    navigateReviewShareCard: (String, List<String>) -> Unit
+    navigateReviewShareCard: (String, List<String>) -> Unit,
+    navigateBack: () -> Unit
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
@@ -97,7 +100,11 @@ fun ReviewWriteScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            coroutineScope.launch {
+                                bottomSheetScaffoldState.bottomSheetState.collapse()
+                            }
+                        },
                         colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray400),
                         modifier = Modifier
                             .weight(1f)
@@ -111,7 +118,11 @@ fun ReviewWriteScreen(
                         )
                     }
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            coroutineScope.launch {
+                                navigateBack()
+                            }
+                        },
                         colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
                         modifier = Modifier
                             .weight(1f)
@@ -265,12 +276,14 @@ fun ReviewWriteScreen(
                     }
 
                     5 -> {
-                        TasteSelectOption(navigateSummaryPage = navigateSummaryPage, modifier = Modifier.padding(
-                            start = 24.dp,
-                            end = 24.dp,
-                            top = 40.dp,
-                            bottom = 34.dp
-                        ))
+                        TasteSelectOption(
+                            navigateSummaryPage = navigateSummaryPage, modifier = Modifier.padding(
+                                start = 24.dp,
+                                end = 24.dp,
+                                top = 40.dp,
+                                bottom = 34.dp
+                            )
+                        )
                     }
 
                     6 -> {
@@ -326,7 +339,10 @@ fun Topic(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight().align(Alignment.Center),
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .align(Alignment.Center),
             horizontalArrangement = Arrangement.Center
         ) {
             val topic = when (pageNum) {

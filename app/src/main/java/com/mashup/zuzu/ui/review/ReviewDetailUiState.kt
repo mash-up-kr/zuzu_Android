@@ -1,14 +1,18 @@
 package com.mashup.zuzu.ui.review
 
-import com.mashup.zuzu.data.model.ReviewDetailResponse
 import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.data.response.model.Result
 
-sealed interface ReviewDetailUiState {
-    object Loading : ReviewDetailUiState
+sealed class WineDataUiState {
+    object Loading : WineDataUiState()
 
-    data class Normal(
-        val wine: Wine,
-        val dummyWorldCupData: DummyWorldCupData,
-        val reviewDetailResponse: ReviewDetailResponse?
-    ) : ReviewDetailUiState
+    data class Success(val wineData: Wine) : WineDataUiState()
+}
+
+sealed class EvaluationUiState {
+    object Loading : EvaluationUiState()
+
+    object NoItem : EvaluationUiState()
+
+    data class Success(val result: Result) : EvaluationUiState()
 }

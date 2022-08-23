@@ -14,7 +14,9 @@ data class Wine(
     val alc: Float,
     val tags: List<String>,
     val description: String?,
-    val category: String
+    val category: String,
+    val worldcupWinCount: Int?,
+    val worldcupSemiFinalCount: Int?
 )
 
 val wines = listOf(
@@ -25,7 +27,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술", "쓴 술", "단 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "Wine"
+        category = "Wine", null, null
     ),
     Wine(
         id = 2,
@@ -34,7 +36,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "양주"
+        category = "양주", null, null
     ),
     Wine(
         id = 3,
@@ -43,7 +45,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "소주"
+        category = "소주", null, null
     ),
     Wine(
         id = 4,
@@ -52,7 +54,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "와인"
+        category = "와인", null, null
     ),
     Wine(
         id = 5,
@@ -61,7 +63,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "소주"
+        category = "소주", null, null
     ),
     Wine(
         id = 6,
@@ -70,7 +72,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "양주"
+        category = "양주", null, null
     ),
     Wine(
         id = 7,
@@ -79,7 +81,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "와인"
+        category = "와인", null, null
     ),
     Wine(
         id = 8,
@@ -88,7 +90,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "와인"
+        category = "와인", null, null
     ),
     Wine(
         id = 9,
@@ -97,7 +99,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "와인"
+        category = "와인", null, null
     ),
     Wine(
         id = 10,
@@ -106,7 +108,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "와인"
+        category = "와인", null, null
     ),
     Wine(
         id = 11,
@@ -115,7 +117,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "와인"
+        category = "와인", null, null
     ),
     Wine(
         id = 12,
@@ -124,7 +126,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "와인"
+        category = "와인", null, null
     ),
     Wine(
         id = 13,
@@ -133,7 +135,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "와인"
+        category = "와인", null, null
     ),
     Wine(
         id = 14,
@@ -142,7 +144,7 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "와인"
+        category = "와인", null, null
     ),
     Wine(
         id = 15,
@@ -151,15 +153,15 @@ val wines = listOf(
         alc = 17f,
         tags = listOf("뜨는 술", "맛있는 술"),
         description = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        category = "와인"
+        category = "와인", null, null
     )
 )
 object WineRepo {
     fun getWineData(): List<Wine> = wines
     fun getRecommendWine() = wines[0]
 
-    //_____________ test
-    //fun getDrinks() : List<Wine> = dummyWines
+    // _____________ test
+    // fun getDrinks() : List<Wine> = dummyWines
 
 //    fun getRecommendWine() : Wine = wines
 }

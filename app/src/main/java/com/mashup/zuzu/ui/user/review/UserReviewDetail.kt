@@ -65,7 +65,7 @@ fun UserReviewDetailScreen(
                 .fillMaxWidth()
                 .height(52.dp),
             onBackButtonClick = { onClick(UserReviewDetailUiEvents.BackButtonClick) },
-            onEditReviewButtonClick = { onClick(UserReviewDetailUiEvents.EditReviewButtonClick(wines[pagerState.currentPage].id)) }
+            onEditReviewButtonClick = { onClick(UserReviewDetailUiEvents.EditReviewButtonClick(reviews.wine.id)) }
         )
         HorizontalPagerWithCapture(
             modifier = Modifier

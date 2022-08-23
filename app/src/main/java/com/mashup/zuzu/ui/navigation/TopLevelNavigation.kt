@@ -36,6 +36,7 @@ import com.mashup.zuzu.ui.user.edit.EditUserProfileRoute
 import com.mashup.zuzu.ui.user.review.UserReviewDetailRoute
 import com.mashup.zuzu.ui.user.review.UserReviewDetailUiEvents
 import com.mashup.zuzu.ui.user.review.UserReviewDetailViewModel
+import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/07/23
@@ -218,6 +219,7 @@ internal fun NavGraphBuilder.userGraph(
                             appState.navigateBackStack()
                         }
                         is UserReviewDetailUiEvents.EditReviewButtonClick -> {
+                            Timber.tag("wineId").d(userReviewDetailUiEvents.wineId.toString())
                             appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewDetailScreen.route + "/${userReviewDetailUiEvents.wineId}")
                         }
                     }
@@ -285,7 +287,8 @@ internal fun NavGraphBuilder.reviewGraph(
         ) {
             ReviewWriteRoute(
                 viewModel = hiltViewModel(),
-                navigateReviewShareCard = { appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewShareCardScreen.route) }
+                navigateReviewShareCard = { appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewShareCardScreen.route) },
+                navigateBack = { appState.navigateBackStack() }
             )
         }
 

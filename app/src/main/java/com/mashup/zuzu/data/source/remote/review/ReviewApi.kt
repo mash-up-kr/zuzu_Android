@@ -1,6 +1,7 @@
 package com.mashup.zuzu.data.source.remote.review
 
 import com.mashup.zuzu.data.request.ReviewWriteRequest
+import com.mashup.zuzu.data.response.GetDrinksEvaluationResponse
 import com.mashup.zuzu.data.response.GetReviewsDrinksResponse
 import retrofit2.Response
 import retrofit2.http.*
@@ -17,4 +18,7 @@ interface ReviewApi {
     suspend fun getReviewsDrinks(
         @Query("drinkId") drinkId: Long
     ): Response<GetReviewsDrinksResponse>
+
+    @GET("/drinks-evaluation/{drinkId}")
+    suspend fun getDrinksEvaluationWithId(@Path("drinkId") drinkId: Long): Response<GetDrinksEvaluationResponse>
 }
