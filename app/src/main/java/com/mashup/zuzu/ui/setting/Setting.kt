@@ -49,6 +49,14 @@ fun SettingRoute(
         is UserUiState.Error -> {
         }
     }
+
+    val logoutState by viewModel.logout.collectAsState()
+    when (logoutState) {
+        is LogoutUiState.Success -> {
+            onButtonClick(SettingUiEvents.MoveToHome)
+        }
+        is LogoutUiState.Loading -> {}
+    }
 }
 
 @Composable
@@ -57,7 +65,11 @@ fun Setting(
     user: User,
     onButtonClick: (SettingUiEvents) -> Unit
 ) {
-    Column(modifier = modifier.fillMaxWidth().fillMaxHeight()) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
         SettingTopBar(
             modifier = Modifier
                 .padding(top = 31.5.dp)
@@ -72,7 +84,6 @@ fun Setting(
             user = user,
             onEditButtonClick = { onButtonClick(SettingUiEvents.EditButtonClick) }
         )
-
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -82,6 +93,7 @@ fun Setting(
             modifier = Modifier
                 .padding(start = 24.dp)
                 .fillMaxWidth(),
+            onLogoutButtonClick = { onButtonClick(SettingUiEvents.LogoutButtonClick) },
             onLeaveButtonClick = { onButtonClick(SettingUiEvents.LeaveButtonClick) }
         )
     }
@@ -167,6 +179,7 @@ fun SettingUserProfile(
 @Composable
 fun SettingBody(
     modifier: Modifier,
+    onLogoutButtonClick: () -> Unit,
     onLeaveButtonClick: () -> Unit
 ) {
     Column(modifier = modifier) {
@@ -201,7 +214,11 @@ fun SettingBody(
             color = ProofTheme.color.gray200
         )
         Text(
-            modifier = Modifier.padding(top = 20.dp),
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .clickable {
+                    onLogoutButtonClick()
+                },
             text = stringResource(id = R.string.setting_logout),
             style = ProofTheme.typography.headingS,
             color = ProofTheme.color.gray200
@@ -236,6 +253,6 @@ fun PreviewSettingTopBar() {
 @Composable
 fun PreviewSettingBody() {
     ProofTheme {
-        SettingBody(modifier = Modifier.fillMaxWidth(), {})
+        SettingBody(modifier = Modifier.fillMaxWidth(), {}, {})
     }
 }
