@@ -167,7 +167,6 @@ internal fun NavGraphBuilder.userGraph(
                             viewModel.logout()
                         }
                         is SettingUiEvents.MoveToHome -> {
-                            // TODO: 로그아웃 버튼 누르면 HomeScreen으로 옮겨지긴 하는데, HomeScreen 이동 후 API 호출을 무한정 함
                             appState.navigateRoute(NavigationRoute.HomeScreenGraph.HomeScreen.route)
                         }
                         is SettingUiEvents.BackButtonClick -> {

@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -51,11 +52,13 @@ fun SettingRoute(
     }
 
     val logoutState by viewModel.logout.collectAsState()
-    when (logoutState) {
-        is LogoutUiState.Success -> {
-            onButtonClick(SettingUiEvents.MoveToHome)
+    LaunchedEffect(logoutState) {
+        when (logoutState) {
+            is LogoutUiState.Success -> {
+                onButtonClick(SettingUiEvents.MoveToHome)
+            }
+            is LogoutUiState.Loading -> {}
         }
-        is LogoutUiState.Loading -> {}
     }
 }
 
