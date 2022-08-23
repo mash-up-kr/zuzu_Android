@@ -98,6 +98,7 @@ internal fun NavGraphBuilder.homeGraph(
         }
     }
 }
+
 internal fun NavGraphBuilder.categoryGraph(
     appState: ZuzuAppState
 ) {
@@ -110,7 +111,9 @@ internal fun NavGraphBuilder.categoryGraph(
         ) { navBackStackEntry ->
             val viewModel: CategoryViewModel = hiltViewModel()
             val category = navBackStackEntry.arguments?.getString("category")
-            val index = appState.categoryList.withIndex().filter { text -> text.value.title == category }.map { it.index }[0]
+            val index =
+                appState.categoryList.withIndex().filter { text -> text.value.title == category }
+                    .map { it.index }[0]
 
             LaunchedEffect(true) {
                 if (category != null) {
@@ -160,6 +163,17 @@ internal fun NavGraphBuilder.userGraph(
                     when (settingScreenEvents) {
                         is SettingUiEvents.LeaveButtonClick -> {
                             appState.navigateRoute(NavigationRoute.UserScreenGraph.LeaveScreen.route)
+                        }
+                        is SettingUiEvents.LogoutButtonClick -> {
+                            viewModel.logout()
+                        }
+                        is SettingUiEvents.MoveToHome -> {
+                            appState.navController.navigate(NavigationRoute.HomeScreenGraph.HomeScreen.route) {
+                                popUpTo(findStartDestination(graph = appState.navController.graph).id) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
                         }
                         is SettingUiEvents.BackButtonClick -> {
                             appState.navigateBackStack()
