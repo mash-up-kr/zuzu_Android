@@ -23,21 +23,19 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.model.WineRepo
-import com.mashup.zuzu.data.model.wines
 
 /**
  * @Created by 김현국 2022/07/01
@@ -836,98 +834,105 @@ fun RecommendWineCard(
     var rowheight by remember {
         mutableStateOf<Dp?>(null)
     }
+
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current).data(recommendWine.imageUrl).build()
+    )
+
     Box(modifier = modifier) {
         BlurImage {
-            AsyncImage(
+            Image(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(),
-                model = recommendWine.imageUrl,
+                painter = painter,
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
         }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .drawWithContent {
-                    clipRect(top = size.height / 1.4f) {
-                        rowheight = (size.height - size.height / 1.4f).toDp()
-                        this@drawWithContent.drawContent()
+        if (painter.state is AsyncImagePainter.State.Success) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .drawWithContent {
+                        clipRect(top = size.height / 1.4f) {
+                            rowheight = (size.height - size.height / 1.4f).toDp()
+                            this@drawWithContent.drawContent()
+                        }
                     }
-                }
-        ) {
-            rowheight?.let {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(it)
-                        .align(Alignment.BottomCenter)
-                        .padding(start = 20.dp, end = 20.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-
-                ) {
-                    Column(
+            ) {
+                rowheight?.let {
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(0.75f)
+                            .height(it)
+                            .align(Alignment.BottomCenter)
+                            .padding(start = 20.dp, end = 20.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+
                     ) {
-                        WineCategoryWithAlc(
-                            wine = recommendWine,
-                            modifier = Modifier
-                                .width(78.dp)
-                                .height(20.dp)
-                                .align(Alignment.Start)
-                        )
-                        Text(
+                        Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(55.dp)
-                                .padding(top = 8.dp),
-                            text = recommendWine.name,
-                            style = ProofTheme.typography.headingS.copy(
-                                lineHeight = 22.sp
-                            ),
-                            color = ProofTheme.color.white,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(0.25f)
-                            .padding(start = 20.dp),
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .width(46.dp)
-                                .height(46.dp)
-                                .background(
-                                    color = ProofTheme.color.primary300,
-                                    shape = RoundedCornerShape(8.dp)
-                                )
-                                .clickable { onRefreshButtonClick() }
+                                .weight(0.75f)
                         ) {
-                            Icon(
+                            WineCategoryWithAlc(
+                                wine = recommendWine,
                                 modifier = Modifier
-                                    .width(16.dp)
-                                    .height(16.dp)
-                                    .align(Alignment.Center),
-                                imageVector = Icons.Outlined.Refresh,
-                                tint = ProofTheme.color.white,
-                                contentDescription = null
+                                    .width(78.dp)
+                                    .height(20.dp)
+                                    .align(Alignment.Start)
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(55.dp)
+                                    .padding(top = 8.dp),
+                                text = recommendWine.name,
+                                style = ProofTheme.typography.headingS.copy(
+                                    lineHeight = 22.sp
+                                ),
+                                color = ProofTheme.color.white,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
-                        Text(
-                            modifier = Modifier.padding(top = 4.dp),
-                            text = "다른술 보기",
-                            style = ProofTheme.typography.body3XS,
-                            color = ProofTheme.color.white
-                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(0.25f)
+                                .padding(start = 20.dp),
+                            horizontalAlignment = Alignment.End
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .width(46.dp)
+                                    .height(46.dp)
+                                    .background(
+                                        color = ProofTheme.color.primary300,
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                                    .clickable { onRefreshButtonClick() }
+                            ) {
+                                Icon(
+                                    modifier = Modifier
+                                        .width(16.dp)
+                                        .height(16.dp)
+                                        .align(Alignment.Center),
+                                    imageVector = Icons.Outlined.Refresh,
+                                    tint = ProofTheme.color.white,
+                                    contentDescription = null
+                                )
+                            }
+                            Text(
+                                modifier = Modifier.padding(top = 4.dp),
+                                text = "다른술 보기",
+                                style = ProofTheme.typography.body3XS,
+                                color = ProofTheme.color.white
+                            )
+                        }
                     }
                 }
             }
@@ -965,7 +970,10 @@ fun BlurWithOuterHeightImage(blurOuterHeight: Float, content: @Composable () -> 
     Box {
         content()
         Box(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight().align(Alignment.BottomCenter)
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .align(Alignment.BottomCenter)
                 .drawWithContent {
                     clipRect(top = blurOuterHeight) {
                         val colors = listOf(Color.Transparent, Color.White)
@@ -1030,7 +1038,10 @@ fun WineCellarCard(
                     .background(color = ProofTheme.color.black)
             ) {
                 AsyncImage(
-                    modifier = Modifier.clip(CircleShape).then(childModifier).background(color = ProofTheme.color.black),
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .then(childModifier)
+                        .background(color = ProofTheme.color.black),
                     model = wine.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
@@ -1065,7 +1076,11 @@ fun WineCellarCard(
         ) {
             Row {
                 AsyncImage(
-                    modifier = Modifier.fillMaxWidth().weight(1f).aspectRatio(1f).clip(CircleShape)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .aspectRatio(1f)
+                        .clip(CircleShape)
                         .align(Alignment.Top),
                     model = wine.imageUrl,
                     contentDescription = null,
@@ -1077,7 +1092,13 @@ fun WineCellarCard(
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                WineCategoryWithAlc(modifier = Modifier.width(68.29.dp).height(20.dp).align(Alignment.Start), wine = wine)
+                WineCategoryWithAlc(
+                    modifier = Modifier
+                        .width(68.29.dp)
+                        .height(20.dp)
+                        .align(Alignment.Start),
+                    wine = wine
+                )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     modifier = Modifier.fillMaxWidth(),
@@ -1092,9 +1113,9 @@ fun WineCellarCard(
     }
 }
 
-//@Preview
-//@Composable
-//fun PreviewWineCellarCard() {
+// @Preview
+// @Composable
+// fun PreviewWineCellarCard() {
 //    ProofTheme {
 //        WineCellarCard(
 //            modifier = Modifier
@@ -1106,11 +1127,11 @@ fun WineCellarCard(
 //            null
 //        )
 //    }
-//}
+// }
 //
-//@Preview
-//@Composable
-//fun PreviewWindImageCard() {
+// @Preview
+// @Composable
+// fun PreviewWindImageCard() {
 //    ProofTheme() {
 //        WineImageCard(
 //            modifier = Modifier
@@ -1119,19 +1140,19 @@ fun WineCellarCard(
 //            wine = wines[0]
 //        )
 //    }
-//}
+// }
 //
-//@Preview
-//@Composable
-//fun PreviewWineTagCard() {
+// @Preview
+// @Composable
+// fun PreviewWineTagCard() {
 //    ProofTheme() {
 //        WineTagCard(tagDescription = "비오는 날", backgroundColor = ProofTheme.color.black, textColor = ProofTheme.color.white)
 //    }
-//}
+// }
 //
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewWindBoardCard() {
+// @Preview(showBackground = true)
+// @Composable
+// fun PreviewWindBoardCard() {
 //    ProofTheme() {
 //        WineBoardCard(
 //            modifier = Modifier
@@ -1141,11 +1162,11 @@ fun WineCellarCard(
 //            onWineBoardClick = {}
 //        )
 //    }
-//}
+// }
 //
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewPagerCard() {
+// @Preview(showBackground = true)
+// @Composable
+// fun PreviewPagerCard() {
 //    ProofTheme() {
 //        PagerWineCard(
 //            modifier = Modifier
@@ -1156,11 +1177,11 @@ fun WineCellarCard(
 //            null
 //        )
 //    }
-//}
+// }
 //
-//@Preview
-//@Composable
-//fun PreviewRecommendWineCard() {
+// @Preview
+// @Composable
+// fun PreviewRecommendWineCard() {
 //    ProofTheme() {
 //        RecommendWineCard(
 //            modifier = Modifier
@@ -1173,14 +1194,14 @@ fun WineCellarCard(
 //            }
 //        )
 //    }
-//}
+// }
 //
-//@Preview(
+// @Preview(
 //    showBackground = true,
 //    name = "리뷰 디테일 용"
-//)
-//@Composable
-//fun PreviewWindBoardCardForReviewDetail() {
+// )
+// @Composable
+// fun PreviewWindBoardCardForReviewDetail() {
 //    ProofTheme() {
 //        WineImageCardForReviewDetail(
 //            modifier = Modifier
@@ -1189,22 +1210,22 @@ fun WineCellarCard(
 //            wine = wines[0]
 //        )
 //    }
-//}
+// }
 //
-//@Preview
-//@Composable
-//fun PreviewWineImageCardForReviewWrite() {
+// @Preview
+// @Composable
+// fun PreviewWineImageCardForReviewWrite() {
 //    ProofTheme() {
 //        WineImageCardForReviewWrite(
 //            wineImageUrl = wines[0].imageUrl,
 //            wineName = wines[0].name
 //        )
 //    }
-//}
+// }
 //
-//@Preview
-//@Composable
-//fun PreviewNewBlurImage() {
+// @Preview
+// @Composable
+// fun PreviewNewBlurImage() {
 //    ProofTheme {
 //        Box(
 //            modifier = Modifier.width(278.dp).height(330.dp)
@@ -1221,4 +1242,4 @@ fun WineCellarCard(
 //            }
 //        }
 //    }
-//}
+// }
