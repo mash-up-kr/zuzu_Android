@@ -435,7 +435,7 @@ fun SoloSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(150.dp)
+        modifier = modifier.height(200.dp)
     ) {
         items(optionContents) { optionContent ->
             val interactionSource = remember { MutableInteractionSource() }

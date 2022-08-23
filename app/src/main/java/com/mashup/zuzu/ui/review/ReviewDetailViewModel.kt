@@ -29,12 +29,12 @@ class ReviewDetailViewModel @Inject constructor(
     val evaluationUiState = _evalutaionUiState.asStateFlow()
 
     init {
-        val argument = savedStateHandle.get<Long>("wineId") ?: 0
-        getDrinksEvaluationWitId(argument)
+        val argument = savedStateHandle.get<Long>(WINE_ID) ?: 0
+        getDrinksEvaluationWithId(argument)
         getWineDataWithId(argument)
     }
 
-    private fun getDrinksEvaluationWitId(wineId: Long) {
+    private fun getDrinksEvaluationWithId(wineId: Long) {
         viewModelScope.launch {
             getDrinksEvaluationWithIdUseCase(wineId = wineId).collect { result ->
                 when (result) {
@@ -76,6 +76,10 @@ class ReviewDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    companion object {
+        const val WINE_ID = "wineId"
     }
 }
 
