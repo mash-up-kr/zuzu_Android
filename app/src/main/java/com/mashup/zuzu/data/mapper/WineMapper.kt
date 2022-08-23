@@ -18,7 +18,9 @@ fun responseWineModelToDataModel(
         alc = wine.alc,
         tags = emptyList(),
         description = wine.description,
-        category = nameToKorean(wine.category)
+        category = nameToKorean(wine.category),
+        worldcupWinCount = wine.worldcupWinCount,
+        worldcupSemiFinalCount = wine.worldcupSemiFinalCount
     )
 }
 
@@ -33,7 +35,9 @@ fun responseWineListModelToListDataModel(
             alc = wine.alc,
             tags = emptyList(),
             description = wine.description,
-            category = nameToKorean(wine.category)
+            category = nameToKorean(wine.category),
+            worldcupWinCount = wine.worldcupWinCount,
+            worldcupSemiFinalCount = wine.worldcupSemiFinalCount
         )
     }
 }
