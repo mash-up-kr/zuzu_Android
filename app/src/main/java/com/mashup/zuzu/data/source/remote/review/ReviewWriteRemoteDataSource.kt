@@ -2,8 +2,10 @@ package com.mashup.zuzu.data.source.remote.review
 
 import com.mashup.zuzu.data.di.IoDispatcher
 import com.mashup.zuzu.data.request.ReviewWriteRequest
+import com.mashup.zuzu.data.response.GetDrinksEvaluationResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 import javax.inject.Inject
 
 class ReviewWriteRemoteDataSource @Inject constructor(
