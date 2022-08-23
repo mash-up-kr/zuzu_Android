@@ -25,6 +25,9 @@ data class Wine(
     @SerializedName("description")
     val description: String?,
 
+    @SerializedName("tags")
+    val tags: List<String>?,
+
     @SerializedName("category")
     val category: String,
 

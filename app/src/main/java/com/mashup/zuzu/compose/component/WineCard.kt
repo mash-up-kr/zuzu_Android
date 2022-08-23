@@ -8,36 +8,30 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.mashup.zuzu.R
+import com.mashup.zuzu.compose.theme.BrushColor
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.model.WineRepo
-import com.mashup.zuzu.data.model.wines
 
 /**
  * @Created by 김현국 2022/07/01
@@ -472,14 +466,14 @@ fun WineCategoryWithAlc(
         Text(
             text = wine.category,
             style = ProofTheme.typography.bodyXS600,
-            color = ProofTheme.color.primary200,
+            color = ProofTheme.color.primary100,
             textAlign = TextAlign.Center
         )
         Divider(
             modifier = Modifier
                 .padding(top = 5.dp, bottom = 5.dp)
                 .fillMaxHeight()
-                .background(ProofTheme.color.gray400)
+                .background(ProofTheme.color.gray50)
                 .width(1.dp)
         )
         Text(
@@ -539,7 +533,7 @@ fun WineCardInHome(
 
         WineCategoryWithAlc(
             modifier = Modifier
-                .width(79.dp)
+                .width(85.dp)
                 .height(19.dp),
             wine = wine
         )
@@ -554,7 +548,9 @@ fun WineCardInHome(
                 text = wine.name,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                style = ProofTheme.typography.headingS,
+                style = ProofTheme.typography.headingS.copy(
+                    lineHeight = 22.4.sp
+                ),
                 color = ProofTheme.color.white
             )
             Row(
@@ -752,6 +748,7 @@ fun RecommendWineCardWithRenderScript(
             rowheight?.let {
                 Row(
                     modifier = Modifier
+                        .background(color = BrushColor)
                         .fillMaxWidth()
                         .height(it)
                         .align(Alignment.BottomCenter)
@@ -768,7 +765,7 @@ fun RecommendWineCardWithRenderScript(
                         WineCategoryWithAlc(
                             wine = recommendWine,
                             modifier = Modifier
-                                .width(78.dp)
+                                .width(85.dp)
                                 .height(20.dp)
                                 .align(Alignment.Start)
                         )
@@ -808,16 +805,16 @@ fun RecommendWineCardWithRenderScript(
                                     .width(16.dp)
                                     .height(16.dp)
                                     .align(Alignment.Center),
-                                imageVector = Icons.Outlined.Refresh,
+                                painter = painterResource(id = R.drawable.ic_refresh),
                                 tint = ProofTheme.color.white,
                                 contentDescription = null
                             )
                         }
                         Text(
-                            modifier = Modifier.padding(top = 4.dp),
+                            modifier = Modifier.padding(top = 4.dp).align(Alignment.CenterHorizontally),
                             text = "다른술 보기",
                             style = ProofTheme.typography.body3XS,
-                            color = ProofTheme.color.white
+                            color = ProofTheme.color.primary50
                         )
                     }
                 }
@@ -861,6 +858,7 @@ fun RecommendWineCard(
             rowheight?.let {
                 Row(
                     modifier = Modifier
+                        .background(color = BrushColor)
                         .fillMaxWidth()
                         .height(it)
                         .align(Alignment.BottomCenter)
@@ -877,7 +875,7 @@ fun RecommendWineCard(
                         WineCategoryWithAlc(
                             wine = recommendWine,
                             modifier = Modifier
-                                .width(78.dp)
+                                .width(85.dp)
                                 .height(20.dp)
                                 .align(Alignment.Start)
                         )
@@ -917,16 +915,16 @@ fun RecommendWineCard(
                                     .width(16.dp)
                                     .height(16.dp)
                                     .align(Alignment.Center),
-                                imageVector = Icons.Outlined.Refresh,
+                                painter = painterResource(id = R.drawable.ic_refresh),
                                 tint = ProofTheme.color.white,
                                 contentDescription = null
                             )
                         }
                         Text(
-                            modifier = Modifier.padding(top = 4.dp),
+                            modifier = Modifier.padding(top = 4.dp).align(Alignment.CenterHorizontally),
                             text = "다른술 보기",
                             style = ProofTheme.typography.body3XS,
-                            color = ProofTheme.color.white
+                            color = ProofTheme.color.primary50
                         )
                     }
                 }
@@ -945,10 +943,9 @@ fun RenderBlurImage(content: @Composable () -> Unit, blurImage: @Composable () -
                 .fillMaxHeight()
                 .drawWithContent {
                     clipRect(top = size.height / 1.4f) {
-                        val colors = listOf(Color.Transparent, Color.White)
                         this@drawWithContent.drawContent()
                         drawRect(
-                            brush = Brush.verticalGradient(colors),
+                            color = BrushColor,
                             blendMode = BlendMode.DstIn
                         )
                     }
@@ -993,10 +990,9 @@ fun BlurImage(content: @Composable () -> Unit) {
                 .fillMaxHeight()
                 .drawWithContent {
                     clipRect(top = size.height / 1.4f) {
-                        val colors = listOf(Color.Transparent, Color.White)
                         this@drawWithContent.drawContent()
                         drawRect(
-                            brush = Brush.verticalGradient(colors),
+                            color = BrushColor,
                             blendMode = BlendMode.DstIn
                         )
                     }
@@ -1004,7 +1000,7 @@ fun BlurImage(content: @Composable () -> Unit) {
                 .blur(
                     radiusX = 10.dp,
                     radiusY = 10.dp
-                )
+                ).background(color = BrushColor)
         ) {
             content()
         }
@@ -1092,9 +1088,9 @@ fun WineCellarCard(
     }
 }
 
-//@Preview
-//@Composable
-//fun PreviewWineCellarCard() {
+// @Preview
+// @Composable
+// fun PreviewWineCellarCard() {
 //    ProofTheme {
 //        WineCellarCard(
 //            modifier = Modifier
@@ -1106,11 +1102,11 @@ fun WineCellarCard(
 //            null
 //        )
 //    }
-//}
+// }
 //
-//@Preview
-//@Composable
-//fun PreviewWindImageCard() {
+// @Preview
+// @Composable
+// fun PreviewWindImageCard() {
 //    ProofTheme() {
 //        WineImageCard(
 //            modifier = Modifier
@@ -1119,19 +1115,19 @@ fun WineCellarCard(
 //            wine = wines[0]
 //        )
 //    }
-//}
+// }
 //
-//@Preview
-//@Composable
-//fun PreviewWineTagCard() {
+// @Preview
+// @Composable
+// fun PreviewWineTagCard() {
 //    ProofTheme() {
 //        WineTagCard(tagDescription = "비오는 날", backgroundColor = ProofTheme.color.black, textColor = ProofTheme.color.white)
 //    }
-//}
+// }
 //
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewWindBoardCard() {
+// @Preview(showBackground = true)
+// @Composable
+// fun PreviewWindBoardCard() {
 //    ProofTheme() {
 //        WineBoardCard(
 //            modifier = Modifier
@@ -1141,11 +1137,11 @@ fun WineCellarCard(
 //            onWineBoardClick = {}
 //        )
 //    }
-//}
+// }
 //
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewPagerCard() {
+// @Preview(showBackground = true)
+// @Composable
+// fun PreviewPagerCard() {
 //    ProofTheme() {
 //        PagerWineCard(
 //            modifier = Modifier
@@ -1156,11 +1152,11 @@ fun WineCellarCard(
 //            null
 //        )
 //    }
-//}
+// }
 //
-//@Preview
-//@Composable
-//fun PreviewRecommendWineCard() {
+// @Preview
+// @Composable
+// fun PreviewRecommendWineCard() {
 //    ProofTheme() {
 //        RecommendWineCard(
 //            modifier = Modifier
@@ -1173,14 +1169,14 @@ fun WineCellarCard(
 //            }
 //        )
 //    }
-//}
+// }
 //
-//@Preview(
+// @Preview(
 //    showBackground = true,
 //    name = "리뷰 디테일 용"
-//)
-//@Composable
-//fun PreviewWindBoardCardForReviewDetail() {
+// )
+// @Composable
+// fun PreviewWindBoardCardForReviewDetail() {
 //    ProofTheme() {
 //        WineImageCardForReviewDetail(
 //            modifier = Modifier
@@ -1189,22 +1185,22 @@ fun WineCellarCard(
 //            wine = wines[0]
 //        )
 //    }
-//}
+// }
 //
-//@Preview
-//@Composable
-//fun PreviewWineImageCardForReviewWrite() {
+// @Preview
+// @Composable
+// fun PreviewWineImageCardForReviewWrite() {
 //    ProofTheme() {
 //        WineImageCardForReviewWrite(
 //            wineImageUrl = wines[0].imageUrl,
 //            wineName = wines[0].name
 //        )
 //    }
-//}
+// }
 //
-//@Preview
-//@Composable
-//fun PreviewNewBlurImage() {
+// @Preview
+// @Composable
+// fun PreviewNewBlurImage() {
 //    ProofTheme {
 //        Box(
 //            modifier = Modifier.width(278.dp).height(330.dp)
@@ -1221,4 +1217,4 @@ fun WineCellarCard(
 //            }
 //        }
 //    }
-//}
+// }

@@ -33,6 +33,6 @@ interface WineApi {
     ): Response<GetDrinksWithCategoryResponse>
 
     // 유저페이지 술 저장고 내부 술 리스트 가져오기
-    @GET("/drinks/reviews/users")
+    @GET("/drinks/users/reviews")
     suspend fun getDrinksReviewsInUserPage(): Response<List<Wine>>
 }

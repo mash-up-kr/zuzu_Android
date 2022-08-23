@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -24,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.WineImageCardForReviewDetail
 import com.mashup.zuzu.compose.theme.ProofTheme
-import com.mashup.zuzu.data.model.ReviewDetailResponse
-import com.mashup.zuzu.data.model.Taste
+import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.data.response.model.Result
 
 @Composable
 fun ReviewDetailRoute(
@@ -33,16 +34,16 @@ fun ReviewDetailRoute(
     navigateBack: () -> Unit,
     navigateToReviewWrite: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val evaluationUiState by viewModel.evaluationUiState.collectAsState()
+    val wineDataUiState by viewModel.wineDataUiState.collectAsState()
 
-    when (uiState) {
-        is ReviewDetailUiState.Loading -> {
-            //TODO : 로딩 화면 처리
+    when (wineDataUiState) {
+        is WineDataUiState.Loading -> {
         }
-
-        is ReviewDetailUiState.Normal -> {
+        is WineDataUiState.Success -> {
             ReviewDetailScreen(
-                reviewDetailUiState = uiState as ReviewDetailUiState.Normal,
+                wineData = (wineDataUiState as WineDataUiState.Success).wineData,
+                evaluationUiState = evaluationUiState,
                 navigateBack = navigateBack,
                 navigateToReviewWrite = navigateToReviewWrite
             )
@@ -52,7 +53,8 @@ fun ReviewDetailRoute(
 
 @Composable
 fun ReviewDetailScreen(
-    reviewDetailUiState: ReviewDetailUiState.Normal,
+    wineData: Wine,
+    evaluationUiState: EvaluationUiState,
     navigateBack: () -> Unit,
     navigateToReviewWrite: () -> Unit
 ) {
@@ -64,11 +66,16 @@ fun ReviewDetailScreen(
             .fillMaxHeight()
             .verticalScroll(scrollState)
     ) {
-        WineImageCardForReviewDetail(wine = reviewDetailUiState.wine)
+        WineImageCardForReviewDetail(wine = wineData)
 
-        WineInformation(content = reviewDetailUiState.wine.description ?: "")
+        WineInformation(content = wineData.description ?: "")
 
-        WorldCupInfo(reviewDetailUiState.dummyWorldCupData)
+        WorldCupInfo(
+            dummyWorldCupData = DummyWorldCupData(
+                first = wineData.worldcupWinCount ?: 0,
+                fourth = wineData.worldcupSemiFinalCount ?: 0
+            )
+        )
 
         Spacer(
             modifier = Modifier
@@ -85,10 +92,15 @@ fun ReviewDetailScreen(
             modifier = Modifier.padding(horizontal = 24.dp)
         )
 
-        if (reviewDetailUiState.reviewDetailResponse == null) {
-            EmptyReviewScreen(modifier = Modifier.padding(horizontal = 24.dp))
-        } else {
-            WineByReview(reviewDetailUiState.reviewDetailResponse)
+        when (evaluationUiState) {
+            is EvaluationUiState.Success -> {
+                WineByReview(result = evaluationUiState.result)
+            }
+            is EvaluationUiState.NoItem -> {
+                EmptyReviewScreen(modifier = Modifier.padding(horizontal = 24.dp))
+            }
+            is EvaluationUiState.Loading -> {
+            }
         }
 
         Button(
@@ -155,27 +167,53 @@ fun WorldCupInfo(
                 style = ProofTheme.typography.headingM,
                 color = ProofTheme.color.white
             )
-
-            Image(
-                painter = painterResource(id = R.drawable.ic_result_help), contentDescription = ""
-            )
         }
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Box(
+        Column(
             modifier = Modifier
-                .padding(top = 20.dp)
                 .background(
                     color = ProofTheme.color.gray600,
                     shape = RoundedCornerShape(8.dp)
                 )
                 .fillMaxWidth()
         ) {
-            Text(
-                text = dummyWorldCupData.first.toString(),
-                style = ProofTheme.typography.headingS,
-                color = ProofTheme.color.white,
-                modifier = Modifier.padding(16.dp)
-            )
+            Column(
+                modifier = Modifier.padding(16.dp).fillMaxSize()
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "\uD83E\uDD47 1위 선정",
+                        style = ProofTheme.typography.headingS,
+                        color = ProofTheme.color.white
+                    )
+
+                    Text(
+                        text = dummyWorldCupData.first.toString() + " 번",
+                        style = ProofTheme.typography.headingS,
+                        color = ProofTheme.color.white
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "\uD83E\uDD49 4강 진출",
+                        style = ProofTheme.typography.headingS,
+                        color = ProofTheme.color.white
+                    )
+                    Text(
+                        text = dummyWorldCupData.fourth.toString() + " 번",
+                        style = ProofTheme.typography.headingS,
+                        color = ProofTheme.color.white
+                    )
+                }
+            }
         }
     }
 }
@@ -212,7 +250,7 @@ fun EmptyReviewScreen(modifier: Modifier = Modifier) {
 
 @Composable
 fun WineByReview(
-    reviewDetailResponse: ReviewDetailResponse,
+    result: Result,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -241,7 +279,7 @@ fun WineByReview(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(reviewDetailResponse.situation) {
+            items(result.situation) {
                 Text(
                     text = it,
                     style = ProofTheme.typography.bodyS600,
@@ -264,38 +302,38 @@ fun WineByReview(
         )
 
         Column(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
         ) {
             GradientHorizontalProgress(
-                left = reviewDetailResponse.isBitter.sweet,
-                right = reviewDetailResponse.isBitter.bitter,
+                left = result.isBitter.Sweet,
+                right = result.isBitter.Bitter,
                 leftKeyword = "달아요",
                 rightKeyword = "써요",
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(bottom = 12.dp).clip(RoundedCornerShape(8.dp))
             )
 
             GradientHorizontalProgress(
-                left = reviewDetailResponse.isHeavy.light,
-                right = reviewDetailResponse.isHeavy.heavy,
-                leftKeyword = "달아요",
-                rightKeyword = "써요",
-                modifier = Modifier.padding(bottom = 12.dp)
+                left = result.isHeavy.Light,
+                right = result.isHeavy.Heavy,
+                leftKeyword = "가벼워요",
+                rightKeyword = "무거워요",
+                modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp).clip(RoundedCornerShape(8.dp))
             )
 
             GradientHorizontalProgress(
-                left = reviewDetailResponse.isStrong.mild,
-                right = reviewDetailResponse.isStrong.strong,
-                leftKeyword = "달아요",
-                rightKeyword = "써요",
-                modifier = Modifier.padding(bottom = 12.dp)
+                left = result.isStrong.Mild,
+                right = result.isStrong.Strong,
+                leftKeyword = "은은한 술맛",
+                rightKeyword = "찐한 술맛",
+                modifier = Modifier.padding(bottom = 12.dp).clip(RoundedCornerShape(8.dp))
             )
 
             GradientHorizontalProgress(
-                left = reviewDetailResponse.isBurning.smooth,
-                right = reviewDetailResponse.isBurning.burning,
-                leftKeyword = "달아요",
-                rightKeyword = "써요",
-                modifier = Modifier.padding(bottom = 12.dp)
+                left = result.isBurning.Smooth,
+                right = result.isBurning.Burning,
+                leftKeyword = "부드러운 목넘김",
+                rightKeyword = "화끈거리는 목넘김",
+                modifier = Modifier.padding(bottom = 12.dp).clip(RoundedCornerShape(8.dp))
             )
         }
 
@@ -308,7 +346,7 @@ fun WineByReview(
 
         SummaryPieChart(
             size = LocalConfiguration.current.screenWidthDp.dp / 3,
-            tastes = reviewDetailResponse.taste
+            tastes = result.taste
         )
 
         Spacer(
@@ -329,7 +367,7 @@ fun WineByReview(
             modifier = Modifier
                 .padding(top = 20.dp)
         ) {
-            reviewDetailResponse.pairing.forEach {
+            result.pairing.forEach {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(end = 20.dp)
@@ -368,7 +406,7 @@ fun GradientHorizontalProgress(
         val rightPercent = (right.toFloat() / (left + right))
         val percent: Float
 
-        val shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
+        val shape = RoundedCornerShape(8.dp)
 
         val greenBrush = Brush.horizontalGradient(
             listOf(
@@ -401,12 +439,11 @@ fun GradientHorizontalProgress(
                 modifier = Modifier
                     .background(
                         brush = greenBrush,
-                        shape = shape
+                        shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
                     )
                     .fillMaxWidth(percent)
                     .height(50.dp)
             ) {}
-
         } else if (leftPercent < rightPercent) {
             percent = leftPercent
 
@@ -424,7 +461,7 @@ fun GradientHorizontalProgress(
                 modifier = Modifier
                     .background(
                         color = ProofTheme.color.gray500,
-                        shape = shape
+                        shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
                     )
                     .fillMaxWidth(percent)
                     .height(50.dp)
@@ -446,12 +483,11 @@ fun GradientHorizontalProgress(
                 modifier = Modifier
                     .background(
                         brush = greenBrush,
-                        shape = shape
+                        shape = RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp)
                     )
                     .fillMaxWidth(percent)
                     .height(50.dp)
             ) {}
-
         }
 
         Row(
@@ -475,13 +511,14 @@ fun GradientHorizontalProgress(
                 )
             }
 
-            Column() {
+            Column(
+                horizontalAlignment = Alignment.End
+            ) {
                 Text(
                     text = rightKeyword,
                     style = ProofTheme.typography.bodyS600,
                     color = ProofTheme.color.white
                 )
-
                 Text(
                     text = right.toString(),
                     style = ProofTheme.typography.body3XS,
@@ -501,7 +538,7 @@ fun SummaryPieChart(
         Color(0xFF9685FF),
         Color(0xFF2A2C3C)
     ),
-    tastes: List<Taste>,
+    tastes: List<com.mashup.zuzu.data.response.model.Taste>,
     size: Dp
 ) {
     // Convert each proportions to angle
@@ -523,7 +560,7 @@ fun SummaryPieChart(
                     color = colors[i],
                     startAngle = preAngle,
                     sweepAngle = preAngle + sweepAngles[i],
-                    useCenter = true,
+                    useCenter = true
                 )
 
                 preAngle += sweepAngles[i]
@@ -533,7 +570,6 @@ fun SummaryPieChart(
                 color = background,
                 radius = (size / 5).toPx()
             )
-
         }
 
         Column(
@@ -561,7 +597,7 @@ fun SummaryPieChart(
                     )
 
                     Text(
-                        text = it.percent,
+                        text = it.percent.toString(),
                         style = ProofTheme.typography.bodyXS,
                         color = ProofTheme.color.white
                     )
@@ -569,5 +605,4 @@ fun SummaryPieChart(
             }
         }
     }
-
 }
