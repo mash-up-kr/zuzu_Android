@@ -16,7 +16,13 @@ fun responseWineModelToDataModel(
         name = wine.name,
         imageUrl = wine.image_url,
         alc = wine.alc,
-        tags = emptyList(),
+        tags = if (wine.tags == null) {
+            emptyList()
+        } else {
+            wine.tags.map {
+                mapperResultToKorean(it)
+            }
+        },
         description = wine.description,
         category = nameToKorean(wine.category),
         worldcupWinCount = wine.worldcupWinCount,
@@ -33,7 +39,13 @@ fun responseWineListModelToListDataModel(
             name = wine.name,
             imageUrl = wine.image_url,
             alc = wine.alc,
-            tags = emptyList(),
+            tags =  if (wine.tags == null) {
+                emptyList()
+            } else {
+                wine.tags.map {
+                    mapperResultToKorean(it)
+                }
+            },
             description = wine.description,
             category = nameToKorean(wine.category),
             worldcupWinCount = wine.worldcupWinCount,
