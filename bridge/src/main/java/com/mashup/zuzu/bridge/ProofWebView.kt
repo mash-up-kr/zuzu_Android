@@ -66,6 +66,7 @@ class ProofWebView : WebView {
             allowContentAccess = true
             allowFileAccessFromFileURLs = true
             allowUniversalAccessFromFileURLs = true
+            userAgentString += "_Proof Android"
 
             // https://stackoverflow.com/questions/7422427/android-webview-slow
             setRenderPriority(WebSettings.RenderPriority.HIGH)
