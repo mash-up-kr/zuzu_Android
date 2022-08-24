@@ -4,7 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -197,7 +197,9 @@ fun WorldCupInfo(
                         color = ProofTheme.color.white
                     )
                 }
+
                 Spacer(modifier = Modifier.height(12.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -270,12 +272,12 @@ fun WineByReview(
             modifier = Modifier.padding(top = 4.dp)
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(50.dp),
+        LazyHorizontalGrid(
+            rows = GridCells.Adaptive(30.dp),
             modifier = Modifier
+                .padding(top = 12.dp)
                 .fillMaxWidth()
-                .height(100.dp)
-                .padding(top = 12.dp),
+                .height(80.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -341,12 +343,13 @@ fun WineByReview(
             text = "한마디로 말하면,",
             style = ProofTheme.typography.headingS,
             color = ProofTheme.color.white,
-            modifier = Modifier.padding(top = 40.dp)
+            modifier = Modifier.padding(top = 40.dp, bottom = 22.dp)
         )
 
         SummaryPieChart(
             size = LocalConfiguration.current.screenWidthDp.dp / 3,
-            tastes = result.taste
+            tasteInfo = result.taste.map { Pair(it.tasteName, it.percent) },
+            percents = result.taste.map { it.percent }
         )
 
         Spacer(
@@ -531,25 +534,26 @@ fun GradientHorizontalProgress(
 
 @Composable
 fun SummaryPieChart(
-    values: List<Float> = listOf(15f, 35f, 15f, 15f),
+    percents: List<Int>,
     colors: List<Color> = listOf(
         Color(0xFF4F17C5),
         Color(0xFF6748E3),
         Color(0xFF9685FF),
         Color(0xFF2A2C3C)
     ),
-    tastes: List<com.mashup.zuzu.data.response.model.Taste>,
+    tasteInfo: List<Pair<String, Int>>,
     size: Dp
 ) {
-    // Convert each proportions to angle
-    val sweepAngles = values.map {
+    val sweepAngles = percents.map {
         360 * (it / 100)
     }
 
     val gray = ProofTheme.color.gray600
     val background = ProofTheme.color.black
 
-    Row() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Canvas(
             modifier = Modifier.size(size)
         ) {
@@ -577,7 +581,7 @@ fun SummaryPieChart(
                 .fillMaxWidth()
                 .padding(start = 10.dp)
         ) {
-            tastes.forEach { it ->
+            tasteInfo.forEach { it ->
                 Row(
                     modifier = Modifier
                         .padding(bottom = 10.dp)
@@ -591,13 +595,13 @@ fun SummaryPieChart(
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     Text(
-                        text = it.tasteName,
+                        text = it.first,
                         style = ProofTheme.typography.bodyXS600,
                         color = ProofTheme.color.white
                     )
 
                     Text(
-                        text = it.percent.toString(),
+                        text = "${it.second}%",
                         style = ProofTheme.typography.bodyXS,
                         color = ProofTheme.color.white
                     )
