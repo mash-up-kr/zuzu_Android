@@ -30,7 +30,7 @@ object WebAPIController {
             FunctionName.GET_SERVER_TOKEN -> {
                 extra.addProperty(
                     "accessToken",
-                    preference.preference.getString("token", "")
+                    preference.preference.getString("accessToken", "")
                 )
                 returnMsg = makeReturnMsg(200, resultMsg = "Success", extra, transactionId = transactionId)
             }
@@ -72,7 +72,7 @@ object WebAPIController {
     }
 
     object FunctionName {
-        const val GET_SERVER_TOKEN = "getServerToken"
+        const val GET_SERVER_TOKEN = "getProofAccessToken"
         const val START_ACTIVITY = "startActivity"
         const val SET_BACK_BUTTON_RECEIVE = "setBackButtonReceive"
         const val ON_BACK_BUTTON_PRESSED = "onBackButtonPressed"
