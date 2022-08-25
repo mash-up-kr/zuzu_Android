@@ -33,6 +33,7 @@ import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.ui.model.bestWorldCupList
 import com.mashup.zuzu.util.rememberScrollContext
+import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/07/14
@@ -46,6 +47,16 @@ fun UserRoute(
     val uiState by viewModel.user.collectAsState() // userData 아마 sharedPreference
     val wineCallerState by viewModel.wineCaller.collectAsState() // wineCallerData
     val joinedWorldCupState by viewModel.joinedWorldCup.collectAsState() // 참여한 술드컵
+    val networkState by viewModel.connection.collectAsState()
+
+    LaunchedEffect(key1 = networkState) {
+        if (networkState) {
+            Timber.tag("reload").d("in")
+            viewModel.getUserData()
+            viewModel.getWineCallerData()
+            viewModel.getJoinWorldCupData()
+        }
+    }
 
     when (uiState) {
         is UserUiState.Success -> {
