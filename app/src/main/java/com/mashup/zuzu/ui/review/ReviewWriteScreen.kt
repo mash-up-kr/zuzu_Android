@@ -192,6 +192,7 @@ fun ReviewWriteScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
+                .padding(top = 44.dp)
                 .verticalScroll(scrollState)
         ) {
             Column(
@@ -201,7 +202,7 @@ fun ReviewWriteScreen(
                     wineImageUrl = uiState.wineImageUrl,
                     wineName = uiState.wineName,
                     modifier = Modifier
-                        .fillMaxWidth(0.3f)
+                        .width(148.dp)
                         .height(190.dp)
                 )
 

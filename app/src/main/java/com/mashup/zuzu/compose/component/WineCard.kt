@@ -186,7 +186,7 @@ fun WineImageCardForReviewWrite(
                     .fillMaxHeight(),
                 model = ImageRequest.Builder(LocalContext.current).data(wineImageUrl).build(),
                 contentDescription = null,
-                contentScale = ContentScale.FillHeight
+                contentScale = ContentScale.Crop
             )
 
             Box(
