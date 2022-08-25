@@ -467,6 +467,7 @@ fun RecommendImage(
             backgroundColor = ProofTheme.color.primary300,
             textColor = ProofTheme.color.white,
             text = stringResource(id = R.string.home_see_random_drink),
+            textStyle = ProofTheme.typography.buttonM,
             onButtonClick = onButtonClick
         )
     }

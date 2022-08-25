@@ -62,7 +62,7 @@ val proofTypography = ProofTypography(
         fontFamily = pretended,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
-        lineHeight = 32.sp
+        lineHeight = 26.sp
     ),
 
     bodyL600 = TextStyle(

@@ -60,6 +60,7 @@ fun Auth(
             modifier = Modifier.padding(bottom = 32.dp).width(312.dp).height(52.dp),
             backgroundColor = Color.Yellow,
             text = "카카오 로그인",
+            textStyle = ProofTheme.typography.buttonM,
             onButtonClick = onKakaoButtonClick,
             textColor = ProofTheme.color.black
         )

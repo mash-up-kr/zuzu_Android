@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -26,6 +27,7 @@ import com.mashup.zuzu.compose.theme.ProofTheme
 fun Button(
     modifier: Modifier,
     text: String,
+    textStyle: TextStyle,
     backgroundColor: Color,
     textColor: Color,
     onButtonClick: () -> Unit
@@ -41,7 +43,7 @@ fun Button(
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = text,
-            style = ProofTheme.typography.buttonM,
+            style = textStyle,
             color = textColor
         )
     }
@@ -137,6 +139,7 @@ fun PreviewButton() {
                 .width(115.dp)
                 .height(44.dp),
             text = "술추천 보기",
+            textStyle = ProofTheme.typography.buttonM,
             backgroundColor = ProofTheme.color.primary300,
             textColor = ProofTheme.color.white
         ) {
