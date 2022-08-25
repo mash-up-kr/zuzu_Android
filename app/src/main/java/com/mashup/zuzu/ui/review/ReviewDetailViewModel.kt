@@ -3,12 +3,14 @@ package com.mashup.zuzu.ui.review
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mashup.zuzu.bridge.ProofPreference
 import com.mashup.zuzu.data.mapper.mapperResultToKorean
 import com.mashup.zuzu.data.mapper.mapperTasteListToKorean
 import com.mashup.zuzu.data.model.Results
 import com.mashup.zuzu.data.repository.ReviewDetailRepository
 import com.mashup.zuzu.domain.usecase.GetDrinksEvaluationWithIdUseCase
 import com.mashup.zuzu.domain.usecase.GetWineDataWithIdUseCase
+import com.mashup.zuzu.util.Key
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -16,9 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReviewDetailViewModel @Inject constructor(
-    private val reviewDetailRepository: ReviewDetailRepository,
     private val getDrinksEvaluationWithIdUseCase: GetDrinksEvaluationWithIdUseCase,
     private val getWineDataWithIdUseCase: GetWineDataWithIdUseCase,
+    private val proofPreference: ProofPreference,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -76,6 +78,12 @@ class ReviewDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun checkAccount(): Boolean {
+        val result = proofPreference.get(Key.Preference.ACCESS_TOKEN, "")
+
+        return result.isNotEmpty()
     }
 
     companion object {

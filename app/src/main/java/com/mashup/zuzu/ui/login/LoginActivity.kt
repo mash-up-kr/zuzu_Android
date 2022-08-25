@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -63,8 +64,17 @@ class LoginActivity : AppCompatActivity() {
                 intent.putExtra(Key.NEXT_ACTIVITY, Constants.MAIN_ACTIVITY)
             }
         }
-        startActivity(intent)
-        overridePendingTransition(0, 0)
+
+        // 리뷰 결과 화면에서 진입되는 로그인 엑티비티의 경우, 화면이 사라지기만 하기 위해 해당 분기를 추가함
+        val isStartedReviewResultScreen = getIntent().getBooleanExtra("isStartedReviewResultScreen", false)
+
+        if (!isStartedReviewResultScreen) {
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+        } else {
+            setResult(Activity.RESULT_OK)
+        }
+
         finish()
     }
 

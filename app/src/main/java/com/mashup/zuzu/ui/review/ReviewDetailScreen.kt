@@ -1,6 +1,10 @@
 package com.mashup.zuzu.ui.review
 
+import android.app.Activity
+import android.content.Intent
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -10,15 +14,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -27,6 +30,8 @@ import com.mashup.zuzu.compose.component.WineImageCardForReviewDetail
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.response.model.Result
+import com.mashup.zuzu.ui.login.LoginActivity
+import timber.log.Timber
 
 @Composable
 fun ReviewDetailRoute(
@@ -45,7 +50,8 @@ fun ReviewDetailRoute(
                 wineData = (wineDataUiState as WineDataUiState.Success).wineData,
                 evaluationUiState = evaluationUiState,
                 navigateBack = navigateBack,
-                navigateToReviewWrite = navigateToReviewWrite
+                navigateToReviewWrite = navigateToReviewWrite,
+                checkAccount = viewModel::checkAccount
             )
         }
     }
@@ -56,9 +62,20 @@ fun ReviewDetailScreen(
     wineData: Wine,
     evaluationUiState: EvaluationUiState,
     navigateBack: () -> Unit,
-    navigateToReviewWrite: () -> Unit
+    navigateToReviewWrite: () -> Unit,
+    checkAccount: () -> Boolean
 ) {
     val scrollState = rememberScrollState()
+
+    val context = LocalContext.current
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            navigateToReviewWrite()
+        } else {
+            Timber.tag("ReviewResultScreen").e("User not login")
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -104,7 +121,15 @@ fun ReviewDetailScreen(
         }
 
         Button(
-            onClick = navigateToReviewWrite,
+            onClick = {
+                if (checkAccount()) {
+                    navigateToReviewWrite()
+                } else {
+                    val intent = Intent(context, LoginActivity::class.java)
+                    intent.putExtra("isStartedReviewResultScreen", true)
+                    launcher.launch(intent)
+                }
+            },
             colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
             modifier = Modifier
                 .padding(top = 50.dp)
@@ -179,7 +204,9 @@ fun WorldCupInfo(
                 .fillMaxWidth()
         ) {
             Column(
-                modifier = Modifier.padding(16.dp).fillMaxSize()
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxSize()
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -304,14 +331,18 @@ fun WineByReview(
         )
 
         Column(
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
         ) {
             GradientHorizontalProgress(
                 left = result.isBitter.Sweet,
                 right = result.isBitter.Bitter,
                 leftKeyword = "달아요",
                 rightKeyword = "써요",
-                modifier = Modifier.padding(bottom = 12.dp).clip(RoundedCornerShape(8.dp))
+                modifier = Modifier
+                    .padding(bottom = 12.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
 
             GradientHorizontalProgress(
@@ -319,7 +350,10 @@ fun WineByReview(
                 right = result.isHeavy.Heavy,
                 leftKeyword = "가벼워요",
                 rightKeyword = "무거워요",
-                modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp).clip(RoundedCornerShape(8.dp))
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
 
             GradientHorizontalProgress(
@@ -327,7 +361,9 @@ fun WineByReview(
                 right = result.isStrong.Strong,
                 leftKeyword = "은은한 술맛",
                 rightKeyword = "찐한 술맛",
-                modifier = Modifier.padding(bottom = 12.dp).clip(RoundedCornerShape(8.dp))
+                modifier = Modifier
+                    .padding(bottom = 12.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
 
             GradientHorizontalProgress(
@@ -335,7 +371,9 @@ fun WineByReview(
                 right = result.isBurning.Burning,
                 leftKeyword = "부드러운 목넘김",
                 rightKeyword = "화끈거리는 목넘김",
-                modifier = Modifier.padding(bottom = 12.dp).clip(RoundedCornerShape(8.dp))
+                modifier = Modifier
+                    .padding(bottom = 12.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
         }
 
