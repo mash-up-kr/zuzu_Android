@@ -27,7 +27,7 @@ object WebAPIController {
         var returnMsg = JsonObject()
         requestData.addProperty("functionName", functionName)
         when (functionName) {
-            FunctionName.GET_SERVER_TOKEN -> {
+            FunctionName.GET_PROOF_ACCESS_TOKEN -> {
                 extra.addProperty(
                     "accessToken",
                     preference.preference.getString("accessToken", "")
@@ -72,7 +72,7 @@ object WebAPIController {
     }
 
     object FunctionName {
-        const val GET_SERVER_TOKEN = "getProofAccessToken"
+        const val GET_PROOF_ACCESS_TOKEN = "getProofAccessToken"
         const val START_ACTIVITY = "startActivity"
         const val SET_BACK_BUTTON_RECEIVE = "setBackButtonReceive"
         const val ON_BACK_BUTTON_PRESSED = "onBackButtonPressed"
