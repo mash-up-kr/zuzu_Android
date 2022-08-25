@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetWorkModule {
 
-    private val URL = "http://server.mashup-proof.click"
+    private val URL = "https://server.mashup-proof.click"
 
     @Provides
     @Singleton
