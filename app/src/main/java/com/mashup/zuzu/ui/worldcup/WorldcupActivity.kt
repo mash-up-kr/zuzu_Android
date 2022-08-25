@@ -34,7 +34,7 @@ class WorldcupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!intent.getStringExtra(Key.NEXT_ACTIVITY).isNullOrEmpty()) {
+        if (intent.hasExtra(Key.NEXT_ACTIVITY)) {
             nextActivity = intent.getStringExtra(Key.NEXT_ACTIVITY).toString()
         }
         initViews()

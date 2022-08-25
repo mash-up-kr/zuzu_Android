@@ -31,6 +31,7 @@ import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.response.model.Result
 import com.mashup.zuzu.ui.login.LoginActivity
+import com.mashup.zuzu.util.Key
 import timber.log.Timber
 
 @Composable
@@ -126,7 +127,7 @@ fun ReviewDetailScreen(
                     navigateToReviewWrite()
                 } else {
                     val intent = Intent(context, LoginActivity::class.java)
-                    intent.putExtra("isStartedReviewResultScreen", true)
+                    intent.putExtra(Key.REQUEST_LOGIN_FROM_OTHER_CASES, true)
                     launcher.launch(intent)
                 }
             },

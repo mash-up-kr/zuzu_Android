@@ -29,10 +29,12 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        window.statusBarColor = getColor(R.color.black)
+        initView()
+
+        if (intent.hasExtra(Key.REQUEST_LOGIN_FROM_OTHER_CASES)) {
+            viewModel.requestLoginFromOtherCases =
+                intent.getBooleanExtra(Key.REQUEST_LOGIN_FROM_OTHER_CASES, false)
+        }
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -47,10 +49,19 @@ class LoginActivity : AppCompatActivity() {
                             ).show()
                         LoginViewModel.Action.StartMain -> startProof(Constants.MAIN_ACTIVITY)
                         LoginViewModel.Action.StartWorldcup -> startProof(Constants.WORLDCUP_ACTIVITY)
+                        LoginViewModel.Action.CloseLoginBySuccess -> closeLogin(true)
+                        LoginViewModel.Action.SkipLogin -> closeLogin(false)
                     }
                 }
             }
         }
+    }
+
+    private fun initView() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        window.statusBarColor = getColor(R.color.black)
     }
 
     private fun startProof(targetActivity: String?) {
@@ -64,17 +75,15 @@ class LoginActivity : AppCompatActivity() {
                 intent.putExtra(Key.NEXT_ACTIVITY, Constants.MAIN_ACTIVITY)
             }
         }
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+        finish()
+    }
 
-        // 리뷰 결과 화면에서 진입되는 로그인 엑티비티의 경우, 화면이 사라지기만 하기 위해 해당 분기를 추가함
-        val isStartedReviewResultScreen = getIntent().getBooleanExtra("isStartedReviewResultScreen", false)
-
-        if (!isStartedReviewResultScreen) {
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-        } else {
+    private fun closeLogin(isSuccess: Boolean) {
+        if (isSuccess) {
             setResult(Activity.RESULT_OK)
         }
-
         finish()
     }
 

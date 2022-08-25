@@ -19,10 +19,14 @@ class LoginViewModel @Inject constructor(
     private val getProofAuthDataUseCase: GetProofAuthDataUseCase
 ) : ViewModel() {
 
+    var requestLoginFromOtherCases = false
+
     sealed class Action {
         object ClickKakaoLogin : Action()
         object StartMain : Action()
         object StartWorldcup : Action()
+        object CloseLoginBySuccess : Action()
+        object SkipLogin : Action()
         object ProofAuthFailed : Action()
     }
 
@@ -39,7 +43,11 @@ class LoginViewModel @Inject constructor(
                             commit(Key.Preference.ACCESS_TOKEN, result.value.accessToken)
                             commit(Key.Preference.REFRESH_TOKEN, result.value.refreshToken)
                         }
-                        startActivity()
+                        if (!requestLoginFromOtherCases) {
+                            startActivity()
+                        } else {
+                            channel.trySend(Action.CloseLoginBySuccess)
+                        }
                     }
                     is Results.Failure -> {
                         channel.trySend(Action.ProofAuthFailed)
@@ -55,7 +63,11 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onClickSkip() {
-        startActivity()
+        if (!requestLoginFromOtherCases) {
+            startActivity()
+        } else {
+            channel.trySend(Action.SkipLogin)
+        }
     }
 
     private fun startActivity() {
