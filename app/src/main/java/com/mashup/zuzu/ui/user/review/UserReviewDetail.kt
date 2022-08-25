@@ -92,6 +92,7 @@ fun UserReviewDetailScreen(
             text = "이미지로 공유하기",
             backgroundColor = ProofTheme.color.primary300,
             textColor = ProofTheme.color.white,
+            textStyle = ProofTheme.typography.buttonL,
             onButtonClick = { captureController.capture(Bitmap.Config.ARGB_8888) }
         )
         Spacer(
