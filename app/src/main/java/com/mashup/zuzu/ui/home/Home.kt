@@ -2,15 +2,20 @@ package com.mashup.zuzu.ui.home
 
 import android.graphics.Bitmap
 import android.os.Build
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,12 +23,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -34,12 +36,12 @@ import com.google.accompanist.placeholder.shimmer
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.*
 import com.mashup.zuzu.compose.theme.ProofTheme
-import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.categoryList
 import com.mashup.zuzu.data.model.dummy.dummyCategoryList
 import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
+import com.mashup.zuzu.ui.model.BestWorldCup
 import kotlin.math.roundToInt
 
 /**
@@ -87,7 +89,10 @@ fun HomeScreen(
             .fillMaxHeight()
             .verticalScroll(scrollState)
     ) {
-        HomeLogo(modifier = Modifier.padding(top = 24.dp, start = 24.dp).width(80.dp).height(32.dp))
+        HomeLogo(modifier = Modifier
+            .padding(top = 24.dp, start = 24.dp)
+            .width(80.dp)
+            .height(32.dp))
         HomeMainTitle(
             modifier = Modifier
                 .fillMaxWidth()
@@ -374,10 +379,7 @@ fun HomeMainTitle(
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
-            style = TextStyle(
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            ),
+            style = ProofTheme.typography.headingXL,
             color = ProofTheme.color.white,
             text = stringResource(id = R.string.home_top_title),
             textAlign = TextAlign.Center
