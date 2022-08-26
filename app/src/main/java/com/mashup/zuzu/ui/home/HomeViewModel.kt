@@ -4,14 +4,15 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.google.android.renderscript.Toolkit
+import com.mashup.base.BaseViewModel
 import com.mashup.zuzu.data.mapper.worldCupResponseToUiModel
 import com.mashup.zuzu.data.model.*
+import com.mashup.zuzu.data.network.NetworkMonitor
 import com.mashup.zuzu.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -27,8 +28,9 @@ class HomeViewModel @Inject constructor(
     private val getRandomDrinksUseCase: GetRandomDrinksUseCase,
     private val getBestWorldCupListUseCase: GetBestWorldCupListUseCase,
     private val getRecommendDrinksUseCase: GetRecommendDrinksUseCase,
-    private val getCategoryListUseCase: GetCategoryListUseCase
-) : ViewModel() {
+    private val getCategoryListUseCase: GetCategoryListUseCase,
+    networkMonitor: NetworkMonitor
+) : BaseViewModel(networkMonitor = networkMonitor) {
 
     private val _mainWineList: MutableStateFlow<MainWineUiState> =
         MutableStateFlow(MainWineUiState.Loading)
@@ -49,7 +51,7 @@ class HomeViewModel @Inject constructor(
     private val _bitmap: MutableStateFlow<Bitmap?> = MutableStateFlow(null)
     val bitmap = _bitmap.asStateFlow()
 
-    init {
+    fun initData() {
         getMainWineList()
         getBestWorldCupList()
         getCategoryList()

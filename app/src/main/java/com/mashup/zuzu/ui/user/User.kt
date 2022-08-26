@@ -46,6 +46,13 @@ fun UserRoute(
     val uiState by viewModel.user.collectAsState() // userData 아마 sharedPreference
     val wineCallerState by viewModel.wineCaller.collectAsState() // wineCallerData
     val joinedWorldCupState by viewModel.joinedWorldCup.collectAsState() // 참여한 술드컵
+    val networkState by viewModel.connection.collectAsState()
+
+    LaunchedEffect(key1 = networkState) {
+        if (networkState) {
+            viewModel.initData()
+        }
+    }
 
     when (uiState) {
         is UserUiState.Success -> {

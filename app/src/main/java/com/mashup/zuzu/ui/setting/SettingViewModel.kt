@@ -1,10 +1,10 @@
 package com.mashup.zuzu.ui.setting
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mashup.zuzu.ProofPreferenceImpl
+import com.mashup.base.BaseViewModel
 import com.mashup.zuzu.bridge.ProofPreference
 import com.mashup.zuzu.data.model.Results
+import com.mashup.zuzu.data.network.NetworkMonitor
 import com.mashup.zuzu.domain.usecase.GetUserDataUseCase
 import com.mashup.zuzu.ui.user.UserUiState
 import com.mashup.zuzu.util.Key
@@ -21,8 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val proofPreference: ProofPreference,
-    private val getUserDataUseCase: GetUserDataUseCase
-) : ViewModel() {
+    private val getUserDataUseCase: GetUserDataUseCase,
+    networkMonitor: NetworkMonitor
+) : BaseViewModel(networkMonitor = networkMonitor) {
 
     private val _user: MutableStateFlow<UserUiState> = MutableStateFlow(UserUiState.Loading)
     val user = _user.asStateFlow()
@@ -30,9 +31,6 @@ class SettingViewModel @Inject constructor(
     private val _logout: MutableStateFlow<LogoutUiState> = MutableStateFlow(LogoutUiState.Loading)
     val logout = _logout.asStateFlow()
 
-    init {
-        getUserData()
-    }
     fun getUserData() {
         viewModelScope.launch {
             getUserDataUseCase().collect { result ->

@@ -2,10 +2,11 @@ package com.mashup.zuzu.ui.category
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mashup.base.BaseViewModel
 import com.mashup.zuzu.data.model.Results
 import com.mashup.zuzu.data.model.Wine
+import com.mashup.zuzu.data.network.NetworkMonitor
 import com.mashup.zuzu.domain.usecase.GetWineListWithPageAndCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,8 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val getWineListWithPageAndCategoryUseCase: GetWineListWithPageAndCategoryUseCase,
+    networkMonitor: NetworkMonitor,
     savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : BaseViewModel(networkMonitor = networkMonitor) {
 
     private val _category = mutableStateOf("전체")
     val category = _category
@@ -36,11 +38,6 @@ class CategoryViewModel @Inject constructor(
     val page = mutableStateOf(1)
 
     private val wineMaxPage: MutableStateFlow<Int> = MutableStateFlow(0)
-
-    init {
-        val argument = savedStateHandle.get<String>("category").orEmpty()
-        updateCategory(category = argument)
-    }
 
     fun onChangeWineListScrollPosition(position: Int) {
         wineListScrollPosition = position
@@ -68,22 +65,25 @@ class CategoryViewModel @Inject constructor(
     }
 
     fun getWineListWithPageAndCategoryNextPage() {
-        viewModelScope.launch {
-            if ((wineListScrollPosition + 1 >= page.value * PAGE_SIZE)) {
-                incrementPage()
-                if (page.value > 1 && page.value <= wineMaxPage.value) {
-                    getWineListWithPageAndCategoryUseCase(
-                        category = _category.value,
-                        page = page.value
-                    ).collect { result ->
-                        when (result) {
-                            is Results.Success -> {
-                                _wineList.value = _wineList.value + result.value.wines
-                                _wineListState.value = WineListWithPageAndCategoryUiState.Success(_wineList.value)
-                            }
-                            is Results.Loading -> {
-                            }
-                            is Results.Failure -> {
+        if (connection.value) {
+            viewModelScope.launch {
+                if ((wineListScrollPosition + 1 >= page.value * PAGE_SIZE)) {
+                    incrementPage()
+                    if (page.value > 1 && page.value <= wineMaxPage.value) {
+                        getWineListWithPageAndCategoryUseCase(
+                            category = _category.value,
+                            page = page.value
+                        ).collect { result ->
+                            when (result) {
+                                is Results.Success -> {
+                                    _wineList.value = _wineList.value + result.value.wines
+                                    _wineListState.value =
+                                        WineListWithPageAndCategoryUiState.Success(_wineList.value)
+                                }
+                                is Results.Loading -> {
+                                }
+                                is Results.Failure -> {
+                                }
                             }
                         }
                     }

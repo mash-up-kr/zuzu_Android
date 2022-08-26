@@ -103,5 +103,10 @@
     <string name="leave_subtitle">회원님의 정보, 리뷰 등 기록이 전부 삭제되며\n다시는 되돌릴 수 없어요.</string>
     <string name="leave_keep_using">계속 사용할래요</string>
 
+    <!-- 에러 -->
+    <string name="error_main_title">아니 이게 웬 오류.</string>
+    <string name="error_sub_title">문제를 파악하고 있는 중이에요.</string>
+    <string name="error_button_title">이전 페이지로 돌아가기</string>
+
 
 </resources>

@@ -1,9 +1,10 @@
 package com.mashup.zuzu.ui.user
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mashup.base.BaseViewModel
 import com.mashup.zuzu.data.mapper.joinWorldListResponseToUiModel
 import com.mashup.zuzu.data.model.Results
+import com.mashup.zuzu.data.network.NetworkMonitor
 import com.mashup.zuzu.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +22,9 @@ class UserViewModel @Inject constructor(
     private val getJoinedWorldCupListUseCase: GetJoinedWorldCupListUseCase,
     private val getWineCallerListUseCase: GetDrinksReviewsInUserPage,
     private val updateUserProfileUseCase: UpdateUserProfileUseCase,
-    private val getUserProfileImagesUseCase: GetUserProfileImagesUseCase
-) : ViewModel() {
+    private val getUserProfileImagesUseCase: GetUserProfileImagesUseCase,
+    networkMonitor: NetworkMonitor
+) : BaseViewModel(networkMonitor = networkMonitor) {
 
     private val _user: MutableStateFlow<UserUiState> = MutableStateFlow(UserUiState.Loading)
     val user = _user.asStateFlow()
@@ -41,7 +43,7 @@ class UserViewModel @Inject constructor(
 
     private val _userImageUrl = MutableStateFlow("")
 
-    init {
+    fun initData() {
         getUserData()
         getWineCallerData()
         getJoinWorldCupData()
@@ -65,7 +67,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getWineCallerData() {
+    private fun getWineCallerData() {
         viewModelScope.launch {
             getWineCallerListUseCase().collect { result ->
                 when (result) {
@@ -87,7 +89,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getJoinWorldCupData() {
+    private fun getJoinWorldCupData() {
         viewModelScope.launch {
             getJoinedWorldCupListUseCase().collect { result ->
                 when (result) {

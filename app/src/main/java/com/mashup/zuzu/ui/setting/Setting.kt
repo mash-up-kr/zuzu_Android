@@ -34,6 +34,14 @@ fun SettingRoute(
     onButtonClick: (SettingUiEvents) -> Unit
 ) {
     val userState by viewModel.user.collectAsState()
+    val networkState by viewModel.connection.collectAsState()
+
+    LaunchedEffect(key1 = networkState) {
+        if (networkState) {
+            viewModel.getUserData()
+        }
+    }
+
     when (userState) {
         is UserUiState.Success -> {
             Setting(

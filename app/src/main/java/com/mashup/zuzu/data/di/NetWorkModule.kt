@@ -1,11 +1,16 @@
 package com.mashup.zuzu.data.di
 
+import android.content.Context
+import android.net.ConnectivityManager
+import com.mashup.base.BaseViewModel
 import com.mashup.zuzu.BuildConfig
 import com.mashup.zuzu.bridge.ProofPreference
 import com.mashup.zuzu.data.network.NetworkInterceptor
+import com.mashup.zuzu.data.network.NetworkMonitor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -56,4 +61,21 @@ class NetWorkModule {
             .addConverterFactory(gsonConverterFactory)
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    @Provides
+    @Singleton
+    fun provideNetWorkMonitor(connectivityManager: ConnectivityManager): NetworkMonitor {
+        return NetworkMonitor(connectivityManager = connectivityManager)
+    }
+
+//    @Provides
+//    @Singleton
+//    fun provideViewModel(networkMonitor: NetworkMonitor): BaseViewModel {
+//        return BaseViewModel(networkMonitor = networkMonitor)
+//    }
 }
