@@ -33,7 +33,6 @@ import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.ui.model.bestWorldCupList
 import com.mashup.zuzu.util.rememberScrollContext
-import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/07/14
@@ -51,10 +50,7 @@ fun UserRoute(
 
     LaunchedEffect(key1 = networkState) {
         if (networkState) {
-            Timber.tag("reload").d("in")
-            viewModel.getUserData()
-            viewModel.getWineCallerData()
-            viewModel.getJoinWorldCupData()
+            viewModel.initData()
         }
     }
 

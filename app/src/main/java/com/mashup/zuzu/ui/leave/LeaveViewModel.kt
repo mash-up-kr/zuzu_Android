@@ -14,8 +14,6 @@ import javax.inject.Inject
  * @Created by 김현국 2022/07/20
  */
 
-
-
 @HiltViewModel
 class LeaveViewModel @Inject constructor(
     private val leaveMembershipUseCase: LeaveMembershipUseCase

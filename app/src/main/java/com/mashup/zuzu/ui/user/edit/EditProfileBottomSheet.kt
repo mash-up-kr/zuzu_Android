@@ -30,13 +30,20 @@ fun EditUserProfileRoute(
     val uiState by viewModel.user.collectAsState() // userData
     val submitState by viewModel.submit.collectAsState()
     val userProfileImagesUiState by viewModel.userProfileImages.collectAsState()
+    val networkState by viewModel.connection.collectAsState()
 
-    var userName = when (uiState) {
+    val userName = when (uiState) {
         is UserUiState.Success -> {
             (uiState as UserUiState.Success).userData.name
         }
         else -> {
             ""
+        }
+    }
+
+    LaunchedEffect(networkState) {
+        if (networkState) {
+            viewModel.getUserProfileImages()
         }
     }
 

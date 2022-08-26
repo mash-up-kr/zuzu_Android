@@ -43,6 +43,12 @@ class UserViewModel @Inject constructor(
 
     private val _userImageUrl = MutableStateFlow("")
 
+    fun initData() {
+        getUserData()
+        getWineCallerData()
+        getJoinWorldCupData()
+    }
+
     fun getUserData() {
         viewModelScope.launch {
             getUserDataUseCase().collect { result ->
@@ -61,7 +67,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getWineCallerData() {
+    private fun getWineCallerData() {
         viewModelScope.launch {
             getWineCallerListUseCase().collect { result ->
                 when (result) {
@@ -83,7 +89,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun getJoinWorldCupData() {
+    private fun getJoinWorldCupData() {
         viewModelScope.launch {
             getJoinedWorldCupListUseCase().collect { result ->
                 when (result) {

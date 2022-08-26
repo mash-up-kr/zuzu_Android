@@ -58,6 +58,13 @@ fun HomeRoute(
     val mainWineState by viewModel.mainWineList.collectAsState()
     val blurBitmap by viewModel.bitmap.collectAsState()
     val categoryListState by viewModel.categoryList.collectAsState()
+    val networkState by viewModel.connection.collectAsState()
+
+    LaunchedEffect(networkState) {
+        if (networkState) {
+            viewModel.initData()
+        }
+    }
 
     HomeScreen(
         bestWorldCupState = bestWorldCupState,

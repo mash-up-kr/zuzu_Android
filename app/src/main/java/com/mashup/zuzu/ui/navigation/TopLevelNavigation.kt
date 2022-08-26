@@ -1,6 +1,8 @@
 package com.mashup.zuzu.ui.navigation
 
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
@@ -36,7 +38,6 @@ import com.mashup.zuzu.ui.user.edit.EditUserProfileRoute
 import com.mashup.zuzu.ui.user.review.UserReviewDetailRoute
 import com.mashup.zuzu.ui.user.review.UserReviewDetailUiEvents
 import com.mashup.zuzu.ui.user.review.UserReviewDetailViewModel
-import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/07/23
@@ -115,11 +116,17 @@ internal fun NavGraphBuilder.categoryGraph(
                 appState.categoryList.withIndex().filter { text -> text.value.title == category }
                     .map { it.index }[0]
 
-            LaunchedEffect(true) {
-                if (category != null) {
+            val networkState by viewModel.connection.collectAsState()
+
+            LaunchedEffect(networkState) {
+                if (category != null && networkState) {
                     viewModel.updateCategory(category = category)
+                    if (viewModel.page.value != 1) {
+                        viewModel.getWineListWithPageAndCategoryNextPage()
+                    } else {
+                        viewModel.getWineListWithPageAndCategory()
+                    }
                 }
-                viewModel.getWineListWithPageAndCategory()
             }
 
             CategoryRoute(
@@ -221,8 +228,17 @@ internal fun NavGraphBuilder.userGraph(
         }
         composable(
             route = NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route + "/{wineId}"
-        ) {
+        ) { navBackStackEntry ->
             val viewModel: UserReviewDetailViewModel = hiltViewModel()
+            val wineId = navBackStackEntry.arguments?.getString("wineId")?.toLong() ?: 0L
+            val networkState by viewModel.connection.collectAsState()
+            LaunchedEffect(key1 = networkState) {
+                if (networkState) {
+                    viewModel.updateDrinkId(wineId = wineId)
+                    viewModel.getWineReviewListWithPage()
+                }
+            }
+
             UserReviewDetailRoute(
                 viewModel = viewModel,
                 onClick = { userReviewDetailUiEvents ->
@@ -233,7 +249,6 @@ internal fun NavGraphBuilder.userGraph(
                             appState.navigateBackStack()
                         }
                         is UserReviewDetailUiEvents.EditReviewButtonClick -> {
-                            Timber.tag("wineId").d(userReviewDetailUiEvents.wineId.toString())
                             appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewDetailScreen.route + "/${userReviewDetailUiEvents.wineId}")
                         }
                     }
@@ -247,10 +262,6 @@ internal fun NavGraphBuilder.userGraph(
                 appState.navController.getBackStackEntry(NavigationRoute.UserScreenGraph.UserScreen.route)
             }
             val viewModel: UserViewModel = hiltViewModel(parentEntry) // sharedViewModel
-
-            LaunchedEffect(key1 = true) {
-                viewModel.getUserProfileImages()
-            }
 
             EditUserProfileRoute(
                 viewModel = viewModel,

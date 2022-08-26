@@ -263,7 +263,7 @@ fun CategoryWineItems(
         verticalArrangement = Arrangement.spacedBy(25.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        itemsIndexed(wines) { index, wine ->
+        itemsIndexed(wines, key = { index: Int, item: Wine -> item.id }) { index, wine ->
             Box(
                 contentAlignment = Center
             ) {
