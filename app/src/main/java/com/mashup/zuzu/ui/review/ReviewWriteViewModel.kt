@@ -3,17 +3,21 @@ package com.mashup.zuzu.ui.review
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mashup.zuzu.data.model.Results
 import com.mashup.zuzu.data.model.wines
 import com.mashup.zuzu.data.request.ReviewWriteRequest
+import com.mashup.zuzu.domain.usecase.GetWineDataWithIdUseCase
 import com.mashup.zuzu.domain.usecase.ReviewWriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ReviewWriteViewModel @Inject constructor(
     private val reviewWriteUseCase: ReviewWriteUseCase,
+    private val getWineDataWithIdUseCase: GetWineDataWithIdUseCase,
     savedStateHandle: SavedStateHandle
 
 ) : ViewModel() {
@@ -21,16 +25,30 @@ class ReviewWriteViewModel @Inject constructor(
     private val page: MutableStateFlow<Int> = MutableStateFlow(0)
 
     private val wineId: Long = savedStateHandle[WINE_ID] ?: 0L
-    private val wineImageUrl: String = savedStateHandle[WINE_IMAGE_URL] ?: wines[0].imageUrl
-    private val wineName: String = savedStateHandle[WINE_NAME] ?: wines[0].name
+
+    private val wineDataUiState: MutableStateFlow<WineDataUiState> = MutableStateFlow(WineDataUiState.Loading)
+
+    init {
+        getWineDataWithId(wineId)
+    }
 
     val uiState: StateFlow<ReviewWriteUiState> =
-        page.map {
-            ReviewWriteUiState(
-                page = it,
-                wineImageUrl = wineImageUrl,
-                wineName = wineName
-            )
+        page.combine(wineDataUiState) { page, wineData ->
+            if (wineData is WineDataUiState.Success) {
+                ReviewWriteUiState(
+                    page = page,
+                    wineImageUrl = wineData.wineData.imageUrl,
+                    wineName = wineData.wineData.name
+                )
+
+            } else {
+                ReviewWriteUiState(
+                    page = page,
+                    wineImageUrl = "",
+                    wineName = ""
+                )
+
+            }
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -41,6 +59,21 @@ class ReviewWriteViewModel @Inject constructor(
             )
         )
 
+    private fun getWineDataWithId(wineId: Long) {
+        viewModelScope.launch {
+            getWineDataWithIdUseCase(id = wineId).collect { result ->
+                when (result) {
+                    is Results.Success -> {
+                        wineDataUiState.value = WineDataUiState.Success(result.value)
+                    }
+                    is Results.Loading -> {
+                    }
+                    is Results.Failure -> {
+                    }
+                }
+            }
+        }
+    }
 
     fun navigatePreviousWritePage() = viewModelScope.launch {
         val currentPage = page.value
@@ -78,11 +111,12 @@ class ReviewWriteViewModel @Inject constructor(
     }
 
     fun navigateSummaryPage(selectOptionList: List<Int>) = viewModelScope.launch {
+        Timber.tag("Teddy").d("navigateSummaryPage : $selectOptionList")
         request = request.copy(
-            is_heavy = selectOptionList[0],
-            is_bitter = selectOptionList[1],
-            is_strong = selectOptionList[2],
-            is_burning = selectOptionList[3]
+            isHeavy = selectOptionList[0],
+            isBitter = selectOptionList[1],
+            isStrong = selectOptionList[2],
+            isBurning = selectOptionList[3]
         )
         page.value = 6
     }

@@ -38,10 +38,11 @@ import timber.log.Timber
 fun ReviewDetailRoute(
     viewModel: ReviewDetailViewModel,
     navigateBack: () -> Unit,
-    navigateToReviewWrite: () -> Unit
+    navigateToReviewWrite: (Long) -> Unit
 ) {
     val evaluationUiState by viewModel.evaluationUiState.collectAsState()
     val wineDataUiState by viewModel.wineDataUiState.collectAsState()
+    val wineId = viewModel.wineId
 
     when (wineDataUiState) {
         is WineDataUiState.Loading -> {
@@ -51,7 +52,7 @@ fun ReviewDetailRoute(
                 wineData = (wineDataUiState as WineDataUiState.Success).wineData,
                 evaluationUiState = evaluationUiState,
                 navigateBack = navigateBack,
-                navigateToReviewWrite = navigateToReviewWrite,
+                navigateToReviewWrite = { navigateToReviewWrite(wineId) },
                 checkAccount = viewModel::checkAccount
             )
         }
@@ -70,13 +71,14 @@ fun ReviewDetailScreen(
 
     val context = LocalContext.current
 
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            navigateToReviewWrite()
-        } else {
-            Timber.tag("ReviewResultScreen").e("User not login")
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                navigateToReviewWrite()
+            } else {
+                Timber.tag("ReviewResultScreen").e("User not login")
+            }
         }
-    }
 
     Column(
         modifier = Modifier

@@ -7,7 +7,6 @@ import com.mashup.zuzu.bridge.ProofPreference
 import com.mashup.zuzu.data.mapper.mapperResultToKorean
 import com.mashup.zuzu.data.mapper.mapperTasteListToKorean
 import com.mashup.zuzu.data.model.Results
-import com.mashup.zuzu.data.repository.ReviewDetailRepository
 import com.mashup.zuzu.domain.usecase.GetDrinksEvaluationWithIdUseCase
 import com.mashup.zuzu.domain.usecase.GetWineDataWithIdUseCase
 import com.mashup.zuzu.util.Key
@@ -23,6 +22,7 @@ class ReviewDetailViewModel @Inject constructor(
     private val proofPreference: ProofPreference,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    val wineId = savedStateHandle.get<Long>(WINE_ID) ?: 0
 
     private val _wineDataUiState: MutableStateFlow<WineDataUiState> = MutableStateFlow(WineDataUiState.Loading)
     val wineDataUiState = _wineDataUiState.asStateFlow()
@@ -31,9 +31,8 @@ class ReviewDetailViewModel @Inject constructor(
     val evaluationUiState = _evalutaionUiState.asStateFlow()
 
     init {
-        val argument = savedStateHandle.get<Long>(WINE_ID) ?: 0
-        getDrinksEvaluationWithId(argument)
-        getWineDataWithId(argument)
+        getDrinksEvaluationWithId(wineId)
+        getWineDataWithId(wineId)
     }
 
     private fun getDrinksEvaluationWithId(wineId: Long) {

@@ -303,12 +303,19 @@ internal fun NavGraphBuilder.reviewGraph(
             ReviewDetailRoute(
                 viewModel = hiltViewModel(),
                 navigateBack = { appState.navigateBackStack() },
-                navigateToReviewWrite = { appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewWriteScreen.route) }
+                navigateToReviewWrite = {
+                    appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewWriteScreen.route + "/${it}")
+                }
             )
         }
 
         composable(
-            route = NavigationRoute.ReviewGraph.ReviewWriteScreen.route
+            route = "${NavigationRoute.ReviewGraph.ReviewWriteScreen.route}/{wineId}",
+            arguments = listOf(
+                navArgument("wineId") {
+                    type = NavType.LongType
+                }
+            )
         ) {
             ReviewWriteRoute(
                 viewModel = hiltViewModel(),
