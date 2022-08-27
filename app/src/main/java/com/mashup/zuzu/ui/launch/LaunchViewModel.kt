@@ -22,24 +22,27 @@ class LaunchViewModel @Inject constructor(
     private val networkMonitor: NetworkMonitor
 ) : ViewModel() {
 
-    private val action = Channel<Action>(Channel.BUFFERED)
-    val actionFlow: Flow<Action>
-        get() = action.receiveAsFlow()
-
     sealed class Action {
         object StartLogin : Action()
         object StartMain : Action()
     }
 
+    private val action = Channel<Action>(Channel.BUFFERED)
+    val actionFlow: Flow<Action>
+        get() = action.receiveAsFlow()
+
+    private var canUseNetwork = true
+
     init {
         viewModelScope.launch {
             networkMonitor.isConnected.collect {
-                checkUserSigned(it)
+                canUseNetwork = it
             }
         }
+        checkUserSigned()
     }
 
-    private fun checkUserSigned(canUseNetwork: Boolean) {
+    private fun checkUserSigned() {
         viewModelScope.launch {
             delay(1000L)
             val refreshToken = proofPreference.get(Key.Preference.REFRESH_TOKEN, "")
