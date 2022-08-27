@@ -52,7 +52,9 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
 
+        lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.actionFlow.collect { action ->
                     if (canUseNetwork) {
