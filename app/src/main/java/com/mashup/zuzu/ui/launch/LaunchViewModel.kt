@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mashup.zuzu.bridge.ProofPreference
 import com.mashup.zuzu.data.model.Results
+import com.mashup.zuzu.data.network.NetworkMonitor
 import com.mashup.zuzu.data.repository.AuthRepository
 import com.mashup.zuzu.util.Key
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LaunchViewModel @Inject constructor(
     private val proofPreference: ProofPreference,
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val networkMonitor: NetworkMonitor
 ) : ViewModel() {
 
     private val action = Channel<Action>(Channel.BUFFERED)
@@ -30,14 +32,18 @@ class LaunchViewModel @Inject constructor(
     }
 
     init {
-        checkUserSigned()
+        viewModelScope.launch {
+            networkMonitor.isConnected.collect {
+                checkUserSigned(it)
+            }
+        }
     }
 
-    private fun checkUserSigned() {
+    private fun checkUserSigned(canUseNetwork: Boolean) {
         viewModelScope.launch {
             delay(1000L)
-            val refreshToken = proofPreference.get("refreshToken", "")
-            if (refreshToken.isEmpty()) {
+            val refreshToken = proofPreference.get(Key.Preference.REFRESH_TOKEN, "")
+            if (refreshToken.isEmpty() || !canUseNetwork) {
                 action.trySend(Action.StartLogin)
             } else {
                 getKakaoAccessToken(refreshToken)
