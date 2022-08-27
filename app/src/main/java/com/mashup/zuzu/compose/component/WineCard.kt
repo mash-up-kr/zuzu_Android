@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
@@ -460,14 +461,17 @@ fun WineCategoryWithAlc(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
     ) {
         Text(
             text = wine.category,
             style = ProofTheme.typography.bodyXS600,
             color = ProofTheme.color.primary100,
             textAlign = TextAlign.Center
+        )
+        Spacer(
+            modifier = Modifier.width(6.dp)
         )
         Divider(
             modifier = Modifier
@@ -476,11 +480,17 @@ fun WineCategoryWithAlc(
                 .background(ProofTheme.color.gray50)
                 .width(1.dp)
         )
+        Spacer(
+            modifier = Modifier.width(6.dp)
+        )
         Text(
             text = "Alc",
             style = ProofTheme.typography.bodyXS600,
             textAlign = TextAlign.Center,
             color = ProofTheme.color.white
+        )
+        Spacer(
+            modifier = Modifier.width(2.dp)
         )
         Text(
             text = "${wine.alc}%",
@@ -628,7 +638,7 @@ fun PagerWineCard(
 
                 WineCategoryWithAlc(
                     modifier = Modifier
-                        .width(78.dp)
+                        .fillMaxWidth()
                         .height(20.dp)
                         .align(Alignment.Start),
                     wine = wine
@@ -973,7 +983,35 @@ fun BlurWithOuterHeightImage(blurOuterHeight: Float, content: @Composable () -> 
                         )
                     }
                 }
-                .blur(10.dp, 10.dp)
+                .blur(10.dp, 10.dp, BlurredEdgeTreatment.Unbounded)
+        ) {
+            content()
+        }
+    }
+}
+
+@Composable
+fun BlurWithOuterHeightImageInShareImage(blurOuterHeight: Float, content: @Composable () -> Unit) {
+    Box {
+        Box(
+            modifier = Modifier.padding(10.dp)
+        ) {
+            content()
+        }
+        Box(
+            modifier = Modifier.fillMaxWidth().fillMaxHeight().align(Alignment.BottomCenter)
+                .drawWithContent {
+                    // 블러가 적용되는 영역
+                    clipRect(top = blurOuterHeight) {
+                        val colors = listOf(Color.Transparent, Color.White)
+                        drawRect(
+                            brush = Brush.verticalGradient(colors),
+                            blendMode = BlendMode.DstIn
+                        )
+                        this@drawWithContent.drawContent()
+                    }
+                }
+                .blur(20.dp, BlurredEdgeTreatment.Unbounded)
         ) {
             content()
         }
@@ -1073,7 +1111,7 @@ fun WineCellarCard(
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                WineCategoryWithAlc(modifier = Modifier.width(68.29.dp).height(20.dp).align(Alignment.Start), wine = wine)
+                WineCategoryWithAlc(modifier = Modifier.fillMaxWidth().height(20.dp).align(Alignment.Start), wine = wine)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     modifier = Modifier.fillMaxWidth(),
