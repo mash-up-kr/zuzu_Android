@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.compose.component.ProfileImageItems
@@ -116,14 +118,19 @@ fun EditProfileBottomSheet(
         )
         TextField(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(color = ProofTheme.color.gray600, shape = RoundedCornerShape(12.dp)),
+                .fillMaxWidth(),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = ProofTheme.color.gray500,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(12.dp),
             value = editProfileBottomSheetState.currentUserName,
             onValueChange = { name ->
                 editProfileBottomSheetState.updateCurrentUserName(name)
             },
             textStyle = ProofTheme.typography.bodyM.copy(color = ProofTheme.color.white)
-
         )
         Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
         Box(
