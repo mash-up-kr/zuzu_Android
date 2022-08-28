@@ -1,5 +1,9 @@
 package com.mashup.zuzu
 
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
@@ -14,15 +18,20 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
+import com.mashup.zuzu.ui.login.LoginActivity
 import com.mashup.zuzu.ui.navigation.*
+import com.mashup.zuzu.util.Key
+import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/06/30
@@ -34,6 +43,19 @@ fun ZuzuApp(
     onWorldCupButtonClick: () -> Unit
 ) {
     val zuzuAppState = rememberAppState()
+    val viewModel: ProofAppViewModel = hiltViewModel()
+    val context = LocalContext.current
+
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                zuzuAppState.navigateToBottomBarRoute(
+                    "user_screen.screen"
+                )
+            } else {
+                Timber.tag("UserScreen").e("User not login")
+            }
+        }
 
     ModalBottomSheetLayout(
         bottomSheetNavigator = zuzuAppState.bottomSheetNavigator,
@@ -71,7 +93,13 @@ fun ZuzuApp(
                     ZuzuBottomNavigationBar(
                         currentRoute = zuzuAppState.currentDestination,
                         onBottomTabsClick = { route ->
-                            zuzuAppState.navigateToBottomBarRoute(route)
+                            if (viewModel.checkAccount()) {
+                                zuzuAppState.navigateToBottomBarRoute(route)
+                            } else {
+                                val intent = Intent(context, LoginActivity::class.java)
+                                intent.putExtra(Key.REQUEST_LOGIN_FROM_OTHER_CASES, true)
+                                launcher.launch(intent)
+                            }
                         },
                         bottomNavigationItems = zuzuAppState.bottomBarRoutes
                     )
