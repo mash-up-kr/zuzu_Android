@@ -389,8 +389,8 @@ fun WineByReview(
 
         SummaryPieChart(
             size = LocalConfiguration.current.screenWidthDp.dp / 3,
-            tasteInfo = result.taste.map { Pair(it.tasteName, it.percent) },
-            percents = result.taste.map { it.percent }
+            tasteInfo = result.taste.take(3).map { Pair(it.tasteName, it.percent) },
+            percents = result.taste.take(3).map { it.percent }
         )
 
         Spacer(

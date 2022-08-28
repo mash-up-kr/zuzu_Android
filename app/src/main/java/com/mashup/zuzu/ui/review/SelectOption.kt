@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -753,9 +754,11 @@ fun SecondarySummaryPage(
             placeholder = {
                 Text(
                     text = "장소 입력하기",
+                    style = ProofTheme.typography.bodyM,
                     color = ProofTheme.color.gray300
                 )
             },
+            textStyle = ProofTheme.typography.bodyM.copy(color = ProofTheme.color.gray300),
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
