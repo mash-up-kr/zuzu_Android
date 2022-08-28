@@ -114,6 +114,8 @@ dependencies {
     //capturable
     implementation(libs.capturable)
 
+    implementation 'com.github.tehras:charts:beta-01'
+
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test)

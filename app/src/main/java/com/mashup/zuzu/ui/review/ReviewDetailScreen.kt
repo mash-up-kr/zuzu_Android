@@ -579,14 +579,13 @@ fun SummaryPieChart(
     colors: List<Color> = listOf(
         Color(0xFF4F17C5),
         Color(0xFF6748E3),
-        Color(0xFF9685FF),
-        Color(0xFF2A2C3C)
+        Color(0xFF9685FF)
     ),
     tasteInfo: List<Pair<String, Int>>,
     size: Dp
 ) {
     val sweepAngles = percents.map {
-        360 * (it / 100)
+        360 * (it.toFloat() / 100)
     }
 
     val gray = ProofTheme.color.gray600
@@ -600,11 +599,16 @@ fun SummaryPieChart(
         ) {
             var preAngle = 0f
 
+            drawCircle(
+                color = gray,
+                radius = (size/2).toPx()
+            )
+
             for (i in sweepAngles.indices) {
                 drawArc(
                     color = colors[i],
                     startAngle = preAngle,
-                    sweepAngle = preAngle + sweepAngles[i],
+                    sweepAngle = (preAngle+sweepAngles[i]) - preAngle,
                     useCenter = true
                 )
 
@@ -622,7 +626,7 @@ fun SummaryPieChart(
                 .fillMaxWidth()
                 .padding(start = 10.dp)
         ) {
-            tasteInfo.forEach { it ->
+            tasteInfo.forEachIndexed { index,taste ->
                 Row(
                     modifier = Modifier
                         .padding(bottom = 10.dp)
@@ -635,14 +639,23 @@ fun SummaryPieChart(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
+                    Canvas(
+                        modifier = Modifier.size(8.dp)
+                    ) {
+                        drawCircle(
+                            color = colors[index],
+                            radius = (4.dp).toPx()
+                        )
+                    }
+
                     Text(
-                        text = it.first,
+                        text = taste.first,
                         style = ProofTheme.typography.bodyXS600,
                         color = ProofTheme.color.white
                     )
 
                     Text(
-                        text = "${it.second}%",
+                        text = "${taste.second}%",
                         style = ProofTheme.typography.bodyXS,
                         color = ProofTheme.color.white
                     )
