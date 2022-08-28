@@ -35,8 +35,8 @@ fun ProfileImageItems(
             if (selectedProfileImage.id == profileImage.id) {
                 AsyncImage(
                     model = profileImage.image_url,
-                    modifier = Modifier.width(48.dp).height(48.dp).border(3.dp, color = ProofTheme.color.primary200, shape = RoundedCornerShape(12.dp))
-                        .background(color = ProofTheme.color.gray400, shape = RoundedCornerShape(12.dp))
+                    modifier = Modifier.width(48.dp).height(48.dp).border(1.dp, color = ProofTheme.color.primary200, shape = RoundedCornerShape(12.dp))
+                        .background(color = ProofTheme.color.primary400, shape = RoundedCornerShape(12.dp))
                         .clickable {
                             onProfileImageClick(index)
                         },

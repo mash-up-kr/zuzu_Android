@@ -76,63 +76,66 @@ fun EditProfileBottomSheet(
 ) {
     val editProfileBottomSheetState = rememberEditProffileBottomSheetState(index = 0, userName = userName)
 
-    Column(modifier = modifier) {
-        Text(
-            text = "프로필 수정하기",
-            style = ProofTheme.typography.headingL,
-            color = ProofTheme.color.white
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(24.dp)
-        )
-        when (userProfileImagesUiState) {
-            is UserProfileImagesUiState.Success -> {
-                ProfileImageItems(
-                    modifier = Modifier.fillMaxWidth(),
-                    profileImages = userProfileImagesUiState.userProfileImages,
-                    onProfileImageClick = { index ->
-                        editProfileBottomSheetState.updateSelectedImageIndex(index)
-                    },
-                    selectedProfileImage = userProfileImagesUiState.userProfileImages[editProfileBottomSheetState.selectedImagesIndex]
-                )
+    Column {
+        Column(modifier = modifier) {
+            Text(
+                text = "프로필 수정하기",
+                style = ProofTheme.typography.headingL,
+                color = ProofTheme.color.white
+            )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(24.dp)
+            )
+            when (userProfileImagesUiState) {
+                is UserProfileImagesUiState.Success -> {
+                    ProfileImageItems(
+                        modifier = Modifier.fillMaxWidth(),
+                        profileImages = userProfileImagesUiState.userProfileImages,
+                        onProfileImageClick = { index ->
+                            editProfileBottomSheetState.updateSelectedImageIndex(index)
+                        },
+                        selectedProfileImage = userProfileImagesUiState.userProfileImages[editProfileBottomSheetState.selectedImagesIndex]
+                    )
+                }
+                is UserProfileImagesUiState.Loading -> {
+                }
             }
-            is UserProfileImagesUiState.Loading -> {
-            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(24.dp)
+            )
+            Text(
+                text = "내 별명",
+                style = ProofTheme.typography.headingXS,
+                color = ProofTheme.color.white
+            )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+            )
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = ProofTheme.color.gray500,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(12.dp),
+                value = editProfileBottomSheetState.currentUserName,
+                onValueChange = { name ->
+                    editProfileBottomSheetState.updateCurrentUserName(name)
+                },
+                singleLine = true,
+                textStyle = ProofTheme.typography.bodyM.copy(color = ProofTheme.color.white)
+            )
+            Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
         }
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(24.dp)
-        )
-        Text(
-            text = "내 별명",
-            style = ProofTheme.typography.headingXS,
-            color = ProofTheme.color.white
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(6.dp)
-        )
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth(),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = ProofTheme.color.gray500,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(12.dp),
-            value = editProfileBottomSheetState.currentUserName,
-            onValueChange = { name ->
-                editProfileBottomSheetState.updateCurrentUserName(name)
-            },
-            textStyle = ProofTheme.typography.bodyM.copy(color = ProofTheme.color.white)
-        )
-        Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
