@@ -150,19 +150,24 @@ fun CategoryScreen(
                         pageSize = pageSize
                     )
                 } else {
-                    HorizontalPagerWithOffsetTransitionWithPage(
-                        modifier = Modifier.wrapContentHeight().fillMaxWidth()
-                            .padding(top = 28.dp),
-                        onWineBoardClick = { wine ->
-                            onClick(CategoryUiEvents.WineBoardClick(wine = wine))
-                        },
-                        wineList = wineListState.wineList,
-                        null,
-                        onLoadData = onLoadNextPage,
-                        onScrollPositionChange = onScrollPositionChange,
-                        pageSize = pageSize,
-                        currentPage = page
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        HorizontalPagerWithOffsetTransitionWithPage(
+                            modifier = Modifier.wrapContentHeight().fillMaxWidth()
+                                .padding(top = 28.dp),
+                            onWineBoardClick = { wine ->
+                                onClick(CategoryUiEvents.WineBoardClick(wine = wine))
+                            },
+                            wineList = wineListState.wineList,
+                            null,
+                            onLoadData = onLoadNextPage,
+                            onScrollPositionChange = onScrollPositionChange,
+                            pageSize = pageSize,
+                            currentPage = page
+                        )
+                    }
                 }
             }
             is WineListWithPageAndCategoryUiState.Loading -> {

@@ -16,6 +16,22 @@
         android:background="@color/black"
         tools:context=".ui.login.LoginActivity">
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/networkTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_300"
+            android:fontFamily="@font/pretendard_medium"
+            android:gravity="center"
+            android:visibility="gone"
+            android:lineHeight="32sp"
+            android:text="네트워크 연결을 확인해주세요"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="120dp"
             android:layout_height="48dp"
@@ -103,10 +119,10 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="24dp"
-            android:onClick="@{() -> viewModel.onClickSkip()}"
             android:background="@drawable/bg_gray_400_round_8"
             android:fontFamily="@font/pretendard_bold"
             android:gravity="center"
+            android:onClick="@{() -> viewModel.onClickSkip()}"
             android:text="@string/skip_login_button"
             android:textColor="@color/white"
             android:textSize="16sp"
