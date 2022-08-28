@@ -27,7 +27,7 @@ import timber.log.Timber
 @Composable
 fun ReviewWriteRoute(
     viewModel: ReviewWriteViewModel = hiltViewModel(),
-    navigateReviewShareCard: () -> Unit,
+    navigateReviewShareCard: (Long) -> Unit,
     navigateBack: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -43,8 +43,7 @@ fun ReviewWriteRoute(
         navigateSummaryPage = viewModel::navigateSummaryPage,
         navigateSecondarySummaryPage = viewModel::navigateSecondarySummaryPage,
         navigateReviewShareCard = { place, pairing ->
-            viewModel.navigateReviewShareCard(place, pairing)
-            navigateReviewShareCard()
+            val result = viewModel.navigateReviewShareCard(place, pairing, navigateReviewShareCardScreen = navigateReviewShareCard)
         },
         navigateBack = navigateBack
     )

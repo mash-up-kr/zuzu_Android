@@ -1,9 +1,6 @@
 package com.mashup.zuzu.ui.review
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -356,7 +354,8 @@ fun GroupSelectOption(
     val secondOptionContents = listOf("1차", "2차", "3차 이상")
 
     Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier.padding(top = 20.dp, start = 34.dp, end = 34.dp, bottom = 20.dp)
     ) {
         secondOptionContents.forEachIndexed { index, content ->
             val interactionSource = remember { MutableInteractionSource() }
@@ -523,7 +522,7 @@ fun TasteSelectOption(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
+                .height(120.dp)
                 .background(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
@@ -537,7 +536,7 @@ fun TasteSelectOption(
         )
 
         LazyColumn(
-            modifier = modifier.height(200.dp),
+            modifier = modifier.height(200.dp).padding(vertical = 34.dp),
             state = lazyListState,
             flingBehavior = layoutInfo
         ) {
@@ -781,15 +780,15 @@ fun SecondarySummaryPage(
     }
 
     val optionContents = listOf(
-        stringResource(R.string.summary_roast),
-        stringResource(R.string.summary_roast),
-        stringResource(R.string.summary_fry),
-        stringResource(R.string.summary_cheese),
-        stringResource(R.string.summary_salad),
-        stringResource(R.string.summary_fruits),
-        stringResource(R.string.summary_desert),
-        stringResource(R.string.summary_noodle),
-        stringResource(R.string.summary_roast)
+        Pair(stringResource(R.string.summary_roast), painterResource(id =R.drawable.ig_grilled)),
+        Pair(stringResource(R.string.summary_sushi), painterResource(id =R.drawable.ig_sushi)),
+        Pair(stringResource(R.string.summary_fry), painterResource(id =R.drawable.ig_fried)),
+        Pair(stringResource(R.string.summary_cheese), painterResource(id =R.drawable.ig_cheese)),
+        Pair(stringResource(R.string.summary_salad), painterResource(id =R.drawable.ig_salad)),
+        Pair(stringResource(R.string.summary_fruits), painterResource(id =R.drawable.ig_fruits)),
+        Pair(stringResource(R.string.summary_soup), painterResource(id =R.drawable.ig_soup)),
+        Pair(stringResource(R.string.summary_desert), painterResource(id =R.drawable.ig_desert)),
+        Pair(stringResource(R.string.summary_noodle), painterResource(id =R.drawable.ig_noodle))
     )
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -806,8 +805,8 @@ fun SecondarySummaryPage(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = if (isSelectable[index] == true) painterResource(id = R.drawable.ic_menu_category_select)
-                    else painterResource(id = R.drawable.ic_menu_category),
+                    painter = if (isSelectable[index] == true) optionContent.second
+                    else optionContent.second,
                     contentDescription = "",
                     modifier = Modifier
                         .width(52.dp)
@@ -823,7 +822,7 @@ fun SecondarySummaryPage(
                 )
 
                 Text(
-                    text = optionContent,
+                    text = optionContent.first,
                     style = ProofTheme.typography.buttonS,
                     color = ProofTheme.color.white
                 )

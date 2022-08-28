@@ -69,6 +69,7 @@
     <!-- 리뷰 작성 느낌 2페이지 -->
     <string name="topic_summary">혹시 바쁘지 않다면,\n조금만 더 알려주실래요?</string>
     <string name="summary_roast">구이류</string>
+    <string name="summary_sushi">회/초밥</string>
     <string name="summary_fry">튀김/전류</string>
     <string name="summary_cheese">치즈</string>
     <string name="summary_salad">샐러드</string>

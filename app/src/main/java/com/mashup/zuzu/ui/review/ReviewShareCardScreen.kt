@@ -22,6 +22,7 @@ import com.mashup.zuzu.util.saveBitmapToStorage
 import dev.shreyaspatil.capturable.Capturable
 import dev.shreyaspatil.capturable.controller.CaptureController
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
+import timber.log.Timber
 
 @Composable
 fun ReviewShareCardRoute(

@@ -24,9 +24,10 @@ class ReviewWriteViewModel @Inject constructor(
     private var request = ReviewWriteRequest()
     private val page: MutableStateFlow<Int> = MutableStateFlow(0)
 
-    private val wineId: Long = savedStateHandle[WINE_ID] ?: 0L
+    val wineId: Long = savedStateHandle[WINE_ID] ?: 0L
 
-    private val wineDataUiState: MutableStateFlow<WineDataUiState> = MutableStateFlow(WineDataUiState.Loading)
+    private val wineDataUiState: MutableStateFlow<WineDataUiState> =
+        MutableStateFlow(WineDataUiState.Loading)
 
     init {
         getWineDataWithId(wineId)
@@ -111,7 +112,6 @@ class ReviewWriteViewModel @Inject constructor(
     }
 
     fun navigateSummaryPage(selectOptionList: List<Int>) = viewModelScope.launch {
-        Timber.tag("Teddy").d("navigateSummaryPage : $selectOptionList")
         request = request.copy(
             isHeavy = selectOptionList[0],
             isBitter = selectOptionList[1],
@@ -128,20 +128,28 @@ class ReviewWriteViewModel @Inject constructor(
         page.value = 7
     }
 
-    fun navigateReviewShareCard(place: String, pairing: List<String>) = viewModelScope.launch {
+    fun navigateReviewShareCard(
+        place: String,
+        pairing: List<String>,
+        navigateReviewShareCardScreen: (Long) -> Unit
+    ) = viewModelScope.launch {
         request = request.copy(
             place = place,
             pairing = pairing
         )
 
-        finishReviewWrite()
+        finishReviewWrite(navigateReviewShareCardScreen)
     }
 
-    private fun finishReviewWrite() = viewModelScope.launch {
+    private fun finishReviewWrite(
+        navigateReviewShareCardScreen: (Long) -> Unit
+    ) = viewModelScope.launch {
         val reviewId = reviewWriteUseCase(
             wineId = wineId,
             reviewWriteRequest = request
         )
+
+        navigateReviewShareCardScreen(reviewId)
     }
 
     companion object {
