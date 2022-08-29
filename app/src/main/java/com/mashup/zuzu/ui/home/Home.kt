@@ -13,10 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +33,7 @@ import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.*
+import com.mashup.zuzu.compose.theme.BrushColor
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.categoryList
@@ -256,7 +254,7 @@ fun HomeScreen(
                             visible = true,
                             color = ProofTheme.color.gray600,
                             highlight = PlaceholderHighlight.shimmer(
-                                highlightColor = ProofTheme.color.gray500
+                                highlightColor = BrushColor
                             )
                         )
                 )
