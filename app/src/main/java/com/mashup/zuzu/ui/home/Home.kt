@@ -464,7 +464,7 @@ fun RecommendImage(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(),
-            painter = painterResource(id = R.drawable.img_recommend),
+            painter = painterResource(id = R.drawable.img_recommend_wine),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
