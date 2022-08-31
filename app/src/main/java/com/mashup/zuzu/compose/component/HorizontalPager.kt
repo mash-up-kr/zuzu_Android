@@ -72,7 +72,7 @@ fun HorizontalPagerWithOffsetTransitionWithPage(
                         fraction = 1f - pageOffset.coerceIn(0f, 1f)
                     )
                 }
-                .width(262.dp).height(415.dp).clip(RoundedCornerShape(6.dp)),
+                .width(262.dp).height(415.dp).clip(RoundedCornerShape(12.dp)),
             wine = wineList[page],
             onWineBoardClick = { onWineBoardClick(it) },
             childModifier = childModifier
@@ -166,7 +166,7 @@ fun HorizontalPagerWithCapture(
         ) {
             ShareReviewCard(
                 reviewShareCard = reviewShareCardToListModel(reviews, page),
-                modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp)
+                modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 10.dp)
             )
         }
     }

@@ -30,13 +30,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import coil.request.ImageRequest
+import com.google.accompanist.placeholder.material.placeholder
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.BrushColor
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.wines
+import com.mashup.zuzu.util.blurring
 
 /**
  * @Created by 김현국 2022/07/01
@@ -619,7 +622,7 @@ fun PagerWineCard(
                     .fillMaxSize()
 //                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Box(modifier = Modifier.clip(RoundedCornerShape(12.dp))) {
+                Box(modifier = Modifier.clip(RoundedCornerShape(6.dp))) {
                     AsyncImage(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -857,105 +860,120 @@ fun RecommendWineCard(
     var rowheight by remember {
         mutableStateOf<Dp?>(null)
     }
-    val painter = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(LocalContext.current).data(recommendWine.imageUrl).build()
-    )
+    // var painter = rememberAsyncImagePainter(model = recommendWine.imageUrl)
     Box(modifier = modifier) {
-        BlurImage {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                painter = painter,
-                contentDescription = null,
-                contentScale = ContentScale.Crop
-            )
-        }
-        if (painter.state is AsyncImagePainter.State.Success) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .drawWithContent {
-                        clipRect(top = size.height / 1.4f) {
-                            rowheight = (size.height - size.height / 1.4f).toDp()
-                            this@drawWithContent.drawContent()
+        SubcomposeAsyncImage(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            model = recommendWine.imageUrl,
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        ) {
+            val state = painter.state
+            if (state is AsyncImagePainter.State.Loading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .clip(shape = RoundedCornerShape(16.dp))
+                        .placeholder(
+                            visible = true,
+                            color = ProofTheme.color.gray600
+                        )
+                )
+            }
+            if (state is AsyncImagePainter.State.Success) {
+                BlurImage {
+                    SubcomposeAsyncImageContent(
+                        modifier = Modifier.fillMaxWidth().fillMaxHeight()
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .drawWithContent {
+                            clipRect(top = size.height / 1.4f) {
+                                rowheight = (size.height - size.height / 1.4f).toDp()
+                                this@drawWithContent.drawContent()
+                            }
                         }
-                    }
-            ) {
-                rowheight?.let {
-                    Row(
-                        modifier = Modifier
-                            .background(color = BrushColor)
-                            .fillMaxWidth()
-                            .height(it)
-                            .align(Alignment.BottomCenter)
-                            .padding(start = 20.dp, end = 20.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                ) {
+                    rowheight?.let {
+                        Row(
+                            modifier = Modifier
+                                .background(color = BrushColor)
+                                .fillMaxWidth()
+                                .height(it)
+                                .align(Alignment.BottomCenter)
+                                .padding(start = 20.dp, end = 20.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
 
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(0.75f)
                         ) {
-                            WineCategoryWithAlc(
-                                wine = recommendWine,
+                            Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(20.dp)
-                                    .align(Alignment.Start)
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(55.dp)
-                                    .padding(top = 8.dp),
-                                text = recommendWine.name,
-                                style = ProofTheme.typography.headingS.copy(
-                                    lineHeight = 22.sp
-                                ),
-                                color = ProofTheme.color.white,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(0.25f)
-                                .padding(start = 20.dp),
-                            horizontalAlignment = Alignment.End
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .width(46.dp)
-                                    .height(46.dp)
-                                    .background(
-                                        color = ProofTheme.color.primary300,
-                                        shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .clickable { onRefreshButtonClick() }
+                                    .weight(0.75f)
                             ) {
-                                Icon(
+                                WineCategoryWithAlc(
+                                    wine = recommendWine,
                                     modifier = Modifier
-                                        .width(16.dp)
-                                        .height(16.dp)
-                                        .align(Alignment.Center),
-                                    painter = painterResource(id = R.drawable.ic_refresh),
-                                    tint = ProofTheme.color.white,
-                                    contentDescription = null
+                                        .fillMaxWidth()
+                                        .height(20.dp)
+                                        .align(Alignment.Start)
+                                )
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(55.dp)
+                                        .padding(top = 8.dp),
+                                    text = recommendWine.name,
+                                    style = ProofTheme.typography.headingS.copy(
+                                        lineHeight = 22.sp
+                                    ),
+                                    color = ProofTheme.color.white,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
-                            Text(
+                            Column(
                                 modifier = Modifier
-                                    .padding(top = 4.dp)
-                                    .align(Alignment.CenterHorizontally),
-                                text = "다른술 보기",
-                                style = ProofTheme.typography.body3XS,
-                                color = ProofTheme.color.primary50
-                            )
+                                    .fillMaxWidth()
+                                    .weight(0.25f)
+                                    .padding(start = 20.dp),
+                                horizontalAlignment = Alignment.End
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .width(46.dp)
+                                        .height(46.dp)
+                                        .background(
+                                            color = ProofTheme.color.primary300,
+                                            shape = RoundedCornerShape(8.dp)
+                                        )
+                                        .clickable { onRefreshButtonClick() }
+                                ) {
+                                    Icon(
+                                        modifier = Modifier
+                                            .width(16.dp)
+                                            .height(16.dp)
+                                            .align(Alignment.Center),
+                                        painter = painterResource(id = R.drawable.ic_refresh),
+                                        tint = ProofTheme.color.white,
+                                        contentDescription = null
+                                    )
+                                }
+                                Text(
+                                    modifier = Modifier
+                                        .padding(top = 4.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                    text = "다른술 보기",
+                                    style = ProofTheme.typography.body3XS,
+                                    color = ProofTheme.color.primary50
+                                )
+                            }
                         }
                     }
                 }
@@ -1015,39 +1033,41 @@ fun BlurWithOuterHeightImage(blurOuterHeight: Float, content: @Composable () -> 
 }
 
 @Composable
-fun BlurWithOuterHeightImageInShareImage(blurOuterHeight: Float, content: @Composable () -> Unit) {
-    Box {
+fun BlurImageInShareCard(blurOuterHeight: Float, content: @Composable () -> Unit) {
+    Box() {
         Box(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.drawWithContent {
+                clipRect(bottom = blurOuterHeight) {
+                    this@drawWithContent.drawContent()
+                }
+            }.padding(start = 17.dp, end = 17.dp, bottom = 10.dp).fillMaxWidth().fillMaxHeight()
+
         ) {
             content()
         }
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .align(Alignment.BottomCenter)
+            modifier = Modifier.fillMaxWidth().fillMaxHeight()
                 .drawWithContent {
-                    // 블러가 적용되는 영역
                     clipRect(top = blurOuterHeight) {
                         val colors = listOf(Color.Transparent, Color.White)
-                        drawRect(
-                            brush = Brush.verticalGradient(colors),
-                            blendMode = BlendMode.DstIn
-                        )
                         this@drawWithContent.drawContent()
                     }
-                }
-                .blur(20.dp, BlurredEdgeTreatment.Unbounded)
+                }.blur(20.dp, 15.dp, edgeTreatment = BlurredEdgeTreatment(RoundedCornerShape(12.dp)))
+                .align(Alignment.Center)
         ) {
-            content()
+            Box(
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp).fillMaxSize()
+                    .background(color = ProofTheme.color.gray500)
+            ) {
+                content()
+            }
         }
     }
 }
 
 @Composable
 fun BlurImage(content: @Composable () -> Unit) {
-    Box {
+    Box() {
         content()
         Box(
             modifier = Modifier
@@ -1056,17 +1076,12 @@ fun BlurImage(content: @Composable () -> Unit) {
                 .drawWithContent {
                     clipRect(top = size.height / 1.4f) {
                         this@drawWithContent.drawContent()
-                        drawRect(
-                            color = BrushColor,
-                            blendMode = BlendMode.DstIn
-                        )
                     }
                 }
                 .blur(
                     radiusX = 10.dp,
                     radiusY = 10.dp
                 )
-                .background(color = BrushColor)
         ) {
             content()
         }
