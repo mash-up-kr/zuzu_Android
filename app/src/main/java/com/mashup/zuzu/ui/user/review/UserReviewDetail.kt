@@ -1,7 +1,6 @@
 package com.mashup.zuzu.ui.user.review
 
 import android.graphics.Bitmap
-import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -73,29 +72,16 @@ fun UserReviewDetailScreen(
             onBackButtonClick = { onClick(UserReviewDetailUiEvents.BackButtonClick) },
             onEditReviewButtonClick = { onClick(UserReviewDetailUiEvents.EditReviewButtonClick(reviews.wine.id)) }
         )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            HorizontalPagerWithCapture(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 530.dp),
-                reviews = reviews,
-                pagerState = pagerState,
-                childModifier = null,
-                captureController = captureController
-            )
-        } else {
-            if (bitmap != null) {
-                HorizontalPagerWithCapture(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(max = 530.dp),
-                    reviews = reviews,
-                    pagerState = pagerState,
-                    childModifier = null,
-                    captureController = captureController
-                )
-            }
-        }
+
+        HorizontalPagerWithCapture(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 530.dp),
+            reviews = reviews,
+            pagerState = pagerState,
+            childModifier = null,
+            captureController = captureController
+        )
 
         HorizontalPagerIndicator(
             pagerState = pagerState,

@@ -22,7 +22,6 @@ import com.mashup.zuzu.util.saveBitmapToStorage
 import dev.shreyaspatil.capturable.Capturable
 import dev.shreyaspatil.capturable.controller.CaptureController
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
-import timber.log.Timber
 
 @Composable
 fun ReviewShareCardRoute(
@@ -324,5 +323,18 @@ fun getDrinkCategoryColor(category: String): Long {
         else -> 0xFFC0F5E2
     }
 
+    return color
+}
+
+fun getDrinkCategoryToColorWithKorean(category: String): Long {
+    val color = when (category) {
+        "위스키" -> 0xFFDFF8A2
+        "와인" -> 0xFFC4BEFF
+        "칵테일" -> 0xFFF5C0E6
+        "전통주" -> 0xFFFDE9A4
+        "소주" -> 0xFFC0DFF5
+        "맥주" -> 0xFFFFD9BE
+        else -> 0xFFC0F5E2
+    }
     return color
 }

@@ -25,11 +25,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.placeholder.material.placeholder
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.ReviewShareCard
 import com.mashup.zuzu.ui.review.getDrinkCategoryColor
+import com.mashup.zuzu.ui.review.getDrinkCategoryToColorWithKorean
 import java.util.*
 
 /**
@@ -333,44 +337,64 @@ fun ShareReviewCardWithRenderScript(
 
                 if (blurOuterHeight != null) {
                     Box {
-                        BlurImageInShareCardWithRenderScript(
-                            blurOuterHeight = blurOuterHeight,
-                            content = {
-                                AsyncImage(
+                        SubcomposeAsyncImage(
+                            model = reviewShareCard.wine.imageUrl,
+                            contentDescription = null
+                        ) {
+                            val state = painter.state
+                            if (state is AsyncImagePainter.State.Loading) {
+                                Box(
                                     modifier = Modifier
-                                        .fillMaxSize()
-                                        .clip(RoundedCornerShape(12.dp)),
-                                    model = reviewShareCard.wine.imageUrl,
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop
+                                        .fillMaxWidth()
+                                        .fillMaxHeight()
+                                        .clip(shape = RoundedCornerShape(16.dp))
+                                        .placeholder(
+                                            visible = true,
+                                            color = ProofTheme.color.gray600
+                                        )
                                 )
-                            },
-                            blurImageComposable = {
-                                if (blurImage != null) {
-                                    Image(
-                                        modifier = Modifier
-                                            .fillMaxHeight()
-                                            .fillMaxWidth(),
-                                        bitmap = blurImage.asImageBitmap(),
-                                        contentScale = ContentScale.Crop,
-                                        contentDescription = null
-                                    )
-                                }
                             }
-                        )
-
-                        rowheight?.let {
-                            Box(
-                                modifier = Modifier.fillMaxWidth().height(it).align(Alignment.BottomCenter)
-                                    .background(color = ProofTheme.color.gray500.copy(alpha = 0.7f))
-                            ) {
-                                Text(
-                                    modifier = Modifier.padding(start = 15.dp, end = 15.dp).align(Alignment.Center),
-                                    text = reviewShareCard.wine.name,
-                                    color = ProofTheme.color.white,
-                                    style = ProofTheme.typography.headingS,
-                                    maxLines = 2
+                            if (state is AsyncImagePainter.State.Success) {
+                                BlurImageInShareCardWithRenderScript(
+                                    blurOuterHeight = blurOuterHeight,
+                                    content = {
+                                        AsyncImage(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .clip(RoundedCornerShape(12.dp)),
+                                            model = reviewShareCard.wine.imageUrl,
+                                            contentDescription = null,
+                                            contentScale = ContentScale.Crop
+                                        )
+                                    },
+                                    blurImageComposable = {
+                                        if (blurImage != null) {
+                                            Image(
+                                                modifier = Modifier
+                                                    .fillMaxHeight()
+                                                    .fillMaxWidth(),
+                                                bitmap = blurImage.asImageBitmap(),
+                                                contentScale = ContentScale.Crop,
+                                                contentDescription = null
+                                            )
+                                        }
+                                    }
                                 )
+
+                                rowheight?.let {
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth().height(it).align(Alignment.BottomCenter)
+                                            .background(color = ProofTheme.color.gray500.copy(alpha = 0.7f), shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp))
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.padding(start = 15.dp, end = 15.dp).align(Alignment.Center),
+                                            text = reviewShareCard.wine.name,
+                                            color = ProofTheme.color.white,
+                                            style = ProofTheme.typography.headingS,
+                                            maxLines = 2
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -384,7 +408,7 @@ fun ShareReviewCardWithRenderScript(
                                     verticalArrangement = Arrangement.Bottom,
                                     horizontalAlignment = Alignment.End
                                 ) {
-                                    val categoryColor = getDrinkCategoryColor(reviewShareCard.wine.category)
+                                    val categoryColor = getDrinkCategoryToColorWithKorean(reviewShareCard.wine.category)
 
                                     Text(
                                         text = "NO. " + reviewShareCard.userReview.id.toString().padStart(3, '0'),
@@ -508,29 +532,50 @@ fun ShareReviewCard(
 
                 if (blurOuterHeight != null) {
                     Box {
-                        BlurImageInShareCard(blurOuterHeight = blurOuterHeight) {
-                            AsyncImage(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .clip(RoundedCornerShape(12.dp)),
-                                model = reviewShareCard.wine.imageUrl,
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop
-                            )
-                        }
+                        SubcomposeAsyncImage(
+                            model = reviewShareCard.wine.imageUrl,
+                            contentDescription = null
+                        ) {
+                            val state = painter.state
 
-                        rowheight?.let {
-                            Box(
-                                modifier = Modifier.fillMaxWidth().height(it).align(Alignment.BottomCenter)
-                                    .background(color = ProofTheme.color.gray500.copy(alpha = 0.7f))
-                            ) {
-                                Text(
-                                    modifier = Modifier.padding(start = 15.dp, end = 15.dp).align(Alignment.Center),
-                                    text = reviewShareCard.wine.name,
-                                    color = ProofTheme.color.white,
-                                    style = ProofTheme.typography.headingS,
-                                    maxLines = 2
+                            if (state is AsyncImagePainter.State.Loading) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .fillMaxHeight()
+                                        .clip(shape = RoundedCornerShape(16.dp))
+                                        .placeholder(
+                                            visible = true,
+                                            color = ProofTheme.color.gray600
+                                        )
                                 )
+                            }
+                            if (state is AsyncImagePainter.State.Success) {
+                                BlurImageInShareCard(blurOuterHeight = blurOuterHeight) {
+                                    AsyncImage(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .clip(RoundedCornerShape(12.dp)),
+                                        model = reviewShareCard.wine.imageUrl,
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
+
+                                rowheight?.let {
+                                    Box(
+                                        modifier = Modifier.fillMaxWidth().height(it).align(Alignment.BottomCenter)
+                                            .background(color = ProofTheme.color.gray500.copy(alpha = 0.7f))
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.padding(start = 15.dp, end = 15.dp).align(Alignment.Center),
+                                            text = reviewShareCard.wine.name,
+                                            color = ProofTheme.color.white,
+                                            style = ProofTheme.typography.headingS,
+                                            maxLines = 2
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -544,7 +589,7 @@ fun ShareReviewCard(
                                     verticalArrangement = Arrangement.Bottom,
                                     horizontalAlignment = Alignment.End
                                 ) {
-                                    val categoryColor = getDrinkCategoryColor(reviewShareCard.wine.category)
+                                    val categoryColor = getDrinkCategoryToColorWithKorean(reviewShareCard.wine.category)
 
                                     Text(
                                         text = "NO. " + reviewShareCard.userReview.id.toString().padStart(3, '0'),
