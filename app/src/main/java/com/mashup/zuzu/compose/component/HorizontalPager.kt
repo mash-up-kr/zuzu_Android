@@ -166,7 +166,7 @@ fun HorizontalPagerWithCapture(
         ) {
             ShareReviewCard(
                 reviewShareCard = reviewShareCardToListModel(reviews, page),
-                modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp)
+                modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 10.dp)
             )
         }
     }

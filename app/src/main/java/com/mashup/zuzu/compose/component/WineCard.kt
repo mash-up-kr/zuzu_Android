@@ -39,6 +39,7 @@ import com.mashup.zuzu.compose.theme.BrushColor
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.wines
+import com.mashup.zuzu.util.blurring
 
 /**
  * @Created by 김현국 2022/07/01
@@ -1032,32 +1033,34 @@ fun BlurWithOuterHeightImage(blurOuterHeight: Float, content: @Composable () -> 
 }
 
 @Composable
-fun BlurWithOuterHeightImageInShareImage(blurOuterHeight: Float, content: @Composable () -> Unit) {
-    Box {
+fun BlurImageInShareCard(blurOuterHeight: Float, content: @Composable () -> Unit) {
+    Box() {
         Box(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.drawWithContent {
+                clipRect(bottom = blurOuterHeight) {
+                    this@drawWithContent.drawContent()
+                }
+            }.padding(start = 17.dp, end = 17.dp, bottom = 10.dp).fillMaxWidth().fillMaxHeight()
+
         ) {
             content()
         }
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .align(Alignment.BottomCenter)
+            modifier = Modifier.fillMaxWidth().fillMaxHeight()
                 .drawWithContent {
-                    // 블러가 적용되는 영역
                     clipRect(top = blurOuterHeight) {
                         val colors = listOf(Color.Transparent, Color.White)
-                        drawRect(
-                            brush = Brush.verticalGradient(colors),
-                            blendMode = BlendMode.DstIn
-                        )
                         this@drawWithContent.drawContent()
                     }
-                }
-                .blur(20.dp, BlurredEdgeTreatment.Unbounded)
+                }.blur(20.dp, 15.dp, edgeTreatment = BlurredEdgeTreatment(RoundedCornerShape(12.dp)))
+                .align(Alignment.Center)
         ) {
-            content()
+            Box(
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp).fillMaxSize()
+                    .background(color = ProofTheme.color.gray500)
+            ) {
+                content()
+            }
         }
     }
 }

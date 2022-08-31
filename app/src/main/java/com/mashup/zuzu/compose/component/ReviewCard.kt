@@ -313,7 +313,6 @@ fun ShareReviewCard(
         ) {
             Box(
                 modifier = Modifier
-                    .padding(start = 17.dp, end = 17.dp)
                     .fillMaxWidth()
                     .fillMaxHeight(0.7f)
                     .align(Alignment.CenterHorizontally)
@@ -331,7 +330,7 @@ fun ShareReviewCard(
 
                 if (blurOuterHeight != null) {
                     Box {
-                        BlurWithOuterHeightImageInShareImage(blurOuterHeight = blurOuterHeight) {
+                        BlurImageInShareCard(blurOuterHeight = blurOuterHeight) {
                             AsyncImage(
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -341,35 +340,18 @@ fun ShareReviewCard(
                                 contentScale = ContentScale.Crop
                             )
                         }
+
                         rowheight?.let {
                             Box(
                                 modifier = Modifier.fillMaxWidth().height(it).align(Alignment.BottomCenter)
-                                    .background(color = ProofTheme.color.gray500.copy(alpha = 0.93f))
+                                    .background(color = ProofTheme.color.gray500.copy(alpha = 0.7f))
                             ) {
-                                Box(
-                                    modifier = Modifier.fillMaxHeight().width(10.dp)
-                                        .background(
-                                            brush = Brush.horizontalGradient(listOf(ProofTheme.color.gray500, Color.Transparent))
-                                        ).align(Alignment.CenterStart)
-                                )
                                 Text(
-                                    modifier = Modifier.padding(start = 15.dp, end = 15.dp, bottom = 10.dp).align(Alignment.Center),
+                                    modifier = Modifier.padding(start = 15.dp, end = 15.dp).align(Alignment.Center),
                                     text = reviewShareCard.wine.name,
                                     color = ProofTheme.color.white,
                                     style = ProofTheme.typography.headingS,
                                     maxLines = 2
-                                )
-                                Box(
-                                    modifier = Modifier.fillMaxHeight().width(10.dp)
-                                        .background(
-                                            brush = Brush.horizontalGradient(listOf(Color.Transparent, ProofTheme.color.gray500))
-                                        ).align(Alignment.CenterEnd)
-                                )
-                                Box(
-                                    modifier = Modifier.fillMaxWidth().height(10.dp)
-                                        .background(
-                                            brush = Brush.verticalGradient(listOf(Color.Transparent, ProofTheme.color.gray500))
-                                        ).align(Alignment.BottomCenter)
                                 )
                             }
                         }
