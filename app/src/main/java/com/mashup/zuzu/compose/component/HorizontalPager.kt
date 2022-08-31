@@ -1,5 +1,6 @@
 package com.mashup.zuzu.compose.component
 
+import android.os.Build
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -166,10 +167,18 @@ fun HorizontalPagerWithCapture(
                 }
             }
         ) {
-            ShareReviewCard(
-                reviewShareCard = reviewShareCardToListModel(reviews, page),
-                modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 10.dp)
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                ShareReviewCard(
+                    reviewShareCard = reviewShareCardToListModel(reviews, page),
+                    modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 10.dp)
+                )
+            } else {
+                ShareReviewCardWithRenderScript(
+                    modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 10.dp),
+                    reviewShareCard = reviewShareCardToListModel(reviews, page),
+                    blurImage = reviews.wine.bitmap
+                )
+            }
         }
     }
 }

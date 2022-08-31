@@ -27,7 +27,8 @@ fun responseWineModelToDataModel(
         category = nameToKorean(wine.category),
         worldcupWinCount = wine.worldcupWinCount,
         worldcupSemiFinalCount = wine.worldcupSemiFinalCount,
-        origin = wine.origin
+        origin = wine.origin,
+        bitmap = null
     )
 }
 
@@ -51,7 +52,8 @@ fun responseWineListModelToListDataModel(
             category = nameToKorean(wine.category),
             worldcupWinCount = wine.worldcupWinCount,
             worldcupSemiFinalCount = wine.worldcupSemiFinalCount,
-            origin = wine.origin
+            origin = wine.origin,
+            bitmap = null
         )
     }
 }

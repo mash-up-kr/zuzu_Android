@@ -984,6 +984,43 @@ fun BlurImageInShareCard(blurOuterHeight: Float, content: @Composable () -> Unit
 }
 
 @Composable
+fun BlurImageInShareCardWithRenderScript(
+    blurOuterHeight: Float,
+    content: @Composable () -> Unit,
+    blurImageComposable: @Composable () -> Unit
+) {
+    Box() {
+        Box(
+            modifier = Modifier.drawWithContent {
+                clipRect(bottom = blurOuterHeight) {
+                    this@drawWithContent.drawContent()
+                }
+            }.padding(start = 17.dp, end = 17.dp, bottom = 10.dp).fillMaxWidth().fillMaxHeight()
+
+        ) {
+            content()
+        }
+        Box(
+            modifier = Modifier.fillMaxWidth().fillMaxHeight()
+                .drawWithContent {
+                    clipRect(top = blurOuterHeight) {
+                        val colors = listOf(Color.Transparent, Color.White)
+                        this@drawWithContent.drawContent()
+                    }
+                }
+                .align(Alignment.Center)
+        ) {
+            Box(
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp).fillMaxSize()
+                    .background(color = ProofTheme.color.gray500)
+            ) {
+                blurImageComposable()
+            }
+        }
+    }
+}
+
+@Composable
 fun BlurImage(content: @Composable () -> Unit) {
     Box() {
         content()

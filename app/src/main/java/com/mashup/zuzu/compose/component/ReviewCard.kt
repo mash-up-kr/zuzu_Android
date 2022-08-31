@@ -1,5 +1,6 @@
 package com.mashup.zuzu.compose.component
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -286,6 +288,182 @@ fun ReviewCard(
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun ShareReviewCardWithRenderScript(
+    modifier: Modifier = Modifier
+        .padding(top = 16.dp, end = 47.dp, start = 24.dp, bottom = 24.dp)
+        .fillMaxSize(),
+    reviewShareCard: ReviewShareCard,
+    blurImage: Bitmap?
+) {
+    var rowheight by remember { mutableStateOf<Dp?>(null) }
+    var fullHeight by remember { mutableStateOf<Dp?>(null) }
+    Box(modifier = modifier) { // 총 카드의 크기
+        Box( // 뒷배경 카드
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.8f)
+                .background(color = ProofTheme.color.gray500, shape = RoundedCornerShape(12.dp))
+                .align(Alignment.BottomCenter)
+
+        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.7f)
+                    .align(Alignment.CenterHorizontally)
+                    .drawWithContent {
+                        this@drawWithContent.drawContent()
+                        fullHeight = size.height.toDp()
+                        rowheight = (size.height / 6f).toDp()
+                    }
+
+            ) {
+                val blurOuterHeight = with(LocalDensity.current) {
+                    rowheight?.let { fullHeight?.minus(it) }
+                        ?.toPx()
+                }
+
+                if (blurOuterHeight != null) {
+                    Box {
+                        BlurImageInShareCardWithRenderScript(
+                            blurOuterHeight = blurOuterHeight,
+                            content = {
+                                AsyncImage(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(RoundedCornerShape(12.dp)),
+                                    model = reviewShareCard.wine.imageUrl,
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop
+                                )
+                            },
+                            blurImageComposable = {
+                                if (blurImage != null) {
+                                    Image(
+                                        modifier = Modifier
+                                            .fillMaxHeight()
+                                            .fillMaxWidth(),
+                                        bitmap = blurImage.asImageBitmap(),
+                                        contentScale = ContentScale.Crop,
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+                        )
+
+                        rowheight?.let {
+                            Box(
+                                modifier = Modifier.fillMaxWidth().height(it).align(Alignment.BottomCenter)
+                                    .background(color = ProofTheme.color.gray500.copy(alpha = 0.7f))
+                            ) {
+                                Text(
+                                    modifier = Modifier.padding(start = 15.dp, end = 15.dp).align(Alignment.Center),
+                                    text = reviewShareCard.wine.name,
+                                    color = ProofTheme.color.white,
+                                    style = ProofTheme.typography.headingS,
+                                    maxLines = 2
+                                )
+                            }
+                        }
+                    }
+
+                    rowheight.let {
+                        if (rowheight != null) {
+                            Box(
+                                modifier = Modifier.align(Alignment.BottomEnd).padding(bottom = rowheight!! + 10.dp, end = 20.dp)
+                            ) {
+                                Column(
+                                    verticalArrangement = Arrangement.Bottom,
+                                    horizontalAlignment = Alignment.End
+                                ) {
+                                    val categoryColor = getDrinkCategoryColor(reviewShareCard.wine.category)
+
+                                    Text(
+                                        text = "NO. " + reviewShareCard.userReview.id.toString().padStart(3, '0'),
+                                        style = ProofTheme.typography.headingXS,
+                                        color = ProofTheme.color.gray500,
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier
+                                            .padding(bottom = 14.dp)
+                                            .background(
+                                                color = Color(categoryColor),
+                                                shape = RoundedCornerShape(4.dp)
+                                            )
+                                            .padding(6.dp)
+                                    )
+
+                                    Text(
+                                        text = reviewShareCard.userReview.createdAt.split("T")[0],
+                                        style = ProofTheme.typography.headingXS,
+                                        color = Color(categoryColor),
+                                        textAlign = TextAlign.Center,
+                                        modifier = Modifier
+                                            .background(
+                                                color = ProofTheme.color.gray500,
+                                                shape = RoundedCornerShape(4.dp)
+                                            )
+                                            .padding(6.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Box(
+                        modifier = Modifier.padding(start = 22.dp, top = 22.dp).width(75.dp).height(25.dp).align(Alignment.TopStart)
+                    ) {
+                        Image(
+                            modifier = Modifier.fillMaxSize(),
+                            painter = painterResource(id = R.drawable.ic_share_logo),
+                            contentDescription = null
+                        )
+                    }
+                }
+            }
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(color = ProofTheme.color.black)
+            )
+            Text(
+                text = reviewShareCard.wine.category,
+                color = ProofTheme.color.white,
+                style = ProofTheme.typography.headingXS,
+                modifier = Modifier.padding(horizontal = 8.dp).padding(top = 12.dp)
+            )
+
+            Text(
+                text = "ALC ${reviewShareCard.wine.alc}% . FROM ${reviewShareCard.wine.origin}",
+                color = ProofTheme.color.white,
+                style = ProofTheme.typography.buttonM,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(color = ProofTheme.color.black)
+            )
+            Text(
+                text = "${reviewShareCard.userReview.mood.uppercase(Locale.getDefault())} ${reviewShareCard.userReview.weather.uppercase(Locale.getDefault())}, ${reviewShareCard.userReview.time.uppercase(Locale.getDefault())}" +
+                    "\n${reviewShareCard.userReview.isHeavy.uppercase(Locale.getDefault())} | ${reviewShareCard.userReview.isBitter.uppercase(Locale.getDefault())} | ${reviewShareCard.userReview.isBurning.uppercase(Locale.getDefault())} | ${reviewShareCard.userReview.isStrong.uppercase(Locale.getDefault())}",
+                color = ProofTheme.color.white,
+                style = ProofTheme.typography.bodyS,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
         }
     }
 }

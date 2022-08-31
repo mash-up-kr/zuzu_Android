@@ -4,6 +4,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -232,10 +233,11 @@ internal fun NavGraphBuilder.userGraph(
             val viewModel: UserReviewDetailViewModel = hiltViewModel()
             val wineId = navBackStackEntry.arguments?.getString("wineId")?.toLong() ?: 0L
             val networkState by viewModel.connection.collectAsState()
+            val context = LocalContext.current
             LaunchedEffect(key1 = networkState) {
                 if (networkState) {
                     viewModel.updateDrinkId(wineId = wineId)
-                    viewModel.getWineReviewListWithPage()
+                    viewModel.getWineReviewListWithPage(context = context)
                 }
             }
 
@@ -304,7 +306,7 @@ internal fun NavGraphBuilder.reviewGraph(
                 viewModel = hiltViewModel(),
                 navigateBack = { appState.navigateBackStack() },
                 navigateToReviewWrite = {
-                    appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewWriteScreen.route + "/${it}")
+                    appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewWriteScreen.route + "/$it")
                 }
             )
         }
@@ -319,7 +321,7 @@ internal fun NavGraphBuilder.reviewGraph(
         ) {
             ReviewWriteRoute(
                 viewModel = hiltViewModel(),
-                navigateReviewShareCard = { appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewShareCardScreen.route + "/${it}") },
+                navigateReviewShareCard = { appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewShareCardScreen.route + "/$it") },
                 navigateBack = { appState.navigateBackStack() }
             )
         }

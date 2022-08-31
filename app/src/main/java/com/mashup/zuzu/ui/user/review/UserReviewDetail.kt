@@ -1,17 +1,20 @@
 package com.mashup.zuzu.ui.user.review
 
 import android.graphics.Bitmap
+import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
@@ -20,7 +23,6 @@ import com.mashup.zuzu.compose.component.Button
 import com.mashup.zuzu.compose.component.HorizontalPagerWithCapture
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.ReviewShareCards
-import com.mashup.zuzu.data.model.wines
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
 
 /**
@@ -33,13 +35,15 @@ fun UserReviewDetailRoute(
     onClick: (UserReviewDetailUiEvents) -> Unit
 ) {
     val userReviewState = viewModel.userReviewList.collectAsState()
+    val blurBitmap by viewModel.bitmap.collectAsState()
     when (userReviewState.value) {
         is UserReviewsDetailUiState.Loading -> {
         }
         is UserReviewsDetailUiState.Success -> {
             UserReviewDetailScreen(
                 onClick = onClick,
-                reviews = (userReviewState.value as UserReviewsDetailUiState.Success).reviews
+                reviews = (userReviewState.value as UserReviewsDetailUiState.Success).reviews,
+                bitmap = blurBitmap
             )
         }
     }
@@ -50,14 +54,16 @@ fun UserReviewDetailRoute(
 fun UserReviewDetailScreen(
     modifier: Modifier = Modifier.fillMaxSize(),
     reviews: ReviewShareCards,
-    onClick: (UserReviewDetailUiEvents) -> Unit
+    onClick: (UserReviewDetailUiEvents) -> Unit,
+    bitmap: Bitmap?
 ) {
     val pagerState = rememberPagerState()
     val captureController = rememberCaptureController()
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         UserReviewDetailTopBar(
             modifier = Modifier
@@ -67,20 +73,35 @@ fun UserReviewDetailScreen(
             onBackButtonClick = { onClick(UserReviewDetailUiEvents.BackButtonClick) },
             onEditReviewButtonClick = { onClick(UserReviewDetailUiEvents.EditReviewButtonClick(reviews.wine.id)) }
         )
-        HorizontalPagerWithCapture(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(530.dp),
-            reviews = reviews,
-            pagerState = pagerState,
-            childModifier = null,
-            captureController = captureController
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            HorizontalPagerWithCapture(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 530.dp),
+                reviews = reviews,
+                pagerState = pagerState,
+                childModifier = null,
+                captureController = captureController
+            )
+        } else {
+            if (bitmap != null) {
+                HorizontalPagerWithCapture(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 530.dp),
+                    reviews = reviews,
+                    pagerState = pagerState,
+                    childModifier = null,
+                    captureController = captureController
+                )
+            }
+        }
+
         HorizontalPagerIndicator(
             pagerState = pagerState,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(16.dp),
+                .padding(bottom = 3.dp),
             activeColor = ProofTheme.color.gray50,
             inactiveColor = ProofTheme.color.gray400
         )
@@ -88,7 +109,7 @@ fun UserReviewDetailScreen(
             modifier = Modifier
                 .padding(start = 24.dp, end = 24.dp)
                 .fillMaxWidth()
-                .height(52.dp),
+                .height(54.dp),
             text = "이미지로 공유하기",
             backgroundColor = ProofTheme.color.primary300,
             textColor = ProofTheme.color.white,
@@ -96,7 +117,7 @@ fun UserReviewDetailScreen(
             onButtonClick = { captureController.capture(Bitmap.Config.ARGB_8888) }
         )
         Spacer(
-            modifier = Modifier.height(16.dp)
+            modifier = Modifier.heightIn(min = 0.dp, max = 16.dp)
         )
     }
 }
