@@ -53,11 +53,8 @@ fun WorldCupCard(
             Column(
                 modifier = Modifier.fillMaxWidth().padding(start = 16.dp)
             ) {
-                Box(
-                    modifier = Modifier.width(78.dp).height(19.dp).then(childModifier)
-                )
                 Spacer(
-                    modifier = Modifier.height(4.dp)
+                    modifier = Modifier.height(11.dp)
                 )
                 Box(
                     modifier = Modifier.width(208.dp).height(44.dp).then(childModifier)
