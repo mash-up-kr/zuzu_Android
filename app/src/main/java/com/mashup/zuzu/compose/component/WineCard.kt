@@ -39,7 +39,6 @@ import com.mashup.zuzu.compose.theme.BrushColor
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.model.wines
-import com.mashup.zuzu.util.blurring
 
 /**
  * @Created by 김현국 2022/07/01
