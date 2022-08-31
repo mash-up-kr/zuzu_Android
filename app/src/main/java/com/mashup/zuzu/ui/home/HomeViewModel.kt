@@ -81,7 +81,7 @@ class HomeViewModel @Inject constructor(
                 when (result) {
                     is Results.Success -> {
                         _bestWorldCupList.value = BestWorldCupUiState.Success(
-                            worldCupResponseToUiModel(result.value)
+                            worldCupResponseToUiModel(result.value).take(3)
                         )
                     }
                     is Results.Loading -> {

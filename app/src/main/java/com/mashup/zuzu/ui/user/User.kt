@@ -383,7 +383,7 @@ fun NoItemWineOrWorldCup(
         ) {
             Image(
                 modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = R.drawable.ic_no_item),
+                painter = painterResource(id = R.drawable.img_empty_item),
                 contentDescription = null
             )
         }

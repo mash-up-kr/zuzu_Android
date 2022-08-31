@@ -11,12 +11,12 @@ import retrofit2.http.Path
  */
 interface WorldCupApi {
 
-    @GET("/worldcup/popular")
+    @GET("/worldcups/popular")
     suspend fun getPopularWorldCup(): Response<List<WorldCup>>
 
-    @GET("/worldcup/{id}/item")
+    @GET("/worldcups/{id}/item")
     suspend fun getWorldCupItemWithId(@Path("id") id: String)
 
-    @GET("/worldcup/user-participated")
+    @GET("/worldcups/user-participated")
     suspend fun getWorldCupUserParticipated(): Response<List<GetWorldCupUserParticipatedResponse>>
 }

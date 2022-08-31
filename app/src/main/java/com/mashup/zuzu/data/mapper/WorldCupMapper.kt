@@ -15,7 +15,7 @@ fun worldCupResponseToUiModel(
         BestWorldCup(
             title = it.title,
             participants = it.participantCount,
-            image = ""
+            image = it.imageUrl
         )
     }
 }
