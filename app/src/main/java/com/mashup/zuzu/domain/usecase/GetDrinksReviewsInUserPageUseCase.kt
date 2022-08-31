@@ -11,7 +11,7 @@ import javax.inject.Singleton
  * @Created by 김현국 2022/07/24
  */
 @Singleton
-class GetDrinksReviewsInUserPage @Inject constructor(
+class GetDrinksReviewsInUserPageUseCase @Inject constructor(
     private val repository: WineRepository
 ) {
     operator fun invoke(): Flow<Results<List<Wine>>> {

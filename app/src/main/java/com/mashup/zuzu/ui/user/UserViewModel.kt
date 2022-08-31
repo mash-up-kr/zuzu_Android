@@ -20,7 +20,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val getUserDataUseCase: GetUserDataUseCase,
     private val getJoinedWorldCupListUseCase: GetJoinedWorldCupListUseCase,
-    private val getWineCallerListUseCase: GetDrinksReviewsInUserPage,
+    private val getWineCallerListUseCase: GetDrinksReviewsInUserPageUseCase,
     private val updateUserProfileUseCase: UpdateUserProfileUseCase,
     private val getUserProfileImagesUseCase: GetUserProfileImagesUseCase,
     networkMonitor: NetworkMonitor
