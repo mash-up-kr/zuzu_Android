@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,7 +37,6 @@ import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.BrushColor
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Wine
-import com.mashup.zuzu.data.model.wines
 
 /**
  * @Created by 김현국 2022/07/01
@@ -325,85 +323,6 @@ fun WineBoardCard(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun PagerWineCard(
-    modifier: Modifier,
-    wine: Wine,
-    onWineBoardClick: (Wine) -> Unit
-) {
-    val gradient = listOf(ProofTheme.color.gradientPurple, ProofTheme.color.gradientBlack)
-    Column(
-        modifier = modifier.background(brush = Brush.verticalGradient(gradient))
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Box(modifier = Modifier.clip(RoundedCornerShape(6.dp))) {
-                AsyncImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(283.dp),
-                    model = wine.imageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
-                )
-                Box(
-                    modifier = Modifier
-                        .background(
-                            brush = Brush.verticalGradient(colors = backgroundGradient),
-                            alpha = 0.6f
-                        )
-                        .fillMaxWidth()
-                        .height(100.dp)
-                        .align(Alignment.BottomCenter)
-                )
-            }
-
-            WineCategoryWithAlc(
-                modifier = Modifier
-                    .width(78.dp)
-                    .height(20.dp)
-                    .align(Alignment.Start),
-                wine = wine
-            )
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(44.dp),
-                text = wine.name,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                style = ProofTheme.typography.buttonL,
-                color = ProofTheme.color.white
-            )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                wine.tags.filterIndexed { index, tag ->
-                    index < 2
-                }.map { tag ->
-                    WineTagCard(
-                        tagDescription = tag,
-                        backgroundColor = ProofTheme.color.gray500,
-                        textColor = ProofTheme.color.gray50
-                    )
-                }
-                if (wine.tags.size >= 3) {
-                    OverflowText(
-                        count = wine.tags.size - 2,
-                        color = ProofTheme.color.gray100
-                    )
-                }
-            }
-        }
-    }
-}
-
 @Composable
 fun WineCellarCard(
     modifier: Modifier,
@@ -599,7 +518,8 @@ fun PagerWineCard(
     modifier: Modifier,
     wine: Wine,
     onWineBoardClick: (Wine) -> Unit,
-    childModifier: Modifier?
+    childModifier: Modifier?,
+    imageRadius: Dp
 ) {
     val gradient = listOf(ProofTheme.color.gradientPurple, ProofTheme.color.gradientBlack)
 
@@ -619,9 +539,8 @@ fun PagerWineCard(
                 modifier = Modifier
                     .padding(12.dp)
                     .fillMaxSize()
-//                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Box(modifier = Modifier.clip(RoundedCornerShape(6.dp))) {
+                Box(modifier = Modifier.clip(RoundedCornerShape(imageRadius))) {
                     AsyncImage(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1178,37 +1097,5 @@ fun WineCellarCard(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewPager() {
-    ProofTheme {
-        PagerWineCard(
-            modifier = Modifier
-                .width(262.dp)
-                .height(415.dp)
-                .clip(RoundedCornerShape(16.dp)),
-            wine = wines[0],
-            onWineBoardClick = {},
-            childModifier = null
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewPager2() {
-    ProofTheme {
-        PagerWineCard(
-            modifier = Modifier
-                .width(262.dp)
-                .height(415.dp)
-                .clip(RoundedCornerShape(16.dp)),
-            wine = wines[1],
-            onWineBoardClick = {},
-            childModifier = null
-        )
     }
 }

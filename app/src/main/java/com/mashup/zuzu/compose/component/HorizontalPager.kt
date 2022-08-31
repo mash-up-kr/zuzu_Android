@@ -75,7 +75,8 @@ fun HorizontalPagerWithOffsetTransitionWithPage(
                 .width(262.dp).height(415.dp).clip(RoundedCornerShape(12.dp)),
             wine = wineList[page],
             onWineBoardClick = { onWineBoardClick(it) },
-            childModifier = childModifier
+            childModifier = childModifier,
+            imageRadius = 6.dp
         )
     }
 }
@@ -127,7 +128,8 @@ fun HorizontalPagerWithOffsetTransition(
                 .clip(RoundedCornerShape(16.dp)),
             wine = wines[page],
             onWineBoardClick = { onWineBoardClick(it) },
-            childModifier = childModifier
+            childModifier = childModifier,
+            imageRadius = 12.dp
         )
     }
 }
