@@ -10,16 +10,19 @@ val dummyWorldCupList = listOf(
     BestWorldCup(
         "",
         0,
-        ""
+        "",
+        0
     ),
     BestWorldCup(
         "",
         0,
-        ""
+        "",
+        0
     ),
     BestWorldCup(
         "",
         0,
-        ""
+        "",
+        0
     )
 )

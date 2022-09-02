@@ -30,6 +30,7 @@ import com.mashup.zuzu.compose.component.*
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.data.model.dummy.dummyWineList
+import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
 import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.ui.model.bestWorldCupList
 import com.mashup.zuzu.util.rememberScrollContext
@@ -152,10 +153,11 @@ fun UserScreen(
                                 .padding(top = 36.dp, start = 24.dp, end = 24.dp)
                                 .fillMaxWidth()
                                 .fillMaxHeight(),
+                            worldCupList = joinedWorldCupState.joinedWorldCupList,
                             onWorldCupItemClick = { bestWorldCup ->
                                 onClick(UserUiEvents.WorldCupItemClick(bestWorldCup = bestWorldCup))
                             },
-                            null
+                            childModifier = null
                         )
                     }
                     is JoinedWorldCupUiState.NoItem -> {
@@ -176,6 +178,7 @@ fun UserScreen(
                             onWorldCupItemClick = { bestWorldCup ->
                                 onClick(UserUiEvents.WorldCupItemClick(bestWorldCup = bestWorldCup))
                             },
+                            worldCupList = dummyWorldCupList,
                             childModifier = Modifier.placeholder(
                                 visible = true,
                                 color = ProofTheme.color.gray600,
@@ -197,13 +200,14 @@ fun UserScreen(
 fun JoinWorldCup(
     modifier: Modifier,
     onWorldCupItemClick: (BestWorldCup) -> Unit,
+    worldCupList: List<BestWorldCup>,
     childModifier: Modifier?
 ) {
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
-        items(bestWorldCupList) { bestWorldCup ->
+        items(worldCupList) { bestWorldCup ->
             WorldCupCard(
                 modifier = Modifier.fillMaxWidth(),
                 worldCupItem = bestWorldCup,

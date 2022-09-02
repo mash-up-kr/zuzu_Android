@@ -15,7 +15,8 @@ fun worldCupResponseToUiModel(
         BestWorldCup(
             title = it.title,
             participants = it.participantCount,
-            image = it.imageUrl
+            image = it.imageUrl,
+            winnerDrinkId = it.id.toLong() // 이거 월드컵 id입니다.
         )
     }
 }
@@ -27,7 +28,8 @@ fun joinWorldListResponseToUiModel(
         BestWorldCup(
             title = it.worldcup.title,
             participants = it.worldcup.participantCount,
-            image = it.worldcup.imageUrl
+            image = it.worldcup.imageUrl,
+            winnerDrinkId = it.winnerDrinkId
         )
     }
 }

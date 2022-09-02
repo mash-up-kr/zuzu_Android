@@ -1,10 +1,12 @@
 package com.mashup.zuzu.ui.navigation
 
+import android.content.Intent
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -39,6 +41,8 @@ import com.mashup.zuzu.ui.user.edit.EditUserProfileRoute
 import com.mashup.zuzu.ui.user.review.UserReviewDetailRoute
 import com.mashup.zuzu.ui.user.review.UserReviewDetailUiEvents
 import com.mashup.zuzu.ui.user.review.UserReviewDetailViewModel
+import com.mashup.zuzu.ui.worldcup.WorldcupActivity
+import com.mashup.zuzu.util.Key
 
 /**
  * @Created by 김현국 2022/07/23
@@ -55,6 +59,7 @@ internal fun NavGraphBuilder.homeGraph(
             route = NavigationRoute.HomeScreenGraph.HomeScreen.route
         ) {
             val viewModel: HomeViewModel = hiltViewModel()
+            val context = LocalContext.current
             HomeRoute(
                 viewModel = viewModel,
                 onClick = { homeUiEvents ->
@@ -67,6 +72,11 @@ internal fun NavGraphBuilder.homeGraph(
                             appState.navigateRoute(route = NavigationRoute.ReviewGraph.ReviewDetailScreen.route + "/${homeUiEvents.wine.id}")
                         }
                         is HomeUiEvents.WorldCupItemClick -> {
+                            val worldCupId = homeUiEvents.bestWorldCup.winnerDrinkId
+
+                            val intent = Intent(context, WorldcupActivity::class.java)
+                            intent.putExtra(Key.RECOMMENDED_WORLDCUP_ID, worldCupId.toString())
+                            context.startActivity(intent)
                         }
                         is HomeUiEvents.RefreshButtonClick -> {
                             viewModel.getRandomWine(context = homeUiEvents.context)
@@ -79,11 +89,16 @@ internal fun NavGraphBuilder.homeGraph(
             route = NavigationRoute.UserScreenGraph.UserScreen.route
         ) {
             val viewModel: UserViewModel = hiltViewModel()
+            val context = LocalContext.current
             UserRoute(
                 viewModel = viewModel,
                 onClick = { userUiEvents ->
                     when (userUiEvents) {
                         is UserUiEvents.WorldCupItemClick -> {
+                            val intent: Intent = Intent(context, WorldcupActivity::class.java)
+                            val winnerDrinkId = userUiEvents.bestWorldCup.winnerDrinkId
+                            intent.putExtra(Key.MY_WINNING_DRINK_ID, winnerDrinkId)
+                            context.startActivity(intent)
                         }
                         is UserUiEvents.WineItemClick -> {
                             appState.navigateRoute(NavigationRoute.UserScreenGraph.UserReviewDetailScreen.route + "/${userUiEvents.wine.id}")

@@ -35,9 +35,11 @@ class WorldCupRepository constructor(
             val response = worldCupRemoteDataSource.getWorldCupUserParticipated()
             val body = response.body()
             if (response.isSuccessful && body != null) {
-                emit(Results.Success(body))
-            } else {
-                emit(Results.Success(emptyList()))
+                if (body.isEmpty()) {
+                    emit(Results.Success(emptyList()))
+                } else {
+                    emit(Results.Success(body))
+                }
             }
         }.flowOn(ioDispatcher)
     }
