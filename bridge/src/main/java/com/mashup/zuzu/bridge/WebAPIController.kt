@@ -53,6 +53,27 @@ object WebAPIController {
                 }
                 returnMsg = makeReturnMsg(resultMsg = "Request Success", extra = extra, transactionId = transactionId)
             }
+            FunctionName.ON_CLICK_SHARED_BUTTON -> {
+                requestData.addProperty("url", "")
+                if (options != null) {
+                    returnMsg = if (options.has("url")) {
+                        val url = options.get("url").asString
+                        requestData.addProperty("url", url)
+                        makeReturnMsg(
+                            resultMsg = "Request Success / url: $url",
+                            extra = extra,
+                            transactionId = transactionId
+                        )
+                    } else {
+                        makeReturnMsg(
+                            resultCode = 404,
+                            resultMsg = "Please check your options. Options has not url",
+                            extra = extra,
+                            transactionId = transactionId
+                        )
+                    }
+                }
+            }
             FunctionName.CLOSE_WEB_VIEW -> {
                 returnMsg = makeReturnMsg(resultMsg = "Request Success", extra = extra, transactionId = transactionId)
             }
@@ -73,6 +94,7 @@ object WebAPIController {
 
     object FunctionName {
         const val GET_PROOF_ACCESS_TOKEN = "getProofAccessToken"
+        const val ON_CLICK_SHARED_BUTTON = "onClickSharedButton"
         const val START_ACTIVITY = "startActivity"
         const val SET_BACK_BUTTON_RECEIVE = "setBackButtonReceive"
         const val ON_BACK_BUTTON_PRESSED = "onBackButtonPressed"
