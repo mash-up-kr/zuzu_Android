@@ -19,6 +19,7 @@ import com.mashup.zuzu.util.Key
 import com.mashup.zuzu.util.WebConstants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -58,6 +59,7 @@ class WorldcupActivity : AppCompatActivity() {
         with(binding) {
             worldcupWebView.setJavaScriptInterface(proofPreference)
             worldcupWebView.loadUrl(WebConstants.URL.WORLDCUP + subUrl)
+            Timber.d("loaded url: ${WebConstants.URL.WORLDCUP}$subUrl")
         }
     }
 
