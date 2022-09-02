@@ -35,20 +35,29 @@ class WorldcupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var subUrl = ""
         if (intent.hasExtra(Key.NEXT_ACTIVITY)) {
             nextActivity = intent.getStringExtra(Key.NEXT_ACTIVITY).toString()
         }
-        initViews()
+        if (intent.hasExtra(Key.RECOMMENDED_WORLDCUP_ID)) {
+            val recommendedWorldcupId = intent.getStringExtra(Key.RECOMMENDED_WORLDCUP_ID).toString()
+            subUrl = "/$recommendedWorldcupId"
+        }
+        if (intent.hasExtra(Key.MY_WINNING_DRINK_ID)) {
+            val myWinningWorldcupId = intent.getStringExtra(Key.MY_WINNING_DRINK_ID).toString()
+            subUrl = "/result/view/$myWinningWorldcupId"
+        }
+        initViews(subUrl)
         observeWebRequest()
     }
 
-    private fun initViews() {
+    private fun initViews(subUrl: String) {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_worldcup)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         with(binding) {
             worldcupWebView.setJavaScriptInterface(proofPreference)
-            worldcupWebView.loadUrl(WebConstants.URL.WORLDCUP)
+            worldcupWebView.loadUrl(WebConstants.URL.WORLDCUP + subUrl)
         }
     }
 
