@@ -3,35 +3,35 @@ package com.mashup.zuzu.ui.review
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.VerticalPager
+import com.google.accompanist.pager.calculateCurrentOffsetForPage
+import com.google.accompanist.pager.rememberPagerState
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.ProofTheme
+import com.mashup.zuzu.util.rememberColor
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
-import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
+import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 
 @Composable
 fun WeatherSelectOption(
@@ -61,7 +61,7 @@ fun WeatherSelectOption(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(130.dp)
+        modifier = modifier
     ) {
         items(optionContents) { optionContent ->
             val interactionSource = remember { MutableInteractionSource() }
@@ -109,7 +109,6 @@ fun WeatherSelectOption(
                         color = ProofTheme.color.white
                     )
                 }
-
             }
         }
     }
@@ -481,14 +480,14 @@ fun SoloSelectOption(
     }
 }
 
-@OptIn(ExperimentalSnapperApi::class)
+@OptIn(ExperimentalSnapperApi::class, ExperimentalPagerApi::class)
 @Composable
 fun TasteSelectOption(
     navigateSummaryPage: (List<Int>) -> Unit,
     modifier: Modifier
 ) {
-    val lazyListState = rememberLazyListState()
-    val layoutInfo = rememberSnapperFlingBehavior(lazyListState)
+//    val layoutInfo = rememberSnapperFlingBehavior(lazyListState)
+    val coroutineScope = rememberCoroutineScope()
 
     val radioTitles = listOf(
         Pair("가벼워요", "무거워요"),
@@ -497,74 +496,82 @@ fun TasteSelectOption(
         Pair("부드러운 목넘김", "화끈거리는 목넘김")
     )
 
-    var selectedList by remember {
-        mutableStateOf(listOf(0, 0, 0, 0))
+    val selectedStates = remember {
+        mutableStateMapOf<Int, Int>().apply {
+            radioTitles.mapIndexed { index, _ ->
+                index to 0
+            }.toMap().also {
+                putAll(it)
+            }
+        }
     }
 
-    if (!selectedList.contains(0)) {
-        navigateSummaryPage(selectedList)
-    }
+    var selectedList = remember { mutableStateListOf(0, 0, 0, 0) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        ProofTheme.color.black,
-                        ProofTheme.color.black
-                    )
-                ),
-                alpha = 0.7f
-            )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp)
-                .background(
-                    brush = Brush.horizontalGradient(
-                        colors = listOf(
-                            ProofTheme.color.primary300,
-                            ProofTheme.color.black
-                        )
-                    ),
-                    alpha = 0.2f
+    val pagerState = rememberPagerState()
+
+    VerticalPager(
+        modifier = modifier,
+        state = pagerState,
+        contentPadding = PaddingValues(vertical = 100.dp),
+        count = radioTitles.size
+    ) { page ->
+
+        val backgroundWithPage = rememberColor(pagerState, page)
+//        val backgroundColor = animateColorAsState(
+//            if (currentPage == page) {
+//                HorizontalPurple
+//            }else{
+//                Color.Transparent
+//            }
+//        )
+        Column(
+            modifier = Modifier.height(123.dp).background(backgroundWithPage).graphicsLayer {
+                // Calculate the absolute offset for the current page from the
+                // scroll position. We use the absolute value which allows us to mirror
+                // any effects for both directions
+                val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+
+                // We animate the scaleX + scaleY, between 85% and 100% // 가운데에 오면 아이템이 커짐
+                lerp(
+                    start = 1f,
+                    stop = 1f,
+                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                ).also { scale ->
+                    scaleX = scale
+                    scaleY = scale
+                }
+
+                // We animate the alpha, between 50% and 100%
+                alpha = lerp(
+                    start = 0.5f,
+                    stop = 1f,
+                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
                 )
-                .align(Alignment.Center)
-        )
+            }
 
-        LazyColumn(
-            modifier = modifier.height(200.dp).padding(vertical = 34.dp),
-            state = lazyListState,
-            flingBehavior = layoutInfo
         ) {
-            itemsIndexed(radioTitles) { index, it ->
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp, top = 28.dp)
-                ) {
-                    Text(
-                        text = it.first,
-                        style = ProofTheme.typography.headingXS,
-                        color = ProofTheme.color.white
-                    )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp, top = 28.dp, start = 34.dp, end = 34.dp)
+            ) {
+                Text(
+                    text = radioTitles[page].first,
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
 
-                    Text(
-                        text = it.second,
-                        style = ProofTheme.typography.headingXS,
-                        color = ProofTheme.color.white
-                    )
-                }
+                Text(
+                    text = radioTitles[page].second,
+                    style = ProofTheme.typography.headingXS,
+                    color = ProofTheme.color.white
+                )
+            }
 
-                var state by remember {
-                    mutableStateOf(0)
-                }
-
-                val radioButtons = listOf(
+            val radioButtons = remember {
+                listOf(
                     Pair(1, 34),
                     Pair(2, 28),
                     Pair(3, 24),
@@ -572,54 +579,63 @@ fun TasteSelectOption(
                     Pair(5, 28),
                     Pair(6, 34)
                 )
+            }
 
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 28.dp)
-                ) {
-                    radioButtons.forEach { radioButton ->
-                        val item = radioButton.first
-                        val radius = radioButton.second
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 28.dp, start = 34.dp, end = 34.dp)
+            ) {
+                radioButtons.forEach { radioButton ->
+                    val item = radioButton.first // index
+                    val radius = radioButton.second
 
-                        IconToggleButton(checked = state == item, onCheckedChange = {
-                            state = item
-                            val temp = selectedList.toMutableList()
-                            temp[index] = item
-                            selectedList = temp
-                        }) {
-                            val painter = if (state == item) {
-                                rememberAsyncImagePainter(
-                                    ContextCompat.getDrawable(
-                                        LocalContext.current,
-                                        R.drawable.ic_radio_write_selected
-                                    )
-                                )
-                            } else {
-                                rememberAsyncImagePainter(
-                                    ContextCompat.getDrawable(
-                                        LocalContext.current,
-                                        R.drawable.ic_radio_write_unselected
-                                    )
-                                )
+                    IconToggleButton(checked = selectedStates[page] == item, onCheckedChange = {
+                        selectedStates[page] = item
+                        coroutineScope.launch {
+                            if (page + 1 < radioTitles.size) {
+                                pagerState.animateScrollToPage(page + 1)
                             }
-
-                            Image(
-                                painter,
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .width(radius.dp)
-                                    .height(radius.dp)
+                        }
+                        if (page + 1 == radioTitles.size) {
+                            selectedStates.map {
+                                val index = it.key
+                                val value = it.value
+                                selectedList[index] = value
+                            }
+                            navigateSummaryPage(selectedList.toList())
+                        }
+                    }) {
+                        val painter = if (selectedStates[page] == item) {
+                            rememberAsyncImagePainter(
+                                ContextCompat.getDrawable(
+                                    LocalContext.current,
+                                    R.drawable.ic_radio_write_selected
+                                )
+                            )
+                        } else {
+                            rememberAsyncImagePainter(
+                                ContextCompat.getDrawable(
+                                    LocalContext.current,
+                                    R.drawable.ic_radio_write_unselected
+                                )
                             )
                         }
+
+                        Image(
+                            painter,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .width(radius.dp)
+                                .height(radius.dp)
+                        )
                     }
                 }
-
             }
         }
     }
-
+//    }
 }
 
 @Composable
@@ -709,7 +725,6 @@ fun SummarySelectOption(
             }
         }
     }
-
 }
 
 @Composable
@@ -780,15 +795,15 @@ fun SecondarySummaryPage(
     }
 
     val optionContents = listOf(
-        Pair(stringResource(R.string.summary_roast), painterResource(id =R.drawable.ig_grilled)),
-        Pair(stringResource(R.string.summary_sushi), painterResource(id =R.drawable.ig_sushi)),
-        Pair(stringResource(R.string.summary_fry), painterResource(id =R.drawable.ig_fried)),
-        Pair(stringResource(R.string.summary_cheese), painterResource(id =R.drawable.ig_cheese)),
-        Pair(stringResource(R.string.summary_salad), painterResource(id =R.drawable.ig_salad)),
-        Pair(stringResource(R.string.summary_fruits), painterResource(id =R.drawable.ig_fruits)),
-        Pair(stringResource(R.string.summary_soup), painterResource(id =R.drawable.ig_soup)),
-        Pair(stringResource(R.string.summary_desert), painterResource(id =R.drawable.ig_desert)),
-        Pair(stringResource(R.string.summary_noodle), painterResource(id =R.drawable.ig_noodle))
+        Pair(stringResource(R.string.summary_roast), painterResource(id = R.drawable.ig_grilled)),
+        Pair(stringResource(R.string.summary_sushi), painterResource(id = R.drawable.ig_sushi)),
+        Pair(stringResource(R.string.summary_fry), painterResource(id = R.drawable.ig_fried)),
+        Pair(stringResource(R.string.summary_cheese), painterResource(id = R.drawable.ig_cheese)),
+        Pair(stringResource(R.string.summary_salad), painterResource(id = R.drawable.ig_salad)),
+        Pair(stringResource(R.string.summary_fruits), painterResource(id = R.drawable.ig_fruits)),
+        Pair(stringResource(R.string.summary_soup), painterResource(id = R.drawable.ig_soup)),
+        Pair(stringResource(R.string.summary_desert), painterResource(id = R.drawable.ig_desert)),
+        Pair(stringResource(R.string.summary_noodle), painterResource(id = R.drawable.ig_noodle))
     )
 
     val interactionSource = remember { MutableInteractionSource() }

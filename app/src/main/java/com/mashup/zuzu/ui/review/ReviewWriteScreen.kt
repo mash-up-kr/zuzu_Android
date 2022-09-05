@@ -3,7 +3,6 @@ package com.mashup.zuzu.ui.review
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,14 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.WineImageCardForReviewWrite
 import com.mashup.zuzu.compose.theme.ProofTheme
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @Composable
 fun ReviewWriteRoute(
@@ -136,7 +133,9 @@ fun ReviewWriteScreen(
                     }
                 }
             }
-        }, sheetPeekHeight = 0.dp, topBar = {
+        },
+        sheetPeekHeight = 0.dp,
+        topBar = {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -182,7 +181,6 @@ fun ReviewWriteScreen(
                     color = ProofTheme.color.primary300
                 )
             }
-
         }
     ) {
         val scrollState = rememberScrollState()
@@ -190,125 +188,119 @@ fun ReviewWriteScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(top = 44.dp)
-                .verticalScroll(scrollState)
+                .padding(top = 44.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                WineImageCardForReviewWrite(
-                    wineImageUrl = uiState.wineImageUrl,
-                    wineName = uiState.wineName,
-                    modifier = Modifier
-                        .width(148.dp)
-                        .height(190.dp)
-                )
+            WineImageCardForReviewWrite(
+                wineImageUrl = uiState.wineImageUrl,
+                wineName = uiState.wineName,
+                modifier = Modifier
+                    .width(148.dp)
+                    .height(190.dp)
+            )
 
-                Topic(
-                    totalNum = uiState.page,
-                    pageNum = uiState.page,
-                    onClickBackButton = navigatePreviousWritePage,
-                    modifier = Modifier.padding(top = 40.dp, bottom = 34.dp)
-                )
+            Topic(
+                totalNum = uiState.page,
+                pageNum = uiState.page,
+                onClickBackButton = navigatePreviousWritePage,
+                modifier = Modifier.wrapContentHeight().padding(top = 40.dp, bottom = 34.dp)
+            )
 
-                //TODO: progress 때문에 3,4 페이지에 대해서 다른 처리가 필요함 ex. 3-1, 3-2
-                when (uiState.page) {
-                    0 -> {
-                        WeatherSelectOption(
-                            navigateDateSelectPage = navigateDateSelectPage,
-                            modifier = Modifier.padding(
-                                start = 24.dp,
-                                end = 24.dp,
-                                top = 40.dp,
-                                bottom = 34.dp
-                            )
+            // TODO: progress 때문에 3,4 페이지에 대해서 다른 처리가 필요함 ex. 3-1, 3-2
+            when (uiState.page) {
+                0 -> {
+                    WeatherSelectOption(
+                        navigateDateSelectPage = navigateDateSelectPage,
+                        modifier = Modifier.padding(
+                            start = 24.dp,
+                            end = 24.dp,
+                            top = 40.dp,
+                            bottom = 34.dp
                         )
-                    }
+                    )
+                }
 
-                    1 -> {
-                        DateSelectOption(
-                            navigatePartnerPage = navigatePartnerPage,
-                            modifier = Modifier.padding(
-                                start = 24.dp,
-                                end = 24.dp,
-                                top = 40.dp,
-                                bottom = 34.dp
-                            )
+                1 -> {
+                    DateSelectOption(
+                        navigatePartnerPage = navigatePartnerPage,
+                        modifier = Modifier.padding(
+                            start = 24.dp,
+                            end = 24.dp,
+                            top = 40.dp,
+                            bottom = 34.dp
                         )
-                    }
+                    )
+                }
 
-                    2 -> {
-                        PartnerSelectOption(
-                            navigateGroupPage = navigateGroupPage,
-                            navigateSoloPage = navigateSoloPage,
-                            modifier = Modifier.padding(
-                                start = 24.dp,
-                                end = 24.dp,
-                                top = 40.dp,
-                                bottom = 34.dp
-                            )
+                2 -> {
+                    PartnerSelectOption(
+                        navigateGroupPage = navigateGroupPage,
+                        navigateSoloPage = navigateSoloPage,
+                        modifier = Modifier.padding(
+                            start = 24.dp,
+                            end = 24.dp,
+                            top = 40.dp,
+                            bottom = 34.dp
                         )
-                    }
+                    )
+                }
 
-                    3 -> {
-                        GroupSelectOption(
-                            navigateTastePage = navigateTastePage,
-                            modifier = Modifier.padding(
-                                start = 24.dp,
-                                end = 24.dp,
-                                top = 40.dp,
-                                bottom = 34.dp
-                            )
+                3 -> {
+                    GroupSelectOption(
+                        navigateTastePage = navigateTastePage,
+                        modifier = Modifier.padding(
+                            start = 24.dp,
+                            end = 24.dp,
+                            top = 40.dp,
+                            bottom = 34.dp
                         )
-                    }
+                    )
+                }
 
-                    4 -> {
-                        SoloSelectOption(
-                            navigateTastePage = navigateTastePage,
-                            modifier = Modifier.padding(
-                                start = 24.dp,
-                                end = 24.dp,
-                                top = 40.dp,
-                                bottom = 34.dp
-                            )
+                4 -> {
+                    SoloSelectOption(
+                        navigateTastePage = navigateTastePage,
+                        modifier = Modifier.padding(
+                            start = 24.dp,
+                            end = 24.dp,
+                            top = 40.dp,
+                            bottom = 34.dp
                         )
-                    }
+                    )
+                }
 
-                    5 -> {
-                        TasteSelectOption(
-                            navigateSummaryPage = navigateSummaryPage, modifier = Modifier.padding(
-                                start = 24.dp,
-                                end = 24.dp,
-                                top = 40.dp,
-                                bottom = 34.dp
-                            )
-                        )
-                    }
+                5 -> {
+                    TasteSelectOption(
+                        navigateSummaryPage = navigateSummaryPage,
+                        modifier = Modifier.padding(
+                            top = 40.dp,
+                            bottom = 34.dp
+                        ).weight(1f)
+                    )
+                }
 
-                    6 -> {
-                        SummarySelectOption(
-                            navigateSecondarySummaryPage = navigateSecondarySummaryPage,
-                            modifier = Modifier.padding(
-                                start = 24.dp,
-                                end = 24.dp,
-                                top = 40.dp,
-                                bottom = 34.dp
-                            )
+                6 -> {
+                    SummarySelectOption(
+                        navigateSecondarySummaryPage = navigateSecondarySummaryPage,
+                        modifier = Modifier.padding(
+                            start = 24.dp,
+                            end = 24.dp,
+                            top = 40.dp,
+                            bottom = 34.dp
                         )
-                    }
+                    )
+                }
 
-                    7 -> {
-                        SecondarySummaryPage(
-                            modifier = Modifier.padding(
-                                start = 24.dp,
-                                end = 24.dp,
-                                top = 40.dp,
-                                bottom = 34.dp
-                            ),
-                            navigateReviewShareCard = navigateReviewShareCard
-                        )
-                    }
+                7 -> {
+                    SecondarySummaryPage(
+                        modifier = Modifier.padding(
+                            start = 24.dp,
+                            end = 24.dp,
+                            top = 40.dp,
+                            bottom = 34.dp
+                        ),
+                        navigateReviewShareCard = navigateReviewShareCard
+                    )
                 }
             }
         }
@@ -341,7 +333,6 @@ fun Topic(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
                 .align(Alignment.Center),
             horizontalArrangement = Arrangement.Center
         ) {
@@ -384,11 +375,11 @@ fun Topic(
             }
 
             Text(
-                text = topic, style = ProofTheme.typography.headingL,
+                text = topic,
+                style = ProofTheme.typography.headingL,
                 textAlign = TextAlign.Center,
-                color = ProofTheme.color.white,
+                color = ProofTheme.color.white
             )
         }
-
     }
 }

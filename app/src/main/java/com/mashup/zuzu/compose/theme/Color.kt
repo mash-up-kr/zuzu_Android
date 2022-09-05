@@ -32,6 +32,10 @@ val Orange300 = Color(0xFFEF562D)
 val GradientPurple = Color(0xFF5646A3)
 val GradientBlack = Color(0xFF2A2C3C)
 
+// HorizontalGradient
+val HorizontalPurple = Color(0x366748E3)
+val HorizontalBlack = Color(0x6748E3)
+
 val BrushColor = Color(0xB3383A4D)
 
 @Stable

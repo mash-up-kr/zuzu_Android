@@ -11,7 +11,6 @@ import com.mashup.zuzu.domain.usecase.ReviewWriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,14 +40,12 @@ class ReviewWriteViewModel @Inject constructor(
                     wineImageUrl = wineData.wineData.imageUrl,
                     wineName = wineData.wineData.name
                 )
-
             } else {
                 ReviewWriteUiState(
                     page = page,
                     wineImageUrl = "",
                     wineName = ""
                 )
-
             }
         }.stateIn(
             scope = viewModelScope,
@@ -82,7 +79,11 @@ class ReviewWriteViewModel @Inject constructor(
             if (currentPage == 0) {
                 0
             } else {
-                currentPage - 1
+                if (currentPage in 3..4) {
+                    2
+                } else {
+                    currentPage - 1
+                }
             }
     }
 
