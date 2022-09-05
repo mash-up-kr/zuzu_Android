@@ -10,7 +10,7 @@ import androidx.compose.runtime.Immutable
 data class User(
     val id: Long,
     var name: String,
-    val email: String,
+    val email: String?,
     val image: String
 )
 

@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.compose.component.ShareReviewCard
 import com.mashup.zuzu.compose.component.ShareReviewCardWithRenderScript
 import com.mashup.zuzu.compose.theme.ProofTheme
-import com.mashup.zuzu.data.mapper.reviewShareCardToListModel
 import com.mashup.zuzu.data.model.ReviewShareCard
 import com.mashup.zuzu.util.saveBitmapToStorage
 import dev.shreyaspatil.capturable.Capturable
@@ -28,16 +27,21 @@ import dev.shreyaspatil.capturable.controller.rememberCaptureController
 
 @Composable
 fun ReviewShareCardRoute(
-    viewModel: ReviewShareCardViewModel
+    viewModel: ReviewShareCardViewModel,
+    onButtonClick: () -> Unit
 ) {
     val reviewShareCard by viewModel.reviewShareCardState.collectAsState()
 
-    ReviewShareCardScreen(reviewShareCard)
+    ReviewShareCardScreen(
+        reviewShareCard,
+        onButtonClick
+    )
 }
 
 @Composable
 fun ReviewShareCardScreen(
-    reviewShareCard: ReviewShareCard
+    reviewShareCard: ReviewShareCard,
+    onButtonClick: () -> Unit
 ) {
     val captureController = rememberCaptureController()
 
@@ -81,7 +85,7 @@ fun ReviewShareCardScreen(
                 .padding(top = 16.dp, start = 24.dp, end = 24.dp)
         ) {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = onButtonClick,
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray400),
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier

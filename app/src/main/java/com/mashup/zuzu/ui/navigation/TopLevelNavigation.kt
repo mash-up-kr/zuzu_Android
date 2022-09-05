@@ -43,6 +43,7 @@ import com.mashup.zuzu.ui.user.review.UserReviewDetailUiEvents
 import com.mashup.zuzu.ui.user.review.UserReviewDetailViewModel
 import com.mashup.zuzu.ui.worldcup.WorldcupActivity
 import com.mashup.zuzu.util.Key
+import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/07/23
@@ -350,7 +351,10 @@ internal fun NavGraphBuilder.reviewGraph(
             )
         ) {
             ReviewShareCardRoute(
-                viewModel = hiltViewModel()
+                viewModel = hiltViewModel(),
+                onButtonClick = {
+                    Timber.tag("appState").d(appState.navController.toString())
+                }
             )
         }
     }

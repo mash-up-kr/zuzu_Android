@@ -178,12 +178,14 @@ fun SettingUserProfile(
                 contentDescription = null
             )
         }
-        Text(
-            modifier = Modifier.padding(top = 5.dp),
-            text = user.email,
-            style = ProofTheme.typography.bodyXS,
-            color = ProofTheme.color.primary50
-        )
+        if (user.email != null) {
+            Text(
+                modifier = Modifier.padding(top = 5.dp),
+                text = user.email,
+                style = ProofTheme.typography.bodyXS,
+                color = ProofTheme.color.primary50
+            )
+        }
     }
 }
 

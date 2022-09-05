@@ -17,7 +17,7 @@ data class User(
     val nickname: String,
 
     @SerializedName("email")
-    val email: String,
+    val email: String?,
 
     @SerializedName("type")
     val type: String,
