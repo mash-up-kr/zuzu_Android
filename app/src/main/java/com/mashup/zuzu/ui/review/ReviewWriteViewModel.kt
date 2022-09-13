@@ -28,6 +28,26 @@ class ReviewWriteViewModel @Inject constructor(
     private val wineDataUiState: MutableStateFlow<WineDataUiState> =
         MutableStateFlow(WineDataUiState.Loading)
 
+    val radioTitles = listOf(
+        Pair("가벼워요", "무거워요"),
+        Pair("달아요", "써요"),
+        Pair("은은한 술맛", "찐한 술맛"),
+        Pair("부드러운 목넘김", "화끈거리는 목넘김")
+    )
+
+    var selectedList = MutableStateFlow(mutableListOf(0, 0, 0, 0))
+    var currentIndex = MutableStateFlow(0)
+
+    val radioButtons =
+        listOf(
+            Pair(1, 34),
+            Pair(2, 28),
+            Pair(3, 24),
+            Pair(4, 24),
+            Pair(5, 28),
+            Pair(6, 34)
+        )
+
     init {
         getWineDataWithId(wineId)
     }
@@ -153,6 +173,13 @@ class ReviewWriteViewModel @Inject constructor(
         navigateReviewShareCardScreen(reviewId)
     }
 
+    fun updateSelectedList(index: Int, value: Int) {
+        selectedList.value[index] = value
+    }
+
+    fun updateCurrentIndex(index: Int) {
+        currentIndex.value = index + 1
+    }
     companion object {
         const val WINE_ID = "wineId"
         const val WINE_IMAGE_URL = "wineImageUrl"

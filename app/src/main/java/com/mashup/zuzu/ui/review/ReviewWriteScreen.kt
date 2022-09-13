@@ -3,6 +3,7 @@ package com.mashup.zuzu.ui.review
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mashup.zuzu.R
+import com.mashup.zuzu.compose.component.TasteColumn
 import com.mashup.zuzu.compose.component.WineImageCardForReviewWrite
 import com.mashup.zuzu.compose.theme.ProofTheme
 import kotlinx.coroutines.launch
@@ -28,6 +30,8 @@ fun ReviewWriteRoute(
     navigateBack: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val selectedListState by viewModel.selectedList.collectAsState()
+    val currentIndexState by viewModel.currentIndex.collectAsState()
 
     ReviewWriteScreen(
         uiState = uiState,
@@ -42,7 +46,15 @@ fun ReviewWriteRoute(
         navigateReviewShareCard = { place, pairing ->
             val result = viewModel.navigateReviewShareCard(place, pairing, navigateReviewShareCardScreen = navigateReviewShareCard)
         },
-        navigateBack = navigateBack
+        navigateBack = navigateBack,
+        tasteUiState = TasteUiState(
+            radioTitles = viewModel.radioTitles,
+            selectedList = selectedListState,
+            currentIndex = currentIndexState,
+            radioButtons = viewModel.radioButtons
+        ),
+        updateSelectedList = viewModel::updateSelectedList,
+        updateCurrentIndex = viewModel::updateCurrentIndex
     )
 }
 
@@ -59,10 +71,14 @@ fun ReviewWriteScreen(
     navigateSummaryPage: (List<Int>) -> Unit,
     navigateSecondarySummaryPage: (String) -> Unit,
     navigateReviewShareCard: (String, List<String>) -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    tasteUiState: TasteUiState,
+    updateCurrentIndex: (Int) -> Unit,
+    updateSelectedList: (Int, Int) -> Unit
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
@@ -183,12 +199,11 @@ fun ReviewWriteScreen(
             }
         }
     ) {
-        val scrollState = rememberScrollState()
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 44.dp),
+                .padding(top = 44.dp)
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             WineImageCardForReviewWrite(
@@ -269,15 +284,21 @@ fun ReviewWriteScreen(
                     )
                 }
 
-                5 -> {
-                    TasteSelectOption(
-                        navigateSummaryPage = navigateSummaryPage,
-                        modifier = Modifier.padding(
-                            top = 40.dp,
-                            bottom = 34.dp
-                        ).weight(1f)
-                    )
-                }
+//                5 -> {
+//                    TasteColumn(
+//                        navigateSummaryPage = navigateSummaryPage,
+//                        modifier = Modifier.padding(
+//                            top = 40.dp,
+//                            bottom = 34.dp
+//                        ),
+//                        selectedList = tasteUiState.selectedList,
+//                        currentIndex = tasteUiState.currentIndex,
+//                        radioTitles = tasteUiState.radioTitles,
+//                        radioButtons = tasteUiState.radioButtons,
+//                        updateCurrentIndex = updateCurrentIndex,
+//                        updateSelectedList = updateSelectedList
+//                    )
+//                }
 
                 6 -> {
                     SummarySelectOption(

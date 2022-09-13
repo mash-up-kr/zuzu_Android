@@ -13,25 +13,12 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.lerp
-import androidx.core.content.ContextCompat
-import coil.compose.rememberAsyncImagePainter
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.VerticalPager
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
-import com.google.accompanist.pager.rememberPagerState
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.ProofTheme
-import com.mashup.zuzu.util.rememberColor
-import dev.chrisbanes.snapper.ExperimentalSnapperApi
-import kotlinx.coroutines.launch
-import kotlin.math.absoluteValue
 
 @Composable
 fun WeatherSelectOption(
@@ -480,163 +467,156 @@ fun SoloSelectOption(
     }
 }
 
-@OptIn(ExperimentalSnapperApi::class, ExperimentalPagerApi::class)
-@Composable
-fun TasteSelectOption(
-    navigateSummaryPage: (List<Int>) -> Unit,
-    modifier: Modifier
-) {
-//    val layoutInfo = rememberSnapperFlingBehavior(lazyListState)
-    val coroutineScope = rememberCoroutineScope()
-
-    val radioTitles = listOf(
-        Pair("가벼워요", "무거워요"),
-        Pair("달아요", "써요"),
-        Pair("은은한 술맛", "찐한 술맛"),
-        Pair("부드러운 목넘김", "화끈거리는 목넘김")
-    )
-
-    val selectedStates = remember {
-        mutableStateMapOf<Int, Int>().apply {
-            radioTitles.mapIndexed { index, _ ->
-                index to 0
-            }.toMap().also {
-                putAll(it)
-            }
-        }
-    }
-
-    var selectedList = remember { mutableStateListOf(0, 0, 0, 0) }
-
-    val pagerState = rememberPagerState()
-
-    VerticalPager(
-        modifier = modifier,
-        state = pagerState,
-        contentPadding = PaddingValues(vertical = 100.dp),
-        count = radioTitles.size
-    ) { page ->
-
-        val backgroundWithPage = rememberColor(pagerState, page)
-//        val backgroundColor = animateColorAsState(
-//            if (currentPage == page) {
-//                HorizontalPurple
-//            }else{
-//                Color.Transparent
+// @OptIn(ExperimentalSnapperApi::class, ExperimentalPagerApi::class)
+// @Composable
+// fun TasteSelectOption(
+//    navigateSummaryPage: (List<Int>) -> Unit,
+//    modifier: Modifier
+// ) {
+// //    val layoutInfo = rememberSnapperFlingBehavior(lazyListState)
+//    val coroutineScope = rememberCoroutineScope()
+//
+//    val radioTitles = listOf(
+//        Pair("가벼워요", "무거워요"),
+//        Pair("달아요", "써요"),
+//        Pair("은은한 술맛", "찐한 술맛"),
+//        Pair("부드러운 목넘김", "화끈거리는 목넘김")
+//    )
+//
+//    val selectedStates = remember {
+//        mutableStateMapOf<Int, Int>().apply {
+//            radioTitles.mapIndexed { index, _ ->
+//                index to 0
+//            }.toMap().also {
+//                putAll(it)
 //            }
-//        )
-        Column(
-            modifier = Modifier.height(123.dp).background(backgroundWithPage).graphicsLayer {
-                // Calculate the absolute offset for the current page from the
-                // scroll position. We use the absolute value which allows us to mirror
-                // any effects for both directions
-                val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-
-                // We animate the scaleX + scaleY, between 85% and 100% // 가운데에 오면 아이템이 커짐
-                lerp(
-                    start = 1f,
-                    stop = 1f,
-                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                ).also { scale ->
-                    scaleX = scale
-                    scaleY = scale
-                }
-
-                // We animate the alpha, between 50% and 100%
-                alpha = lerp(
-                    start = 0.5f,
-                    stop = 1f,
-                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                )
-            }
-
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp, top = 28.dp, start = 34.dp, end = 34.dp)
-            ) {
-                Text(
-                    text = radioTitles[page].first,
-                    style = ProofTheme.typography.headingXS,
-                    color = ProofTheme.color.white
-                )
-
-                Text(
-                    text = radioTitles[page].second,
-                    style = ProofTheme.typography.headingXS,
-                    color = ProofTheme.color.white
-                )
-            }
-
-            val radioButtons = remember {
-                listOf(
-                    Pair(1, 34),
-                    Pair(2, 28),
-                    Pair(3, 24),
-                    Pair(4, 24),
-                    Pair(5, 28),
-                    Pair(6, 34)
-                )
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 28.dp, start = 34.dp, end = 34.dp)
-            ) {
-                radioButtons.forEach { radioButton ->
-                    val item = radioButton.first // index
-                    val radius = radioButton.second
-
-                    IconToggleButton(checked = selectedStates[page] == item, onCheckedChange = {
-                        selectedStates[page] = item
-                        coroutineScope.launch {
-                            if (page + 1 < radioTitles.size) {
-                                pagerState.animateScrollToPage(page + 1)
-                            }
-                        }
-                        if (page + 1 == radioTitles.size) {
-                            selectedStates.map {
-                                val index = it.key
-                                val value = it.value
-                                selectedList[index] = value
-                            }
-                            navigateSummaryPage(selectedList.toList())
-                        }
-                    }) {
-                        val painter = if (selectedStates[page] == item) {
-                            rememberAsyncImagePainter(
-                                ContextCompat.getDrawable(
-                                    LocalContext.current,
-                                    R.drawable.ic_radio_write_selected
-                                )
-                            )
-                        } else {
-                            rememberAsyncImagePainter(
-                                ContextCompat.getDrawable(
-                                    LocalContext.current,
-                                    R.drawable.ic_radio_write_unselected
-                                )
-                            )
-                        }
-
-                        Image(
-                            painter,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .width(radius.dp)
-                                .height(radius.dp)
-                        )
-                    }
-                }
-            }
-        }
-    }
+//        }
 //    }
-}
+//
+//    var selectedList = remember { mutableStateListOf(0, 0, 0, 0) }
+//
+//    val pagerState = rememberPagerState()
+//
+//    VerticalPager(
+//        modifier = modifier,
+//        state = pagerState,
+//        contentPadding = PaddingValues(vertical = 100.dp),
+//        count = radioTitles.size
+//    ) { page ->
+//
+//        val backgroundWithPage = rememberColor(pagerState, page)
+//        Column(
+//            modifier = Modifier.height(123.dp).background(backgroundWithPage).graphicsLayer {
+//                // Calculate the absolute offset for the current page from the
+//                // scroll position. We use the absolute value which allows us to mirror
+//                // any effects for both directions
+//                val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+//
+//                // We animate the scaleX + scaleY, between 85% and 100% // 가운데에 오면 아이템이 커짐
+//                lerp(
+//                    start = 1f,
+//                    stop = 1f,
+//                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+//                ).also { scale ->
+//                    scaleX = scale
+//                    scaleY = scale
+//                }
+//
+//                // We animate the alpha, between 50% and 100%
+//                alpha = lerp(
+//                    start = 0.5f,
+//                    stop = 1f,
+//                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+//                )
+//            }
+//
+//        ) {
+//            Row(
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(bottom = 16.dp, top = 28.dp, start = 34.dp, end = 34.dp)
+//            ) {
+//                Text(
+//                    text = radioTitles[page].first,
+//                    style = ProofTheme.typography.headingXS,
+//                    color = ProofTheme.color.white
+//                )
+//
+//                Text(
+//                    text = radioTitles[page].second,
+//                    style = ProofTheme.typography.headingXS,
+//                    color = ProofTheme.color.white
+//                )
+//            }
+//
+//            val radioButtons = remember {
+//                listOf(
+//                    Pair(1, 34),
+//                    Pair(2, 28),
+//                    Pair(3, 24),
+//                    Pair(4, 24),
+//                    Pair(5, 28),
+//                    Pair(6, 34)
+//                )
+//            }
+//
+//            Row(
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(bottom = 28.dp, start = 34.dp, end = 34.dp)
+//            ) {
+//                radioButtons.forEach { radioButton ->
+//                    val item = radioButton.first // index
+//                    val radius = radioButton.second
+//
+//                    IconToggleButton(checked = selectedStates[page] == item, onCheckedChange = {
+//                        selectedStates[page] = item
+//                        coroutineScope.launch {
+//                            if (page + 1 < radioTitles.size) {
+//                                pagerState.animateScrollToPage(page + 1)
+//                            }
+//                        }
+//                        if (page + 1 == radioTitles.size) {
+//                            selectedStates.map {
+//                                val index = it.key
+//                                val value = it.value
+//                                selectedList[index] = value
+//                            }
+//                            navigateSummaryPage(selectedList.toList())
+//                        }
+//                    }) {
+//                        val painter = if (selectedStates[page] == item) {
+//                            rememberAsyncImagePainter(
+//                                ContextCompat.getDrawable(
+//                                    LocalContext.current,
+//                                    R.drawable.ic_radio_write_selected
+//                                )
+//                            )
+//                        } else {
+//                            rememberAsyncImagePainter(
+//                                ContextCompat.getDrawable(
+//                                    LocalContext.current,
+//                                    R.drawable.ic_radio_write_unselected
+//                                )
+//                            )
+//                        }
+//
+//                        Image(
+//                            painter,
+//                            contentDescription = "",
+//                            modifier = Modifier
+//                                .width(radius.dp)
+//                                .height(radius.dp)
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//    }
+// //    }
+// }
 
 @Composable
 fun SummarySelectOption(
