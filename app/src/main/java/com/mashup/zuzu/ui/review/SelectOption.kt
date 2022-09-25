@@ -3,20 +3,24 @@ package com.mashup.zuzu.ui.review
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
+import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.flowlayout.SizeMode
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.ProofTheme
 
@@ -43,14 +47,14 @@ fun WeatherSelectOption(
             stringResource(R.string.weather_cloudy)
         )
     )
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier
+    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2) - 46.dp
+    FlowRow(
+        modifier = Modifier.padding(start = 34.dp, end = 34.dp),
+        mainAxisSize = SizeMode.Expand,
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        crossAxisSpacing = 14.dp
     ) {
-        items(optionContents) { optionContent ->
+        optionContents.forEach { optionContent ->
             val interactionSource = remember { MutableInteractionSource() }
 
             Button(
@@ -66,6 +70,7 @@ fun WeatherSelectOption(
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
+                    .width(itemSize)
                     .height(52.dp)
                     .indication(
                         indication = rememberRipple(color = ProofTheme.color.primary300),
@@ -125,13 +130,14 @@ fun DateSelectOption(
         )
     )
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(130.dp)
+    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2) - 46.dp
+    FlowRow(
+        modifier = Modifier.padding(start = 34.dp, end = 34.dp),
+        mainAxisSize = SizeMode.Expand,
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        crossAxisSpacing = 14.dp
     ) {
-        items(optionContents) { optionContent ->
+        optionContents.forEach { optionContent ->
             val interactionSource = remember { MutableInteractionSource() }
 
             Button(
@@ -147,6 +153,7 @@ fun DateSelectOption(
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
+                    .width(itemSize)
                     .height(52.dp)
                     .indication(
                         indication = rememberRipple(color = ProofTheme.color.primary300),
@@ -186,13 +193,14 @@ fun PartnerSelectOption(
         stringResource(R.string.partner_party)
     )
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(130.dp)
+    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2) - 46.dp
+    FlowRow(
+        modifier = Modifier.padding(start = 34.dp, end = 34.dp),
+        mainAxisSize = SizeMode.Expand,
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        crossAxisSpacing = 14.dp
     ) {
-        itemsIndexed(optionContents) { index, optionContent ->
+        optionContents.forEachIndexed { index, optionContent ->
             val interactionSource = remember { MutableInteractionSource() }
 
             Button(
@@ -215,6 +223,7 @@ fun PartnerSelectOption(
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
+                    .width(itemSize)
                     .height(52.dp)
                     .indication(
                         indication = rememberRipple(color = ProofTheme.color.primary300),
@@ -272,13 +281,14 @@ fun GroupSelectOption(
         mutableStateOf(Pair<Int?, Int?>(null, null))
     }
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(180.dp)
+    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2) - 46.dp
+    FlowRow(
+        modifier = Modifier.padding(start = 34.dp, end = 34.dp),
+        mainAxisSize = SizeMode.Expand,
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        crossAxisSpacing = 14.dp
     ) {
-        itemsIndexed(optionContents) { index, optionContent ->
+        optionContents.forEachIndexed { index, optionContent ->
             val interactionSource = remember { MutableInteractionSource() }
 
             Button(
@@ -305,6 +315,7 @@ fun GroupSelectOption(
                     else ProofTheme.color.gray600
                 ),
                 modifier = Modifier
+                    .width(itemSize)
                     .height(52.dp)
                     .indication(
                         indication = rememberRipple(color = ProofTheme.color.primary300),
@@ -417,13 +428,14 @@ fun SoloSelectOption(
         )
     )
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = modifier.height(200.dp)
+    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2) - 46.dp
+    FlowRow(
+        modifier = Modifier.padding(start = 34.dp, end = 34.dp),
+        mainAxisSize = SizeMode.Expand,
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        crossAxisSpacing = 14.dp
     ) {
-        items(optionContents) { optionContent ->
+        optionContents.forEach { optionContent ->
             val interactionSource = remember { MutableInteractionSource() }
 
             Button(
@@ -441,6 +453,7 @@ fun SoloSelectOption(
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.gray600),
                 modifier = Modifier
+                    .width(itemSize)
                     .height(52.dp)
                     .indication(
                         indication = rememberRipple(color = ProofTheme.color.primary300),
@@ -466,157 +479,6 @@ fun SoloSelectOption(
         }
     }
 }
-
-// @OptIn(ExperimentalSnapperApi::class, ExperimentalPagerApi::class)
-// @Composable
-// fun TasteSelectOption(
-//    navigateSummaryPage: (List<Int>) -> Unit,
-//    modifier: Modifier
-// ) {
-// //    val layoutInfo = rememberSnapperFlingBehavior(lazyListState)
-//    val coroutineScope = rememberCoroutineScope()
-//
-//    val radioTitles = listOf(
-//        Pair("가벼워요", "무거워요"),
-//        Pair("달아요", "써요"),
-//        Pair("은은한 술맛", "찐한 술맛"),
-//        Pair("부드러운 목넘김", "화끈거리는 목넘김")
-//    )
-//
-//    val selectedStates = remember {
-//        mutableStateMapOf<Int, Int>().apply {
-//            radioTitles.mapIndexed { index, _ ->
-//                index to 0
-//            }.toMap().also {
-//                putAll(it)
-//            }
-//        }
-//    }
-//
-//    var selectedList = remember { mutableStateListOf(0, 0, 0, 0) }
-//
-//    val pagerState = rememberPagerState()
-//
-//    VerticalPager(
-//        modifier = modifier,
-//        state = pagerState,
-//        contentPadding = PaddingValues(vertical = 100.dp),
-//        count = radioTitles.size
-//    ) { page ->
-//
-//        val backgroundWithPage = rememberColor(pagerState, page)
-//        Column(
-//            modifier = Modifier.height(123.dp).background(backgroundWithPage).graphicsLayer {
-//                // Calculate the absolute offset for the current page from the
-//                // scroll position. We use the absolute value which allows us to mirror
-//                // any effects for both directions
-//                val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-//
-//                // We animate the scaleX + scaleY, between 85% and 100% // 가운데에 오면 아이템이 커짐
-//                lerp(
-//                    start = 1f,
-//                    stop = 1f,
-//                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-//                ).also { scale ->
-//                    scaleX = scale
-//                    scaleY = scale
-//                }
-//
-//                // We animate the alpha, between 50% and 100%
-//                alpha = lerp(
-//                    start = 0.5f,
-//                    stop = 1f,
-//                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-//                )
-//            }
-//
-//        ) {
-//            Row(
-//                horizontalArrangement = Arrangement.SpaceBetween,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(bottom = 16.dp, top = 28.dp, start = 34.dp, end = 34.dp)
-//            ) {
-//                Text(
-//                    text = radioTitles[page].first,
-//                    style = ProofTheme.typography.headingXS,
-//                    color = ProofTheme.color.white
-//                )
-//
-//                Text(
-//                    text = radioTitles[page].second,
-//                    style = ProofTheme.typography.headingXS,
-//                    color = ProofTheme.color.white
-//                )
-//            }
-//
-//            val radioButtons = remember {
-//                listOf(
-//                    Pair(1, 34),
-//                    Pair(2, 28),
-//                    Pair(3, 24),
-//                    Pair(4, 24),
-//                    Pair(5, 28),
-//                    Pair(6, 34)
-//                )
-//            }
-//
-//            Row(
-//                horizontalArrangement = Arrangement.SpaceBetween,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(bottom = 28.dp, start = 34.dp, end = 34.dp)
-//            ) {
-//                radioButtons.forEach { radioButton ->
-//                    val item = radioButton.first // index
-//                    val radius = radioButton.second
-//
-//                    IconToggleButton(checked = selectedStates[page] == item, onCheckedChange = {
-//                        selectedStates[page] = item
-//                        coroutineScope.launch {
-//                            if (page + 1 < radioTitles.size) {
-//                                pagerState.animateScrollToPage(page + 1)
-//                            }
-//                        }
-//                        if (page + 1 == radioTitles.size) {
-//                            selectedStates.map {
-//                                val index = it.key
-//                                val value = it.value
-//                                selectedList[index] = value
-//                            }
-//                            navigateSummaryPage(selectedList.toList())
-//                        }
-//                    }) {
-//                        val painter = if (selectedStates[page] == item) {
-//                            rememberAsyncImagePainter(
-//                                ContextCompat.getDrawable(
-//                                    LocalContext.current,
-//                                    R.drawable.ic_radio_write_selected
-//                                )
-//                            )
-//                        } else {
-//                            rememberAsyncImagePainter(
-//                                ContextCompat.getDrawable(
-//                                    LocalContext.current,
-//                                    R.drawable.ic_radio_write_unselected
-//                                )
-//                            )
-//                        }
-//
-//                        Image(
-//                            painter,
-//                            contentDescription = "",
-//                            modifier = Modifier
-//                                .width(radius.dp)
-//                                .height(radius.dp)
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
-// //    }
-// }
 
 @Composable
 fun SummarySelectOption(
@@ -662,13 +524,14 @@ fun SummarySelectOption(
         )
     )
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        verticalArrangement = Arrangement.spacedBy(24.dp),
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = modifier.height(360.dp)
+    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 3) - 46.dp
+    FlowRow(
+        modifier = Modifier.padding(start = 34.dp, end = 34.dp),
+        mainAxisSize = SizeMode.Expand,
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        crossAxisSpacing = 14.dp
     ) {
-        items(optionContents) { optionContent ->
+        optionContents.forEach { optionContent ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable {
@@ -691,7 +554,7 @@ fun SummarySelectOption(
                     painter = optionContent.first,
                     contentDescription = "",
                     modifier = Modifier
-                        .width(84.dp)
+                        .width(itemSize)
                         .height(84.dp)
                         .padding(bottom = 12.dp)
                 )
@@ -710,15 +573,25 @@ fun SummarySelectOption(
 @Composable
 fun SecondarySummaryPage(
     modifier: Modifier,
-    navigateReviewShareCard: (String, List<String>) -> Unit
+    navigateReviewShareCard: (String, List<String>) -> Unit,
+    updateSelectState: (Int) -> Unit,
+    isSelectableListState: List<Boolean>
 ) {
     var content by remember {
         mutableStateOf("")
     }
 
-    var isSelectable by remember {
-        mutableStateOf(mapOf<Int, Boolean>())
-    }
+    val optionContents = listOf(
+        Pair(stringResource(R.string.summary_roast), painterResource(id = R.drawable.ig_grilled)),
+        Pair(stringResource(R.string.summary_sushi), painterResource(id = R.drawable.ig_sushi)),
+        Pair(stringResource(R.string.summary_fry), painterResource(id = R.drawable.ig_fried)),
+        Pair(stringResource(R.string.summary_cheese), painterResource(id = R.drawable.ig_cheese)),
+        Pair(stringResource(R.string.summary_salad), painterResource(id = R.drawable.ig_salad)),
+        Pair(stringResource(R.string.summary_fruits), painterResource(id = R.drawable.ig_fruits)),
+        Pair(stringResource(R.string.summary_soup), painterResource(id = R.drawable.ig_soup)),
+        Pair(stringResource(R.string.summary_desert), painterResource(id = R.drawable.ig_desert)),
+        Pair(stringResource(R.string.summary_noodle), painterResource(id = R.drawable.ig_noodle))
+    )
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -774,53 +647,75 @@ fun SecondarySummaryPage(
         )
     }
 
-    val optionContents = listOf(
-        Pair(stringResource(R.string.summary_roast), painterResource(id = R.drawable.ig_grilled)),
-        Pair(stringResource(R.string.summary_sushi), painterResource(id = R.drawable.ig_sushi)),
-        Pair(stringResource(R.string.summary_fry), painterResource(id = R.drawable.ig_fried)),
-        Pair(stringResource(R.string.summary_cheese), painterResource(id = R.drawable.ig_cheese)),
-        Pair(stringResource(R.string.summary_salad), painterResource(id = R.drawable.ig_salad)),
-        Pair(stringResource(R.string.summary_fruits), painterResource(id = R.drawable.ig_fruits)),
-        Pair(stringResource(R.string.summary_soup), painterResource(id = R.drawable.ig_soup)),
-        Pair(stringResource(R.string.summary_desert), painterResource(id = R.drawable.ig_desert)),
-        Pair(stringResource(R.string.summary_noodle), painterResource(id = R.drawable.ig_noodle))
-    )
-
     val interactionSource = remember { MutableInteractionSource() }
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        verticalArrangement = Arrangement.spacedBy(18.dp),
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier
-            .height(280.dp)
+    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 3) - 46.dp
+    FlowRow(
+        modifier = Modifier.padding(start = 34.dp, end = 34.dp, bottom = 30.dp),
+        mainAxisSize = SizeMode.Expand,
+        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+        crossAxisSpacing = 14.dp
     ) {
-        itemsIndexed(optionContents) { index, optionContent ->
+        optionContents.forEachIndexed { index, optionContent ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = if (isSelectable[index] == true) optionContent.second
-                    else optionContent.second,
-                    contentDescription = "",
+                Column(
                     modifier = Modifier
-                        .width(52.dp)
-                        .height(52.dp)
-                        .padding(bottom = 12.dp)
-                        .clickable {
-                            isSelectable = if (isSelectable[index] == true) {
-                                mapOf(Pair(index, false))
-                            } else {
-                                mapOf(Pair(index, true))
+                        .width(itemSize)
+                        .height(77.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+
+                ) {
+                    if (isSelectableListState[index]) {
+                        Box {
+                            Image(
+                                painter = optionContent.second,
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .width(52.dp)
+                                    .height(52.dp)
+                                    .clip(CircleShape)
+                                    .clickable {
+                                        updateSelectState(index)
+                                    }.border(width = 1.dp, color = ProofTheme.color.primary200, shape = CircleShape)
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .width(52.dp)
+                                    .height(52.dp)
+                                    .clip(CircleShape)
+                                    .background(color = Color.Black.copy(alpha = 0.65f))
+
+                            ) {
+                                Image(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    painter = painterResource(id = R.drawable.ic_select),
+                                    contentDescription = null
+                                )
                             }
                         }
-                )
+                    } else {
+                        Image(
+                            painter = optionContent.second,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .width(52.dp)
+                                .height(52.dp)
+                                .clip(CircleShape)
+                                .clickable {
+                                    updateSelectState(index)
+                                }
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
 
-                Text(
-                    text = optionContent.first,
-                    style = ProofTheme.typography.buttonS,
-                    color = ProofTheme.color.white
-                )
+                    Text(
+                        text = optionContent.first,
+                        style = ProofTheme.typography.buttonS,
+                        color = ProofTheme.color.white
+                    )
+                }
             }
         }
     }
@@ -829,7 +724,7 @@ fun SecondarySummaryPage(
         onClick = {
             val result = mutableListOf<String>()
 
-            isSelectable.forEach { index, isSelectable ->
+            isSelectableListState.forEachIndexed { index, isSelectable ->
                 if (isSelectable) {
                     when (index) {
                         0 -> {
