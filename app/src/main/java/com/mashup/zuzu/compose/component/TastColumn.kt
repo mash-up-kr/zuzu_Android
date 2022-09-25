@@ -18,7 +18,6 @@ import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.HorizontalPurple
 import com.mashup.zuzu.compose.theme.ProofTheme
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/09/13
@@ -51,7 +50,7 @@ fun TasteColumn(
 
     LazyColumn(
         state = scrollState,
-//        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().height(277.dp),
         contentPadding = PaddingValues(top = 82.dp)
     ) {
         itemsIndexed(radioTitles) { index, item ->
