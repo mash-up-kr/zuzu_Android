@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.review
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,7 +19,6 @@ class ReviewWriteViewModel @Inject constructor(
     private val reviewWriteUseCase: ReviewWriteUseCase,
     private val getWineDataWithIdUseCase: GetWineDataWithIdUseCase,
     savedStateHandle: SavedStateHandle
-
 ) : ViewModel() {
     private var request = ReviewWriteRequest()
     private val page: MutableStateFlow<Int> = MutableStateFlow(0)
@@ -35,6 +35,8 @@ class ReviewWriteViewModel @Inject constructor(
         Pair("부드러운 목넘김", "화끈거리는 목넘김")
     )
 
+    var pageIndexBeforeTaste = 0
+
     var selectedList = MutableStateFlow(mutableListOf(0, 0, 0, 0))
     var currentIndex = MutableStateFlow(0)
 
@@ -48,8 +50,12 @@ class ReviewWriteViewModel @Inject constructor(
             Pair(6, 34)
         )
 
+    private val _isSelectableList = mutableStateListOf<Boolean>()
+    val isSelectableList: List<Boolean> = _isSelectableList
+
     init {
         getWineDataWithId(wineId)
+        initSelectionState()
     }
 
     val uiState: StateFlow<ReviewWriteUiState> =
@@ -98,12 +104,13 @@ class ReviewWriteViewModel @Inject constructor(
         page.value =
             if (currentPage == 0) {
                 0
+            } else if (currentPage in 3..4) {
+                2
+            } else if (currentPage == 5) {
+                // 5일경우
+                pageIndexBeforeTaste
             } else {
-                if (currentPage in 3..4) {
-                    2
-                } else {
-                    currentPage - 1
-                }
+                currentPage - 1
             }
     }
 
@@ -120,11 +127,13 @@ class ReviewWriteViewModel @Inject constructor(
     fun navigateGroupPage(selectOption: String) = viewModelScope.launch {
         request = request.copy(companion = selectOption)
         page.value = 3
+        pageIndexBeforeTaste = 3
     }
 
     fun navigateSoloPage(selectOption: String) = viewModelScope.launch {
         request = request.copy(companion = selectOption)
         page.value = 4
+        pageIndexBeforeTaste = 4
     }
 
     fun navigateTastePage(selectOption: Pair<String, Int?>) = viewModelScope.launch {
@@ -179,6 +188,16 @@ class ReviewWriteViewModel @Inject constructor(
 
     fun updateCurrentIndex(index: Int) {
         currentIndex.value = index + 1
+    }
+
+    fun updateSelectState(index: Int) {
+        _isSelectableList[index] = !_isSelectableList[index]
+    }
+
+    private fun initSelectionState() {
+        for (i in 1..9) {
+            _isSelectableList.add(false)
+        }
     }
     companion object {
         const val WINE_ID = "wineId"
