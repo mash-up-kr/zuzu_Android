@@ -1,5 +1,9 @@
 package com.mashup.zuzu.data.mapper
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import com.mashup.zuzu.R
 import com.mashup.zuzu.data.model.ReviewShareCard
 import com.mashup.zuzu.data.model.ReviewShareCards
 import com.mashup.zuzu.data.model.UserReview
@@ -91,5 +95,73 @@ fun mapperTasteToKorean(taste: String): String {
         "Austere" -> { "씁쓸한 인생" } "Chilli" -> { "매운 칠리" }
         "Unknown" -> { "잘 모르겠어요" }
         else -> { taste }
+    }
+}
+fun mapperPairingToKorean(pairing: String): String {
+    return when (pairing) {
+        "Grilled" -> {
+            "구이류"
+        }
+        "Fried" -> {
+            "튀김/전"
+        }
+        "Cheeze" -> {
+            "치즈"
+        }
+        "Salad" -> {
+            "샐러드"
+        }
+        "Fruits" -> {
+            "과일"
+        }
+        "Soup" -> {
+            "국물/스프"
+        }
+        "AppetizersSnacks" -> {
+            "디저트"
+        }
+        "Pasta" -> {
+            "면류"
+        }
+        "Sushi" -> {
+            "회/초밥"
+        }
+
+        else -> { "" }
+    }
+}
+
+@Composable
+fun mapperKoreanToPainter(pairing: String): Painter {
+    return when (pairing) {
+        "구이류" -> {
+            painterResource(id = R.drawable.ig_grilled)
+        }
+        "튀김/전" -> {
+            painterResource(id = R.drawable.ig_fried)
+        }
+        "치즈" -> {
+            painterResource(id = R.drawable.ig_cheese)
+        }
+        "샐러드" -> {
+            painterResource(id = R.drawable.ig_salad)
+        }
+        "과일" -> {
+            painterResource(id = R.drawable.ig_fruits)
+        }
+        "국물/스프" -> {
+            painterResource(id = R.drawable.ig_soup)
+        }
+        "디저트" -> {
+            painterResource(id = R.drawable.ig_desert)
+        }
+        "면류" -> {
+            painterResource(id = R.drawable.ig_noodle)
+        }
+        "회/초밥" -> {
+            painterResource(id = R.drawable.ig_sushi)
+        }
+
+        else -> { painterResource(id = R.drawable.ic_menu_category) }
     }
 }
