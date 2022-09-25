@@ -53,6 +53,7 @@ accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pa
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-navigation-material = { module = "com.google.accompanist:accompanist-navigation-material", version.ref = "accompanist" }
 accompanist-placeholder-material = { module = "com.google.accompanist:accompanist-placeholder-material", version.ref = "accompanist" }
+accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref="accompanist" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
@@ -91,7 +92,7 @@ capturable = "dev.shreyaspatil:capturable:1.0.3"
 
 [bundles]
 room = ["room-ktx", "room-paging", "room-runtime"]
-accompanist = ["accompanist-pager", "accompanist-pager-indicators", "accompanist-systemuicontroller", "accompanist-navigation-material", "accompanist-placeholder-material"]
+accompanist = ["accompanist-pager", "accompanist-pager-indicators", "accompanist-systemuicontroller", "accompanist-navigation-material", "accompanist-placeholder-material","accompanist-flowlayout"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradleplugin" }

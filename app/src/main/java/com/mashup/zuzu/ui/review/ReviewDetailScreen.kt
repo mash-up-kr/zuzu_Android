@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.WineImageCardForReviewDetail
 import com.mashup.zuzu.compose.theme.ProofTheme
+import com.mashup.zuzu.data.mapper.mapperKoreanToPainter
 import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.data.response.model.Result
 import com.mashup.zuzu.ui.login.LoginActivity
@@ -417,12 +418,13 @@ fun WineByReview(
                     modifier = Modifier.padding(end = 20.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_menu_category),
+                        painter = mapperKoreanToPainter(pairing = it),
                         contentDescription = "",
                         modifier = Modifier
                             .width(52.dp)
                             .height(52.dp)
                     )
+                    Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
                         text = it,
@@ -601,14 +603,14 @@ fun SummaryPieChart(
 
             drawCircle(
                 color = gray,
-                radius = (size/2).toPx()
+                radius = (size / 2).toPx()
             )
 
             for (i in sweepAngles.indices) {
                 drawArc(
                     color = colors[i],
                     startAngle = preAngle,
-                    sweepAngle = (preAngle+sweepAngles[i]) - preAngle,
+                    sweepAngle = (preAngle + sweepAngles[i]) - preAngle,
                     useCenter = true
                 )
 
@@ -626,7 +628,7 @@ fun SummaryPieChart(
                 .fillMaxWidth()
                 .padding(start = 10.dp)
         ) {
-            tasteInfo.forEachIndexed { index,taste ->
+            tasteInfo.forEachIndexed { index, taste ->
                 Row(
                     modifier = Modifier
                         .padding(bottom = 10.dp)

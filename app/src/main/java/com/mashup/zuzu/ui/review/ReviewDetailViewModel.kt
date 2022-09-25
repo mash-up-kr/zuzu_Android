@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mashup.zuzu.bridge.ProofPreference
+import com.mashup.zuzu.data.mapper.mapperPairingToKorean
 import com.mashup.zuzu.data.mapper.mapperResultToKorean
 import com.mashup.zuzu.data.mapper.mapperTasteListToKorean
 import com.mashup.zuzu.data.model.Results
@@ -13,6 +14,7 @@ import com.mashup.zuzu.util.Key
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -49,7 +51,10 @@ class ReviewDetailViewModel @Inject constructor(
                             val transTaste = mapperTasteListToKorean(result.value.result.taste)
                             val newResult = result.value.result.copy(
                                 situation = transSituation,
-                                taste = transTaste
+                                taste = transTaste,
+                                pairing = result.value.result.pairing.map {
+                                    mapperPairingToKorean(it)
+                                }
                             )
                             _evalutaionUiState.value = EvaluationUiState.Success(newResult)
                         }
