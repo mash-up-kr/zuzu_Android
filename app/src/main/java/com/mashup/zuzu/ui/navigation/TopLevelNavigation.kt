@@ -8,11 +8,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import androidx.navigation.navigation
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 import com.mashup.zuzu.ZuzuAppState
@@ -43,7 +40,6 @@ import com.mashup.zuzu.ui.user.review.UserReviewDetailUiEvents
 import com.mashup.zuzu.ui.user.review.UserReviewDetailViewModel
 import com.mashup.zuzu.ui.worldcup.WorldcupActivity
 import com.mashup.zuzu.util.Key
-import timber.log.Timber
 
 /**
  * @Created by 김현국 2022/07/23
@@ -353,7 +349,7 @@ internal fun NavGraphBuilder.reviewGraph(
             ReviewShareCardRoute(
                 viewModel = hiltViewModel(),
                 onButtonClick = {
-                    Timber.tag("appState").d(appState.navController.toString())
+                    appState.navController.popBackStack(NavigationRoute.ReviewGraph.ReviewDetailScreen.route + "/{wineId}", false)
                 }
             )
         }
