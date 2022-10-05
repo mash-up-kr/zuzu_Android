@@ -7,12 +7,15 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
+import com.mashup.zuzu.compose.component.ReviewTopBar
 import com.mashup.zuzu.compose.component.WineImageCardForReviewDetail
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.mapper.mapperKoreanToPainter
@@ -39,7 +43,8 @@ import timber.log.Timber
 fun ReviewDetailRoute(
     viewModel: ReviewDetailViewModel,
     navigateBack: () -> Unit,
-    navigateToReviewWrite: (Long) -> Unit
+    navigateToReviewWrite: (Long) -> Unit,
+    onClickTopBar: (ReviewDetailUiEvents) -> Unit
 ) {
     val evaluationUiState by viewModel.evaluationUiState.collectAsState()
     val wineDataUiState by viewModel.wineDataUiState.collectAsState()
@@ -54,21 +59,24 @@ fun ReviewDetailRoute(
                 evaluationUiState = evaluationUiState,
                 navigateBack = navigateBack,
                 navigateToReviewWrite = { navigateToReviewWrite(wineId) },
-                checkAccount = viewModel::checkAccount
+                checkAccount = viewModel::checkAccount,
+                onClickTopBar = onClickTopBar
             )
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReviewDetailScreen(
     wineData: Wine,
     evaluationUiState: EvaluationUiState,
     navigateBack: () -> Unit,
     navigateToReviewWrite: () -> Unit,
-    checkAccount: () -> Boolean
+    checkAccount: () -> Boolean,
+    onClickTopBar: (ReviewDetailUiEvents) -> Unit
 ) {
-    val scrollState = rememberScrollState()
+    val scrollState = rememberLazyListState()
 
     val context = LocalContext.current
 
@@ -81,75 +89,111 @@ fun ReviewDetailScreen(
             }
         }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .verticalScroll(scrollState)
+    Scaffold(
+        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+        bottomBar = {
+            Button(
+                onClick = {
+                    if (checkAccount()) {
+                        navigateToReviewWrite()
+                    } else {
+                        val intent = Intent(context, LoginActivity::class.java)
+                        intent.putExtra(Key.REQUEST_LOGIN_FROM_OTHER_CASES, true)
+                        launcher.launch(intent)
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+            ) {
+                Text(
+                    text = "나도 리뷰하기",
+                    style = ProofTheme.typography.buttonL,
+                    color = ProofTheme.color.white
+                )
+            }
+        }
     ) {
-        WineImageCardForReviewDetail(wine = wineData)
-
-        WineInformation(content = wineData.description ?: "")
-
-        WorldCupInfo(
-            dummyWorldCupData = DummyWorldCupData(
-                first = wineData.worldcupWinCount ?: 0,
-                fourth = wineData.worldcupSemiFinalCount ?: 0
-            )
-        )
-
-        Spacer(
-            modifier = Modifier
-                .padding(vertical = 40.dp)
-                .fillMaxWidth()
-                .height(6.dp)
-                .background(color = ProofTheme.color.gray600)
-        )
-
-        Text(
-            text = "마셔본 사람들은 이 술을",
-            style = ProofTheme.typography.headingL,
-            color = ProofTheme.color.white,
-            modifier = Modifier.padding(horizontal = 24.dp)
-        )
-
-        when (evaluationUiState) {
-            is EvaluationUiState.Success -> {
-                WineByReview(result = evaluationUiState.result)
-            }
-            is EvaluationUiState.NoItem -> {
-                EmptyReviewScreen(modifier = Modifier.padding(horizontal = 24.dp))
-            }
-            is EvaluationUiState.Loading -> {
-            }
-        }
-
-        Button(
-            onClick = {
-                if (checkAccount()) {
-                    navigateToReviewWrite()
-                } else {
-                    val intent = Intent(context, LoginActivity::class.java)
-                    intent.putExtra(Key.REQUEST_LOGIN_FROM_OTHER_CASES, true)
-                    launcher.launch(intent)
-                }
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = ProofTheme.color.primary300),
-            modifier = Modifier
-                .padding(top = 50.dp)
-                .fillMaxWidth()
-                .height(52.dp)
+        CompositionLocalProvider(
+            LocalOverscrollConfiguration provides null
         ) {
-            Text(
-                text = "나도 리뷰하기",
-                style = ProofTheme.typography.buttonL,
-                color = ProofTheme.color.white
-            )
-        }
-    }
+            Box {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .background(color = ProofTheme.color.black)
+                        .padding(it),
+                    state = scrollState
+                ) {
+                    item {
+                        WineImageCardForReviewDetail(
+                            wine = wineData,
+                            modifier = Modifier.fillMaxWidth().aspectRatio(1f)
+                        )
+                    }
 
-    BackHandler {
-        navigateBack()
+                    item {
+                        WineInformation(content = wineData.description ?: "")
+                    }
+
+                    item {
+                        WorldCupInfo(
+                            dummyWorldCupData = DummyWorldCupData(
+                                first = wineData.worldcupWinCount ?: 0,
+                                fourth = wineData.worldcupSemiFinalCount ?: 0
+                            )
+                        )
+                    }
+
+                    item {
+                        Spacer(
+                            modifier = Modifier
+                                .padding(vertical = 40.dp)
+                                .fillMaxWidth()
+                                .height(6.dp)
+                                .background(color = ProofTheme.color.gray600)
+                        )
+                    }
+
+                    item {
+                        Text(
+                            text = "마셔본 사람들은 이 술을",
+                            style = ProofTheme.typography.headingL,
+                            color = ProofTheme.color.white,
+                            modifier = Modifier.padding(horizontal = 24.dp)
+                        )
+                    }
+
+                    item {
+                        when (evaluationUiState) {
+                            is EvaluationUiState.Success -> {
+                                WineByReview(result = evaluationUiState.result)
+                            }
+                            is EvaluationUiState.NoItem -> {
+                                EmptyReviewScreen(modifier = Modifier.padding(horizontal = 24.dp))
+                            }
+                            is EvaluationUiState.Loading -> {
+                            }
+                        }
+                    }
+                    item {
+                        Spacer(
+                            modifier = Modifier.height(52.dp)
+                        )
+                    }
+                }
+                ReviewTopBar(
+                    scrollState = scrollState,
+                    onClick = onClickTopBar
+                )
+            }
+
+            BackHandler {
+                navigateBack()
+            }
+        }
     }
 }
 
