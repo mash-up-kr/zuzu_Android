@@ -321,7 +321,7 @@ fun WineCaller(
             columns = GridCells.Fixed(3),
             state = scrollState,
             verticalArrangement = Arrangement.spacedBy(25.dp),
-            horizontalArrangement = Arrangement.spacedBy(24.dp)
+            horizontalArrangement = Arrangement.spacedBy(22.dp)
         ) {
             items(
                 items = wines,
