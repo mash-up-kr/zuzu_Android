@@ -123,51 +123,49 @@ fun WineImageCardForReviewDetail(
     wine: Wine,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Box(
         modifier = modifier
     ) {
-        Box() {
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                model = ImageRequest.Builder(LocalContext.current).data(wine.imageUrl).build(),
-                contentDescription = null,
-                contentScale = ContentScale.FillWidth
-            )
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            model = ImageRequest.Builder(LocalContext.current).data(wine.imageUrl).build(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
 
-            Box(
-                modifier = Modifier
-                    .background(
-                        brush = Brush.verticalGradient(colors = backgroundGradient),
-                        alpha = 0.6f
+        Box(
+            modifier = Modifier
+                .background(
+                    brush = Brush.verticalGradient(colors = backgroundGradient),
+                    alpha = 0.6f
+                )
+                .fillMaxWidth()
+                .fillMaxHeight(0.5f)
+                .align(Alignment.BottomCenter)
+                .padding(start = 24.dp, end = 24.dp, top = 39.dp, bottom = 20.dp)
+        ) {
+            CompositionLocalProvider(LocalContentColor provides ProofTheme.color.white) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Text(
+                        text = "${wine.category} | Alc ${wine.alc}%",
+                        style = ProofTheme.typography.bodyS600
                     )
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.5f)
-                    .align(Alignment.BottomCenter)
-                    .padding(start = 24.dp, end = 24.dp, top = 39.dp, bottom = 20.dp)
-            ) {
-                CompositionLocalProvider(LocalContentColor provides ProofTheme.color.white) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(),
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "${wine.category} | Alc ${wine.alc}%",
-                            style = ProofTheme.typography.bodyS600
-                        )
 
-                        Text(
-                            text = wine.name,
-                            maxLines = 4,
-                            style = ProofTheme.typography.headingXL,
-                            color = ProofTheme.color.white,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(top = 12.dp)
-                        )
-                    }
+                    Text(
+                        text = wine.name,
+                        maxLines = 4,
+                        style = ProofTheme.typography.headingXL,
+                        color = ProofTheme.color.white,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(top = 12.dp)
+                    )
                 }
             }
         }
@@ -396,7 +394,7 @@ fun WineCategoryWithAlc(
             textAlign = TextAlign.Center
         )
         Spacer(
-            modifier = Modifier.width(6.dp)
+            modifier = Modifier.width(5.dp)
         )
         Divider(
             modifier = Modifier
@@ -406,7 +404,7 @@ fun WineCategoryWithAlc(
                 .width(1.dp)
         )
         Spacer(
-            modifier = Modifier.width(6.dp)
+            modifier = Modifier.width(5.dp)
         )
         Text(
             text = "Alc",
@@ -468,7 +466,8 @@ fun WineCardInHome(
 
         WineCategoryWithAlc(
             modifier = Modifier
-                .width(85.dp)
+//                .width(85.dp)
+                .fillMaxWidth()
                 .height(19.dp),
             wine = wine
         )
