@@ -79,7 +79,7 @@ fun ReviewWriteScreen(
     updateCurrentIndex: (Int) -> Unit,
     updateSelectedList: (Int, Int) -> Unit,
     updateSelectState: (Int) -> Unit,
-    isSelectableListState : List<Boolean>
+    isSelectableListState: List<Boolean>
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()

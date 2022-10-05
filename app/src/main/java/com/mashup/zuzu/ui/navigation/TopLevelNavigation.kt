@@ -25,6 +25,7 @@ import com.mashup.zuzu.ui.leave.LeaveUiEvents
 import com.mashup.zuzu.ui.leave.LeaveUiState
 import com.mashup.zuzu.ui.leave.LeaveViewModel
 import com.mashup.zuzu.ui.review.ReviewDetailRoute
+import com.mashup.zuzu.ui.review.ReviewDetailUiEvents
 import com.mashup.zuzu.ui.review.ReviewShareCardRoute
 import com.mashup.zuzu.ui.review.ReviewWriteRoute
 import com.mashup.zuzu.ui.setting.SettingRoute
@@ -319,6 +320,13 @@ internal fun NavGraphBuilder.reviewGraph(
                 navigateBack = { appState.navigateBackStack() },
                 navigateToReviewWrite = {
                     appState.navigateRoute(NavigationRoute.ReviewGraph.ReviewWriteScreen.route + "/$it")
+                },
+                onClickTopBar = { reviewDetailUiEvents ->
+                    when (reviewDetailUiEvents) {
+                        is ReviewDetailUiEvents.BackButtonClick -> {
+                            appState.navigateBackStack()
+                        }
+                    }
                 }
             )
         }
