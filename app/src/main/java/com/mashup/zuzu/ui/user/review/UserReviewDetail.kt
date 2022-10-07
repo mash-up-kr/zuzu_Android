@@ -15,11 +15,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.Button
 import com.mashup.zuzu.compose.component.HorizontalPagerWithCapture
+import com.mashup.zuzu.compose.component.PagerIndicator
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.ReviewShareCards
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
@@ -83,13 +83,11 @@ fun UserReviewDetailScreen(
             captureController = captureController
         )
 
-        HorizontalPagerIndicator(
+        PagerIndicator(
             pagerState = pagerState,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 3.dp),
+            indicatorCount = 5,
             activeColor = ProofTheme.color.gray50,
-            inactiveColor = ProofTheme.color.gray400
+            inActiveColor = ProofTheme.color.gray400
         )
         Button(
             modifier = Modifier
