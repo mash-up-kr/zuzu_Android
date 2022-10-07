@@ -166,7 +166,7 @@ fun HomeScreen(
             is CategoryListUiState.Success -> {
                 CategoryItems(
                     modifier = Modifier
-                        .padding(start = 24.dp, top = 24.dp),
+                        .padding(top = 24.dp),
                     categoryList = categoryListState.categoryList,
                     onCategoryClick = { category ->
                         onClick(
