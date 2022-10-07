@@ -110,6 +110,7 @@ class ReviewWriteViewModel @Inject constructor(
                 // 5일경우
                 pageIndexBeforeTaste
             } else {
+                currentIndex.value = 0
                 currentPage - 1
             }
     }
