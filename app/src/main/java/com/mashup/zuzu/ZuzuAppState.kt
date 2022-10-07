@@ -39,8 +39,6 @@ class ZuzuAppState constructor(
     private val currentRoute: String?
         get() = navController.currentDestination?.route
 
-    val currentDestination @Composable get() = navController.currentBackStackEntryAsState().value?.destination
-
     fun navigateToBottomBarRoute(route: String) {
         if (route != currentRoute) {
             navController.navigate(route) {
@@ -82,7 +80,7 @@ tailrec fun findStartDestination(graph: NavDestination): NavDestination {
 fun rememberAppState(
     bottomSheetNavigator: BottomSheetNavigator = rememberBottomSheetNavigator(),
     navController: NavHostController = rememberNavController(bottomSheetNavigator)
-) = remember(navController) {
+) = remember(bottomSheetNavigator, navController) {
     ZuzuAppState(
         bottomSheetNavigator = bottomSheetNavigator,
         navController = navController
