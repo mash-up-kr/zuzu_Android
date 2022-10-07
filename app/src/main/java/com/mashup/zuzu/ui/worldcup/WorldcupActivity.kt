@@ -68,7 +68,10 @@ class WorldcupActivity : AppCompatActivity() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 WebAPIController.channelFlow.collect { jsonObject ->
                     when (jsonObject.get(WebConstants.FUNCTION_NAME).asString) {
-                        FunctionName.CLOSE_WEB_VIEW -> finish()
+                        FunctionName.CLOSE_WEB_VIEW -> {
+                            val intent = Intent(this@WorldcupActivity, MainActivity::class.java)
+                            startActivity(intent)
+                        }
                         FunctionName.ON_CLICK_SHARED_BUTTON -> showSharedBottomSheet(
                             jsonObject.get(WebConstants.KEY_URL).asString
                         )
@@ -80,12 +83,15 @@ class WorldcupActivity : AppCompatActivity() {
 
     private fun showSharedBottomSheet(url: String) {
         if (url.isNotEmpty()) {
-            val shareIntent = Intent.createChooser(Intent().apply {
-                action = Intent.ACTION_SEND
-                type = "text/plain"
-                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                putExtra(Intent.EXTRA_TEXT, url)
-            }, null)
+            val shareIntent = Intent.createChooser(
+                Intent().apply {
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+                    flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    putExtra(Intent.EXTRA_TEXT, url)
+                },
+                null
+            )
             startActivity(shareIntent)
         }
     }

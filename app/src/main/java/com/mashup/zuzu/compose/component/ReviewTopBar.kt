@@ -2,6 +2,7 @@ package com.mashup.zuzu.compose.component
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
+import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.ui.review.ReviewDetailUiEvents
 
 /**
@@ -30,15 +32,15 @@ fun ReviewTopBar(
             scrollState.firstVisibleItemIndex
         }
     }
-    Row(
-        modifier = Modifier.fillMaxWidth().height(52.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Crossfade(
-            targetState = isVisible
-        ) { isVisible ->
-            if (isVisible > 0) {
+    Crossfade(
+        targetState = isVisible
+    ) { visible ->
+        if (visible > 0) {
+            Row(
+                modifier = Modifier.fillMaxWidth().height(52.dp).background(color = ProofTheme.color.black),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Image(
                     modifier = Modifier.padding(start = 33.dp).clickable {
                         onClick(ReviewDetailUiEvents.BackButtonClick)
@@ -46,7 +48,13 @@ fun ReviewTopBar(
                     painter = painterResource(id = R.drawable.ic_arrow_left),
                     contentDescription = null
                 )
-            } else {
+            }
+        } else {
+            Row(
+                modifier = Modifier.fillMaxWidth().height(52.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Image(
                     modifier = Modifier.padding(start = 33.dp).clickable {
                         onClick(ReviewDetailUiEvents.BackButtonClick)

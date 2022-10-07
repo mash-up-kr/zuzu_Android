@@ -330,123 +330,130 @@ fun WineByReview(
     result: Result,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = Modifier.padding(start = 24.dp, end = 24.dp)
-    ) {
-        Text(
-            text = "이럴 때 마셨어요",
-            style = ProofTheme.typography.headingS,
-            color = ProofTheme.color.white,
-            modifier = Modifier.padding(top = 20.dp)
-        )
-
-        Text(
-            text = "많이 답한 순으로 보여드려요.",
-            style = ProofTheme.typography.bodyXS,
-            color = ProofTheme.color.gray200,
-            modifier = Modifier.padding(top = 4.dp)
-        )
-
-        LazyHorizontalGrid(
-            rows = GridCells.Adaptive(30.dp),
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .height(80.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(result.situation) {
-                Text(
-                    text = it,
-                    style = ProofTheme.typography.bodyS600,
-                    color = ProofTheme.color.white,
-                    modifier = Modifier
-                        .background(
-                            color = ProofTheme.color.gray500,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .padding(10.dp)
-                )
-            }
-        }
-
-        Text(
-            text = "이렇게 표현했어요",
-            style = ProofTheme.typography.headingS,
-            color = ProofTheme.color.white,
-            modifier = Modifier.padding(top = 40.dp)
-        )
-
+    Column {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
+            modifier = Modifier.padding(start = 24.dp, end = 24.dp)
         ) {
-            GradientHorizontalProgress(
-                left = result.isBitter.Sweet,
-                right = result.isBitter.Bitter,
-                leftKeyword = "달아요",
-                rightKeyword = "써요",
-                modifier = Modifier
-                    .padding(bottom = 12.dp)
-                    .clip(RoundedCornerShape(8.dp))
+            Text(
+                text = "이럴 때 마셨어요",
+                style = ProofTheme.typography.headingS,
+                color = ProofTheme.color.white,
+                modifier = Modifier.padding(top = 20.dp)
             )
 
-            GradientHorizontalProgress(
-                left = result.isHeavy.Light,
-                right = result.isHeavy.Heavy,
-                leftKeyword = "가벼워요",
-                rightKeyword = "무거워요",
+            Text(
+                text = "많이 답한 순으로 보여드려요.",
+                style = ProofTheme.typography.bodyXS,
+                color = ProofTheme.color.gray200,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+
+            LazyHorizontalGrid(
+                rows = GridCells.Adaptive(30.dp),
+                modifier = Modifier
+                    .padding(top = 12.dp)
+                    .fillMaxWidth()
+                    .height(80.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(result.situation) {
+                    Row(
+                        modifier = Modifier
+                            .background(
+                                color = ProofTheme.color.gray500,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .padding(7.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            modifier = Modifier.align(Alignment.CenterVertically),
+                            text = it,
+                            style = ProofTheme.typography.bodyS600,
+                            color = ProofTheme.color.white
+                        )
+                    }
+                }
+            }
+
+            Text(
+                text = "이렇게 표현했어요",
+                style = ProofTheme.typography.headingS,
+                color = ProofTheme.color.white,
+                modifier = Modifier.padding(top = 40.dp)
+            )
+
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 12.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .padding(top = 16.dp)
+            ) {
+                GradientHorizontalProgress(
+                    left = result.isBitter.Sweet,
+                    right = result.isBitter.Bitter,
+                    leftKeyword = "달아요",
+                    rightKeyword = "써요",
+                    modifier = Modifier
+                        .padding(bottom = 12.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                )
+
+                GradientHorizontalProgress(
+                    left = result.isHeavy.Light,
+                    right = result.isHeavy.Heavy,
+                    leftKeyword = "가벼워요",
+                    rightKeyword = "무거워요",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 12.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                )
+
+                GradientHorizontalProgress(
+                    left = result.isStrong.Mild,
+                    right = result.isStrong.Strong,
+                    leftKeyword = "은은한 술맛",
+                    rightKeyword = "찐한 술맛",
+                    modifier = Modifier
+                        .padding(bottom = 12.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                )
+
+                GradientHorizontalProgress(
+                    left = result.isBurning.Smooth,
+                    right = result.isBurning.Burning,
+                    leftKeyword = "부드러운 목넘김",
+                    rightKeyword = "화끈거리는 목넘김",
+                    modifier = Modifier
+                        .padding(bottom = 12.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                )
+            }
+
+            Text(
+                text = "한마디로 말하면,",
+                style = ProofTheme.typography.headingS,
+                color = ProofTheme.color.white,
+                modifier = Modifier.padding(top = 40.dp, bottom = 22.dp)
             )
 
-            GradientHorizontalProgress(
-                left = result.isStrong.Mild,
-                right = result.isStrong.Strong,
-                leftKeyword = "은은한 술맛",
-                rightKeyword = "찐한 술맛",
-                modifier = Modifier
-                    .padding(bottom = 12.dp)
-                    .clip(RoundedCornerShape(8.dp))
-            )
-
-            GradientHorizontalProgress(
-                left = result.isBurning.Smooth,
-                right = result.isBurning.Burning,
-                leftKeyword = "부드러운 목넘김",
-                rightKeyword = "화끈거리는 목넘김",
-                modifier = Modifier
-                    .padding(bottom = 12.dp)
-                    .clip(RoundedCornerShape(8.dp))
+            SummaryPieChart(
+                size = LocalConfiguration.current.screenWidthDp.dp / 3,
+                tasteInfo = result.taste.take(3).map { Pair(it.tasteName, it.percent) },
+                percents = result.taste.take(3).map { it.percent }
             )
         }
-
-        Text(
-            text = "한마디로 말하면,",
-            style = ProofTheme.typography.headingS,
-            color = ProofTheme.color.white,
-            modifier = Modifier.padding(top = 40.dp, bottom = 22.dp)
-        )
-
-        SummaryPieChart(
-            size = LocalConfiguration.current.screenWidthDp.dp / 3,
-            tasteInfo = result.taste.take(3).map { Pair(it.tasteName, it.percent) },
-            percents = result.taste.take(3).map { it.percent }
-        )
-
         Spacer(
             modifier = Modifier
-                .padding(vertical = 40.dp)
                 .fillMaxWidth()
+                .padding(top = 40.dp, bottom = 40.dp)
                 .height(6.dp)
                 .background(color = ProofTheme.color.gray600)
         )
 
         Text(
+            modifier = Modifier.padding(start = 24.dp, end = 24.dp),
             text = "많이 곁들인 음식은",
             style = ProofTheme.typography.headingS,
             color = ProofTheme.color.white
@@ -454,7 +461,7 @@ fun WineByReview(
 
         Row(
             modifier = Modifier
-                .padding(top = 20.dp)
+                .padding(top = 20.dp, start = 24.dp, end = 24.dp)
         ) {
             result.pairing.forEach {
                 Column(
