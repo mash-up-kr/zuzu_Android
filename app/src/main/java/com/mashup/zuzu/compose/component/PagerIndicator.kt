@@ -31,7 +31,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 fun PagerIndicator(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
-    indicatorCount: Int = 5,
+    indicatorCount: Int,
     indicatorSize: Dp = 16.dp,
     indicatorShape: Shape = CircleShape,
     space: Dp = 8.dp,
@@ -74,6 +74,7 @@ fun PagerIndicator(
             // Index of item in center when odd number of indicators are set
             // for 5 indicators this is 2nd indicator place
             val centerItemIndex = indicatorCount / 2
+
 
             val right1 =
                 (

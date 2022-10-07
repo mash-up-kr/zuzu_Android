@@ -84,8 +84,9 @@ fun UserReviewDetailScreen(
         )
 
         PagerIndicator(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             pagerState = pagerState,
-            indicatorCount = 5,
+            indicatorCount = if (reviews.userReviews.size >= 5) 5 else reviews.userReviews.size,
             activeColor = ProofTheme.color.gray50,
             inActiveColor = ProofTheme.color.gray400
         )
