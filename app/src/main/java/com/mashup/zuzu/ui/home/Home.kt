@@ -24,8 +24,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.placeholder.PlaceholderHighlight
@@ -41,6 +45,7 @@ import com.mashup.zuzu.data.model.dummy.dummyCategoryList
 import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
 import com.mashup.zuzu.ui.model.BestWorldCup
+import timber.log.Timber
 import kotlin.math.roundToInt
 
 /**
@@ -329,10 +334,13 @@ fun HomeScreen(
 
 @Composable
 fun ZuzuBottomNavigationBar(
-    currentRoute: NavDestination?,
+    navController: NavHostController,
     onBottomTabsClick: (String) -> Unit,
     bottomNavigationItems: List<String>
 ) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
     BottomNavigation(
         modifier = Modifier
             .height(52.dp),
@@ -358,7 +366,7 @@ fun ZuzuBottomNavigationBar(
                         }
                     }
                 },
-                selected = currentRoute?.hierarchy?.any { it.route == screen } == true, // 선택에 따라서 색상이 변경됩니다.
+                selected = currentDestination?.hierarchy?.any { it.route == screen } == true, // 선택에 따라서 색상이 변경됩니다.
                 selectedContentColor = ProofTheme.color.primary50,
                 alwaysShowLabel = false,
                 onClick = {
@@ -478,84 +486,5 @@ fun RecommendImage(
             textStyle = ProofTheme.typography.buttonM,
             onButtonClick = onButtonClick
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewZuzuHomeScreen() {
-    ProofTheme {
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
-            HomeScreen(
-                modifier = Modifier.background(color = ProofTheme.color.black),
-                bestWorldCupState = BestWorldCupUiState.Loading,
-                mainWineState = MainWineUiState.Loading,
-                recommendState = RecommendWineUiState.Loading,
-                blurBitmap = null,
-                categoryListState = CategoryListUiState.Loading,
-                onClick = {}
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewZuzuNavigationBar() {
-    ProofTheme() {
-        ZuzuBottomNavigationBar(
-            currentRoute = null,
-            onBottomTabsClick = {},
-            bottomNavigationItems = listOf("")
-        )
-    }
-}
-
-@Preview(showBackground = false)
-@Composable
-fun PreviewZuzuWineCategoryNavigationTitle() {
-    ProofTheme {
-        HomeSubTitle(
-            modifier = Modifier.padding(start = 24.dp, top = 32.dp),
-            boldTitle = "무엇을 마실지 고민이라면?"
-        )
-    }
-}
-
-@Preview(showBackground = false)
-@Composable
-fun PreviewZuzuWineCategoryItems() {
-    ProofTheme() {
-        CategoryItems(
-            modifier = Modifier.fillMaxWidth(),
-            categoryList = categoryList,
-            onCategoryClick = { category ->
-            },
-            null
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewRecommendImage() {
-    ProofTheme {
-        Column {
-            HomeSubTitle(
-                modifier = Modifier.padding(start = 24.dp, top = 40.dp),
-                boldTitle = "오늘의 추천 술"
-            )
-            RecommendImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(367.dp)
-                    .padding(start = 24.dp, end = 24.dp),
-                {}
-            )
-        }
     }
 }
