@@ -74,9 +74,9 @@ val proofTypography = ProofTypography(
 
     bodyM = TextStyle(
         fontFamily = pretended,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
-        lineHeight = 32.sp
+        lineHeight = 22.4.sp
     ),
 
     bodyS = TextStyle(
