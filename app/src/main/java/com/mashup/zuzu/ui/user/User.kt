@@ -29,10 +29,8 @@ import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.*
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.*
-import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
 import com.mashup.zuzu.ui.model.BestWorldCup
-import com.mashup.zuzu.ui.model.bestWorldCupList
 import com.mashup.zuzu.util.rememberScrollContext
 
 /**
@@ -128,18 +126,6 @@ fun UserScreen(
                         )
                     }
                     is WineCallerUiState.Loading -> {
-                        WineCaller(
-                            modifier = Modifier.fillMaxSize(),
-                            wines = dummyWineList,
-                            onWineClick = {},
-                            childModifier = Modifier.placeholder(
-                                visible = true,
-                                color = ProofTheme.color.gray600,
-                                highlight = PlaceholderHighlight.shimmer(
-                                    highlightColor = ProofTheme.color.gray500
-                                )
-                            )
-                        )
                     }
                     is WineCallerUiState.Error -> {
                     }
