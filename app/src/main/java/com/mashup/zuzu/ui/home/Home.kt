@@ -3,7 +3,6 @@ package com.mashup.zuzu.ui.home
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -11,8 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,12 +19,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -45,7 +38,7 @@ import com.mashup.zuzu.data.model.dummy.dummyCategoryList
 import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
 import com.mashup.zuzu.ui.model.BestWorldCup
-import timber.log.Timber
+import com.mashup.zuzu.ui.navigation.BottomNavigationItemsWithIcon
 import kotlin.math.roundToInt
 
 /**
@@ -336,7 +329,7 @@ fun HomeScreen(
 fun ZuzuBottomNavigationBar(
     navController: NavHostController,
     onBottomTabsClick: (String) -> Unit,
-    bottomNavigationItems: List<String>
+    bottomNavigationItems: List<BottomNavigationItemsWithIcon>
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -349,28 +342,34 @@ fun ZuzuBottomNavigationBar(
         bottomNavigationItems.forEach { screen ->
             BottomNavigationItem(
                 icon = {
-                    when (screen) {
-                        "home_screen.screen" -> {
-                            Icon(
-                                modifier = Modifier.offset(x = 20.dp),
-                                painter = painterResource(id = R.drawable.ic_home_variant),
-                                contentDescription = null
-                            )
-                        }
-                        "user_screen.screen" -> {
-                            Icon(
-                                modifier = Modifier.offset(x = (-20).dp),
-                                imageVector = Icons.Filled.AccountCircle,
-                                contentDescription = null
-                            )
-                        }
-                    }
+                    Icon(
+                        modifier = Modifier.offset(x = screen.xOffset),
+                        painter = painterResource(
+                            id = screen.icon),
+                        contentDescription = null
+                    )
+//                    when (screen.route) {
+//                        "home_screen.screen" -> {
+//                            Icon(
+//                                modifier = Modifier.offset(x = 20.dp),
+//                                painter = painterResource(id = R.drawable.ic_home_variant),
+//                                contentDescription = null
+//                            )
+//                        }
+//                        "user_screen.screen" -> {
+//                            Icon(
+//                                modifier = Modifier.offset(x = (-20).dp),
+//                                imageVector = Icons.Filled.AccountCircle,
+//                                contentDescription = null
+//                            )
+//                        }
+//                    }
                 },
-                selected = currentDestination?.hierarchy?.any { it.route == screen } == true, // 선택에 따라서 색상이 변경됩니다.
+                selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true, // 선택에 따라서 색상이 변경됩니다.
                 selectedContentColor = ProofTheme.color.primary50,
                 alwaysShowLabel = false,
                 onClick = {
-                    onBottomTabsClick(screen)
+                    onBottomTabsClick(screen.route)
                 }
             )
         }

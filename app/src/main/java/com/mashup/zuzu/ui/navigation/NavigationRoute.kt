@@ -1,5 +1,9 @@
 package com.mashup.zuzu.ui.navigation
 
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.mashup.zuzu.R
+
 /**
  * @Created by 김현국 2022/07/23
  */
@@ -27,9 +31,17 @@ sealed class NavigationRoute(val route: String) {
     }
 }
 
+sealed class BottomNavigationItemsWithIcon(
+    val route: String,
+    val icon: Int,
+    val xOffset: Dp
+) {
+    object Home : BottomNavigationItemsWithIcon(NavigationRoute.HomeScreenGraph.HomeScreen.route, R.drawable.ic_home, 20.dp)
+    object User : BottomNavigationItemsWithIcon(NavigationRoute.UserScreenGraph.UserScreen.route, R.drawable.ic_user, (-20).dp)
+}
 val shouldShowNavigationItems = listOf(
-    NavigationRoute.HomeScreenGraph.HomeScreen,
-    NavigationRoute.UserScreenGraph.UserScreen
+    BottomNavigationItemsWithIcon.Home,
+    BottomNavigationItemsWithIcon.User
 )
 val shouldShowFloatingButtonInScreen = listOf(
     NavigationRoute.HomeScreenGraph.HomeScreen

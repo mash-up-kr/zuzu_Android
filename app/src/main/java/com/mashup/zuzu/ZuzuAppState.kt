@@ -28,9 +28,9 @@ class ZuzuAppState constructor(
 
     var bottomSheetNavigator by mutableStateOf(bottomSheetNavigator)
 
-    val bottomBarRoutes = shouldShowNavigationItems.map { it.route }
+    val bottomBarRoutes = shouldShowNavigationItems
     val shouldShowBottomBar: Boolean @Composable
-    get() = navController.currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes
+    get() = navController.currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes.map { it.route }
 
     private val floatingButtonRoutes = shouldShowFloatingButtonInScreen.map { it.route }
     val shouldShowFloatingButton: Boolean @Composable

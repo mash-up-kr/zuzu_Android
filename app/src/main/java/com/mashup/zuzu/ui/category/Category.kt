@@ -172,6 +172,8 @@ fun CategoryScreen(
             }
             is WineListWithPageAndCategoryUiState.Loading -> {
             }
+            is WineListWithPageAndCategoryUiState.Init -> {
+            }
         }
     }
 }
