@@ -30,6 +30,7 @@ import com.mashup.zuzu.ui.home.ZuzuBottomNavigationBar
 import com.mashup.zuzu.ui.login.LoginActivity
 import com.mashup.zuzu.ui.navigation.*
 import com.mashup.zuzu.util.Key
+import kotlinx.collections.immutable.toImmutableList
 import timber.log.Timber
 
 /**
@@ -90,7 +91,7 @@ fun ZuzuApp(
             bottomBar = {
                 if (zuzuAppState.shouldShowBottomBar) { // bottomBarTabs의 BottomScreen의 경로에 있을 때만, BottomNavBar가 보이도록 했습니다.
                     ZuzuBottomNavigationBar(
-                        navController = zuzuAppState.navController,
+                        appState = zuzuAppState,
                         onBottomTabsClick = { route ->
                             if (viewModel.checkAccount()) {
                                 zuzuAppState.navigateToBottomBarRoute(route)
@@ -100,7 +101,7 @@ fun ZuzuApp(
                                 launcher.launch(intent)
                             }
                         },
-                        bottomNavigationItems = zuzuAppState.bottomBarRoutes
+                        bottomNavigationItems = zuzuAppState.bottomBarRoutes.toImmutableList()
                     )
                 }
             }
