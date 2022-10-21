@@ -29,6 +29,7 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
 import com.mashup.zuzu.R
+import com.mashup.zuzu.ZuzuAppState
 import com.mashup.zuzu.compose.component.*
 import com.mashup.zuzu.compose.theme.BrushColor
 import com.mashup.zuzu.compose.theme.ProofTheme
@@ -39,6 +40,7 @@ import com.mashup.zuzu.data.model.dummy.dummyWineList
 import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
 import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.ui.navigation.BottomNavigationItemsWithIcon
+import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.roundToInt
 
 /**
@@ -327,11 +329,11 @@ fun HomeScreen(
 
 @Composable
 fun ZuzuBottomNavigationBar(
-    navController: NavHostController,
+    appState: ZuzuAppState,
     onBottomTabsClick: (String) -> Unit,
-    bottomNavigationItems: List<BottomNavigationItemsWithIcon>
+    bottomNavigationItems: ImmutableList<BottomNavigationItemsWithIcon>
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     BottomNavigation(
