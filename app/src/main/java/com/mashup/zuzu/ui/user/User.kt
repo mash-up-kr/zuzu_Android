@@ -32,6 +32,8 @@ import com.mashup.zuzu.data.model.*
 import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
 import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.util.rememberScrollContext
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * @Created by 김현국 2022/07/14
@@ -95,7 +97,7 @@ fun UserScreen(
             user = userState.user,
             selectionOption = userState.selectionOption,
             onSelectionChange = userState.onSelectionChange,
-            optionList = optionList,
+            optionList = optionList.toImmutableList(),
             onSettingClick = {
                 onClick(UserUiEvents.SettingButtonClick(userId = userState.user.id))
             },
@@ -109,7 +111,7 @@ fun UserScreen(
                     is WineCallerUiState.Success -> {
                         WineCaller(
                             modifier = Modifier.fillMaxSize(),
-                            wines = wineCallerState.wineCaller,
+                            wines = wineCallerState.wineCaller.toImmutableList(),
                             onWineClick = { wine ->
                                 onClick(UserUiEvents.WineItemClick(wine = wine))
                             },
@@ -139,7 +141,7 @@ fun UserScreen(
                                 .padding(top = 36.dp, start = 24.dp, end = 24.dp)
                                 .fillMaxWidth()
                                 .fillMaxHeight(),
-                            worldCupList = joinedWorldCupState.joinedWorldCupList,
+                            worldCupList = joinedWorldCupState.joinedWorldCupList.toImmutableList(),
                             onWorldCupItemClick = { bestWorldCup ->
                                 onClick(UserUiEvents.WorldCupItemClick(bestWorldCup = bestWorldCup))
                             },
@@ -164,7 +166,7 @@ fun UserScreen(
                             onWorldCupItemClick = { bestWorldCup ->
                                 onClick(UserUiEvents.WorldCupItemClick(bestWorldCup = bestWorldCup))
                             },
-                            worldCupList = dummyWorldCupList,
+                            worldCupList = dummyWorldCupList.toImmutableList(),
                             childModifier = Modifier.placeholder(
                                 visible = true,
                                 color = ProofTheme.color.gray600,
@@ -186,7 +188,7 @@ fun UserScreen(
 fun JoinWorldCup(
     modifier: Modifier,
     onWorldCupItemClick: (BestWorldCup) -> Unit,
-    worldCupList: List<BestWorldCup>,
+    worldCupList: ImmutableList<BestWorldCup>,
     childModifier: Modifier?
 ) {
     LazyColumn(
@@ -209,7 +211,7 @@ fun UserTopBar(
     user: User,
     selectionOption: String,
     onSelectionChange: (String) -> Unit,
-    optionList: List<String>,
+    optionList: ImmutableList<String>,
     onSettingClick: () -> Unit,
     onEditButtonClick: () -> Unit
 ) {
@@ -293,7 +295,7 @@ fun UserTopBar(
 @Composable
 fun WineCaller(
     modifier: Modifier,
-    wines: List<Wine>,
+    wines: ImmutableList<Wine>,
     onWineClick: (Wine) -> Unit,
     childModifier: Modifier?
 ) {

@@ -41,6 +41,7 @@ import com.mashup.zuzu.ui.user.review.UserReviewDetailUiEvents
 import com.mashup.zuzu.ui.user.review.UserReviewDetailViewModel
 import com.mashup.zuzu.ui.worldcup.WorldcupActivity
 import com.mashup.zuzu.util.Key
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * @Created by 김현국 2022/07/23
@@ -146,7 +147,7 @@ internal fun NavGraphBuilder.categoryGraph(
             CategoryRoute(
                 viewModel = viewModel,
                 index = index,
-                categoryList = appState.categoryList,
+                categoryList = appState.categoryList.toImmutableList(),
                 onClick = { categoryUiEvents ->
                     when (categoryUiEvents) {
                         is CategoryUiEvents.WineBoardClick -> {

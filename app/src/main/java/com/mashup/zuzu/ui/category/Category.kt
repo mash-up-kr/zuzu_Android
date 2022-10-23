@@ -27,6 +27,8 @@ import com.mashup.zuzu.compose.component.TabPosition
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.data.model.Wine
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * @Created by 김현국 2022/07/03
@@ -36,7 +38,7 @@ import com.mashup.zuzu.data.model.Wine
 fun CategoryRoute(
     viewModel: CategoryViewModel,
     index: Int,
-    categoryList: List<Category>,
+    categoryList: ImmutableList<Category>,
     onClick: (CategoryUiEvents) -> Unit
 ) {
     val wineListState by viewModel.wineListState.collectAsState()
@@ -60,7 +62,7 @@ fun CategoryRoute(
 fun CategoryScreen(
     modifier: Modifier = Modifier,
     index: Int,
-    categoryList: List<Category>,
+    categoryList: ImmutableList<Category>,
     wineListState: WineListWithPageAndCategoryUiState,
     onScrollPositionChange: (Int) -> Unit,
     onLoadNextPage: () -> Unit,
@@ -160,7 +162,7 @@ fun CategoryScreen(
                             onWineBoardClick = { wine ->
                                 onClick(CategoryUiEvents.WineBoardClick(wine = wine))
                             },
-                            wineList = wineListState.wineList,
+                            wineList = wineListState.wineList.toImmutableList(),
                             null,
                             onLoadData = onLoadNextPage,
                             onScrollPositionChange = onScrollPositionChange,

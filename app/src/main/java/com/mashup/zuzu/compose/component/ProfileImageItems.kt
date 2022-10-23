@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.UserProfileImages
+import kotlinx.collections.immutable.ImmutableList
 
 /**
  * @Created by 김현국 2022/07/18
@@ -23,7 +24,7 @@ import com.mashup.zuzu.data.model.UserProfileImages
 @Composable
 fun ProfileImageItems(
     modifier: Modifier,
-    profileImages: List<UserProfileImages>,
+    profileImages: ImmutableList<UserProfileImages>,
     onProfileImageClick: (Int) -> Unit,
     selectedProfileImage: UserProfileImages
 ) {

@@ -184,4 +184,8 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
+## compose compiler
+compose-metrics
+compose-reports
+
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,kotlin

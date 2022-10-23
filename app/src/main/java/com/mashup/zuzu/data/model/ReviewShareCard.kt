@@ -1,10 +1,14 @@
 package com.mashup.zuzu.data.model
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class ReviewShareCard(
     val wine: Wine = wines[0],
     val userReview: UserReview = UserReview()
 )
 
+@Immutable
 data class ReviewShareCards(
     val wine: Wine,
     val userReviews: List<UserReview>
