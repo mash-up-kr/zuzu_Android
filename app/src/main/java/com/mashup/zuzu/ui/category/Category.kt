@@ -49,10 +49,9 @@ fun CategoryRoute(
         categoryList = categoryList,
         wineListState = wineListState,
         onClick = onClick,
-        onLoadNextPage = { viewModel.getWineListWithPageAndCategoryNextPage() },
-        onScrollPositionChange = { position ->
-            viewModel.onChangeWineListScrollPosition(position = position)
-        },
+        tabClick = viewModel::updateCategoryWithDataLoad,
+        onLoadNextPage = viewModel::getWineListWithPageAndCategoryNextPage,
+        onScrollPositionChange = viewModel::onChangeWineListScrollPosition,
         page = page,
         pageSize = pageSize
     )
@@ -68,6 +67,7 @@ fun CategoryScreen(
     onLoadNextPage: () -> Unit,
     page: Int,
     pageSize: Int,
+    tabClick: (String) -> Unit,
     onClick: (CategoryUiEvents) -> Unit
 ) {
     val categoryState = rememberCategoryState(index)
@@ -94,7 +94,7 @@ fun CategoryScreen(
         ) { tabIndex ->
             categoryState.updateSelectedTabIndex(tabIndex)
             // 여기서 아이템 갱신
-            onClick(CategoryUiEvents.TabClick(categoryList[tabIndex].title))
+            tabClick(categoryList[tabIndex].title)
         }
 
         Row(

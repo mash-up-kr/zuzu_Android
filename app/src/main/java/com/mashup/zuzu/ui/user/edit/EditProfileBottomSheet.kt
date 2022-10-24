@@ -61,9 +61,7 @@ fun EditUserProfileRoute(
             .wrapContentHeight().navigationBarsPadding()
             .background(color = ProofTheme.color.gray600),
         userName = userName,
-        onSubmitButtonClick = { userName, index ->
-            viewModel.submitUserProfile(name = userName, index = index)
-        },
+        onSubmitButtonClick = viewModel::submitUserProfile,
         userProfileImagesUiState = userProfileImagesUiState
     )
 }

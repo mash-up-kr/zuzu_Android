@@ -12,5 +12,4 @@ sealed class HomeUiEvents {
     data class CategoryClick(val categoryList: List<Category>, val category: Category) : HomeUiEvents()
     data class WorldCupItemClick(val bestWorldCup: BestWorldCup) : HomeUiEvents()
     data class WineBoardClick(val wine: Wine) : HomeUiEvents()
-    data class RefreshButtonClick(val context: Context) : HomeUiEvents()
 }

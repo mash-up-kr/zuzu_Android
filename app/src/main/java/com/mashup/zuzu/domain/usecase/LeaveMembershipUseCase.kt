@@ -13,7 +13,7 @@ import javax.inject.Singleton
 class LeaveMembershipUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    operator fun invoke(userId: Long): Flow<Results<String>> {
+    operator fun invoke(): Flow<Results<String>> {
         return repository.deleteUser()
     }
 }

@@ -22,9 +22,9 @@ class LeaveViewModel @Inject constructor(
     private val _leave: MutableStateFlow<LeaveUiState> = MutableStateFlow(LeaveUiState.Init)
     val leave = _leave.asStateFlow()
 
-    fun leaveMembership(userId: Long) {
+    fun leaveMembership() {
         viewModelScope.launch {
-            leaveMembershipUseCase(userId = userId).collect { result ->
+            leaveMembershipUseCase().collect { result ->
                 when (result) {
                     is Results.Success -> {
                         _leave.value = LeaveUiState.Success

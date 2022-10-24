@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.home
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.compose.foundation.Image
@@ -71,7 +72,8 @@ fun HomeRoute(
         mainWineState = mainWineState,
         blurBitmap = blurBitmap,
         categoryListState = categoryListState,
-        onClick = onClick
+        onClick = onClick,
+        onRefreshButtonClick = viewModel::getRandomWine
     )
 }
 
@@ -84,7 +86,8 @@ fun HomeScreen(
     mainWineState: MainWineUiState,
     blurBitmap: Bitmap?,
     categoryListState: CategoryListUiState,
-    onClick: (HomeUiEvents) -> Unit
+    onClick: (HomeUiEvents) -> Unit,
+    onRefreshButtonClick: (Context) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -223,7 +226,7 @@ fun HomeScreen(
                             .clip(RoundedCornerShape(16.dp)),
                         recommendWine = recommendState.recommendWine,
                         onRefreshButtonClick = {
-                            onClick(HomeUiEvents.RefreshButtonClick(context = context))
+                            onRefreshButtonClick(context)
                         }
                     )
                 } else {
@@ -236,7 +239,7 @@ fun HomeScreen(
                                 .clip(RoundedCornerShape(16.dp)),
                             recommendWine = recommendState.recommendWine,
                             onRefreshButtonClick = {
-                                onClick(HomeUiEvents.RefreshButtonClick(context = context))
+                                onRefreshButtonClick(context)
                             },
                             blurImage = blurBitmap
                         )
@@ -267,7 +270,7 @@ fun HomeScreen(
                         .padding(start = 24.dp, end = 24.dp, top = 19.dp)
                         .clip(shape = RoundedCornerShape(16.dp)),
                     onButtonClick = {
-                        onClick(HomeUiEvents.RefreshButtonClick(context = context))
+                        onRefreshButtonClick(context)
                     }
                 )
             }

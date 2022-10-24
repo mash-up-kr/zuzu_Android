@@ -72,13 +72,9 @@ internal fun NavGraphBuilder.homeGraph(
                         }
                         is HomeUiEvents.WorldCupItemClick -> {
                             val worldCupId = homeUiEvents.bestWorldCup.winnerDrinkId
-
                             val intent = Intent(context, WorldcupActivity::class.java)
                             intent.putExtra(Key.RECOMMENDED_WORLDCUP_ID, worldCupId.toString())
                             context.startActivity(intent)
-                        }
-                        is HomeUiEvents.RefreshButtonClick -> {
-                            viewModel.getRandomWine(context = homeUiEvents.context)
                         }
                     }
                 }
@@ -156,10 +152,6 @@ internal fun NavGraphBuilder.categoryGraph(
                         is CategoryUiEvents.BackButtonClick -> {
                             appState.navigateBackStack()
                         }
-                        is CategoryUiEvents.TabClick -> {
-                            viewModel.updateCategory(category = categoryUiEvents.tag)
-                            viewModel.getWineListWithPageAndCategory()
-                        }
                     }
                 }
             )
@@ -185,9 +177,6 @@ internal fun NavGraphBuilder.userGraph(
                     when (settingScreenEvents) {
                         is SettingUiEvents.LeaveButtonClick -> {
                             appState.navigateRoute(NavigationRoute.UserScreenGraph.LeaveScreen.route)
-                        }
-                        is SettingUiEvents.LogoutButtonClick -> {
-                            viewModel.logout()
                         }
                         is SettingUiEvents.MoveToHome -> {
                             appState.navController.navigate(NavigationRoute.HomeScreenGraph.HomeScreen.route) {
@@ -233,9 +222,6 @@ internal fun NavGraphBuilder.userGraph(
                         }
                         is LeaveUiEvents.BackButtonClick -> {
                             appState.navigateBackStack()
-                        }
-                        is LeaveUiEvents.LeaveButtonClick -> {
-                            viewModel.leaveMembership(userId = 0L)
                         }
                     }
                 }

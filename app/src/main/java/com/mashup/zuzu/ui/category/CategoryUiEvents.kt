@@ -9,5 +9,4 @@ import com.mashup.zuzu.data.model.Wine
 sealed class CategoryUiEvents {
     data class WineBoardClick(val wine: Wine) : CategoryUiEvents()
     object BackButtonClick : CategoryUiEvents()
-    data class TabClick(val tag: String) : CategoryUiEvents()
 }

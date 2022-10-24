@@ -108,5 +108,10 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
+    fun updateCategoryWithDataLoad(category: String) {
+        updateCategory(category = category)
+        getWineListWithPageAndCategory()
+    }
+
     val PAGE_SIZE = 8
 }

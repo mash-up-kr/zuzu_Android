@@ -5,6 +5,5 @@ package com.mashup.zuzu.ui.leave
  */
 sealed class LeaveUiEvents {
     object BackButtonClick : LeaveUiEvents()
-    object LeaveButtonClick : LeaveUiEvents()
     object KeepUsingButtonClick : LeaveUiEvents()
 }
