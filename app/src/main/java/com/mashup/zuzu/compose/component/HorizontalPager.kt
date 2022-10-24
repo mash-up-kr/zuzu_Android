@@ -18,6 +18,7 @@ import com.mashup.zuzu.data.model.Wine
 import com.mashup.zuzu.util.saveBitmapToStorage
 import dev.shreyaspatil.capturable.Capturable
 import dev.shreyaspatil.capturable.controller.CaptureController
+import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.absoluteValue
 
 /**
@@ -29,7 +30,7 @@ import kotlin.math.absoluteValue
 fun HorizontalPagerWithOffsetTransitionWithPage(
     modifier: Modifier,
     onWineBoardClick: (Wine) -> Unit,
-    wineList: List<Wine>,
+    wineList: ImmutableList<Wine>,
     childModifier: Modifier?,
     onLoadData: () -> Unit,
     onScrollPositionChange: (Int) -> Unit,
@@ -87,7 +88,7 @@ fun HorizontalPagerWithOffsetTransitionWithPage(
 fun HorizontalPagerWithOffsetTransition(
     modifier: Modifier,
     onWineBoardClick: (Wine) -> Unit,
-    wines: List<Wine>,
+    wines: ImmutableList<Wine>,
     pagerState: PagerState,
     childModifier: Modifier?
 ) {

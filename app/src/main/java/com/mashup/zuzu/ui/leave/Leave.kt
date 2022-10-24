@@ -36,14 +36,16 @@ fun LeaveRoute(
         leaveState(leaveUiEventState)
     }
     LeaveScreen(
-        onClick = onClick
+        onClick = onClick,
+        onLeaveMembershipButtonClick = viewModel::leaveMembership
     )
 }
 
 @Composable
 fun LeaveScreen(
     modifier: Modifier = Modifier,
-    onClick: (LeaveUiEvents) -> Unit
+    onClick: (LeaveUiEvents) -> Unit,
+    onLeaveMembershipButtonClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -63,22 +65,32 @@ fun LeaveScreen(
                 .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(20.dp))
-            LeaveTitle(modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight())
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(46.dp))
-            LeaveIllus(modifier = Modifier
-                .padding(start = 40.dp, end = 40.dp)
-                .width(280.dp)
-                .height(280.dp))
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(20.dp)
+            )
+            LeaveTitle(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+            )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(46.dp)
+            )
+            LeaveIllus(
+                modifier = Modifier
+                    .padding(start = 40.dp, end = 40.dp)
+                    .width(280.dp)
+                    .height(280.dp)
+            )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+            )
             Button(
                 modifier = Modifier
                     .padding(start = 24.dp, end = 24.dp)
@@ -88,11 +100,13 @@ fun LeaveScreen(
                 backgroundColor = ProofTheme.color.primary300,
                 textColor = ProofTheme.color.white,
                 textStyle = ProofTheme.typography.buttonL,
-                onButtonClick = { onClick(LeaveUiEvents.LeaveButtonClick) }
+                onButtonClick = onLeaveMembershipButtonClick
             )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(25.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(25.dp)
+            )
             Box(
                 modifier = Modifier
                     .padding(start = 24.dp, end = 24.dp)
@@ -154,9 +168,11 @@ fun LeaveTitle(
             style = ProofTheme.typography.headingXL,
             color = ProofTheme.color.white
         )
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(12.dp))
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(12.dp)
+        )
         Text(
             text = stringResource(id = R.string.leave_subtitle),
             style = ProofTheme.typography.bodyL,
@@ -183,18 +199,11 @@ fun LeaveIllus(
 @Composable
 fun PreviewLeaveTitle() {
     ProofTheme {
-        LeaveTitle(modifier = Modifier
-            .fillMaxWidth()
-            .height(96.dp))
+        LeaveTitle(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(96.dp)
+        )
     }
 }
 
-@Preview
-@Composable
-fun PreviewLeave() {
-    ProofTheme {
-        Column {
-            LeaveScreen(onClick = {})
-        }
-    }
-}

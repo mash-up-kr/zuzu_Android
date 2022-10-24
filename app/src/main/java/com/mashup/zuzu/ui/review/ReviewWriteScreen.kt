@@ -21,6 +21,7 @@ import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.component.TasteColumn
 import com.mashup.zuzu.compose.component.WineImageCardForReviewWrite
 import com.mashup.zuzu.compose.theme.ProofTheme
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
@@ -309,10 +310,10 @@ fun ReviewWriteScreen(
                                     top = 40.dp,
                                     bottom = 34.dp
                                 ),
-                                selectedList = tasteUiState.selectedList,
+                                selectedList = tasteUiState.selectedList.toImmutableList(),
                                 currentIndex = tasteUiState.currentIndex,
-                                radioTitles = tasteUiState.radioTitles,
-                                radioButtons = tasteUiState.radioButtons,
+                                radioTitles = tasteUiState.radioTitles.toImmutableList(),
+                                radioButtons = tasteUiState.radioButtons.toImmutableList(),
                                 updateCurrentIndex = updateCurrentIndex,
                                 updateSelectedList = updateSelectedList
                             )

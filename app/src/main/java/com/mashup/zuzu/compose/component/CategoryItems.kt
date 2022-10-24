@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.compose.theme.ProofTheme
+import kotlinx.collections.immutable.ImmutableList
 
 /**
  * @Created by 김현국 2022/07/03
@@ -21,7 +22,7 @@ import com.mashup.zuzu.compose.theme.ProofTheme
 @Composable
 fun CategoryItems(
     modifier: Modifier,
-    categoryList: List<Category>,
+    categoryList: ImmutableList<Category>,
     onCategoryClick: (Category) -> Unit,
     childModifier: Modifier?
 ) {

@@ -27,6 +27,8 @@ import com.mashup.zuzu.compose.component.TabPosition
 import com.mashup.zuzu.compose.theme.ProofTheme
 import com.mashup.zuzu.data.model.Category
 import com.mashup.zuzu.data.model.Wine
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * @Created by 김현국 2022/07/03
@@ -36,7 +38,7 @@ import com.mashup.zuzu.data.model.Wine
 fun CategoryRoute(
     viewModel: CategoryViewModel,
     index: Int,
-    categoryList: List<Category>,
+    categoryList: ImmutableList<Category>,
     onClick: (CategoryUiEvents) -> Unit
 ) {
     val wineListState by viewModel.wineListState.collectAsState()
@@ -47,10 +49,9 @@ fun CategoryRoute(
         categoryList = categoryList,
         wineListState = wineListState,
         onClick = onClick,
-        onLoadNextPage = { viewModel.getWineListWithPageAndCategoryNextPage() },
-        onScrollPositionChange = { position ->
-            viewModel.onChangeWineListScrollPosition(position = position)
-        },
+        tabClick = viewModel::updateCategoryWithDataLoad,
+        onLoadNextPage = viewModel::getWineListWithPageAndCategoryNextPage,
+        onScrollPositionChange = viewModel::onChangeWineListScrollPosition,
         page = page,
         pageSize = pageSize
     )
@@ -60,12 +61,13 @@ fun CategoryRoute(
 fun CategoryScreen(
     modifier: Modifier = Modifier,
     index: Int,
-    categoryList: List<Category>,
+    categoryList: ImmutableList<Category>,
     wineListState: WineListWithPageAndCategoryUiState,
     onScrollPositionChange: (Int) -> Unit,
     onLoadNextPage: () -> Unit,
     page: Int,
     pageSize: Int,
+    tabClick: (String) -> Unit,
     onClick: (CategoryUiEvents) -> Unit
 ) {
     val categoryState = rememberCategoryState(index)
@@ -92,7 +94,7 @@ fun CategoryScreen(
         ) { tabIndex ->
             categoryState.updateSelectedTabIndex(tabIndex)
             // 여기서 아이템 갱신
-            onClick(CategoryUiEvents.TabClick(categoryList[tabIndex].title))
+            tabClick(categoryList[tabIndex].title)
         }
 
         Row(
@@ -160,7 +162,7 @@ fun CategoryScreen(
                             onWineBoardClick = { wine ->
                                 onClick(CategoryUiEvents.WineBoardClick(wine = wine))
                             },
-                            wineList = wineListState.wineList,
+                            wineList = wineListState.wineList.toImmutableList(),
                             null,
                             onLoadData = onLoadNextPage,
                             onScrollPositionChange = onScrollPositionChange,

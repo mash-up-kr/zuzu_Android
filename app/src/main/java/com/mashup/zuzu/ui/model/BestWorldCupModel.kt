@@ -1,9 +1,12 @@
 package com.mashup.zuzu.ui.model
 
+import androidx.compose.runtime.Immutable
+
 /**
  * @Created by 김현국 2022/07/11
  */
 
+@Immutable
 data class BestWorldCup(
     val title: String,
     val participants: Int,

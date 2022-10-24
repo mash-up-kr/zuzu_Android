@@ -19,6 +19,7 @@ import com.mashup.zuzu.ui.user.UpdateProfileUiEventState
 import com.mashup.zuzu.ui.user.UserProfileImagesUiState
 import com.mashup.zuzu.ui.user.UserUiState
 import com.mashup.zuzu.ui.user.UserViewModel
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * @Created by 김현국 2022/07/21
@@ -60,9 +61,7 @@ fun EditUserProfileRoute(
             .wrapContentHeight().navigationBarsPadding()
             .background(color = ProofTheme.color.gray600),
         userName = userName,
-        onSubmitButtonClick = { userName, index ->
-            viewModel.submitUserProfile(name = userName, index = index)
-        },
+        onSubmitButtonClick = viewModel::submitUserProfile,
         userProfileImagesUiState = userProfileImagesUiState
     )
 }
@@ -92,7 +91,7 @@ fun EditProfileBottomSheet(
                 is UserProfileImagesUiState.Success -> {
                     ProfileImageItems(
                         modifier = Modifier.fillMaxWidth(),
-                        profileImages = userProfileImagesUiState.userProfileImages,
+                        profileImages = userProfileImagesUiState.userProfileImages.toImmutableList(),
                         onProfileImageClick = { index ->
                             editProfileBottomSheetState.updateSelectedImageIndex(index)
                         },

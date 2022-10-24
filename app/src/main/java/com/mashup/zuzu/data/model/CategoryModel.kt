@@ -1,9 +1,12 @@
 package com.mashup.zuzu.data.model
 
+import androidx.compose.runtime.Immutable
+
 /**
  * @Created by 김현국 2022/07/20
  */
 
+@Immutable
 data class Category(
     val imageUrl: String,
     val title: String

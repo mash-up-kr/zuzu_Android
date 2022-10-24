@@ -46,13 +46,15 @@ fun SettingRoute(
         is UserUiState.Success -> {
             Setting(
                 user = (userState as UserUiState.Success).userData,
-                onButtonClick = onButtonClick
+                onButtonClick = onButtonClick,
+                onLogoutButtonClick = viewModel::logout
             )
         }
         is UserUiState.Loading -> {
             Setting(
                 user = dummyUser,
-                onButtonClick = {}
+                onButtonClick = {},
+                onLogoutButtonClick = viewModel::logout
             )
         }
         is UserUiState.Error -> {
@@ -74,7 +76,8 @@ fun SettingRoute(
 fun Setting(
     modifier: Modifier = Modifier,
     user: User,
-    onButtonClick: (SettingUiEvents) -> Unit
+    onButtonClick: (SettingUiEvents) -> Unit,
+    onLogoutButtonClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -104,7 +107,7 @@ fun Setting(
             modifier = Modifier
                 .padding(start = 24.dp)
                 .fillMaxWidth(),
-            onLogoutButtonClick = { onButtonClick(SettingUiEvents.LogoutButtonClick) },
+            onLogoutButtonClick = onLogoutButtonClick,
             onLeaveButtonClick = { onButtonClick(SettingUiEvents.LeaveButtonClick) }
         )
     }

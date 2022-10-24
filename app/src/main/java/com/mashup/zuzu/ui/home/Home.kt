@@ -1,5 +1,6 @@
 package com.mashup.zuzu.ui.home
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.compose.foundation.Image
@@ -21,7 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
@@ -41,6 +41,7 @@ import com.mashup.zuzu.data.model.dummy.dummyWorldCupList
 import com.mashup.zuzu.ui.model.BestWorldCup
 import com.mashup.zuzu.ui.navigation.BottomNavigationItemsWithIcon
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.roundToInt
 
 /**
@@ -71,7 +72,8 @@ fun HomeRoute(
         mainWineState = mainWineState,
         blurBitmap = blurBitmap,
         categoryListState = categoryListState,
-        onClick = onClick
+        onClick = onClick,
+        onRefreshButtonClick = viewModel::getRandomWine
     )
 }
 
@@ -84,7 +86,8 @@ fun HomeScreen(
     mainWineState: MainWineUiState,
     blurBitmap: Bitmap?,
     categoryListState: CategoryListUiState,
-    onClick: (HomeUiEvents) -> Unit
+    onClick: (HomeUiEvents) -> Unit,
+    onRefreshButtonClick: (Context) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -122,7 +125,7 @@ fun HomeScreen(
                     onWineBoardClick = { wine ->
                         onClick(HomeUiEvents.WineBoardClick(wine))
                     },
-                    wines = mainWineState.mainWines,
+                    wines = mainWineState.mainWines.toImmutableList(),
                     pagerState = pagerState,
                     childModifier = null
                 )
@@ -135,7 +138,7 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .height(415.dp),
                     onWineBoardClick = {},
-                    wines = dummyWineList,
+                    wines = dummyWineList.toImmutableList(),
                     pagerState = pagerState,
                     childModifier = Modifier.placeholder(
                         visible = true,
@@ -167,7 +170,7 @@ fun HomeScreen(
                 CategoryItems(
                     modifier = Modifier
                         .padding(top = 24.dp),
-                    categoryList = categoryListState.categoryList,
+                    categoryList = categoryListState.categoryList.toImmutableList(),
                     onCategoryClick = { category ->
                         onClick(
                             HomeUiEvents.CategoryClick(
@@ -182,7 +185,7 @@ fun HomeScreen(
             is CategoryListUiState.Loading -> {
                 CategoryItems(
                     modifier = Modifier.padding(start = 24.dp, top = 24.dp),
-                    categoryList = dummyCategoryList,
+                    categoryList = dummyCategoryList.toImmutableList(),
                     onCategoryClick = {},
                     childModifier = Modifier.placeholder(
                         visible = true,
@@ -223,7 +226,7 @@ fun HomeScreen(
                             .clip(RoundedCornerShape(16.dp)),
                         recommendWine = recommendState.recommendWine,
                         onRefreshButtonClick = {
-                            onClick(HomeUiEvents.RefreshButtonClick(context = context))
+                            onRefreshButtonClick(context)
                         }
                     )
                 } else {
@@ -236,7 +239,7 @@ fun HomeScreen(
                                 .clip(RoundedCornerShape(16.dp)),
                             recommendWine = recommendState.recommendWine,
                             onRefreshButtonClick = {
-                                onClick(HomeUiEvents.RefreshButtonClick(context = context))
+                                onRefreshButtonClick(context)
                             },
                             blurImage = blurBitmap
                         )
@@ -267,7 +270,7 @@ fun HomeScreen(
                         .padding(start = 24.dp, end = 24.dp, top = 19.dp)
                         .clip(shape = RoundedCornerShape(16.dp)),
                     onButtonClick = {
-                        onClick(HomeUiEvents.RefreshButtonClick(context = context))
+                        onRefreshButtonClick(context)
                     }
                 )
             }
@@ -347,25 +350,10 @@ fun ZuzuBottomNavigationBar(
                     Icon(
                         modifier = Modifier.offset(x = screen.xOffset),
                         painter = painterResource(
-                            id = screen.icon),
+                            id = screen.icon
+                        ),
                         contentDescription = null
                     )
-//                    when (screen.route) {
-//                        "home_screen.screen" -> {
-//                            Icon(
-//                                modifier = Modifier.offset(x = 20.dp),
-//                                painter = painterResource(id = R.drawable.ic_home_variant),
-//                                contentDescription = null
-//                            )
-//                        }
-//                        "user_screen.screen" -> {
-//                            Icon(
-//                                modifier = Modifier.offset(x = (-20).dp),
-//                                imageVector = Icons.Filled.AccountCircle,
-//                                contentDescription = null
-//                            )
-//                        }
-//                    }
                 },
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true, // 선택에 따라서 색상이 변경됩니다.
                 selectedContentColor = ProofTheme.color.primary50,

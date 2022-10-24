@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import com.mashup.zuzu.R
 import com.mashup.zuzu.compose.theme.HorizontalPurple
 import com.mashup.zuzu.compose.theme.ProofTheme
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
 /**
@@ -26,11 +28,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun TasteColumn(
     modifier: Modifier,
-    navigateSummaryPage: (List<Int>) -> Unit,
-    selectedList: List<Int>,
+    navigateSummaryPage: (ImmutableList<Int>) -> Unit,
+    selectedList: ImmutableList<Int>,
     currentIndex: Int,
-    radioTitles: List<Pair<String, String>>,
-    radioButtons: List<Pair<Int, Int>>,
+    radioTitles: ImmutableList<Pair<String, String>>,
+    radioButtons: ImmutableList<Pair<Int, Int>>,
     updateSelectedList: (Int, Int) -> Unit,
     updateCurrentIndex: (Int) -> Unit
 ) {
@@ -111,7 +113,7 @@ fun TasteColumn(
                                         val value = it.value
                                         updateSelectedList(index, value)
                                     }
-                                    navigateSummaryPage(selectedList.toList())
+                                    navigateSummaryPage(selectedList.toImmutableList())
                                 }
                             }
                         ) {
